@@ -35,7 +35,7 @@ const {data: post,status,}=useQuery({
 
 
   const pathName = usePathname();
-  const currentUrl = `http://localhost:3000/${pathName}`;
+  const currentUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/${pathName}`;
   const copyToClipboard = () => {
     navigator.clipboard.writeText(currentUrl);
     toast.success("لینک اشتراک گذاری کپی شد")

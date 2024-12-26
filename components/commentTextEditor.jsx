@@ -194,7 +194,7 @@ const CommentTextEditor = forwardRef(({content,onChange,title},ref) => {
     ],
     editorProps:{
         attributes:{
-             class: "block  w-full p-2 text-sm  focus:outline-none focus:ring-0 rounded-lg duration-200  ",
+             class: "  w-full p-2 text-sm  focus:outline-none focus:ring-0 rounded-lg duration-200  ",
             spellcheck: 'false',
         },
     },
@@ -214,7 +214,7 @@ const CommentTextEditor = forwardRef(({content,onChange,title},ref) => {
   }, [content, editor])
 
   return (
-        <div className='w-full flex justify-between bg-white dark:bg-black border  rounded-lg border-lbtn dark:border-dbtn pl-2 break-all hyphens-auto text-wrap'>
+        <div className=' bg-white dark:bg-black border  rounded-lg border-lbtn dark:border-dbtn pl-2 break-all hyphens-auto text-wrap'>
         {/* <CommentToolbar editor={editor} content={content}/> */}
            <EditorContent style={{whiteSpace:"pre-line"}} editor={editor} ref={ref} />
          {/* <Dropdown title={<BsEmojiSmile/>} btnStyle={'text-lfont text-lg mt-3 '} className={'left-0 w-48 mt-1  bg-white border border-lbtn dark:border-dbtn px-2 rounded-lg'}>

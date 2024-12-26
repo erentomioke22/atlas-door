@@ -106,27 +106,7 @@ const EditPost = ({ params }) => {
     NotFound()
   }
 
-  useEffect(() => {
-    if (post) {
-      setValue("title", post?.title);
-      setValue("desc", post?.desc);
-      setValue("postId", post?.id);
-      setValue("content", post?.content);
-      setValue("faqs", post?.faqs);
-      setValue("image", post?.images[0]);
-      setValue("contentImages", post?.contentImages);
-      setValue('tocs',post?.tocs.map(toc => toc));
-      setValue("tags",post?.tags.map((tag) => tag.name));
-      setImageUrl(post?.images[0]);
-      setItems(post?.tocs)
-      setFaqs(post?.faqs)
-      setDropTag(post?.tags.map((tag) => tag.name));
-      setSelectedImage(post?.images[0]);
-      setDeletedPostFiles((prevFiles) => [...prevFiles, post?.images[0]]);
-      // setContent(post?.content);
-      // setDeletedPostFiles([...deletedPostFiles, post?.images[0]]);
-    }
-  }, [post,setValue, deletedPostFiles]);
+
 
   const {
     register,
@@ -151,6 +131,30 @@ const EditPost = ({ params }) => {
     resolver: yupResolver(postValidation),
   });
 
+  useEffect(() => {
+    if (post) {
+      setValue("title", post?.title);
+      setValue("desc", post?.desc);
+      setValue("postId", post?.id);
+      setValue("content", post?.content);
+      setValue("faqs", post?.faqs);
+      setValue("image", post?.images[0]);
+      setValue("contentImages", post?.contentImages);
+      setValue('tocs',post?.tocs.map(toc => toc));
+      setValue("tags",post?.tags.map((tag) => tag.name));
+      setImageUrl(post?.images[0]);
+      setItems(post?.tocs)
+      setFaqs(post?.faqs)
+      setDropTag(post?.tags.map((tag) => tag.name));
+      setSelectedImage(post?.images[0]);
+      setDeletedPostFiles((prevFiles) => [...prevFiles, post?.images[0]]);
+      // setContent(post?.content);
+      // setDeletedPostFiles([...deletedPostFiles, post?.images[0]]);
+    }
+  }, [post,
+    // setValue,
+    //  deletedPostFiles
+    ]);
 
 // console.log(getValues('tocs'))
 

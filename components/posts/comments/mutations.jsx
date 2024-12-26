@@ -20,7 +20,7 @@ export function useSubmitCommentMutation(postId) {
       queryClient.invalidateQueries({ queryKey: notificationsQueryKey });
       
       
-      toast.success("Comment created",);
+      toast.success("بازخورد شما ثبت شد",);
     },
     onError(error) {
       // console.error(error);
@@ -109,7 +109,7 @@ export function useSubmitReplyMutation(postId) {
       queryClient.invalidateQueries({ queryKey: commentsQueryKey });
       queryClient.invalidateQueries({ queryKey: notificationsQueryKey });
 
-      toast.success("Reply created",);
+      toast.success("بازخورد شما ثبت شد",);
     },
     onError(error) {
       // console.error(error);
