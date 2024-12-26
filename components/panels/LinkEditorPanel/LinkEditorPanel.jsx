@@ -16,13 +16,12 @@ export const LinkEditorPanel = ({ onSetLink, initialOpenInNewTab, initialUrl }) 
   const isValidUrl = useMemo(() => /^(\S+):(\/\/)?\S+$/.test(url), [url])
 
   const handleSubmit = useCallback((e) => {
-    //  e.preventDefault()
-      if (isValidUrl) {
-        onSetLink(url, false)
-      }
-    },
-    [url, isValidUrl, openInNewTab, onSetLink],
-  )
+    // e.preventDefault()
+    if (isValidUrl) {
+        onSetLink(url, openInNewTab)
+    }
+}, [url, isValidUrl, openInNewTab, onSetLink])
+
   return (
     <Surface className="p-1" >
       <form 

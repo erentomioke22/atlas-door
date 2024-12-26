@@ -1,5 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
+import Image from 'next/image';
 import { FaTelegram } from "react-icons/fa";
 import { FiInstagram } from "react-icons/fi";
 import { FaWhatsapp } from "react-icons/fa6";
@@ -25,10 +26,10 @@ const Footer = () => {
 
      <div className='flex  gap-5 mt-3 text-2xl'>
          <a className='' href="https://eitaa.com/Atlasdoor96" target="_blank" rel="noopener noreferrer">
-          <img src="/icon/eitaa.svg" className="size-6" alt="" />
+          <Image width={36} height={36}  src="/icon/eitaa.svg" className="size-6" alt="eitaa icon" />
          </a>
          <a className='' href="https://rubika.ir/Atlasdoor96" target="_blank" rel="noopener noreferrer">
-          <img src="/icon/rubika.svg" className="size-6" alt="" />
+          <Image width={36} height={36} src="/icon/rubika.svg" className="size-6" alt="rubika icon" />
          </a>
          <a className='text-blue duration-500' href="https://t.me/Atlasdoor96" target="_blank" rel="noopener noreferrer"><FaTelegram/></a>
          <a className='text-[violet] duration-500' href="https://www.instagram.com/atlasshishe96" target="_blank" rel="noopener noreferrer"><FiInstagram/></a>

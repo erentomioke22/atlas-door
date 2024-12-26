@@ -119,7 +119,7 @@ const EditPost = ({ params }) => {
     defaultValues: {
       postId: post?.id,
       title: '',
-      desc:"",
+      desc:'',
       image:'',
       contentImages: [],
       content: '',
@@ -329,11 +329,12 @@ const EditPost = ({ params }) => {
       setItems(post?.tocs)
       setFaqs(post?.faqs)
       setDropTag(post?.tags.map((tag) => tag.name));
-      // setContent(post?.content);
       setSelectedImage(post?.images[0]);
-      setDeletedPostFiles([...deletedPostFiles, post?.images[0]]);
+      setDeletedPostFiles((prevFiles) => [...prevFiles, post?.images[0]]);
+      // setContent(post?.content);
+      // setDeletedPostFiles([...deletedPostFiles, post?.images[0]]);
     }
-  }, [post]);
+  }, [post,setValue, deletedPostFiles]);
 
   const tags = [
     { id: "1",  name: "درب اتوماتیک", info: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sed, rerum!" },
