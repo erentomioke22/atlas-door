@@ -172,14 +172,9 @@ const CommentTextEditor = forwardRef(({content,onChange,title},ref) => {
 
 
   const editor = useEditor({
+    immediatelyRender: false,
     extensions: [
       StarterKit,
-      Paragraph,
-      Text,
-      Underline,
-      BulletList,
-      OrderedList,
-      ListItem,
       Color,
       TextStyle,
       Highlight.configure({ multicolor: true }),

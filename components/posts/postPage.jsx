@@ -104,8 +104,8 @@ const formattedDate = createdAt.isValid() ? createdAt.fromNow(): 'تاریخ ن�
                         src={
                           post?.user?.image === null
                             ? 
-                            "/images/logo/user-avatar-people-icon-solid-style-icon-design-element-icon-template-background-free-vector.jpg"
-                            : post?.user?.image
+                            `${process.env.NEXT_PUBLIC_BASE_URL}/images/logo/user-avatar-people-icon-solid-style-icon-design-element-icon-template-background-free-vector.jpg`
+                            : `${process.env.NEXT_PUBLIC_BASE_URL}${post?.user?.image}`
                         }
                         className="rounded-xl"
                         alt={'avatar'}
@@ -149,7 +149,7 @@ const formattedDate = createdAt.isValid() ? createdAt.fromNow(): 'تاریخ ن�
                <ImageCom 
                  className=" rounded-xl md:rounded-2xl absolute  mx-auto max-md:order-last"
                  alt={post?.title} 
-                 src={post?.images[0]} 
+                 src={`${process.env.NEXT_PUBLIC_BASE_URL}${post?.images[0]}`} 
                  size={'h-[200px]  sm:h-[300px] md:h-[400px]'}
                />
               </div>

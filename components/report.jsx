@@ -27,7 +27,7 @@ const Report = ({type}) => {
       defaultValues:{
         reason:"محتوای نامربوط",
         type,
-        url:`http:localhost:3000${currentUrl}`
+        url:`/${currentUrl}`
       },
       resolver: yupResolver(reportValidation),
     });

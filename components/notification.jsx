@@ -36,7 +36,7 @@ export default function Notification({ notification }) {
               <div className="relative w-[40px] h-[40px]">
               <ImageCom
                className="rounded-lg "
-               src={"/images/logo/user-avatar-people-icon-solid-style-icon-design-element-icon-template-background-free-vector.jpg"
+               src={`${process.env.NEXT_PUBLIC_BASE_URL}/images/logo/user-avatar-people-icon-solid-style-icon-design-element-icon-template-background-free-vector.jpg`
                }
                alt={'avatar'}
              />
@@ -63,7 +63,7 @@ export default function Notification({ notification }) {
               <div className="text-sm bg-lcard dark:bg-dcard p-3 mt-3 rounded-xl">
                 <div className="flex gap-2">
                   <div className="w-[35px] h-[35px] relative">
-                   <ImageCom src={notification.post.images[0]} className="rounded-lg" alt={"avatar"}/>
+                   <ImageCom src={`${process.env.NEXT_PUBLIC_BASE_URL}${notification.post.images[0]}`} className="rounded-lg" alt={"avatar"}/>
                   </div>
                   <div className="flex flex-col ">
                     <span className="text-sm text-lfont " >{notification.post.title}</span>  

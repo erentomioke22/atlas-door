@@ -73,8 +73,8 @@ const Comment = ({post}) => {
              className="rounded-xl h-10 w-10"
              src={
                session?.user?.image === null
-                 ? "/images/logo/user-avatar-people-icon-solid-style-icon-design-element-icon-template-background-free-vector.jpg"
-                 : session?.user.image
+                 ? `${process.env.NEXT_PUBLIC_BASE_URL}/images/logo/user-avatar-people-icon-solid-style-icon-design-element-icon-template-background-free-vector.jpg`
+                 : `${process.env.NEXT_PUBLIC_BASE_URL}${session?.user.image}`
              }
              alt={'avatar'}
             />
@@ -117,8 +117,8 @@ const Comment = ({post}) => {
                               className="rounded-lg "
                               src={
                                 image
-                                  ? image
-                                  : "/images/logo/user-avatar-people-icon-solid-style-icon-design-element-icon-template-background-free-vector.jpg"
+                                  ? `${process.env.NEXT_PUBLIC_BASE_URL}${image}`
+                                  : `${process.env.NEXT_PUBLIC_BASE_URL}/images/logo/user-avatar-people-icon-solid-style-icon-design-element-icon-template-background-free-vector.jpg`
                               }
                               alt={'avatar'}
                             />

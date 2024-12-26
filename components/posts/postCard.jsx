@@ -42,7 +42,7 @@ const formattedDate = createdAt.isValid() ? createdAt.fromNow(): 'تاریخ ن�
                   <div
                    className='flex gap-1 sm:gap-2   p-1 text-[10px]   '>
                     <div className='relative w-[32px] h-[32px]'>
-                      <ImageCom src={post.user.image} className='  rounded-lg' alt={`${post?.user?.name} avatar`}/>
+                      <ImageCom src={`${process.env.NEXT_PUBLIC_BASE_URL}${post.user.image}`} className='  rounded-lg' alt={`${post?.user?.name} avatar`}/>
                     </div>
                    <div className='flex flex-col truncate'>
                      <p className='truncate'>{post.user.displayName}</p>
@@ -68,7 +68,7 @@ const formattedDate = createdAt.isValid() ? createdAt.fromNow(): 'تاریخ ن�
               <ImageCom 
                className={'object-cover  rounded-3xl w-full'}
                alt={post?.title} 
-               src={post.images[0]}
+               src={`${process.env.NEXT_PUBLIC_BASE_URL}${post.images[0]}`}
                size={'h-36 md:h-40'} 
                />
               </div>

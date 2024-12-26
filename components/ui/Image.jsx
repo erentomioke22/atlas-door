@@ -4,8 +4,7 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 
 const imageLoader = ({ src, width, quality }) => {
-  // return `${process.env.NEXT_PUBLIC_BASE_URL}/${src}?w=${width}&q=${quality || 75}`
-  return `http://localhost:3000//${src}?w=${width}&q=${quality || 75}`
+  return `${src}?w=${width}&q=${quality || 75}`
 }
 
 const ImageCom = ({ src, alt, width, height,className,size }) => {
