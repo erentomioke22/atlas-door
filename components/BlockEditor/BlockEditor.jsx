@@ -114,5 +114,5 @@ export const BlockEditor =
     );
   })
 
-
+  BlockEditor.displayName = 'BlockEditor'; 
 export default BlockEditor;

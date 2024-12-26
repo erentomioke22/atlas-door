@@ -98,6 +98,8 @@ const Report = ({type}) => {
                     title={"...پیام خود را بنویسید"}
                   name={"message"}
                   type={"text"}
+                  ref={register} 
+                  // watch={watch('message')}
                   // label={true}
                   className={ "resize-none block text-right w-full p-2 text-sm bg-lcard dark:bg-dcard focus:outline-none focus:ring-2 rounded-lg duration-200 focus:ring-black dark:focus:ring-white "
                   }
