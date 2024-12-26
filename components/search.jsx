@@ -49,7 +49,7 @@ useEffect(()=>{
 
   return (
 
-  <Dropdown title={<BiSearchAlt />} className={' -right-[140px] sm:right-0   bg-lcard dark:bg-dcard w-72 sm:w-96  border border-lbtn dark:border-dbtn px-3 max-h-62 overflow-auto'} 
+  <Dropdown title={<BiSearchAlt />} className={' -right-[90px] sm:right-0   bg-lcard dark:bg-dcard w-72 sm:w-96  border border-lbtn dark:border-dbtn px-3 max-h-62 overflow-auto'} 
   btnStyle={'bg-lcard hover:bg-lbtn rounded-full px-3 py-1 duration-500 dark:bg-dcard dark:hover:bg-dbtn text-lfont border-lbtn border dark:border-dbtn'}>
   <div className="space-y-5">
      
