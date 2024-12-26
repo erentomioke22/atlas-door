@@ -24,6 +24,6 @@ export const TextArea = forwardRef(({ title,value,error,name,type,className,onCh
            </div>
         </>
       ))
-Text.displayName = 'TextArea'; 
+      TextArea.displayName = 'TextArea'; 
 
 export default TextArea;

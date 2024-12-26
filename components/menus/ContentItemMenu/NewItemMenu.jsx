@@ -13,7 +13,7 @@ import { imageFileValidation } from "@lib/validation";
 import { imageUrlValidation } from "@lib/validation";
 import { useUploadMutation } from "@components/posts/mutations";
 import { toast } from 'sonner';
-
+import LoadingSpinner from "@components/ui/loading/loadingSpinner";
 export const NewItemMenu = ({ editor,getPos,setFiles,files,setValue }) => {
   
   
@@ -95,7 +95,7 @@ export const NewItemMenu = ({ editor,getPos,setFiles,files,setValue }) => {
               return updatedFiles; });
         }
       },
-      [getPos, editor],
+      [getPos, editor,handleImageUpload, setFiles],
     )
     const onUploadUrl = useCallback(
       (imageUrl) => {
