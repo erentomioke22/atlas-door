@@ -22,7 +22,7 @@ const Footer = () => {
       <Link href="privacy-policy">Terms</Link>
       <Link href="privacy-policy">Cookies</Link> */}
     </div>
-      <p className=" text-[10px] md:text-[10px] ">حق کپی رایت فقط با ذکر نام نام پیگرد قانونی ندارد</p>
+      <p className=" text-[10px] md:text-[10px] ">حق کپی رایت فقط با ذکر نام  پیگرد قانونی ندارد</p>
 
      <div className='flex  gap-5 mt-3 text-2xl'>
          <a className='' href="https://eitaa.com/Atlasdoor96" target="_blank" rel="noopener noreferrer">

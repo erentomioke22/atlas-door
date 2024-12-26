@@ -11,8 +11,8 @@ export const metadata = {
     // title : "Atlas News | best & hot news",
     metadataBase: new URL("https://www.atlasdoor.com"),
     title : {
-      default:"Atlas Door | 0921-375-8621 | اطلس دٌر  | 2121295-021",
-      template:'%s - اطلس در | 2121295-021'
+      default:"Atlas Door | 0912-375-8621 | اطلس دٌر  | 55589837-021",
+      template:'%s - 0912-3758621| اطلس در | 55589837-021'
     },
     description:"نمایندگی شیشه سکوریت و فروش محصولات کرکره برقی و درب اتوماتیک ونصب انواع پارتیشن و جام بالکن ها",
     keywords:'شیشه',
