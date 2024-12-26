@@ -11,7 +11,7 @@ const Offcanvas = ({children,title,header,headerStyle,btnStyle,position,size,ope
   useEffect(() => {
     document.body.style.overflow = isOpen ? 'hidden' : 'auto';
     if(navbarSetIsOpen)navbarSetIsOpen(isOpen)
-  }, [isOpen]);
+  }, [isOpen,navbarSetIsOpen]);
 
 useEffect(()=>{
  setIsOpen(false)

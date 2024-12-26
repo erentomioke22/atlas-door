@@ -73,7 +73,7 @@ const List = () => {
       }
     }
     setArrOfCurrentPage(tempNumberOfPages);
-  }, [currentPage, count]);
+  }, [currentPage, count,pages]);
 
   return (
     <>
