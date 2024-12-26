@@ -1,0 +1,249 @@
+
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id                    String         @id @default(cuid())
+  name                  String         @unique
+  email                 String         @unique
+  emailVerified         DateTime?
+  image                 String?
+  accounts              Account[]
+  sessions              Session[]
+  posts                 Post[]
+  comments              Comment[]
+  replies               Reply[]
+  Archives              Archive[]
+  password              String?
+  role                  String?         @default("user")
+  displayName           String?
+  receivedNotifications Notification[] @relation("Recipient")
+  // issuedNotifications   Notification[] @relation("Issuer")
+  status                String        @default("active")
+  createdAt DateTime @default(now())
+
+  @@map("users")
+}
+
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  email             String?
+  userName          String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+ 
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+ 
+  @@id([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+ 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("sessions")
+}
+
+model VerificationToken {
+  id         String @id @default(cuid()) @map("_id") 
+  email      String
+  token      String
+  expires    DateTime
+ 
+  @@unique([email,token])
+  @@map("verificationtokens")
+}
+
+model Tag{
+  id      String @id @default(cuid())
+  name    String
+  info    String?
+  posts   Post[]
+  
+  createdAt DateTime @default(now())
+
+  @@map("tags")
+}
+
+model Archive{
+  id      String @id @default(cuid())
+  url     String
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId  String
+
+  createdAt     DateTime @default(now())
+  expiresAt     DateTime? 
+}
+model Post {
+  id                  String         @id @default(cuid())
+  title               String
+  desc               String
+  link                String
+  content             String
+  tags                Tag[]
+  images              String[]
+  comments            Comment[]
+  files               String[]
+  tocs                 Toc[]
+  contentImages       String[]
+  save                Boolean       @default(false)
+  discussions         Boolean       @default(false) 
+  pinned              Boolean       @default(false)
+  // archived            Boolean       @default(false)
+  isHot               Boolean       @default(false)
+  published           Boolean       @default(false)
+  linkedNotifications Notification[]
+  faqs                 Faq[]
+  user                User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId              String
+
+  createdAt     DateTime @default(now())
+  expiresAt     DateTime?      
+  updatedAt     DateTime      @updatedAt
+  @@map("posts")
+}
+
+model Faq {
+ id        String @id @default(cuid())
+ question  String
+ answer    String
+ post      Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
+ postId    String
+}
+model Toc {
+ id                String @id @default(cuid())
+ link              String
+ itemIndex         Int
+ level             Int
+ originalLevel     Int
+ textContent       String
+ post              Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
+ postId            String
+}
+
+model Advertise {
+  id                  String         @id @default(cuid())
+  title               String
+  link                String
+  content             String
+  tags                String          @default("Ad")
+  images              String[]
+  isHot               Boolean       @default(false)
+  published           Boolean       @default(false)
+
+  createdAt     DateTime @default(now())
+  expiresAt     DateTime?      
+  updatedAt     DateTime      @updatedAt
+  @@map("advertises")
+}
+
+model Banner {
+  id                  String         @id @default(cuid())
+  title               String
+  link                String
+  content             String
+  tags                String          @default("Ad")
+  images              String[]
+  isHot               Boolean       @default(false)
+  published           Boolean       @default(false)
+
+  createdAt     DateTime @default(now())
+  expiresAt     DateTime?      
+  updatedAt     DateTime      @updatedAt
+  @@map("banners")
+}
+
+model Comment {
+  id      String @id @default(cuid())
+  content String
+  email   String
+  name    String
+  image   String?
+  post    Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId  String
+  user    User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId  String?
+  replies Reply[]  
+
+  createdAt DateTime @default(now())
+
+  @@map("comments")
+}
+
+model Reply {
+  id         String    @id @default(cuid())
+  content    String
+  email   String
+  name    String
+  image   String?
+  comment    Comment   @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  commentId  String
+  user    User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId  String?
+
+  createdAt  DateTime      @default(now())
+}
+
+model Notification {
+  id          String           @id @default(cuid())
+  recipientId String           @default("cm3ylcs6e0001sax09jd68m16")
+  recipient   User             @relation("Recipient", fields: [recipientId], references: [id], onDelete: Cascade) 
+  name        String
+  email       String
+  postId      String?
+  post        Post?            @relation(fields: [postId], references: [id], onDelete: Cascade)
+  type        NotificationType?
+  read        Boolean          @default(false)
+
+  createdAt DateTime @default(now())
+//  @@unique([recipientId])
+  @@map("notifications")
+}
+
+model Report {
+  id          String           @id @default(cuid())
+  reason      String
+  message     String           
+  url         String
+  type        ReportType
+
+  createdAt DateTime @default(now())
+
+  @@map("reports")
+}
+
+enum NotificationType {
+  COMMENT
+  POST
+}
+
+enum ReportType {
+  USER
+  REPLY
+  COMMENT
+  POST
+}

@@ -1,0 +1,41 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,800;1,800&display=swap');
+@import url('https://fonts.cdnfonts.com/css/blanka');
+@import './tiptap.css';
+@import './editor.css';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@layer utilities{
+  .animation-delay-2000{
+    animation-delay: 2s;
+  }
+  .animation-delay-4000{
+    animation-delay: 4s;
+  }
+  .animation-delay-6000{
+    animation-delay: 6s;
+  }
+} 
+
+.offcanvas::-webkit-scrollbar{
+  display: none;
+}
+
+::-webkit-scrollbar {
+  width: 7.5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background:none;
+}
+
+::-webkit-scrollbar-thumb {
+  background:#d2d4d7;
+  border-radius: 2px;
+  opacity: 70%;
+}
+
+
