@@ -29,8 +29,8 @@ const Reply = ({content,user,createdAt,userId,id,writerId,post,likes,_count,name
               className="rounded-lg "
               src={
                 image
-                  ? image
-                  : "/images/logo/user-avatar-people-icon-solid-style-icon-design-element-icon-template-background-free-vector.jpg"
+                  ? `${process.env.NEXT_PUBLIC_BASE_URL}${image}`
+                  : `/images/logo/user-avatar-people-icon-solid-style-icon-design-element-icon-template-background-free-vector.jpg`
               }
               alt="avatar"
             />

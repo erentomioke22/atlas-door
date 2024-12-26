@@ -1,9 +1,9 @@
 "use client";
 
-import axiosInstance from "@lib/axios";
 import PostCard from "@components/posts/postCard";
 import LoadingPage from "@components/ui/loading/loadingPage";
 import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 
 
 function Conneccted({postTitle,postId}) {
@@ -15,10 +15,10 @@ function Conneccted({postTitle,postId}) {
     status,
   } = useQuery({
     queryKey: ["connected-Post",postTitle],
-    queryFn: async ({ pageParam = null }) => {
-      const response = await axiosInstance.get(`/posts/connected?postTitle=${postTitle}&postId=${postId}`, {
-        params: pageParam ? { cursor: pageParam } : {},
-      });
+    queryFn: async () => {
+      const response = await axios.get(
+        `/api/posts/connected?postTitle=${postTitle}&postId=${postId}`
+      );
       return response.data;
     },
   });
@@ -26,7 +26,7 @@ function Conneccted({postTitle,postId}) {
   // const posts = data?.pages.flatMap((page) => page.posts) || [];
   // console.log("posts", data);
 
-// console.log(posts)
+// console.log(postTitle,postId,posts)
 
 
   return (
@@ -34,7 +34,7 @@ function Conneccted({postTitle,postId}) {
 
       <div>
         <div className="text-center space-y-3">
-          <p className="text-4xl md:text-[60px] leading-normal ">پست های مرتبط با درب اتوماتیک</p>
+          <p className="text-4xl md:text-[60px] leading-normal ">مقاله  های مرتبط </p>
           <p className=" text-md text-lfont">با دیدن مطالب ما میتوانید با خدمات و محصولات ما آشنا شوید و نحوه کارکرد و نوع استفاده از اونهارو یاد بگیرید</p>
         </div>
      </div>
@@ -46,7 +46,7 @@ function Conneccted({postTitle,postId}) {
           </p>
       }
 
-      {status === "success" && posts.length <= 0  && 
+      {status === "success" && posts?.length <= 0  && 
         <p className="text-center text-lfont underline">
            هنوز پستی در اینجا قرار داده نشده
        </p>

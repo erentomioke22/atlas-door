@@ -1,6 +1,6 @@
 import nodemailer from 'nodemailer';
 
-const domain = 'http://localhost:3000'
+const domain = process.env.NEXT_PUBLIC_BASE_URL
 
 export const sendVerificationEmail = async(email,token)=> {
     const confirmationLink = `${domain}/verify-email?token=${token}`

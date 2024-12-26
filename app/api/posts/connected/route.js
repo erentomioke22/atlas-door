@@ -7,7 +7,6 @@ export async function GET(req) {
     const session = await auth();
     const postTitle = req.nextUrl.searchParams.get("postTitle") || "";
     const postId = req.nextUrl.searchParams.get("postId") || "";
-
     // Fetch the current post to get its tags
     const currentPost = await prisma.post.findUnique({
       where: { id: postId },
@@ -64,6 +63,8 @@ export async function GET(req) {
     // console.log(postTitle)
     // console.log(postId)
     // console.log(posts)
+    // console.log(currentPost,postId,postTitle,posts)
+
         return Response.json(posts);
     // return new Response(JSON.stringify(posts));
   } catch (error) {

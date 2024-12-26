@@ -134,7 +134,7 @@ const projects=[
              className='object-cover  rounded-xl w-full '
              size={'h-[200px] md:h-[250px]'}
              alt={"thumnail Image"} 
-             src={project.image} 
+             src={`${process.env.NEXT_PUBLIC_BASE_URL}${project.image}`} 
              />
             <div className="absolute  inset-x-0 bottom-0 rounded-b-xl mx-auto py-3 w-full bg-gradient-to-t from-black/75 from-50% to-transparent  flex  justify-between px-3 items-center">
             <h1 className="text-2xl text-white">{project.name}</h1>
@@ -235,7 +235,7 @@ const projects=[
    <div className="space-y-10 my-20 px-5 md:px-20 ">
      <div>
         <div className="text-center space-y-3">
-          <p className="text-4xl md:text-[60px] leading-normal ">پست های آموزشی ما</p>
+          <p className="text-4xl md:text-[60px] leading-normal ">مقاله های های آموزشی ما</p>
           <p className=" text-md text-lfont">با دیدن مطالب ما میتوانید با خدمات و محصولات ما آشنا شوید و نحوه کارکرد و نوع استفاده از اونهارو یاد بگیرید</p>
         </div>
      </div>
