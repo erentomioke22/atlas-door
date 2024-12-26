@@ -62,6 +62,7 @@ import formidable from 'formidable';
 import sharp from 'sharp';
 import { auth } from '@auth';
 
+export const runtime = 'nodejs';
 export const config = {
   api: {
     bodyParser: false,
