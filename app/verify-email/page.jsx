@@ -7,7 +7,7 @@ import Link from "next/link";
 import axios from "axios";
 import {useMutation} from "@tanstack/react-query";
 
-const verifyPage = () => {
+const VerifyPage = () => {
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
 //  console.log(token)
@@ -74,4 +74,4 @@ useEffect(() => {
   );
 };
 
-export default verifyPage;
+export default VerifyPage;
