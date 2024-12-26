@@ -182,9 +182,8 @@ const projects=[
             </div>
 
 
-          <div className="relative max-lg:row-start-1">
             <div className="relative flex h-full flex-col overflow-hidden rounded-[calc(theme(borderRadius.lg)+1px)] max-lg:rounded-t-[calc(2rem+1px)]">
-              <div className="px-8  pt-8 sm:px-10 sm:pt-10">
+              <div className="px-8  py-5  justify-between flex flex-col h-60">
                 <p className="bg-gradient-to-tr text-clip from-blue to-darkgreen text-transparent bg-clip-text mt-2 text-lg font-medium tracking-tight text-gray-950 ">
                    عملکرد
                 </p>
@@ -192,23 +191,13 @@ const projects=[
                   عملکرد بالا در طول مدت زمان بلند را با محصولات ما تجربه کنید
                 </p>
               </div>
-              <div className="flex flex-1 items-center justify-center px-8 max-lg:pb-12 max-lg:pt-10 sm:px-10 lg:pb-2">
-                <Image
-                  width={50}
-                  height={50}
-                  className="w-full max-lg:max-w-xs"
-                  src="https://tailwindui.com/plus/img/component-images/bento-03-performance.png"
-                  alt=""
-                />
-              </div>
             </div>
-          </div>
 
 
 
-          <div className="relative ">
-            <div className="max-lg:row-start-3 bg-purple text-white lg:col-start-2 lg:row-start-2 relative flex h-full flex-col overflow-hidden rounded-[calc(theme(borderRadius.lg)+1px)]">
-              <div className="px-8 pt-8 sm:px-10 sm:pt-10 ">
+
+            <div className=" bg-purple text-white relative flex h-full flex-col  rounded-[calc(theme(borderRadius.lg)+1px)]">
+              <div className="px-8 py-5  flex flex-col  justify-between h-60">
                 <p className=" mt-2 text-lg font-medium tracking-tight text-gray-950 ">
                   امنیت 
                 </p>
@@ -216,17 +205,8 @@ const projects=[
                   امنیت را در خرید محصولات و خدمات ما تجربه کنید
                 </p>
               </div>
-              <div className="flex flex-1 items-center [container-type:inline-size] max-lg:py-6 lg:pb-2">
-                <Image
-                  width={50}
-                  height={50}
-                  className="h-[min(152px,40cqw)] object-cover"
-                  src="https://tailwindui.com/plus/img/component-images/bento-03-security.png"
-                  alt=""
-                />
-              </div>
             </div>
-          </div>
+
 
             <div className="relative flex h-full flex-col  lg:row-span-2">
               <div className="px-8  py-5  rounded-2xl text-white bg-black dark:bg-white dark:text-black h-60 flex flex-col justify-between">

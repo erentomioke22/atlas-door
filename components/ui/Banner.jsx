@@ -9,10 +9,10 @@ const Banner = () => {
           <div className='text-[12px] md:text-sm  my-auto '>
             <p >برای ثبت سفارش یا مشاوره رایگان با ما تماس بگیرید</p>
           </div>
-          <div className='flex gap-2 md:gap-3  max-md:mt-1 flex-wrap text-[12px] md:text-sm justify-end'>
-            <a href='tel:09123758621' className=' underline decoration-2 ' onClick={()=>{toast.success('شماره کپی شد');navigator.clipboard.writeText('09123758621')}}>0912 375 8621 </a>
-            <a href='tel:02155589837' className=' underline decoration-2 ' onClick={()=>{toast.success('شماره کپی شد');navigator.clipboard.writeText('02155589837')}}>021 5558 9837 </a>
-            <a href='tel:09334178679' className=' underline decoration-2 ' onClick={()=>{toast.success('شماره کپی شد');navigator.clipboard.writeText('02155589837')}}>0933 417 8679 </a>
+          <div className='flex gap-2 md:gap-5  max-md:mt-1 flex-wrap text-[12px] md:text-sm justify-end'>
+            <a href='tel:09123758621' className=' underline decoration-2 ' onClick={()=>{toast.success('شماره کپی شد');navigator.clipboard.writeText('09123758621')}}>0912-375-8621</a>
+            <a href='tel:02155589837' className=' underline decoration-2 ' onClick={()=>{toast.success('شماره کپی شد');navigator.clipboard.writeText('02155589837')}}>021-55589837</a>
+            <a href='tel:09334178679' className=' underline decoration-2 ' onClick={()=>{toast.success('شماره کپی شد');navigator.clipboard.writeText('02155589837')}}>0933-417-8679</a>
           </div>
 
          </div>
