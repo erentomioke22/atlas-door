@@ -29,6 +29,7 @@ const nextConfig = {
         { protocol: 'https', hostname: 'api2.zoomg.ir', port: '', pathname: '/media/**', },
         { protocol: 'https', hostname: 'cdn.atlasdoor.ir', port: '', pathname: '/**', }, 
         { protocol: 'https', hostname: 'utfs.io', port: '', pathname: '/**', }, 
+        { protocol: 'https', hostname: 'tailwindui.com', port: '', pathname: '/**', }, 
       ],
     },
   };

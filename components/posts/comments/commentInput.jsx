@@ -36,7 +36,8 @@ const CommentInput = ({post,title,header,content,commentId,reply,edit,replyId,pl
 
       useEffect(()=>{
         setValue("content",content) 
-      },[content])
+      },[content,setValue])
+      
       useEffect(()=>{
         if(session){
           setValue("name",session?.user.displayName) 

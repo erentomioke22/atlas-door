@@ -95,7 +95,9 @@ export const NewItemMenu = ({ editor,getPos,setFiles,files,setValue }) => {
               return updatedFiles; });
         }
       },
-      [getPos, editor,handleImageUpload, setFiles],
+      [
+        // getPos, editor,
+        handleImageUpload, setFiles],
     )
     const onUploadUrl = useCallback(
       (imageUrl) => {
@@ -104,7 +106,9 @@ export const NewItemMenu = ({ editor,getPos,setFiles,files,setValue }) => {
             editor.chain().setImage({ src: imageUrl }).focus().run()
         }
       },
-      [getPos, editor],
+      [
+        // getPos, editor
+      ],
     )
 
     
