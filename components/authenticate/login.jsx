@@ -62,10 +62,10 @@ const Login = ({ show, setShow }) => {
 
   return (
     <>
-      {show === "recovery" ? (
+      {/* {show === "recovery" ? (
         <RecoveryPass setShow={setShow} />
       ) : (
-        <>
+        <> */}
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className=" space-y-4  mx-auto">
               {formValues.map((value) => {
@@ -112,8 +112,8 @@ const Login = ({ show, setShow }) => {
             </button>
 
           </form>
-        </>
-      )}
+        {/* </>
+      )} */}
     </>
   );
 };

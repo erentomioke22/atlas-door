@@ -1,6 +1,6 @@
 import React, { forwardRef } from 'react'
 
-const TextArea = forwardRef(({ title,value,error,name,type,className,onChange,onBlur,label,watch},ref) => (
+export const TextArea = forwardRef(({ title,value,error,name,type,className,onChange,onBlur,label,watch},ref) => (
 
         <>
            <div className="relative">
@@ -24,5 +24,6 @@ const TextArea = forwardRef(({ title,value,error,name,type,className,onChange,on
            </div>
         </>
       ))
+Text.displayName = 'TextArea'; 
 
-export default TextArea
+export default TextArea;

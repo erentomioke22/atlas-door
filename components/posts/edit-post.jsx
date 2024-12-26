@@ -394,6 +394,7 @@ const EditPost = ({ params }) => {
                       title={"WRITE YOUR POST TITLE ..."}
                       name={"title"}
                       type={"text"}
+                      ref={register}
                       label={false}
                       className={
                         "resize-none  bg-lcard dark:bg-dcard rounded-lg placeholder:text-[#000000a4] dark:placeholder:text-lfont text-lg  p-2 focus:ring-2 focus:ring-black dark:focus:ring-white outline-none duration-200"
@@ -408,6 +409,7 @@ const EditPost = ({ params }) => {
                         title={"Write Your Post Description ..."}
                       name={"desc"}
                       type={"text"}
+                      ref={register}
                       label={false}
                       className={
                         "resize-none  bg-lcard dark:bg-dcard rounded-lg placeholder:text-[#000000a4] dark:placeholder:text-lfont text-sm  p-2 focus:ring-2 focus:ring-black dark:focus:ring-white outline-none duration-200"

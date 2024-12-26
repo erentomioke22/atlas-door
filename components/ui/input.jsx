@@ -1,6 +1,6 @@
 import React, { forwardRef } from 'react'
 
-const Input = forwardRef(({ title,value,error,name,type,className,onChange,onBlur,onInput,label},ref) => (
+export const Input = forwardRef(({ title,value,error,name,type,className,onChange,onBlur,onInput,label},ref) => (
     <>
        <div className="relative">
        {label && <label>{name}</label>}
@@ -35,5 +35,5 @@ const Input = forwardRef(({ title,value,error,name,type,className,onChange,onBlu
     </>
   ))
 
-
-export default Input;
+  Input.displayName = 'Input'; 
+  export default Input;

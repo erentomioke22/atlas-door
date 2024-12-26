@@ -3,7 +3,7 @@ import { FaTelegram } from "react-icons/fa";
 import { FiInstagram } from "react-icons/fi";
 import { FaWhatsapp } from "react-icons/fa6";
 import ImageCom from './ui/Image';
-
+import Image from 'next/image';
 
 const AboutUs = () => {
   return (
@@ -31,10 +31,10 @@ const AboutUs = () => {
 
        <div className='flex flex-wrap justify-center gap-5 md:gap-7 mt-3 text-2xl md:text-4xl'>
         <a className='' href="https://eitaa.com/Atlasdoor96" target="_blank" rel="noopener noreferrer">
-          <img src="/icon/eitaa.svg" className="size-6 md:size-9" alt="" />
+          <Image src="/icon/eitaa.svg" className="size-6 md:size-9" width={36} height={36} alt="Eitaa"/>
          </a>
          <a className='' href="https://rubika.ir/Atlasdoor96" target="_blank" rel="noopener noreferrer">
-          <img src="/icon/rubika.svg" className="size-6 md:size-9" alt="" />
+          <Image src="/icon/rubika.svg" className="size-6 md:size-9" width={36} height={36} alt="Rubika Icon" />
          </a>
          <a className='text-blue duration-500' href="https://t.me/Atlasdoor96" target="_blank" rel="noopener noreferrer"><FaTelegram/></a>
          <a className='text-[violet] duration-500' href="https://www.instagram.com/atlasshishe96" target="_blank" rel="noopener noreferrer"><FiInstagram/></a>
