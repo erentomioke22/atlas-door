@@ -1,0 +1,59 @@
+.ProseMirror , .content {
+    @apply caret-black dark:caret-white outline-0  z-0  ;
+  
+    .selection {
+      @apply inline;
+    }
+  
+    .selection,
+    *::selection {
+      @apply bg-black/10 dark:bg-white/20 inline;
+    }
+  
+    & > .react-renderer {
+      @apply my-12 first:mt-0 last:mb-0;
+    }
+  
+    &.resize-cursor {
+      @apply cursor-col-resize;
+    }
+  
+    .ProseMirror-gapcursor {
+      @apply relative w-full max-w-2xl mx-auto;
+  
+      &:after {
+        @apply border-t-black/40 dark:border-t-white/40 w-full -top-[1.5em] max-w-2xl mx-auto left-0 right-0;
+      }
+    }
+  }
+  
+  [data-theme='slash-command'] {
+    width: 1000vw;
+  }
+  
+  .table-of-contents {
+    display: flex;
+    flex-direction: column;
+    font-size: 0.875rem;
+    gap: 0.25rem;
+    overflow: auto;
+    text-decoration: none;
+  
+    > div {
+      border-radius: 0.25rem;
+      padding-left: calc(0.875rem * (var(--level) - 1));
+      transition: all 0.2s cubic-bezier(0.65,0.05,0.36,1);
+  
+      &:hover {
+        background-color: var(--gray-2);
+      }
+    }
+  }
+
+@import './partials/blocks.css';
+@import './partials/code.css';
+@import './partials/collab.css';
+@import './partials/lists.css';
+@import './partials/placeholder.css';
+@import './partials/table.css';
+@import './partials/typography.css';
