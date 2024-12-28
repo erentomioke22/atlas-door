@@ -13,7 +13,9 @@ const Footer = () => {
   <div className='flex max-md:flex-col md:justify-between  px-5 max-md:space-y-5 md:space-x-5 my-10 md:px-36'>
     <div className=''>
     <Link href="/" className="font-blanka hover:text-purple duration-500 text-xl">
+    <h1>
 		  ATLAS DOOR
+    </h1>
     </Link>
       <div  className=" text-[10px] md:text-[10px]  mt-3 space-x-3 flex">
         <p>تمامی حقوق شما در سایت ما محفوظ است</p>
@@ -37,7 +39,7 @@ const Footer = () => {
        </div>
     </div>
      <div className=' text-sm md:my-auto  max-md:py-2 '>
-          <p>آدرس : تهران اتوبان آزادگان آهن مکان فاز ۳ مرکزی پلاک ۶۸۲</p>
+          <h2>آدرس : تهران اتوبان آزادگان آهن مکان فاز ۳ مرکزی پلاک ۶۸۲</h2>
      </div>
     
  

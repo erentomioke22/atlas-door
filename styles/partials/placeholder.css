@@ -17,7 +17,7 @@
 
   /* Default Placeholder */
   & > .is-editor-empty::before {
-    content: '... برای نوشتن اینجا کلیک کنید';
+    content: 'برای نوشتن اینجا کلیک کنید ...';
   }
 
   /* Blockquote Placeholder */
