@@ -89,7 +89,7 @@ useEffect(()=>{
              )
              )
          : posts?.map((post) => (
-             <Link href={`/${post?.user?.name}/${post?.link}`} key={post?.id}>
+             <Link href={`${process.env.NEXT_PUBLIC_BASE_URL}/posts/${post?.link}`} key={post?.id}>
                 <div className="p-2 w-full mx-auto ">
                           <div className=' flex gap-2'>
                             <div className="relative w-[40px] h-[40px]">

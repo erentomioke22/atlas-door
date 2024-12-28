@@ -230,11 +230,11 @@ const CommentInput = ({post,title,header,content,commentId,reply,edit,replyId,pl
                      ? editReplyMutation.isPending ? <LoadingSpinner color={"text-black dark:text-white dark:fill-black fill-white mx-auto"}/>  : "EDIT REPLY" 
                      : 
                      commentId && reply && !edit 
-                     ? replyMutation.isPending ? <LoadingSpinner color={"text-black dark:text-white dark:fill-black fill-white mx-auto"}/>  : "REPLY" 
+                     ? replyMutation.isPending ? <LoadingSpinner color={"text-black dark:text-white dark:fill-black fill-white mx-auto"}/>  : "ثبت بازخورد" 
                      :
                      commentId && !reply 
                      ? editMutation.isPending ? <LoadingSpinner color={"text-black dark:text-white dark:fill-black fill-white mx-auto"}/>  : "EDIT"  
-                     : addMutation.isPending ?<LoadingSpinner color={"text-black dark:text-white dark:fill-black fill-white mx-auto"}/>  : "SUBMIT"            
+                     : addMutation.isPending ?<LoadingSpinner color={"text-black dark:text-white dark:fill-black fill-white mx-auto"}/>  : "ثبت بازخورد"            
                      }
                     </button>
                 </div>

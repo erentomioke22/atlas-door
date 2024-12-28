@@ -194,7 +194,7 @@ const CommentTextEditor = forwardRef(({content,onChange,title},ref) => {
     ],
     editorProps:{
         attributes:{
-             class: "  w-full p-2 text-sm  focus:outline-none focus:ring-0 rounded-lg duration-200  ",
+             class: "  w-full p-2 text-sm outline-0   focus:outline-none focus:ring-2 ring-black dark:ring-white rounded-lg duration-200  bg-lcard dark:bg-dcard",
             spellcheck: 'false',
         },
     },
@@ -214,9 +214,14 @@ const CommentTextEditor = forwardRef(({content,onChange,title},ref) => {
   }, [content, editor])
 
   return (
-        <div className=' bg-white dark:bg-black border  rounded-lg border-lbtn dark:border-dbtn pl-2 break-all hyphens-auto text-wrap'>
+    <EditorContent style={{whiteSpace:"pre-line"}} editor={editor} ref={ref} />
+
+  )
+})
+CommentTextEditor.displayName = 'CommentTextEditor'; 
+export default CommentTextEditor;
+        // <div className=' bg-white dark:bg-black border  rounded-lg border-lbtn dark:border-dbtn pl-2 break-all hyphens-auto text-wrap'>
         {/* <CommentToolbar editor={editor} content={content}/> */}
-           <EditorContent style={{whiteSpace:"pre-line"}} editor={editor} ref={ref} />
          {/* <Dropdown title={<BsEmojiSmile/>} btnStyle={'text-lfont text-lg mt-3 '} className={'left-0 w-48 mt-1  bg-white border border-lbtn dark:border-dbtn px-2 rounded-lg'}>
          <div className="grid grid-cols-8 gap-2 text-sm">
            {emojies.map((emoji)=>(
@@ -224,8 +229,4 @@ const CommentTextEditor = forwardRef(({content,onChange,title},ref) => {
            ))}
           </div>
          </Dropdown> */}
-       </div>
-  )
-})
-CommentTextEditor.displayName = 'CommentTextEditor'; 
-export default CommentTextEditor;
+       {/* </div> */}

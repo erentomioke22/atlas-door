@@ -47,22 +47,10 @@ const Comment = ({post}) => {
 
 
   return (
-    <Offcanvas       
-    title={'ارسال بازخورد'}
-    btnStyle={"text-sm border-2  bg-transparent text-black rounded-full dark:text-white py-1 px-2 text-nowrap"}
-    position={"top-0 right-0"} size={"h-full w-full sm:w-2/3 md:w-1/2 lg:w-1/3 xl:w-1/4"} openTransition={"translate-x-0"} closeTransition={"translate-x-full"} onClose={close}>
+
     
-    <div className="flex justify-between">
-      <button
-        className={"bg-black dark:bg-white text-lcard dark:border-white dark:text-black rounded-full border-2 border-black px-3 py-1 text-sm "}
-        onClick={() => setClose(!close)}
-        type="button"
-              >
-            <IoClose/>
-      </button>
-      <p>بازخورد</p>
-    </div>
-    
+<>
+
 
 
       <CommentInput post={post}   btnStyle={"w-full"}  
@@ -88,13 +76,13 @@ const Comment = ({post}) => {
        />
       
    {status === "error" &&
-      <p className="text-center text-destructive">
+      <p className="text-center text-destructive my-5">
         مشکلی در برقراری ارباط وجود دارد
       </p>
   }
     {status === "success" && !comments.length &&
-      <p className="text-center  text-sm text-lfont">
-        هنوز نظری اینجا قرار نگرفته است 
+      <p className="text-center  text-sm text-lfont my-5">
+        هنوز بازخوردی اینجا اضافه نشده 
       </p>
   }
 
@@ -244,10 +232,26 @@ const Comment = ({post}) => {
           </div>
             )}
       </div>
-  
+  </>
       
-    </Offcanvas>
+ 
   );
 };
 
 export default Comment;
+    // <Offcanvas       
+    // title={'ارسال بازخورد'}
+    // btnStyle={"text-sm border-2  bg-transparent text-black rounded-full dark:text-white py-1 px-2 text-nowrap"}
+    // position={"top-0 right-0"} size={"h-full w-full sm:w-2/3 md:w-1/2 lg:w-1/3 xl:w-1/4"} openTransition={"translate-x-0"} closeTransition={"translate-x-full"} onClose={close}>
+    
+    {/* <div className="flex justify-between">
+      <button
+        className={"bg-black dark:bg-white text-lcard dark:border-white dark:text-black rounded-full border-2 border-black px-3 py-1 text-sm "}
+        onClick={() => setClose(!close)}
+        type="button"
+              >
+            <IoClose/>
+      </button>
+      <p>بازخورد</p>
+    </div> */}
+       // </Offcanvas>

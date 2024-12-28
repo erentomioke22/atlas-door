@@ -60,6 +60,12 @@ const {data: post,status,}=useQuery({
     );
   }
 
+  const scrollToComment = () => { 
+    const commentElement = document.querySelector('.comment'); 
+    if (commentElement) { 
+       const topPos = commentElement.getBoundingClientRect().top + window.scrollY - 120; 
+       window.scrollTo({ top: topPos, behavior: 'smooth' }); 
+      } };
 // console.log(post?.content)
 // console.log(post)
 // console.log(status)
@@ -122,9 +128,7 @@ const formattedDate = createdAt.isValid() ? createdAt.fromNow(): 'تاریخ ن�
           </div>
 
           <div className='flex text-md  md:text-xl gap-2 my-auto  flex-wrap'>
-          <div>
-          <Comment post={post}  />
-          </div>
+
 
           <div>
             <button 
@@ -132,6 +136,14 @@ const formattedDate = createdAt.isValid() ? createdAt.fromNow(): 'تاریخ ن�
              type='button'
              className="text-sm border-2  bg-transparent text-black rounded-full dark:text-white py-1 px-2 text-nowrap ">
               اشتراک گذاری
+            </button>
+          </div>
+          <div>
+            <button 
+             onClick={scrollToComment} 
+             type='button'
+             className="text-sm border-2  bg-transparent text-black rounded-full dark:text-white py-1 px-2 text-nowrap ">
+               ارسال بازخورد
             </button>
           </div>
           {session && session?.user.role === 'admin' && 
@@ -192,14 +204,19 @@ const formattedDate = createdAt.isValid() ? createdAt.fromNow(): 'تاریخ ن�
                       <p className="text-4xl md:text-[60px] leading-normal">سوالات متداول</p>
                       <p className="text-sm md:text-md  text-lfont">از سوالات شما همیشه استقبال میشود;سوالات شما جرقه گفتگوهایی را میدهند که منجر به نوآوری میشود</p>
                     </div>
-                  <div className="flex justify-center mx-auto my-5">
+                  {/* <div className="flex justify-center mx-auto my-5">
                       <Comment post={post} />
-                    </div>
+                    </div> */}
                   </div>
 
           </div>
           }
           
+          <div className="comment w-full sm:w-4/5 lg:w-1/2 mx-auto px-3 sm:px-5 my-20 ">
+          <h1 className="text-4xl md:text-[60px] text-center leading-normal my-5">ارسال بازخورد</h1>
+          <Comment post={post}  />
+          </div>
+
           <Conneccted postTitle={post?.title} postId={post?.id}/>
 
            <AboutUs/>
