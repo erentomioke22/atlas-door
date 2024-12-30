@@ -53,10 +53,9 @@ export async function generateMetadata({ params }) {
       alt: post?.title,
     }
   ))
-  // console.log('hchgjg jchcj',post)
-  
+
     return {
-      metadataBase: new URL(`https://www.atlasdoor.ir/posts/${post.title}`),
+      metadataBase: new URL(`${process.env.NEXT_PUBLIC_BASE_URL}/${post.title}`),
       title: `${post?.title} - ${post?.desc?.slice(0, 50)}...`,
       description: `${post?.desc}`,
       keywords: `${post?.tags?.map((tag) => `${tag.name}`)}`,
@@ -69,12 +68,12 @@ export async function generateMetadata({ params }) {
         title: `${post?.title} - ${post?.desc?.slice(0, 50)}...`,
         description: `${post?.desc}`,
         type: 'website',
-        locale: 'en_US',
-        url: `https://www.atlasdoor.ir/posts/${post?.title}`,
+        locale: 'fa_IR',
+        url: `${process.env.NEXT_PUBLIC_BASE_URL}/posts/${post?.title}`,
         siteName: 'Atlas Door',
         images: [
           {
-            url: `https://www.atlasdoor.ir/${post?.images[0]}`,
+            url: `${process.env.NEXT_PUBLIC_BASE_URL}/${post?.images[0]}`,
             width: 800,
             height: 600,
             alt: post?.title,

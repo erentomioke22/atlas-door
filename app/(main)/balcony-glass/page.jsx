@@ -4,25 +4,26 @@ import { FaCaretRight } from "react-icons/fa6";
 import PostPage from "@components/posts/postPage";
 import ImageCom from "@components/ui/Image";
 
-
-
 export const metadata = {
-  // title : "Atlas News | best & hot news",
-  metadataBase: new URL("https://www.atlasdoor.com/balcony-glass"),
-  title :"شیشه بالکنی",
-  description:"نمایندگی شیشه سکوریت و فروش محصولات کرکره برقی و درب اتوماتیک ونصب انواع پارتیشن و جام بالکن ها",
+  metadataBase: new URL(`${process.env.NEXT_PUBLIC_BASE_URL}/balcony-glass`),
+  title :"جام بالکن - ارائه‌دهنده انواع شیشه‌های بالکنی برای منازل و اماکن تجاری",
+  description:"فروش و نصب شیشه‌های بالکنی با کیفیت بالا و امنیت بیشتر. ارائه بهترین خدمات نصب و تعمیر شیشه‌های بالکنی. مشاوره و بازدید رایگان.",
+  keywords:"جام بالکن, شیشه‌های بالکنی, فروش شیشه‌های بالکنی, نصب شیشه‌های بالکنی, تعمیر شیشه‌های بالکنی, شیشه‌های مقاوم, شیشه‌های ایمنی, شیشه برای بالکن, شیشه‌های دکوراتیو, قیمت شیشه‌های بالکنی, خدمات پس از فروش شیشه‌های بالکنی, مشاوره شیشه‌های بالکنی, خرید شیشه‌های بالکنی",
   twitter:{
    card:'summary_large_image'
   },
   openGraph:{
-    title :"شیشه بالکنی",
-    description:"نمایندگی شیشه سکوریت و فروش محصولات کرکره برقی و درب اتوماتیک ونصب انواع پارتیشن و جام بالکن ها",
+    title :"جام بالکن - ارائه‌دهنده انواع شیشه‌های بالکنی برای منازل و اماکن تجاری",
+    description:"فروش و نصب شیشه‌های بالکنی با کیفیت بالا و امنیت بیشتر. ارائه بهترین خدمات نصب و تعمیر شیشه‌های بالکنی. مشاوره و بازدید رایگان.",
+    keywords:"جام بالکن, شیشه‌های بالکنی, فروش شیشه‌های بالکنی, نصب شیشه‌های بالکنی, تعمیر شیشه‌های بالکنی, شیشه‌های مقاوم, شیشه‌های ایمنی, شیشه برای بالکن, شیشه‌های دکوراتیو, قیمت شیشه‌های بالکنی, خدمات پس از فروش شیشه‌های بالکنی, مشاوره شیشه‌های بالکنی, خرید شیشه‌های بالکنی",
     type:"website",
-    locale:"en_US",
-    url:"https://www.atlasdoor.ir/balcony-glass",
+    locale:"fa_IR",
+    url:`${process.env.NEXT_PUBLIC_BASE_URL}/balcony-glass`,
     siteName:"Atas door"
   }
 }
+
+
 
 export default async function Page({params}) {
 

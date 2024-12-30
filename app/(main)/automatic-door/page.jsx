@@ -4,112 +4,113 @@ import { FaCaretRight } from "react-icons/fa6";
 import PostPage from "@components/posts/postPage";
 import ImageCom from "@components/ui/Image";
 
+
 export const metadata = {
-  // title : "Atlas News | best & hot news",
-  metadataBase: new URL("https://www.atlasdoor.com/automatic-door"),
-  title :"درب اتوماتیک",
-  description:"نمایندگی شیشه سکوریت و فروش محصولات کرکره برقی و درب اتوماتیک ونصب انواع پارتیشن و جام بالکن ها",
+  metadataBase: new URL(`${process.env.NEXT_PUBLIC_BASE_URL}/automatic-door`),
+  title :"درب‌های اتوماتیک - انواع درب‌های اتوماتیک با نصب حرفه‌ای و خدمات پس از فروش",
+  description:"فروش و نصب درب‌های اتوماتیک با کیفیت بالا و امنیت بیشتر. ارائه بهترین خدمات نصب و تعمیر درب‌های اتوماتیک. مشاوره و بازدید رایگان.",
+  keywords:"درب‌های اتوماتیک, فروش درب‌های اتوماتیک, نصب درب‌های اتوماتیک, تعمیر درب‌های اتوماتیک, درب‌های خودکار, درب‌های حفاظتی, درب‌های امنیتی, درب برای منازل, درب برای کسب‌وکارها, قیمت درب‌های اتوماتیک, خدمات پس از فروش درب‌های اتوماتیک, مشاوره درب‌های اتوماتیک, خرید درب‌های اتوماتیک",
   twitter:{
    card:'summary_large_image'
   },
   openGraph:{
-    title :"درب اتوماتیک",
-    description:"نمایندگی شیشه سکوریت و فروش محصولات کرکره برقی و درب اتوماتیک ونصب انواع پارتیشن و جام بالکن ها",
+    title :"درب‌های اتوماتیک - انواع درب‌های اتوماتیک با نصب حرفه‌ای و خدمات پس از فروش",
+    description:"فروش و نصب درب‌های اتوماتیک با کیفیت بالا و امنیت بیشتر. ارائه بهترین خدمات نصب و تعمیر درب‌های اتوماتیک. مشاوره و بازدید رایگان.",
+    keywords:"درب‌های اتوماتیک, فروش درب‌های اتوماتیک, نصب درب‌های اتوماتیک, تعمیر درب‌های اتوماتیک, درب‌های خودکار, درب‌های حفاظتی, درب‌های امنیتی, درب برای منازل, درب برای کسب‌وکارها, قیمت درب‌های اتوماتیک, خدمات پس از فروش درب‌های اتوماتیک, مشاوره درب‌های اتوماتیک, خرید درب‌های اتوماتیک",
     type:"website",
-    locale:"en_US",
-    url:"https://www.atlasdoor.ir/automatic-door",
+    locale:"fa_IR",
+    url:`${process.env.NEXT_PUBLIC_BASE_URL}/automatic-door`,
     siteName:"Atas door"
   }
 }
-
 export default async function Page({params}) {
 
 
-  const models=[
-    {
-      name:'اسلایدینگ (کشویی)',
-      url:'/automatic-door',
-      image:'/images/automatic-door/slide/thumnail.jpg'
-    },
-    {
-      name:'فولدینگ (تاشو)',
-      url:'/roller-shutter',
-      image:'/images/automatic-door/folding/thumnail.jpg'
-    },
-    {
-      name:'تلسکوپی',
-      url:'/tempered-glass',
-      image:'/images/automatic-door/telescope/thumnail.jpg'
-    },
-    {
-      name:'گردان',
-      url:'/partition-glass',
-      image:'/images/automatic-door/revolving/thumnail.jpg'
-    },
-    {
-      name:'سوینگ (بازشو)',
-      url:'/balcony-glass',
-      image:'/images/automatic-door/swing/thumnail.jpg'
-    },
-    {
-      name:'مثلثی',
-      url:'/mirror',
-      image:'/images/automatic-door/triangular/thumnail.webp'
-    },
-    {
-      name:'بیمارستانی',
-      url:'/upvc-window',
-      image:'/images/automatic-door/hospital/thumnail.jpg'
-    },
-    {
-      name:'کرو',
-      url:'/upvc-window',
-      image:'/images/automatic-door/curve/thumnail.jpg'
-    },
-    {
-      name:'بریک اوت',
-      url:'/upvc-window',
-      image:'/images/automatic-door/breakOut/thumnail.jpg'
-    },
-  ]
+  // const models=[
+  //   {
+  //     name:'اسلایدینگ (کشویی)',
+  //     url:'/automatic-door',
+  //     image:'/images/automatic-door/slide/thumnail.jpg'
+  //   },
+  //   {
+  //     name:'فولدینگ (تاشو)',
+  //     url:'/roller-shutter',
+  //     image:'/images/automatic-door/folding/thumnail.jpg'
+  //   },
+  //   {
+  //     name:'تلسکوپی',
+  //     url:'/tempered-glass',
+  //     image:'/images/automatic-door/telescope/thumnail.jpg'
+  //   },
+  //   {
+  //     name:'گردان',
+  //     url:'/partition-glass',
+  //     image:'/images/automatic-door/revolving/thumnail.jpg'
+  //   },
+  //   {
+  //     name:'سوینگ (بازشو)',
+  //     url:'/balcony-glass',
+  //     image:'/images/automatic-door/swing/thumnail.jpg'
+  //   },
+  //   {
+  //     name:'مثلثی',
+  //     url:'/mirror',
+  //     image:'/images/automatic-door/triangular/thumnail.webp'
+  //   },
+  //   {
+  //     name:'بیمارستانی',
+  //     url:'/upvc-window',
+  //     image:'/images/automatic-door/hospital/thumnail.jpg'
+  //   },
+  //   {
+  //     name:'کرو',
+  //     url:'/upvc-window',
+  //     image:'/images/automatic-door/curve/thumnail.jpg'
+  //   },
+  //   {
+  //     name:'بریک اوت',
+  //     url:'/upvc-window',
+  //     image:'/images/automatic-door/breakOut/thumnail.jpg'
+  //   },
+  // ]
 
-  const tools=[
-    {
-      name:'تسمه',
-      url:'/fvbrgb',
-      image:'/images/automatic-door/accessories/strap/1732004919019.jpg'
-    },
-    {
-      name:'هنگر',
-      url:'/bg',
-      image:'/images/automatic-door/accessories/hanger/1732004919001.jpg'
-    },
-    {
-      name:'چشمی',
-      url:'/ b',
-      image:'/images/automatic-door/accessories/sensor/1732004918980.jpg'
-    },
-    {
-      name:'موتور',
-      url:'/db',
-      image:'/images/automatic-door/accessories/motor/1732004918954.jpg'
-    },
-    {
-      name:'قفل',
-      url:'/nhjm',
-      image:'/images/automatic-door/accessories/lock/1732004918925.jpg'
-    },
-    {
-      name:'ریموت',
-      url:'/xgb',
-      image:'/images/automatic-door/accessories/remote/1732004918995.jpg'
-    },
-    {
-      name:'اپراتور',
-      url:'/zf',
-      image:'/images/automatic-door/accessories/operator/1732004918946.jpg'
-    },
-  ]
+  // const tools=[
+  //   {
+  //     name:'تسمه',
+  //     url:'/fvbrgb',
+  //     image:'/images/automatic-door/accessories/strap/1732004919019.jpg'
+  //   },
+  //   {
+  //     name:'هنگر',
+  //     url:'/bg',
+  //     image:'/images/automatic-door/accessories/hanger/1732004919001.jpg'
+  //   },
+  //   {
+  //     name:'چشمی',
+  //     url:'/ b',
+  //     image:'/images/automatic-door/accessories/sensor/1732004918980.jpg'
+  //   },
+  //   {
+  //     name:'موتور',
+  //     url:'/db',
+  //     image:'/images/automatic-door/accessories/motor/1732004918954.jpg'
+  //   },
+  //   {
+  //     name:'قفل',
+  //     url:'/nhjm',
+  //     image:'/images/automatic-door/accessories/lock/1732004918925.jpg'
+  //   },
+  //   {
+  //     name:'ریموت',
+  //     url:'/xgb',
+  //     image:'/images/automatic-door/accessories/remote/1732004918995.jpg'
+  //   },
+  //   {
+  //     name:'اپراتور',
+  //     url:'/zf',
+  //     image:'/images/automatic-door/accessories/operator/1732004918946.jpg'
+  //   },
+  // ]
 
 
 
