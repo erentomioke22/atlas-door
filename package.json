@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "postinstall": "prisma generate", 
+    "postinstall": "prisma generate",
     "build": "prisma generate && next build",
     "start": "next start",
     "lint": "next lint"
@@ -71,6 +71,7 @@
     "@tiptap/starter-kit": "^2.4.0",
     "@tiptap/suggestion": "2.8.0",
     "@uploadthing/react": "^7.1.0",
+    "@vercel/speed-insights": "^1.1.0",
     "autoprefixer": "10.4.14",
     "axios": "^1.6.8",
     "clsx": "^2.1.1",

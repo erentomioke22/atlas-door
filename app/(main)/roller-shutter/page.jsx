@@ -6,20 +6,23 @@ import ImageCom from "@components/ui/Image";
 
 
 
+
+
 export const metadata = {
-  // title : "Atlas News | best & hot news",
-  metadataBase: new URL("https://www.atlasdoor.com/roller-shutter"),
-  title :"کرکره برقی",
-  description:"نمایندگی شیشه سکوریت و فروش محصولات کرکره برقی و درب اتوماتیک ونصب انواع پارتیشن و جام بالکن ها",
+  metadataBase: new URL(`${process.env.NEXT_PUBLIC_BASE_URL}/roller-shutter`),
+  title :"کرکره برقی - فروش و نصب انمواع کرکره‌های اتوماتیک و برقی با کیفیت",
+  description:"کرکره برقی با بهترین کیفیت و امنیت برای منازل و کسب‌وکارها. ارائه‌دهنده خدمات فروش، نصب و تعمیر کرکره‌های برقی با قیمت مناسب. مشاوره رایگان.",
+  keywords:"کرکره برقی, فروش کرکره برقی, نصب کرکره برقی, تعمیر کرکره برقی, کرکره اتوماتیک, کرکره‌های حفاظتی, کرکره‌های امنیتی, کرکره برای منازل, کرکره برای کسب‌وکارها, قیمت کرکره برقی, خدمات پس از فروش کرکره برقی, مشاوره کرکره برقی, خرید کرکره برقی",
   twitter:{
    card:'summary_large_image'
   },
   openGraph:{
-    title :"کرکره برقی",
-    description:"نمایندگی شیشه سکوریت و فروش محصولات کرکره برقی و درب اتوماتیک ونصب انواع پارتیشن و جام بالکن ها",
+    title :"کرکره برقی - فروش و نصب انمواع کرکره‌های اتوماتیک و برقی با کیفیت",
+    description:"کرکره برقی با بهترین کیفیت و امنیت برای منازل و کسب‌وکارها. ارائه‌دهنده خدمات فروش، نصب و تعمیر کرکره‌های برقی با قیمت مناسب. مشاوره رایگان.",
+    keywords:"کرکره برقی, فروش کرکره برقی, نصب کرکره برقی, تعمیر کرکره برقی, کرکره اتوماتیک, کرکره‌های حفاظتی, کرکره‌های امنیتی, کرکره برای منازل, کرکره برای کسب‌وکارها, قیمت کرکره برقی, خدمات پس از فروش کرکره برقی, مشاوره کرکره برقی, خرید کرکره برقی",
     type:"website",
-    locale:"en_US",
-    url:"https://www.atlasdoor.ir/roller-shutter",
+    locale:"fa_IR",
+    url:`${process.env.NEXT_PUBLIC_BASE_URL}/roller-shutter`,
     siteName:"Atas door"
   }
 }
@@ -27,96 +30,96 @@ export const metadata = {
 export default async function Page({params}) {
 
 
-  const models=[
-    {
-      name:'تیغه آلمینیومی',
-      url:'/automatic-door',
-      image:'/images/roller-shutter/blade/gray.jpg'
-    },
-    {
-      name:'پلی کربنات',
-      url:'/roller-shutter',
-      image:'/images/roller-shutter/blade/polycarbonat2.jpg'
-    },
-    {
-      name:'رول گیتر',
-      url:'/tempered-glass',
-      image:'/images/roller-shutter/blade/rolgater.jpg'
-    },
-    {
-      name:'گالوانیزه',
-      url:'/partition-glass',
-      image:'/images/roller-shutter/blade/galvanize.jpg'
-    },
-    {
-      name:'فولادی',
-      url:'/balcony-glass',
-      image:'/images/roller-shutter/blade/gray.jpg'
-    },
-  ]
+  // const models=[
+  //   {
+  //     name:'تیغه آلمینیومی',
+  //     url:'/automatic-door',
+  //     image:'/images/roller-shutter/blade/gray.jpg'
+  //   },
+  //   {
+  //     name:'پلی کربنات',
+  //     url:'/roller-shutter',
+  //     image:'/images/roller-shutter/blade/polycarbonat2.jpg'
+  //   },
+  //   {
+  //     name:'رول گیتر',
+  //     url:'/tempered-glass',
+  //     image:'/images/roller-shutter/blade/rolgater.jpg'
+  //   },
+  //   {
+  //     name:'گالوانیزه',
+  //     url:'/partition-glass',
+  //     image:'/images/roller-shutter/blade/galvanize.jpg'
+  //   },
+  //   {
+  //     name:'فولادی',
+  //     url:'/balcony-glass',
+  //     image:'/images/roller-shutter/blade/gray.jpg'
+  //   },
+  // ]
 
-  const tools=[
-    {
-      name:'موتور',
-      url:'/',
-      image:'/images/roller-shutter/accessories/motor/1732009538090.jpg'
-    },
-    {
-      name:'صفحه پلیت',
-      url:'/',
-      image:'/images/roller-shutter/accessories/plates/1732009538068.jpg'
-    },
-    {
-      name:'مدار فرمان',
-      url:'/',
-      image:'/images/roller-shutter/accessories/circuit-control/1732009538149.jpg'
-    },
-    {
-      name:'خلاص کن',
-      url:'/',
-      image:'/images/roller-shutter/accessories/remover/1732009538101.jpg'
-    },
-    {
-      name:'سنسور',
-      url:'/',
-      image:'/images/roller-shutter/accessories/sensores/1732009538024.jpg'
-    },
-    {
-      name:'ریل',
-      url:'/',
-      image:'/images/roller-shutter/accessories/rail/1732009538064.jpg'
-    },
-    {
-      name:'رسیور',
-      url:'/',
-      image:'/images/roller-shutter/accessories/reciever/1732009538157.jpg'
-    },
-    {
-      name:'باطری',
-      url:'/',
-      image:'/images/roller-shutter/accessories/battery/1732009538142.jpg'
-    },
-    {
-      name:'قفل',
-      url:'/',
-      image:'/images/roller-shutter/accessories/lock/1732009538073.jpg'
-    },
-    {
-      name:'لوله شفت',
-      url:'/',
-      image:'/images/roller-shutter/accessories/shaft-pipe/1732009538041.jpg'
-    },
-    {
-      name:'کپس',
-      url:'/',
-      image:'/images/roller-shutter/accessories/caps/1732009538012.jpg'
-    },
-    {
-      name:'میکروسوییچ',
-      url:'/',
-      image:'/images/roller-shutter/accessories/circuit-control/1732009538118.jpg'
-    },
-  ]
+  // const tools=[
+  //   {
+  //     name:'موتور',
+  //     url:'/',
+  //     image:'/images/roller-shutter/accessories/motor/1732009538090.jpg'
+  //   },
+  //   {
+  //     name:'صفحه پلیت',
+  //     url:'/',
+  //     image:'/images/roller-shutter/accessories/plates/1732009538068.jpg'
+  //   },
+  //   {
+  //     name:'مدار فرمان',
+  //     url:'/',
+  //     image:'/images/roller-shutter/accessories/circuit-control/1732009538149.jpg'
+  //   },
+  //   {
+  //     name:'خلاص کن',
+  //     url:'/',
+  //     image:'/images/roller-shutter/accessories/remover/1732009538101.jpg'
+  //   },
+  //   {
+  //     name:'سنسور',
+  //     url:'/',
+  //     image:'/images/roller-shutter/accessories/sensores/1732009538024.jpg'
+  //   },
+  //   {
+  //     name:'ریل',
+  //     url:'/',
+  //     image:'/images/roller-shutter/accessories/rail/1732009538064.jpg'
+  //   },
+  //   {
+  //     name:'رسیور',
+  //     url:'/',
+  //     image:'/images/roller-shutter/accessories/reciever/1732009538157.jpg'
+  //   },
+  //   {
+  //     name:'باطری',
+  //     url:'/',
+  //     image:'/images/roller-shutter/accessories/battery/1732009538142.jpg'
+  //   },
+  //   {
+  //     name:'قفل',
+  //     url:'/',
+  //     image:'/images/roller-shutter/accessories/lock/1732009538073.jpg'
+  //   },
+  //   {
+  //     name:'لوله شفت',
+  //     url:'/',
+  //     image:'/images/roller-shutter/accessories/shaft-pipe/1732009538041.jpg'
+  //   },
+  //   {
+  //     name:'کپس',
+  //     url:'/',
+  //     image:'/images/roller-shutter/accessories/caps/1732009538012.jpg'
+  //   },
+  //   {
+  //     name:'میکروسوییچ',
+  //     url:'/',
+  //     image:'/images/roller-shutter/accessories/circuit-control/1732009538118.jpg'
+  //   },
+  // ]
 
 
 

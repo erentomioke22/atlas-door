@@ -1,25 +1,26 @@
-import Link from "next/link";
-import EmblaCarousel from "@components/ui/carousel/carousel";
-import { FaCaretRight } from "react-icons/fa6";
+// import Link from "next/link";
+// import EmblaCarousel from "@components/ui/carousel/carousel";
+// import { FaCaretRight } from "react-icons/fa6";
 import PostPage from "@components/posts/postPage";
-import ImageCom from "@components/ui/Image";
+// import ImageCom from "@components/ui/Image";
 
 
 
 export const metadata = {
-  // title : "Atlas News | best & hot news",
-  metadataBase: new URL("https://www.atlasdoor.com/tempered-glass"),
-  title :"شیشه سکوریت",
-  description:"نمایندگی شیشه سکوریت و فروش محصولات کرکره برقی و درب اتوماتیک ونصب انواع پارتیشن و جام بالکن ها",
+  metadataBase: new URL(`${process.env.NEXT_PUBLIC_BASE_URL}`),
+  title :"شیشه سکوریت - خدمات حرفه‌ای فروش، نصب و تعمیر شیشه سکوریت",
+  description:"بهترین خدمات فروش، نصب و تعمیر شیشه سکوریت در ایران و تهران. شیشه‌های مقاوم و ایمن برای تمامی نیازهای ساختمانی و دکوراسیون داخلی. تجربه‌ای حرفه‌ای و مطمئن با محصولات ما. مشاوره رایگان و خدمات حرفه‌ای.",
+  keywords:"شیشه سکوریت, فروش شیشه سکوریت, نصب شیشه سکوریت, تعمیر شیشه سکوریت, شیشه‌های مقاوم, شیشه‌های ایمنی, شیشه‌های ساختمانی, دکوراسیون داخلی, شیشه برای فروشگاه‌ها, قیمت شیشه سکوریت, خدمات شیشه سکوریت, شرکت شیشه سکوریت, مشاوره شیشه سکوریت, خرید شیشه سکوریت, تولید شیشه سکوریت",
   twitter:{
    card:'summary_large_image'
   },
   openGraph:{
-    title :"شیشه سکوریت",
-    description:"نمایندگی شیشه سکوریت و فروش محصولات کرکره برقی و درب اتوماتیک ونصب انواع پارتیشن و جام بالکن ها",
+    title :"شیشه سکوریت - خدمات حرفه‌ای فروش، نصب و تعمیر شیشه سکوریت",
+    description:"بهترین خدمات فروش، نصب و تعمیر شیشه سکوریت در ایران و تهران. شیشه‌های مقاوم و ایمن برای تمامی نیازهای ساختمانی و دکوراسیون داخلی. تجربه‌ای حرفه‌ای و مطمئن با محصولات ما. مشاوره رایگان و خدمات حرفه‌ای.",
+    keywords:"شیشه سکوریت, فروش شیشه سکوریت, نصب شیشه سکوریت, تعمیر شیشه سکوریت, شیشه‌های مقاوم, شیشه‌های ایمنی, شیشه‌های ساختمانی, دکوراسیون داخلی, شیشه برای فروشگاه‌ها, قیمت شیشه سکوریت, خدمات شیشه سکوریت, شرکت شیشه سکوریت, مشاوره شیشه سکوریت, خرید شیشه سکوریت, تولید شیشه سکوریت",
     type:"website",
-    locale:"en_US",
-    url:"https://www.atlasdoor.ir/tempered-glass",
+    locale:"fa_IR",
+    url:"https://www.atlasdoors.ir/tempered-glass",
     siteName:"Atas door"
   }
 }

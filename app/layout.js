@@ -6,26 +6,28 @@ import { Toaster } from 'sonner'
 import { GoogleAnalytics } from '@next/third-parties/google'
 import { GoogleTagManager } from '@next/third-parties/google'
 import NextTopLoader from 'nextjs-toploader';
+import { SpeedInsights } from "@vercel/speed-insights/next"
+
 
 export const metadata = {
-    // title : "Atlas News | best & hot news",
-    metadataBase: new URL("https://www.atlasdoor.com"),
+    metadataBase: new URL(`${process.env.NEXT_PUBLIC_BASE_URL}`),
     title : {
       default:"Atlas Door | 0912-375-8621 | اطلس دٌر  | 55589837-021",
       template:'%s - 0912-3758621| اطلس در | 55589837-021'
     },
     description:"نمایندگی شیشه سکوریت و فروش محصولات کرکره برقی و درب اتوماتیک ونصب انواع پارتیشن و جام بالکن ها",
-    keywords:'شیشه',
+    keywords:'  کرکره برقی,درب اتوماتیک,جام باکن,پارتیشن شیشه ای,پارتیشن حمامی,پارتیشن حمومی, پارتیشن,موتور درب اتوماتیک,موتور کرکره برقی,سکوریت شیشه',
     twitter:{
      card:'summary_large_image'
     },
     openGraph:{
       title:" اطلس در | 2121295-021",
       description:"نمایندگی شیشه سکوریت و فروش محصولات کرکره برقی و درب اتوماتیک ونصب انواع پارتیشن و جام بالکن ها",
+      keywords:'  کرکره برقی,درب اتوماتیک,جام باکن,پارتیشن شیشه ای,پارتیشن حمامی,پارتیشن حمومی, پارتیشن,موتور درب اتوماتیک,موتور کرکره برقی,سکوریت شیشه',
       type:"website",
-      locale:"en_US",
-      url:"https://www.atlasdoor.ir",
-      siteName:"Atas News"
+      locale:"fa_IR",
+      url:`${process.env.NEXT_PUBLIC_BASE_URL}`,
+      siteName:"Atas door"
     }
 }
 
@@ -53,9 +55,10 @@ const RootLayout = async({children})=> {
        </AuthProvider>
       </ReactQueryProvider>
     </ThemeProvider> 
+    <SpeedInsights />
   </body> 
   <GoogleTagManager gtmId="GTM-W36FRRD8" />
-  <GoogleAnalytics gaId="G-XYZ" />
+  <GoogleAnalytics gaId="G-ZSTR9DKJHX" />
 </html>
   )
 }
