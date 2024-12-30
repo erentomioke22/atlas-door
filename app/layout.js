@@ -40,6 +40,7 @@ const RootLayout = async({children})=> {
       <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
       <meta name="apple-mobile-web-app-title" content="Atlas Door" />
       <link rel="manifest" href="/site.webmanifest" />
+      <meta name="google-site-verification" content="aBsXlKo4-eSlSDTM1tjvPD5UzqTavw3GSOLQfNxaimE" />
     </head>
   <body  className=" font-Rubik font-bold  bg-[#ffffff] text-[#1f2937] dark:bg-[#1d232a]  dark:text-[#a6adbb]"
   >
