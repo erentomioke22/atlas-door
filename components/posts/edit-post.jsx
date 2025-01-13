@@ -91,7 +91,7 @@ const EditPost = ({ params }) => {
     queryKey: ["edit-post", params.title],
     queryFn: async () => {
       const response = await axios.get(`/api/posts/edit-post/${params.title}`);
-      console.log(response)
+      // console.log(response)
       return response.data;
     },
   });

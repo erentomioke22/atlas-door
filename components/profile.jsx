@@ -10,7 +10,7 @@ import ImageCom from "./ui/Image";
 
 const Profile = ({ session }) => {
   const [close, setClose] = useState(false);
-console.log(session)
+// console.log(session)
   return (
     <Dropdown
       title={
