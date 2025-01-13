@@ -25,7 +25,6 @@ import usePreventNavigation from "@hook/usePreventNavigation";
 // import ImageInput from "@components/ui/imageInput";
 // import { FaSort } from "react-icons/fa6";
 
-
 const CreatePost = () => {
   const { data: session } = useSession();
   const [dropTag, setDropTag] = useState([]);
@@ -455,7 +454,7 @@ const CreatePost = () => {
          }
 
 
-              <Controller
+              {/* <Controller
                 name="content"
                 control={control}
                 render={({ field: { onChange, onBlur, value, name, ref } }) => (
@@ -478,7 +477,7 @@ const CreatePost = () => {
                     // provider={provider}
                   />
                 )}
-              />
+              /> */}
               <div
                 className={`text-red mt-2 text-[10px] md:text-sm transition-opacity duration-300  ${
                   errors?.content?.message ? "opacity-100" : "opacity-0"
