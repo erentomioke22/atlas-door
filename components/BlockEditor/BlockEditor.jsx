@@ -1,3 +1,5 @@
+"use client";
+
 import { EditorContent } from "@tiptap/react";
 import React, {  forwardRef, useRef ,useEffect} from "react";
 import { useBlockEditor } from "@hook/useBlockEditor";
@@ -67,7 +69,7 @@ export const BlockEditor =
     //   return null;
     // }
     if (!isClient || !editor) return null;
-    // useEffect(() => { if (!editor) return null; }, [editor]);
+    useEffect(() => { if (!editor) return null; }, [editor]);
 
     return (
       <div className="" ref={menuContainerRef}>
