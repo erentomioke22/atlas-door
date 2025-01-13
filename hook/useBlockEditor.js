@@ -189,8 +189,8 @@ useEffect(() => {
 
 
 
-console.log(editor.getHTML())
-console.log(editor.getJSON())
+// console.log(editor.getHTML())
+// console.log(editor.getJSON())
 
 
   // const users = useEditorState({

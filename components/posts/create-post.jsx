@@ -51,7 +51,7 @@ const CreatePost = () => {
   
   
   if(!session){
-    NotFound()
+    return NotFound()
   }
   
   usePreventNavigation(preventNavigation);
