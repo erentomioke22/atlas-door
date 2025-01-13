@@ -61,9 +61,9 @@ const CreatePost = () => {
   // const searchParams = useSearchParams()
   // const hasCollab = parseInt(searchParams?.get('noCollab') ) !== 1 && collabToken !== null
   // const uploadMutation = useUploadMutation();
-  console.log(thumnailIndex,contentImages)
-  console.log(files)
-  console.log(blobUrlToUploadedUrlMap)
+  // console.log(thumnailIndex,contentImages)
+  // console.log(files)
+  // console.log(blobUrlToUploadedUrlMap)
   const baseUrl = `${process.env.NEXT_PUBLIC_BASE_URL}`;
 
   
@@ -117,13 +117,13 @@ const CreatePost = () => {
 
   const onSubmit = async (values) => {
     try{
-      console.log(values)
+      // console.log(values)
       setPreventNavigation(true);   
 
         if (thumnailIndex && !thumnailIndex.startsWith('blob:')) {
           setValue('image', thumnailIndex);
         } 
-         console.log(values)
+        //  console.log(values)
          mutation.mutate(values,{
            onSuccess: () => {
              setPreventNavigation(false);
@@ -220,7 +220,7 @@ const CreatePost = () => {
 
 
 
-  console.log(files)
+  // console.log(files)
 
 
   
