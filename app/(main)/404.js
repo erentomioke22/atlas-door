@@ -1,18 +1,22 @@
-import Link from 'next/link'
+import Link from 'next/link';
 
-export default  Custom404 = () => {
+const Custom404 = () => {
   return (
-    <div >
-      <h1 >Page Not Found</h1>
-      <p >
-        Sorry, we couldn't find the page you're looking for.
+    <div>
+      <h1>Page Not Found</h1>
+      <p>
+        Sorry, we couldn&apos;t find the page you&apos;re looking for.
       </p>
       <Link href="/">
-        <a >Go back to Home</a>
+        <a>Go back to Home</a>
       </Link>
     </div>
-  )
-}
+  );
+};
+
+Custom404.displayName = 'Custom404';
+
+export default Custom404;
 
 
   

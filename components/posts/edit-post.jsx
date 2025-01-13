@@ -11,25 +11,21 @@ import axios from "axios";
 import { postValidation } from "@lib/validation";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { IoClose } from "react-icons/io5";
 import { useEditPostMutation } from "@components/posts/mutations";
 import { useDeletePostMutation } from "@components/posts/mutations";
 import LoadingSpinner from "@components/ui/loading/loadingSpinner";
 import BlockEditor from "@components/BlockEditor/BlockEditor";
 import {useMemo } from "react";
 import { Doc as YDoc } from "yjs";
-import { useSearchParams } from "next/navigation";
 import Accordion from "@components/ui/Accordion";
-import ImageInput from "@components/ui/imageInput";
 import EditPostLoading from "@components/ui/loading/editPostLoading";
 import usePreventNavigation from "@hook/usePreventNavigation";
 import { FaQuestion } from "react-icons/fa";
 import NotFound from "@app/(main)/not-found";
-import { useUploadThing } from "@lib/uploadthing";
 import EmblaCarousel from "@components/ui/carousel/carousel";
 import { FaImage } from "react-icons/fa6";
 import { FaCheck } from "react-icons/fa";
-
+import ImageCom from "@components/ui/Image";
 
 
 const EditPost = ({ params }) => {

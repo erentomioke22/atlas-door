@@ -470,7 +470,9 @@ const CreatePost = () => {
             <div className="w-full md:w-2/3 mx-auto  space-y-3 px-3" >
          {session && 
                      <div className="flex gap-2">
-                       <img src={session?.user.image} className="h-9 w-9 rounded-lg" alt="" />
+                      <div className="relative h-9 w-9">
+                       <ImageCom src={session?.user.image} className="h-9 w-9 rounded-lg" size={'h-9 w-9'} alt="user Avatar" />
+                      </div>
                        <div className="flex flex-col ">
                          <p className=" text-black dark:text-white text-sm">{session?.user.displayName}</p>
                          <p className=" text-lfont text-[10px]">{new Date().toLocaleDateString()}</p>
