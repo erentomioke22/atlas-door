@@ -544,8 +544,6 @@ const EditPost = ({ params }) => {
                     deletedFiles={deletedFiles}
                     setDeletedPostFiles={setDeletedPostFiles}
                     deletedPostFiles={deletedPostFiles}
-                    items={items}
-                    setItems={setItems}
                     ydoc={ydoc}
                     contentImages={contentImages} setContentImage={setContentImage}
                     thumnailIndex={thumnailIndex} setThumnailIndex={setThumnailIndex}
