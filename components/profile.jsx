@@ -1,85 +1,107 @@
 import React, { useState } from "react";
-import { IoPersonCircleSharp } from "react-icons/io5";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
 import Dropdown from "./ui/dropdown";
 import { FaCaretLeft } from "react-icons/fa6";
-import CreatePost from "./posts/create-post";
-import { IoLogOut} from "react-icons/io5";
-// import Notifications from "./notifications";
-import { IoAnalyticsSharp } from "react-icons/io5";
-import Notifications from "./notifications";
+import { IoPencil,IoLogOut } from "react-icons/io5";
 import ImageCom from "./ui/Image";
+
+
 
 const Profile = ({ session }) => {
   const [close, setClose] = useState(false);
-
+console.log(session)
   return (
     <Dropdown
-      title={<IoPersonCircleSharp/>}
+      title={
+        <div className="relative h-8 w-8">
+          {session?.user?.image === null ?
+                  <div className="h-8 w-8 rounded-lg bg-gradient-to-tr from-redorange to-yellow"></div>
+                  :
+                  <ImageCom
+                  className="rounded-lg h-8 w-8 "
+                  size={"h-8 w-8"}
+                  src={
+                    session.user?.image === null
+                      ? `${process.env.NEXT_PUBLIC_BASE_URL}/images/logo/user-avatar-people-icon-solid-style-icon-design-element-icon-template-background-free-vector.jpg`
+                      : `${process.env.NEXT_PUBLIC_BASE_URL}${session.user.image}`
+                  }
+                  alt={`${session.user?.name} avatar`}
+                /> 
+                  }
+
+        </div>
+      }
       close={close}
-      btnStyle={" bg-lcard hover:bg-lbtn rounded-full px-3 py-1 duration-500 dark:bg-dcard dark:hover:bg-dbtn text-lfont border-lbtn border dark:border-dbtn"}
-      className={"-right-20 md:right-0 bg-lcard border border-lbtn  dark:border-dbtn dark:bg-dcard"}
+      className={"right-0"}
       disabled={!session}
     >
       <div
-        className=" flex justify-around bg-lbtn dark:bg-dbtn p-3   mx-3 rounded-2xl  gap-3 truncate  duration-300"
+        className=" flex justify-around  p-3   mx-3 hover:bg-lcard dark:hover:bg-dcard rounded-2xl  gap-3 truncate duration-300"
       >
-        <div className="h-[40px] w-[40px] relative">
-          <ImageCom
-            className="rounded-lg h-10 w-10"
-            src={
-              session.user?.image === null
-                ? `${process.env.NEXT_PUBLIC_BASE_URL}/images/logo/user-avatar-people-icon-solid-style-icon-design-element-icon-template-background-free-vector.jpg`
-                : `${process.env.NEXT_PUBLIC_BASE_URL}${session.user.image}`
-            }
-            alt={`${session.user?.name} avatar`}
-            // size={'w-10'}
-          />
+        <div className="relative h-10 w-10">
+        {session?.user?.image === null ?
+                  <div className="h-10 w-10 rounded-xl bg-gradient-to-tr from-redorange to-yellow"></div>
+                  :
+                  <ImageCom
+                  className="rounded-xl h-10 w-10 "
+                  size={"h-10 w-10"}
+                  src={
+                    session.user?.image === null
+                      ? `${process.env.NEXT_PUBLIC_BASE_URL}/images/logo/user-avatar-people-icon-solid-style-icon-design-element-icon-template-background-free-vector.jpg`
+                      : `${process.env.NEXT_PUBLIC_BASE_URL}${session.user.image}`
+                  }
+                  alt={`${session.user?.name} avatar`}
+                /> 
+                  }
         </div>
-        <div className="truncate max-w-36">
-          <p className="text-sm  text-purple truncate">{session?.user?.displayName}</p>
+        <div className="text-start truncate max-w-36">
+          <p className="text-sm  text-black dark:text-white truncate">{session?.user?.displayName}</p>
           <p className="text-sm  text-lfont truncate">{session?.user?.email}</p>
         </div>
-
         <div className="flex flex-col justify-center text-lfont ">
           <FaCaretLeft />
         </div>
+
       </div>
 
       <div className="flex flex-col text-start text-[12px] space-y-2 mt-2 px-3">
-
+        {/* {session.user.role === "admin" && (
+          <>
+            <Link
+              onClick={() => {
+                setClose(!close);
+              }}
+              href={"/admin"}
+              className={" flex justify-between py-2 w-full  px-3  rounded-lg  hover:bg-lcard dark:hover:bg-dcard hover:text-black dark:hover:text-white text-lfont duration-500"}               >
+               <IoBookmark className="text-[18px]"/>
+               <span > Admin Panel</span>
+           </Link>
+          </>
+        )} */}
 
  
-      <div>
-        <CreatePost/>
-      </div>
+      <Link 
+        href={"/create-post"}   
+        onClick={() => {
+          setClose(!close);
+        }}
+        className={" flex justify-between py-2 w-full  px-3  rounded-lg  hover:bg-lcard dark:hover:bg-dcard hover:text-black dark:hover:text-white text-lfont duration-500"} >
+     <IoPencil className="text-lg" /> 
+     <span>Create Post</span>
+      </Link>
 
 
 
 
-        <Link
-          onClick={() => {
-            setClose(!close);
-          }}
-          href={`/Analyctics`}
-          className={" flex justify-between py-2 w-full  px-3  rounded-lg  hover:text-purple hover:bg-lbtn dark:hover:bg-dbtn text-lfont duration-500"}           >
-          <IoAnalyticsSharp className="text-[18px]"/>
-          <span >Analytics Post</span>
-        </Link>
 
 
-
-        <div>
-          <Notifications/>
-        </div>
-        
         <button
           type="button"
           onClick={() => {
             signOut();
           }}
-          className={" py-2 w-full flex justify-between px-3  rounded-lg  hover:text-orange hover:bg-lbtn dark:hover:bg-dbtn text-lfont duration-500"}           >
+          className={"flex justify-between py-2 w-full  px-3  rounded-lg  hover:bg-lcard dark:hover:bg-dcard hover:text-black dark:hover:text-white text-lfont duration-500"}           >
           <IoLogOut className="text-[18px]"/>
           <span > Logout</span>
         </button>

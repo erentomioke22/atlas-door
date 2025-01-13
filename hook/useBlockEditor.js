@@ -28,7 +28,7 @@ export const useBlockEditor = ({
   // provider,
   // userId,
   // userName = 'Maxi',
-  content,onChange,files,setFiles,setValue,deletedFiles,setDeletedFiles,setEditorContent,setDeletedPostFiles,deletedPostFiles,items,setItems
+  content,onChange,files,setFiles,setValue,deletedFiles,setDeletedFiles,setEditorContent,setDeletedPostFiles,deletedPostFiles, setContentImage,thumnailIndex,setThumnailIndex
 }) => {
   // const [collabState, setCollabState] = useState(
   //   provider ? WebSocketStatus.Connecting : WebSocketStatus.Disconnected,
@@ -76,14 +76,14 @@ export const useBlockEditor = ({
         //       },
         //     })
         //   : undefined,
-          TableOfContents.configure({
-            getIndex: getHierarchicalIndexes,
-            onUpdate(content) {
-              setItems(content);
-              const tocs = content.map(({ dom, editor, node,isActive,isScrolledOver,pos, ...cleanedItem }) => cleanedItem);
-              setValue('tocs',tocs);
-            },
-          }),
+          // TableOfContents.configure({
+          //   getIndex: getHierarchicalIndexes,
+          //   onUpdate(content) {
+          //     setItems(content);
+          //     const tocs = content.map(({ dom, editor, node,isActive,isScrolledOver,pos, ...cleanedItem }) => cleanedItem);
+          //     setValue('tocs',tocs);
+          //   },
+          // }),
         // aiToken
         //   ? AiWriter.configure({
         //       authorId: userId,
@@ -138,6 +138,7 @@ export const useBlockEditor = ({
       tempDiv.innerHTML = html;
       const imgTags = tempDiv.getElementsByTagName('img');
       const newFiles = Array.from(imgTags).map((img) => img.src);
+      setContentImage(newFiles)
       const remainingFiles = files.filter((file) => newFiles.includes(file.url));
       const removedFiles = files.filter((file) => !newFiles.includes(file.url));
       setTempRemovedFiles((prev) => [...prev, ...removedFiles.filter((removedFile) => !prev.includes(removedFile.url))]);
@@ -149,6 +150,10 @@ export const useBlockEditor = ({
         ...prev,
         ...removedFilesUrls.filter((removedFileUrl) => !prev.includes(removedFileUrl)),
       ].filter((deletedFile) => !newFiles.includes(deletedFile)));
+      if (!newFiles.includes(thumnailIndex)) { 
+       const baseUrl = `${process.env.NEXT_PUBLIC_BASE_URL}`;
+        setThumnailIndex(newFiles.length > 0 ? newFiles[0].replace(baseUrl, '') : null); 
+       }
       setValue('contentImages',newFiles)
       // const removedFiles = prevNewFiles.filter((prevNewFile) => !newFiles.includes(prevNewFile.url));
       // setFiles([...remainingFiles, ...restoredFiles]);
@@ -177,14 +182,15 @@ useEffect(() => {
       const imgTags = tempDiv.getElementsByTagName('img');
       const newFiles = Array.from(imgTags).map(img =>img.src);
       setPrevNewFiles(newFiles)
+      setContentImage(newFiles)
       setDeletedPostFiles(prevDeletedPostFiles => [...prevDeletedPostFiles, ...newFiles]);
   }
 }, [content,editor])
 
 
 
-// console.log(editor.getHTML())
-// console.log(editor.getJSON())
+console.log(editor.getHTML())
+console.log(editor.getJSON())
 
 
   // const users = useEditorState({

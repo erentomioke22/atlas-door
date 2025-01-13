@@ -1,7 +1,7 @@
 "use client";
 
 import axios from "axios";
-import Comment from "@components/posts/comments/comment";
+import Comments from "@components/posts/comments/comments";
 import PageLoading from "@components/ui/loading/pageLoading";
 import { toast } from 'sonner'
 import { useQuery } from "@tanstack/react-query";
@@ -10,19 +10,18 @@ import Accordion from "@components/ui/Accordion";
 import AboutUs from "@components/aboutus";
 import  TOC  from "./TocPost";
 import {usePathname } from 'next/navigation';
-// import moment from 'moment';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import ImageCom from "@components/ui/Image";
 import moment from 'moment-jalaali'
-
-
-
+import ProgressBar from "@components/ui/progressbar";
+import { useRef } from "react";
+import NotFound from "../../app/(main)/not-found";
 
 
 const PostPage = ({params}) => {
   const {data:session}=useSession();
-
+  const contentRef = useRef(null);
 
 // console.log(params)
 const {data: post,status,}=useQuery({
@@ -45,11 +44,7 @@ const {data: post,status,}=useQuery({
 // console.log(post)
 
   if (status === "success" && post?.error) {
-    return (
-      <p className="text-center text-lfont">
-        هیچ مطلبی در اینجا قرار داده نشده است
-      </p>
-    );
+    return NotFound();
   }
 
   if (status === "error") {
@@ -72,26 +67,15 @@ const {data: post,status,}=useQuery({
    const createdAt = moment(post?.createdAt, 'YYYY-MM-DDTHH:mm:ss.SSSZ').locale('fa') 
 const formattedDate = createdAt.isValid() ? createdAt.fromNow(): 'تاریخ نامعتبر'
   return (
-    <>
-      {
       status === "pending" 
       // !post
       ?
        (
         <PageLoading />
       ) : (
-        <>
-
-          {/* <div className="w-full flex justify-center overflow-hidden">
-            <div className="absolute w-full max-w-lg mt-52 md:mt-36">
-              <div className="absolute md:-left-72 w-60 h-60 md:w-[450px]  md:h-[450px]   bg-purple  rounded-full mix-blend-multiple dark:mix-blend-lighten-light dark:opacity-95 filter blur-2xl opacity-95 animate-blob "></div>
-            </div>
-          </div> */}
-
-          
-          <div className="w-full space-y-5 md:space-y-16 overflow-hidden mt-20">
 
           <div className="px-7 lg:px-32 xl:px-44 space-y-10 md:space-y-20">
+            <ProgressBar/>
      
      
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
@@ -172,27 +156,29 @@ const formattedDate = createdAt.isValid() ? createdAt.fromNow(): 'تاریخ ن�
             </div>
           
            <div className='grid grid-cols-1  lg:gap-5 lg:grid-cols-4'>
-              <div className="sticky top-10 col-span-1  my-10">
-                  {post?.tocs.length >= 2 && 
-                     <TOC selector='.content' items={post?.tocs}/>
-                  } 
+              <div className="my-10  ">
+                  {/* {post?.tocs.length >= 2 &&  */}
+                  <div className="sticky top-32">
+                     <TOC content={contentRef?.current}
+                      //  items={post?.tocs}
+                     />
+                  </div>
+                       
+                       {/* } */}
              </div>
            
             <div className="col-span-3 ">
               <div
-                id="post-content"
-                className="content break-words w-full  normal-case leading-relaxed md:text-lg max-md:text-sm  decoration-purple decoration-2 underline-offset-4"
+                id="post-content" ref={contentRef}
+                className="content break-words w-full  normal-case leading-relaxed md:text-lg max-md:text-sm  decoration-2 underline-offset-4"
                 dangerouslySetInnerHTML={{ __html: post?.content }}
               />
             </div>
           </div>
         
 
-          </div>
-
-          
           {post?.faqs?.length >= 1 && 
-          <div className="w-full px-5 md:px-0 md:w-5/6 grid grid-cols-1 md:grid-cols-2 gap-5 mx-auto mt-10 my-20"> 
+          <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-5 mx-auto  my-20"> 
                           <div className="space-y-5"> 
                 {post?.faqs?.map((faq,index)=>(
                         <Accordion title={faq.question} key={index}> <p>{faq.answer}</p> </Accordion>
@@ -204,17 +190,14 @@ const formattedDate = createdAt.isValid() ? createdAt.fromNow(): 'تاریخ ن�
                       <p className="text-4xl md:text-[60px] leading-normal">سوالات متداول</p>
                       <p className="text-sm md:text-md  text-lfont">از سوالات شما همیشه استقبال میشود;سوالات شما جرقه گفتگوهایی را میدهند که منجر به نوآوری میشود</p>
                     </div>
-                  {/* <div className="flex justify-center mx-auto my-5">
-                      <Comment post={post} />
-                    </div> */}
                   </div>
 
           </div>
           }
           
-          <div className="comment w-full sm:w-4/5 lg:w-1/2 mx-auto px-3 sm:px-5 my-20 ">
+          <div className="comment w-full sm:w-4/5 lg:w-1/2 mx-auto  my-20 ">
           <h1 className="text-4xl md:text-[60px] text-center leading-normal my-5">ارسال بازخورد</h1>
-          <Comment post={post}  />
+          <Comments post={post}  />
           </div>
 
           <Conneccted postTitle={post?.title} postId={post?.id}/>
@@ -222,13 +205,9 @@ const formattedDate = createdAt.isValid() ? createdAt.fromNow(): 'تاریخ ن�
            <AboutUs/>
           </div>
 
-
-
-        </>
-      )}
-    </>
+          
+      )
   );
 };
 
 export default PostPage;
-

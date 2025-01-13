@@ -34,10 +34,7 @@ export const BlockEditor =
       setEditorContent,
       setDeletedPostFiles,
       deletedPostFiles,
-      setDeletedFiles,
-      items,
-      setItems,
-      
+      setDeletedFiles, contentImages, setContentImage,thumnailIndex,setThumnailIndex
     },ref
     
   ) => {
@@ -60,9 +57,7 @@ export const BlockEditor =
       setDeletedFiles,
       setEditorContent,
       setDeletedPostFiles,
-      deletedPostFiles,
-      items,
-      setItems,
+      deletedPostFiles,contentImages, setContentImage,thumnailIndex,setThumnailIndex
     });
     if (
       !editor

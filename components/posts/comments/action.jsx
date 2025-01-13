@@ -2,9 +2,9 @@
 
 import { auth } from "@auth";
 import { prisma } from "@utils/database";
-import { getCommentDataInclude ,getReplyDataInclude} from "@/lib/types";
+import { getCommentDataInclude} from "@/lib/types";
 
-export async function submitComment({post,content,userId,name,email,image}) {
+export async function submitComment({post,content,userId,parentId,name,email,image}) {
   const session = auth()
   if (!session) throw new Error("Unauthorized");
   
@@ -13,10 +13,11 @@ export async function submitComment({post,content,userId,name,email,image}) {
       data: {
         content,
         email,
-        image,
+        // image,
         name,
         postId: post?.id,
         userId,
+        parentId
       },
       include: getCommentDataInclude(userId),
     }),
@@ -26,7 +27,7 @@ export async function submitComment({post,content,userId,name,email,image}) {
             data: {
               email,
               name,
-              recipientId:post?.user.id,
+              recipientId: post?.user?.id,
               postId: post?.id,
               type: "COMMENT",
             },
@@ -38,10 +39,10 @@ export async function submitComment({post,content,userId,name,email,image}) {
   return newComment;
 }
 
-export async function editComment({post,content,userId,commentId,name,email,image}) {
+export async function editComment({post,content,userId,commentId}) {
   const session = auth()
   if (!session) throw new Error("Unauthorized");
-// console.log(post)
+
   const [newComment] = await prisma.$transaction([
     prisma.comment.update({
       where:{id:commentId},
@@ -86,71 +87,3 @@ export async function deleteComment(id) {
 }
 
 
-export async function submitReply({post,content,userId,commentId,email,name,image}) {
-  const session = auth()
-  if (!session) throw new Error("Unauthorized");
-  
-
-    const [newReply] = await prisma.$transaction([
-      prisma.reply.create({
-        data: {
-          content,
-          email,
-          name,
-          commentId,
-          userId,
-          image
-        },
-        include: getReplyDataInclude(userId),
-      }),
-      ...(post?.user?.id !== userId
-        ? [
-            prisma.notification.create({
-              data: {
-                email,
-                name,
-                recipientId:post?.user.id,
-                postId: post?.id,
-                type: "COMMENT",
-              },
-            }),
-          ]
-        : []),
-    ]);
-
-  return newReply;
-}
-
-export async function editReply({content,userId,replyId}) {
-  const session = auth()
-  if (!session) throw new Error("Unauthorized");
-
-  const editReply =prisma.reply.update({
-      where:{id:replyId},
-      data: {
-        content,
-      },
-      // include: getCommentDataInclude(userId),
-    })
-
-
-  return editReply;
-}
-
-export async function deleteReply(id) {
-
-
-  const reply = await prisma.reply.findUnique({
-    where: { id },
-  });
-
-  if (!reply) throw new Error("reply not found");
-
-
-  const deletedReply = await prisma.reply.delete({
-    where: { id },
-    // include: getCommentDataInclude(session?.user.id),
-  });
-
-  return deletedReply;
-}

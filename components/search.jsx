@@ -6,6 +6,7 @@ import Dropdown from "./ui/dropdown";
 import LoadingSearch from "./ui/loading/loadingSearch";
 import Link from 'next/link';
 import ImageCom from "./ui/Image";
+import Input from "./ui/input";
 
 const Search = () => {
   const [searchValue, setSearchValue] = useState("");
@@ -50,33 +51,40 @@ useEffect(()=>{
   return (
 
   <Dropdown title={<BiSearchAlt />} className={' -right-[90px] sm:right-0   bg-lcard dark:bg-dcard w-72 sm:w-96  border border-lbtn dark:border-dbtn px-3 max-h-62 overflow-auto'} 
-  btnStyle={'bg-lcard hover:bg-lbtn rounded-full px-3 py-1 duration-500 dark:bg-dcard dark:hover:bg-dbtn text-lfont border-lbtn border dark:border-dbtn'}>
+  btnStyle={'bg-lcard hover:bg-lbtn rounded-full px-3 py-1 duration-500 dark:bg-dcard dark:hover:bg-dbtn  border-lbtn border dark:border-dbtn'}>
   <div className="space-y-5">
-     
-     <form onSubmit={handleSubmit} className="bg-white dark:bg-black border-lbtn  rounded-lg space-x-1 flex">
-         <span className="text-lfont max-md:text-sm  my-auto ml-2">
+  <h1 className={" text-xl "}>
+            جستجو
+          </h1>
+     <form onSubmit={handleSubmit} className="bg-white dark:bg-black border-lbtn  rounded-lg space-x-1 ">
+         {/* <span className="text-lfont max-md:text-sm  my-auto ml-2">
            <BiSearchAlt />
-         </span>
-         <input
-           placeholder="اسم مطلب یا محصولی که دنبالش هستید رو بنویسید"
+         </span> */}
+         <Input
+           placeholder="جستجو..."
            type="text"
            name="search"
            onChange={(e) => {
              setSearchValue(e.target.value);
            }}
            value={searchValue || ""}
-           className={`resize-none block text-right bg-white text-[13px] dark:bg-black px-2 py-3 rounded-lg focus:outline-none  w-full focus:ring-2 focus:ring-black dark:ring-white   duration-200 `}
          />
      </form>
 
-     {status === "success" && !posts.length && (
-       <p className="text-center text-muted-foreground">
+     {status === "success" && !posts?.length  && (
+       <p className="text-center text-sm text-lfont">
          هیچ پستی با این نام هنوز وجود ندارد
        </p>
      )}
 
+     {searchValue?.length <= 0 && !posts?.length && (
+       <p className="text-center text-sm text-lfont">
+        اسم مطلب یا محصولی که دنبالش هستید رو بنویسید
+       </p>
+     )}
+
      {status === "error" && (
-       <p className="text-center text-destructive">
+       <p className="text-center ttext-sm text-lfont">
          مشکلی در برقراری ارتباط پیش آمده
        </p>
      )}
@@ -98,7 +106,7 @@ useEffect(()=>{
                               
                               <div className="flex-1 space-y-1">
                                 <p className="text-lfont text-sm">{post?.user.displayName}</p>      
-                                <p className="text-sm">{post?.title}</p>           
+                                <p className="text-sm line-clamp-1 hover:underline underline-offset-2 decoration-2 duration-100">{post?.title}</p>           
                               </div>
                           </div>
                      </div>

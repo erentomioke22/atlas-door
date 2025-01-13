@@ -13,7 +13,7 @@ export async function GET(req,{params:{postId}}) {
     const session = await auth();
 
     const comments = await prisma.comment.findMany({
-      where: {postId},
+      where: {postId,parent:null},
       include: getCommentDataInclude(session?.user?.id),
       orderBy: { createdAt:"desc" },
     });
@@ -22,7 +22,7 @@ export async function GET(req,{params:{postId}}) {
 
     return Response.json(comments);
   } catch (error) {
-    // console.error(error);
+    console.error(error);
     return Response.json({ error: "Internal server error" }, { status: 500 });
   }
 }

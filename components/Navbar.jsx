@@ -15,6 +15,8 @@ import { toast } from 'sonner'
 import Offcanvas from "./ui/offcanvas";
 import Banner from "./ui/Banner";
 import Profile from "./profile";
+import Notifications from "./notifications";
+
 
 const Navbar = () => {
   const { data: session } = useSession();
@@ -119,7 +121,11 @@ const Navbar = () => {
         <nav className="fixed w-full backdrop-blur-sm  z-30">
          <Banner />
           <div className="flex  bg-white dark:bg-black  bg-opacity-85 dark:bg-opacity-75 justify-between md:justify-arround    px-2 md:px-3 xl-px-5 py-2 h-full">
-          <div className="flex space-x-1 md:space-x-2 ">
+          <div className="flex gap-1  ">
+
+                    {session?.user?.role === 'admin' &&   
+                    <Profile session={session} />
+                    }
 
                 <Offcanvas       
                   title={<HiMenuAlt4/>}   
@@ -223,9 +229,12 @@ const Navbar = () => {
                 <Darkmode />
               </div>
 
-              {session?.user?.role === 'admin' &&   
-              <Profile session={session} />
+              {session &&
+              <div>
+               <Notifications/>
+               </div>
               }
+
 
               <Search/> 
 

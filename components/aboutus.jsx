@@ -3,15 +3,11 @@ import { FaTelegram } from "react-icons/fa";
 import { FiInstagram } from "react-icons/fi";
 import { FaWhatsapp } from "react-icons/fa6";
 import Image from 'next/image';
-import ImageCom from './ui/Image';
 
 const AboutUs = () => {
   return (
     <>
       <div className="bg-lcard dark:bg-dcard w-full md:w-2/3 md:rounded-xl mx-auto px-5 py-20 space-y-5 gap-5">
-        {/* <div className='relative h-[200px] md:h-[400px] w-full sm:w-4/6 mx-auto'>
-          <ImageCom src='/images/logo/atlasDoor.png' className={'rounded-2xl'} size={'h-[200px] md:h-[250px]'} />
-        </div> */}
 
         <div className='space-y-7 text-center'>
           <h1 className="text-4xl font-semibold tracking-tight sm:text-7xl">درباره ی ما</h1>

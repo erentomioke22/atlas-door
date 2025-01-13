@@ -20,7 +20,6 @@ model User {
   sessions              Session[]
   posts                 Post[]
   comments              Comment[]
-  replies               Reply[]
   Archives              Archive[]
   password              String?
   role                  String?         @default("user")
@@ -107,15 +106,10 @@ model Post {
   tags                Tag[]
   images              String[]
   comments            Comment[]
-  files               String[]
-  tocs                 Toc[]
   contentImages       String[]
   save                Boolean       @default(false)
   discussions         Boolean       @default(false) 
-  pinned              Boolean       @default(false)
-  // archived            Boolean       @default(false)
   isHot               Boolean       @default(false)
-  published           Boolean       @default(false)
   linkedNotifications Notification[]
   faqs                 Faq[]
   user                User      @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -134,16 +128,7 @@ model Faq {
  post      Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
  postId    String
 }
-model Toc {
- id                String @id @default(cuid())
- link              String
- itemIndex         Int
- level             Int
- originalLevel     Int
- textContent       String
- post              Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
- postId            String
-}
+
 
 model Advertise {
   id                  String         @id @default(cuid())
@@ -178,35 +163,24 @@ model Banner {
 }
 
 model Comment {
-  id      String @id @default(cuid())
-  content String
-  email   String
-  name    String
-  image   String?
-  post    Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
-  postId  String
-  user    User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId  String?
-  replies Reply[]  
+  id       String @id @default(cuid()) 
+  content  String
+  user     User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId   String?
+  name     String
+  email    String
+  post     Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId   String
+  parent   Comment? @relation("CommentReplies", fields: [parentId], references: [id] , onDelete: Cascade) 
+  parentId String? 
+  replies  Comment[] @relation("CommentReplies")  
 
   createdAt DateTime @default(now())
 
   @@map("comments")
 }
 
-model Reply {
-  id         String    @id @default(cuid())
-  content    String
-  email   String
-  name    String
-  image   String?
-  comment    Comment   @relation(fields: [commentId], references: [id], onDelete: Cascade)
-  commentId  String
-  user    User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId  String?
 
-  createdAt  DateTime      @default(now())
-}
 
 model Notification {
   id          String           @id @default(cuid())

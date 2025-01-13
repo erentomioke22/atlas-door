@@ -108,9 +108,7 @@ const Report = ({type}) => {
                   />
                 </div>
 
-                <div className='flex flex-wrap space-x-3 justify-end mt-7'>   
-                   {/* <button type='button' className='text-lfont bg-lcard dark:bg-dcard rounded-lg py-2 md:text-lg text-sm px-3' onClick={()=>{setOnClose(!onClose)}}>CLOSE</button> */}
-                   
+                <div className='flex flex-wrap space-x-3 justify-end mt-7'>                      
                    
                     <button
                       className=" bg-black rounded-lg text-lcard dark:bg-white dark:text-black w-full py-2 mx-auto disabled:brightness-90 disabled:cursor-not-allowed text-center flex justify-center text-sm"

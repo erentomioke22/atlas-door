@@ -6,15 +6,15 @@ import useEmblaCarousel from 'embla-carousel-react'
 import AutoScroll from 'embla-carousel-auto-scroll'
 import { BsFillPauseFill } from "react-icons/bs";
 import { BsFillPlayFill } from "react-icons/bs";
+import { DotButton, useDotButton } from './carouselDot';
 
-
-const EmblaCarousel = ({children,options,slides,buttons=false,autoScroll=true}) => {
+const EmblaCarousel = ({children,options,slides,buttons=false,autoScroll=true,dot}) => {
 
   const [emblaRef, emblaApi] = useEmblaCarousel(options
     , autoScroll ? [AutoScroll({  playOnInit: true })] : []
   )
   const [isPlaying, setIsPlaying] = useState(false)
-
+  const { selectedIndex, scrollSnaps, onDotButtonClick } = useDotButton(emblaApi);
   const {
     prevBtnDisabled,
     nextBtnDisabled,
@@ -48,17 +48,14 @@ const EmblaCarousel = ({children,options,slides,buttons=false,autoScroll=true}) 
 
 
   return (
-    <section className="w-full mx-auto px-5 md:px-10">
+    <section className="w-full mx-auto">
       <div className="overflow-hidden" ref={emblaRef}>
         <div className="flex touch-pan-y touch-pinch-zoom -ml-4">
-          {/* {slides.map((index) => ( */}
             {children}
-          {/* ))} */}
         </div>
       </div>
 
-      <div className="">
-        <div className="mt-5 flex gap-3">
+        <div className="m-5 flex gap-3">
           {buttons && 
           <>
           <PrevButton onClick={onPrevButtonClick} disabled={prevBtnDisabled} />
@@ -73,7 +70,16 @@ const EmblaCarousel = ({children,options,slides,buttons=false,autoScroll=true}) 
         </button>
           }
         </div>
-      </div>
+      {dot === true &&
+      <div className="flex flex-wrap justify-center my-3 gap-2 ">
+          {scrollSnaps.map((_, index) => (
+            <DotButton
+              key={index}
+              onClick={() => onDotButtonClick(index)}
+              className={`w-3 h-3   flex items-center justify-center rounded-lg ${index === selectedIndex ? 'bg-black dark:bg-white' : 'bg-lbtn dark:bg-dbtn'}`}
+            />
+          ))}
+        </div>}
     </section>
   )
 }

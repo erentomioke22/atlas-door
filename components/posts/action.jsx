@@ -19,7 +19,7 @@ export async function submitPost(values) {
   sanitizedTitle += `_${randomString}`;
  
   const faqs = values.faqs?.filter(faq => faq !== undefined && faq.question && faq.answer) || [];
-  const tocs = values.tocs?.filter(toc => toc !== undefined && toc.textContent) || [];
+  // const tocs = values.tocs?.filter(toc => toc !== undefined && toc.textContent) || [];
   const tags = values.tags?.filter(tag => tag !== undefined) || [];
 
   const existingTags = await prisma.tag.findMany({
@@ -51,51 +51,20 @@ export async function submitPost(values) {
           answer: faq.answer, 
         })), 
     },
-      tocs: { 
-        create:tocs.map((toc) => ({ 
-          link: toc.id, 
-          itemIndex: toc.itemIndex, 
-          level: toc.level, 
-          originalLevel: toc.originalLevel, 
-          textContent: toc.textContent, 
-        })), 
-    },
+    //   tocs: { 
+    //     create:tocs.map((toc) => ({ 
+    //       link: toc.id, 
+    //       itemIndex: toc.itemIndex, 
+    //       level: toc.level, 
+    //       originalLevel: toc.originalLevel, 
+    //       textContent: toc.textContent, 
+    //     })), 
+    // },
     },
     include: getPostDataInclude(session?.user?.id),
   })
   
-// console.log(newPost)
-  
-  // const deleteArchived = await prisma.archive.findMany({
-  //   where:{
-  //      userId:session?.user.id,
-  //      url:{
-  //       notIn:imagesKey
-  //     }
-  //   },
-  //   select:{
-  //     url:true
-  //   }
-  // })
-  
-  // console.log(deleteArchived.map((url)=>url.url))
-  // if(deleteArchived){
-  //   try{
-  //     await utapi.deleteFiles(deleteArchived.map((url)=>url.url));
-  //     await prisma.archive.deleteMany({
-  //       where:{
-  //         userId:session?.user.id,
-  //         url:{
-  //           in:imagesKey
-  //         }
-  //       }
-  //     })
-  //   }
-  //   catch(err){
-  //     console.error(err)
-  //     throw new Error('field to delete archive image')
-  //   }
-  // }
+
 
 
 if(!newPost)throw new Error("Failed to create the post");
@@ -122,7 +91,7 @@ export async function editPost(values) {
   if (!session) throw new Error("Unauthorized");
 
  const faqs = values.faqs?.filter(faq => faq !== undefined && faq.question && faq.answer) || [];
- const tocs = values.tocs?.filter(toc => toc !== undefined && toc.textContent) || [];
+//  const tocs = values.tocs?.filter(toc => toc !== undefined && toc.textContent) || [];
  const tags = values.tags?.filter(tag => tag !== undefined) || [];
   // console.log(values);
   // console.log(faqs);
@@ -136,43 +105,7 @@ export async function editPost(values) {
       },
     },
   });
-  // await prisma.post.update({ 
-  //   where: { 
-  //     id: values.postId 
-  //   },
-  //    data: { 
-  //     tags: { set: [], },
-  //    }, 
-  //   });
-  // console.log(values.rmFiles);
-  // if (values.rmFiles.length > 0) {
-  //   try {
-  //     await utapi.deleteFiles(values.rmFiles);
-  //   } catch (err) {
-  //     console.error(err);
-  //     throw new Error('Failed to delete archive image');
-  //   }
-  // }
 
-  // // Delete faqs that are no longer in the updated values
-  // await prisma.faq.deleteMany({
-  //   where: {
-  //     postId: values.postId,
-  //     // question: {
-  //     //   notIn: values.faqs.map(faq => faq.question),
-  //     // },
-  //   },
-  // });
-
-  // // Delete tocs that are no longer in the updated values
-  // await prisma.toc.deleteMany({
-  //   where: {
-  //     postId: values.postId,
-  //     // link: {
-  //     //   notIn: values.tocs.map(toc => toc.id),
-  //     // },
-  //   },
-  // });
 
   const newPost = await prisma.post.update({
     where: { id: values.postId },
@@ -206,26 +139,26 @@ export async function editPost(values) {
         //   },
         // })),
       },
-      tocs: {
-        deleteMany:{},
-        create:tocs.map(toc => ({
-          link:toc.id, 
-          itemIndex: toc.itemIndex, 
-          level: toc.level, 
-          originalLevel: toc.originalLevel, 
-          textContent: toc.textContent, 
-        })),
-        // update: values.tocs.map(toc => ({
-        //   where: { id: toc.id },
-        //   data: {
-        //     link: toc.link,
-        //     itemIndex: toc.itemIndex,
-        //     level: toc.level,
-        //     originalLevel: toc.originalLevel,
-        //     textContent: toc.textContent,
-        //   },
-        // })),
-      },
+      // tocs: {
+      //   deleteMany:{},
+      //   create:tocs.map(toc => ({
+      //     link:toc.id, 
+      //     itemIndex: toc.itemIndex, 
+      //     level: toc.level, 
+      //     originalLevel: toc.originalLevel, 
+      //     textContent: toc.textContent, 
+      //   })),
+      //   // update: values.tocs.map(toc => ({
+      //   //   where: { id: toc.id },
+      //   //   data: {
+      //   //     link: toc.link,
+      //   //     itemIndex: toc.itemIndex,
+      //   //     level: toc.level,
+      //   //     originalLevel: toc.originalLevel,
+      //   //     textContent: toc.textContent,
+      //   //   },
+      //   // })),
+      // },
     },
     include: getPostDataInclude(session?.user?.id),
   });
@@ -269,21 +202,7 @@ const deletedPost = await prisma.post.delete({
 }
 
 
-// export async function createArchive(url) {
 
-//   const session = await auth()
-//   if (!session) throw new Error("Unauthorized");
-  
-//   const newArchive = await prisma.archive.create({
-//       data:{
-//         url:url,
-//         userId:session?.user.id
-//       }
-//   })
-  
-//   return newArchive;
-  
-//   }
 
 
 

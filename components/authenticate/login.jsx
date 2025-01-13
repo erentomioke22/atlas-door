@@ -47,13 +47,13 @@ const Login = ({ show, setShow }) => {
 
   const formValues = [
     {
-      title: "email",
+      title: "ایمیل",
       name: "email",
       type: "email",
       error: errors.email?.message,
     },
     {
-      title: "password",
+      title: "پسورد",
       name: "password",
       type: showpass ? "text" : "password",
       error: errors.password?.message,
@@ -72,7 +72,7 @@ const Login = ({ show, setShow }) => {
                 return (
                   <div key={value.name}>
                     <Input
-                      title={value.title}
+                      placeholder={value.title}
                       name={value.name}
                       type={value.type}
                       error={value.error}

@@ -1,15 +1,11 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React from "react";
 import PostCard from "@components/posts/postCard";
 import LoadingPage from "@components/ui/loading/loadingPage";
 import Link from "next/link";
 import EmblaCarousel from "@components/ui/carousel/carousel";
 import { FaCaretRight } from "react-icons/fa6";
-import  Image  from "next/image";
-import { FaDollarSign } from "react-icons/fa6";
-import { IoTimerOutline } from "react-icons/io5";
-import { IoSpeedometerOutline } from "react-icons/io5";
 import AboutUs from "@components/aboutus";
 import axios from "axios";
 import { useQuery} from "@tanstack/react-query";
@@ -98,7 +94,7 @@ const projects=[
             />
          </div> */}
 
-          <div className="mt-10 text-center  space-y-5">
+          <div className="mt-10 text-center mx-auto  space-y-5">
             <h1 className="leading-normal text-balance text-4xl md:text-[60px] font-semibold tracking-tight ">
             تمرکز ما بر <span className="bg-gradient-to-tr text-clip from-blue to-darkgreen text-transparent bg-clip-text">کیفیت و عملکرد</span>   هربار تجربه ای زیبا را تضمین میکند
             </h1>

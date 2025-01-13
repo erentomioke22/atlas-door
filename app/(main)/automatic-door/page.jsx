@@ -1,8 +1,8 @@
-import Link from "next/link";
-import EmblaCarousel from "@components/ui/carousel/carousel";
-import { FaCaretRight } from "react-icons/fa6";
+// import Link from "next/link";
+// import EmblaCarousel from "@components/ui/carousel/carousel";
+// import { FaCaretRight } from "react-icons/fa6";
+// import ImageCom from "@components/ui/Image";
 import PostPage from "@components/posts/postPage";
-import ImageCom from "@components/ui/Image";
 
 
 export const metadata = {
