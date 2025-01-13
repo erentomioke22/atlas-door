@@ -37,7 +37,6 @@ const EditPost = ({ params }) => {
   const deleteMutation = useDeletePostMutation();
   const [files, setFiles] = useState([]);
   const [deletedPostFiles, setDeletedPostFiles] = useState([]);
-  const [rmThumbnailFile, setRmThumbnailFile] = useState([]);
   const [deletedFiles, setDeletedFiles] = useState([]);
   const [editIndex, setEditIndex] = useState(null);
     const [answer, setAnswer] = useState('');
@@ -48,37 +47,16 @@ const EditPost = ({ params }) => {
   const ydoc = useMemo(() => new YDoc(), []);
   const [preventNavigation, setPreventNavigation] = useState(false); 
   const [items, setItems] = useState([])
-  const blobUrlToUploadedUrlMap = [];
-  const [editorContent, setEditorContent] = useState();
   const [contentImages, setContentImage] = useState();
   const [thumnailIndex, setThumnailIndex] = useState()
   const [cancel, setCancel] = useState(false);
-  // const [thumnail, setThumnail] = useState()
-  // const [provider, setProvider] = useState(null);
-  // const [collabToken, setCollabToken] = useState();
-  // const hasCollab =parseInt(searchParams?.get("noCollab")) !== 1 && collabToken !== null;
-  // const searchParams = useSearchParams();
-  // const blobUrlToUploadedUrlMap = new Map();
-  // const [content, setContent] = useState();
-  // const [imageInput, setImageInput] = useState();
-  // const [modal, setModal] = useState(false);
-  // const [ThumbnailFile, setThumbnailFile] = useState([]);
 
-  // const ArchiveMutation = useCreateArchiveMutation();
-  // console.log(items)
 
   const baseUrl = `${process.env.NEXT_PUBLIC_BASE_URL}`;
 
   usePreventNavigation(preventNavigation);
 
-  // console.log(files)
-  // console.log(faqs);
-  // console.log(deletedPostFiles);
-  // console.log(deletedFiles);
-  // console.log(dropTag);
 
-
-  // console.log(thumnailIndex,contentImages)
 
   const {
     data: post,
@@ -314,14 +292,6 @@ const EditPost = ({ params }) => {
                              <div className="space-y-2">
                                  <div className="space-y-2">
                                  <p className="text-sm">Thumbnail preview</p>
-                                  {/* <ImageInput selectedImage={selectedImage}  setSelectedImage={setSelectedImage} selectedInputImage={selectedInputImage}  setSelectedInputImage={setSelectedInputImage} setValue={setValue} rmThumbnailFile={rmThumbnailFile} setRmThumbnailFile={setRmThumbnailFile}/> */}
-                                      {/* <div
-                                         className={`text-red  text-[10px] md:text-sm transition-opacity duration-300  ${
-                                           errors?.image?.message ? "opacity-100" : "opacity-0"
-                                         }`}
-                                       >
-                                         {errors?.image?.message}
-                                       </div> */} 
                                        {contentImages?.length > 0 ? 
                                         <EmblaCarousel options={{ loop: false,direction:'rtl' }} dot={true} autoScroll={false}>
                                                  {contentImages?.map((url,index) => (

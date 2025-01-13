@@ -2,7 +2,7 @@ import React from 'react'
 
 const EditPostLoading = () => {
   return (
-    <div className=" w-full mx-auto  md:w-2/3 ">
+    <div className=" w-full mx-auto  ">
     <div className="animate-pulse space-y-5 ">
 
        <div className=' flex-1 space-y-3 w-full'>
