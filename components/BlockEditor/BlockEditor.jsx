@@ -1,5 +1,3 @@
-"use client";
-
 import { EditorContent } from "@tiptap/react";
 import React, {  forwardRef, useRef ,useEffect} from "react";
 import { useBlockEditor } from "@hook/useBlockEditor";
