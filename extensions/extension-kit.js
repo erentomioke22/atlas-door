@@ -10,7 +10,7 @@ import {
   Details,
   DetailsContent,
   DetailsSummary,
-  // Document,
+  Document,
   Dropcursor,
   Emoji,
   Figcaption,
@@ -65,7 +65,7 @@ import Youtube from '@tiptap/extension-youtube'
 
 
 export const ExtensionKit = ({ provider }) => [
-  // Document,
+  Document,
   Columns,
   TaskList,
   TaskItem.configure({

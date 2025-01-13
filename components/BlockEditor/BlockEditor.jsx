@@ -1,5 +1,5 @@
 import { EditorContent } from "@tiptap/react";
-import React, {  forwardRef, useRef ,useEffect} from "react";
+import React, {  forwardRef, useRef } from "react";
 import { useBlockEditor } from "@hook/useBlockEditor";
 import LinkMenu from "@components/menus/LinkMenu/LinkMenu";
 import { TextMenu } from "@components/menus/TextMenu/TextMenu";
@@ -18,7 +18,6 @@ import { NewItemMenu } from "@components/menus/ContentItemMenu/NewItemMenu";
 // import { ContentItemMenu } from '@components/menus/ContentItemMenu/ContentItemMenu'
 // import { TableColumnMenu,TableRowMenu } from '@extensions/Table/menus'
 // import { ColumnsMenu } from '@extensions/MultiColumn/menus'
-// const isClient = typeof window !== 'undefined';
 
 export const BlockEditor = 
   forwardRef((
@@ -66,8 +65,6 @@ export const BlockEditor =
     ) {
       return null;
     }
-    // if (!isClient || !editor) return null;
-    // useEffect(() => { if (!editor) return null; }, [editor]);
 
     return (
       <div className="" ref={menuContainerRef}>

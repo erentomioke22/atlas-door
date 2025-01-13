@@ -5,9 +5,11 @@ import { ExtensionKit } from '@extensions/extension-kit'
 // import CollaborationCursor from '@tiptap/extension-collaboration-cursor'
 // import { userColors, userNames } from '../lib/constants'
 // import { randomElement } from '@lib/utils/index'
+import { getHierarchicalIndexes, TableOfContents } from '@tiptap-pro/extension-table-of-contents'
 
 // import  { AnyExtension, Editor } from '@tiptap/core'
 // import { TiptapCollabProvider, WebSocketStatus } from '@hocuspocus/provider'
+import  { Doc as YDoc } from 'yjs'
 // import  { EditorUser } from '../components/BlockEditor/types'
 // import { initialContent } from '@lib/data/initialContent'
 // import { Ai } from '@/extensions/Ai'
@@ -31,9 +33,6 @@ export const useBlockEditor = ({
   // const [collabState, setCollabState] = useState(
   //   provider ? WebSocketStatus.Connecting : WebSocketStatus.Disconnected,
   // )
-
-
-  
   const [prevNewFiles, setPrevNewFiles] = useState([]);
   const [tempRemovedFiles, setTempRemovedFiles] = useState([]);
 
@@ -131,7 +130,6 @@ export const useBlockEditor = ({
     //   console.log('Deleted Files:', deletedFiles, removedFiles);
     // },
     onUpdate: ({ editor }) => {
-      if (typeof window !== 'undefined'){
       onChange(editor.getHTML());
       setEditorContent(editor);
 
@@ -164,7 +162,6 @@ export const useBlockEditor = ({
       // console.log(removedFiles)
       // console.log('New Files:', newFiles);
       // console.log('Deleted Files:', deletedFiles, removedFiles);
-    }
     },
     },
     
@@ -177,7 +174,7 @@ export const useBlockEditor = ({
 
 
 useEffect(() => {
-  if (typeof window !== 'undefined' && editor && content !== editor.getHTML()) {
+  if (editor && content !== editor.getHTML()) {
     editor.commands.setContent(content)
     const html = editor.getHTML();
       const tempDiv = document.createElement('div');
@@ -192,16 +189,8 @@ useEffect(() => {
 
 
 
-
-
-
-
-
-
-
-
-// console.log(editor.getHTML())
-// console.log(editor.getJSON())
+console.log(editor.getHTML())
+console.log(editor.getJSON())
 
 
   // const users = useEditorState({
