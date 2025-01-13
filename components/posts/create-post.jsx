@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React from "react";
 import { useState} from "react";
@@ -10,7 +10,7 @@ import LoadingSpinner from "@components/ui/loading/loadingSpinner";
 import { postValidation } from "@lib/validation";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-// import BlockEditor from "@components/BlockEditor/BlockEditor";
+import BlockEditor from "@components/BlockEditor/BlockEditor";
 import {  useMemo,  } from 'react'
 import { Doc as YDoc } from 'yjs'
 import { useSession } from "next-auth/react";
@@ -24,8 +24,8 @@ import ImageCom from "@components/ui/Image";
 import usePreventNavigation from "@hook/usePreventNavigation";
 // import ImageInput from "@components/ui/imageInput";
 // import { FaSort } from "react-icons/fa6";
-import dynamic from 'next/dynamic'; 
-const BlockEditor = dynamic(() => import('@components/BlockEditor/BlockEditor'), { ssr: false });
+// import dynamic from 'next/dynamic'; 
+// const BlockEditor = dynamic(() => import('@components/BlockEditor/BlockEditor'), { ssr: false });
 
 const CreatePost = () => {
   const { data: session } = useSession();

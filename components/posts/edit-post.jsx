@@ -37,6 +37,7 @@ const EditPost = ({ params }) => {
   const deleteMutation = useDeletePostMutation();
   const [files, setFiles] = useState([]);
   const [deletedPostFiles, setDeletedPostFiles] = useState([]);
+  const [rmThumbnailFile, setRmThumbnailFile] = useState([]);
   const [deletedFiles, setDeletedFiles] = useState([]);
   const [editIndex, setEditIndex] = useState(null);
     const [answer, setAnswer] = useState('');
@@ -47,16 +48,23 @@ const EditPost = ({ params }) => {
   const ydoc = useMemo(() => new YDoc(), []);
   const [preventNavigation, setPreventNavigation] = useState(false); 
   const [items, setItems] = useState([])
+  const [editorContent, setEditorContent] = useState();
   const [contentImages, setContentImage] = useState();
   const [thumnailIndex, setThumnailIndex] = useState()
   const [cancel, setCancel] = useState(false);
-
 
   const baseUrl = `${process.env.NEXT_PUBLIC_BASE_URL}`;
 
   usePreventNavigation(preventNavigation);
 
+  // console.log(files)
+  // console.log(faqs);
+  // console.log(deletedPostFiles);
+  // console.log(deletedFiles);
+  // console.log(dropTag);
 
+
+  // console.log(thumnailIndex,contentImages)
 
   const {
     data: post,
@@ -311,7 +319,7 @@ const EditPost = ({ params }) => {
                                             type='button'
                                             className='relative block w-full'
                                             >
-                                             <div className= "h-full bg-gradient-to-tr p-3 from-lbtn to-lcard dark:from-dbtn dark:to-dcard rounded-xl items-center align-middle justify-center flex flex-col space-y-1 text-center">
+                                             <div className= "h-full bg-gradient-to-tr p-3 from-lbtn to-lcard dark:from-dbtn dark:to-dcard rounded-xl items-center align-middle justify-center flex flex-col space-y-1  text-center">
                                                  <div className=" text-lg p-3">
                                                    <FaImage />
                                                  </div>
@@ -544,6 +552,8 @@ const EditPost = ({ params }) => {
                     deletedFiles={deletedFiles}
                     setDeletedPostFiles={setDeletedPostFiles}
                     deletedPostFiles={deletedPostFiles}
+                    items={items}
+                    setItems={setItems}
                     ydoc={ydoc}
                     contentImages={contentImages} setContentImage={setContentImage}
                     thumnailIndex={thumnailIndex} setThumnailIndex={setThumnailIndex}
