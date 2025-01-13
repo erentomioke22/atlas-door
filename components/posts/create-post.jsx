@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import React from "react";
 import { useState} from "react";
@@ -13,17 +13,17 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import BlockEditor from "@components/BlockEditor/BlockEditor";
 import {  useMemo,  } from 'react'
 import { Doc as YDoc } from 'yjs'
-import usePreventNavigation from "@hook/usePreventNavigation";
 import { useSession } from "next-auth/react";
 import NotFound from "@app/(main)/not-found";
 import { useRouter } from "next/navigation";
 import EmblaCarousel from "@components/ui/carousel/carousel";
 import { FaImage } from "react-icons/fa6";
 import { FaCheck,FaQuestion } from "react-icons/fa";
-// import ImageInput from "@components/ui/imageInput";
-// import { FaSort } from "react-icons/fa6";
 import Accordion from "@components/ui/Accordion";
 import ImageCom from "@components/ui/Image";
+// import usePreventNavigation from "@hook/usePreventNavigation";
+// import ImageInput from "@components/ui/imageInput";
+// import { FaSort } from "react-icons/fa6";
 
 
 const CreatePost = () => {
@@ -34,7 +34,6 @@ const CreatePost = () => {
   const [editorContent,setEditorContent]=useState()
   const[deletedFiles,setDeletedFiles]=useState([])
   const[deletedPostFiles,setDeletedPostFiles]=useState([])
-  const [preventNavigation, setPreventNavigation] = useState(false); 
   const [thumnailIndex, setThumnailIndex] = useState(0)
   const [contentImages, setContentImage] = useState();
   const [cancel, setCancel] = useState(false);
@@ -44,6 +43,7 @@ const CreatePost = () => {
   const [faqs, setFaqs] = useState([]);
   const ydoc = useMemo(() => new YDoc(), [])
   const mutation = useSubmitPostMutation();
+  // const [preventNavigation, setPreventNavigation] = useState(false); 
   const baseUrl = `${process.env.NEXT_PUBLIC_BASE_URL}`;
   
   
@@ -53,7 +53,7 @@ const CreatePost = () => {
     NotFound()
   }
   
-  usePreventNavigation(preventNavigation);
+  // usePreventNavigation(preventNavigation);
 
   
 
@@ -90,7 +90,7 @@ const CreatePost = () => {
   const onSubmit = async (values) => {
     try{
       // console.log(values)
-      setPreventNavigation(true);   
+      // setPreventNavigation(true);   
 
         if (thumnailIndex && !thumnailIndex.startsWith('blob:')) {
           setValue('image', thumnailIndex);
@@ -98,7 +98,7 @@ const CreatePost = () => {
         //  console.log(values)
          mutation.mutate(values,{
            onSuccess: () => {
-             setPreventNavigation(false);
+            //  setPreventNavigation(false);
              reset();
              setDropTag([]);
              setFiles([])
