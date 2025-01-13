@@ -130,42 +130,42 @@ export const useBlockEditor = ({
     //   console.log(remainingFiles)
     //   console.log('Deleted Files:', deletedFiles, removedFiles);
     // },
-    onUpdate: ({ editor }) => {
-      if (typeof window !== 'undefined'){
-      onChange(editor.getHTML());
-      setEditorContent(editor);
+    // onUpdate: ({ editor }) => {
+    //   if (typeof window !== 'undefined'){
+    //   onChange(editor.getHTML());
+    //   setEditorContent(editor);
 
-      const html = editor.getHTML();
-      const tempDiv = document.createElement('div');
-      tempDiv.innerHTML = html;
-      const imgTags = tempDiv.getElementsByTagName('img');
-      const newFiles = Array.from(imgTags).map((img) => img.src);
-      setContentImage(newFiles)
-      const remainingFiles = files.filter((file) => newFiles.includes(file.url));
-      const removedFiles = files.filter((file) => !newFiles.includes(file.url));
-      setTempRemovedFiles((prev) => [...prev, ...removedFiles.filter((removedFile) => !prev.includes(removedFile.url))]);
-      const restoredFiles = tempRemovedFiles.filter((tempRemovedFile) => newFiles.includes(tempRemovedFile.url));  
-      const updatedFiles = [...remainingFiles, ...restoredFiles].filter((file, index, self) => index === self.findIndex((f) => f.url === file.url) ); 
-      setFiles(updatedFiles);
-      const removedFilesUrls = prevNewFiles.filter(prevNewFile =>!newFiles.includes(prevNewFile));
-      setDeletedFiles((prev) => [
-        ...prev,
-        ...removedFilesUrls.filter((removedFileUrl) => !prev.includes(removedFileUrl)),
-      ].filter((deletedFile) => !newFiles.includes(deletedFile)));
-      if (!newFiles.includes(thumnailIndex)) { 
-       const baseUrl = `${process.env.NEXT_PUBLIC_BASE_URL}`;
-        setThumnailIndex(newFiles.length > 0 ? newFiles[0].replace(baseUrl, '') : null); 
-       }
-      setValue('contentImages',newFiles)
-      // const removedFiles = prevNewFiles.filter((prevNewFile) => !newFiles.includes(prevNewFile.url));
-      // setFiles([...remainingFiles, ...restoredFiles]);
-      // setPrevNewFiles(newFiles);
+    //   const html = editor.getHTML();
+    //   const tempDiv = document.createElement('div');
+    //   tempDiv.innerHTML = html;
+    //   const imgTags = tempDiv.getElementsByTagName('img');
+    //   const newFiles = Array.from(imgTags).map((img) => img.src);
+    //   setContentImage(newFiles)
+    //   const remainingFiles = files.filter((file) => newFiles.includes(file.url));
+    //   const removedFiles = files.filter((file) => !newFiles.includes(file.url));
+    //   setTempRemovedFiles((prev) => [...prev, ...removedFiles.filter((removedFile) => !prev.includes(removedFile.url))]);
+    //   const restoredFiles = tempRemovedFiles.filter((tempRemovedFile) => newFiles.includes(tempRemovedFile.url));  
+    //   const updatedFiles = [...remainingFiles, ...restoredFiles].filter((file, index, self) => index === self.findIndex((f) => f.url === file.url) ); 
+    //   setFiles(updatedFiles);
+    //   const removedFilesUrls = prevNewFiles.filter(prevNewFile =>!newFiles.includes(prevNewFile));
+    //   setDeletedFiles((prev) => [
+    //     ...prev,
+    //     ...removedFilesUrls.filter((removedFileUrl) => !prev.includes(removedFileUrl)),
+    //   ].filter((deletedFile) => !newFiles.includes(deletedFile)));
+    //   if (!newFiles.includes(thumnailIndex)) { 
+    //    const baseUrl = `${process.env.NEXT_PUBLIC_BASE_URL}`;
+    //     setThumnailIndex(newFiles.length > 0 ? newFiles[0].replace(baseUrl, '') : null); 
+    //    }
+    //   setValue('contentImages',newFiles)
+    //   // const removedFiles = prevNewFiles.filter((prevNewFile) => !newFiles.includes(prevNewFile.url));
+    //   // setFiles([...remainingFiles, ...restoredFiles]);
+    //   // setPrevNewFiles(newFiles);
 
-      // console.log(removedFiles)
-      // console.log('New Files:', newFiles);
-      // console.log('Deleted Files:', deletedFiles, removedFiles);
-    }
-    },
+    //   // console.log(removedFiles)
+    //   // console.log('New Files:', newFiles);
+    //   // console.log('Deleted Files:', deletedFiles, removedFiles);
+    // }
+    // },
     },
     
     [ydoc, 
@@ -174,9 +174,7 @@ export const useBlockEditor = ({
     // [provider],
   )
 
-  if (!editor) {
-    return null;
-  }
+
 
 useEffect(() => {
   if (typeof window !== 'undefined' && editor && content !== editor.getHTML()) {
