@@ -21,7 +21,7 @@ import { FaImage } from "react-icons/fa6";
 import { FaCheck,FaQuestion } from "react-icons/fa";
 import Accordion from "@components/ui/Accordion";
 import ImageCom from "@components/ui/Image";
-// import usePreventNavigation from "@hook/usePreventNavigation";
+import usePreventNavigation from "@hook/usePreventNavigation";
 // import ImageInput from "@components/ui/imageInput";
 // import { FaSort } from "react-icons/fa6";
 
@@ -43,8 +43,8 @@ const CreatePost = () => {
   const [faqs, setFaqs] = useState([]);
   const ydoc = useMemo(() => new YDoc(), [])
   const mutation = useSubmitPostMutation();
-  // const [preventNavigation, setPreventNavigation] = useState(false); 
-  // const baseUrl = `${process.env.NEXT_PUBLIC_BASE_URL}`;
+  const [preventNavigation, setPreventNavigation] = useState(false); 
+  const baseUrl = `${process.env.NEXT_PUBLIC_BASE_URL}`;
   
   
   
@@ -53,7 +53,7 @@ const CreatePost = () => {
     NotFound()
   }
   
-  // usePreventNavigation(preventNavigation);
+  usePreventNavigation(preventNavigation);
 
   
 
@@ -90,7 +90,7 @@ const CreatePost = () => {
   const onSubmit = async (values) => {
     try{
       // console.log(values)
-      // setPreventNavigation(true);   
+      setPreventNavigation(true);   
 
         if (thumnailIndex && !thumnailIndex.startsWith('blob:')) {
           setValue('image', thumnailIndex);
@@ -98,7 +98,7 @@ const CreatePost = () => {
         //  console.log(values)
          mutation.mutate(values,{
            onSuccess: () => {
-            //  setPreventNavigation(false);
+             setPreventNavigation(false);
              reset();
              setDropTag([]);
              setFiles([])
@@ -222,195 +222,195 @@ const CreatePost = () => {
        
 
                     { !cancel &&
-//               <div className="flex justify-between  w-full sticky top-0 bg-white dark:bg-black z-[10] py-2 px-2 sm:px-5">
-//                     <div className="">
+              <div className="flex justify-between  w-full sticky top-0 bg-white dark:bg-black z-[10] py-2 px-2 sm:px-5">
+                    <div className="">
 
                    
-//                       <Dropdown 
-//                           title={"CRAETE POST"}
-//                           btnStyle={"bg-black text-white  border-black dark:border-white dark:bg-white dark:text-black rounded-full border-2 text-[10px] md:text-sm px-3  py-1  md:text-sm duration-300  disabled:cursor-not-allowed   "}
-//                           className={"right-0  z-50 h-fit w-72 px-3 bg-white border border-lbtn  dark:border-dbtn dark:bg-black"}>
-//                              <div className="space-y-2">
-//                                  <div className="space-y-2">
-//                                  <p className="text-sm">Thumbnail preview</p>
-//                                   {/* <ImageInput selectedImage={selectedImage}  setSelectedImage={setSelectedImage} selectedInputImage={selectedInputImage}  setSelectedInputImage={setSelectedInputImage} setValue={setValue} rmThumbnailFile={rmThumbnailFile} setRmThumbnailFile={setRmThumbnailFile}/> */}
-//                                       {/* <div
-//                                          className={`text-red  text-[10px] md:text-sm transition-opacity duration-300  ${
-//                                            errors?.image?.message ? "opacity-100" : "opacity-0"
-//                                          }`}
-//                                        >
-//                                          {errors?.image?.message}
-//                                        </div> */} 
-//                                        {contentImages?.length > 0 ? 
-//                                         <EmblaCarousel options={{ loop: false,direction:'rtl' }} dot={true} autoScroll={false}>
-//                                                  {contentImages?.map((url,index) => (
-//                                                   <div className="transform translate-x-0 translate-y-0 translate-z-0  flex-none basis-[100%] h-44 min-w-0 pl-4 " onClick={()=>{setThumnailIndex(url.replace(baseUrl, ''))}} key={index}>
-//                                                      <div className={`${url.replace(baseUrl, '') === thumnailIndex && 'border-dashed border-4 border-black dark:border-white '} rounded-xl w-full h-44 relative cursor-pointer`}>
-//                                                         <ImageCom className={`  w-full h-full object-cover rounded-xl`} size={'w-full h-full object-cover rounded-xl'} src={`${url.replace(baseUrl, '')}`} alt="thumnail" />
-//                                                         {url.replace(baseUrl, '') === thumnailIndex &&
-//                                                           <div className="absolute  inset-0 top-0 right-0  text-5xl text-white bg-black bg-opacity-50  rounded-xl flex items-center justify-center">
-//                                                            <h1><FaCheck /></h1>
-//                                                          </div>}
-//                                                     </div>
-//                                                      </div>
-//                                                  ))}
-//                                         </EmblaCarousel> 
-//                                         :
-//                                             <div 
-//                                             type='button'
-//                                             className='relative block w-full'
-//                                             >
-//                                              <div className= "h-full bg-gradient-to-tr p-3 from-lbtn to-lcard dark:from-dbtn dark:to-dcard rounded-xl items-center align-middle justify-center flex flex-col space-y-1 text-lfont text-center">
-//                                                  <div className=" text-lg p-3">
-//                                                    <FaImage />
-//                                                  </div>
-//                                                  <p className="text-sm text-black">Add Image to Content and select one of thats Images for your post Thumnail</p>
-//                                                  <p className="text-[10px]">Add thumnail is good for visit and craete a popular post</p>
-//                                               </div>
-//                                             </div>
-//                                         }
+                      <Dropdown 
+                          title={"CRAETE POST"}
+                          btnStyle={"bg-black text-white  border-black dark:border-white dark:bg-white dark:text-black rounded-full border-2 text-[10px] md:text-sm px-3  py-1  md:text-sm duration-300  disabled:cursor-not-allowed   "}
+                          className={"right-0  z-50 h-fit w-72 px-3 bg-white border border-lbtn  dark:border-dbtn dark:bg-black"}>
+                             <div className="space-y-2">
+                                 <div className="space-y-2">
+                                 <p className="text-sm">Thumbnail preview</p>
+                                  {/* <ImageInput selectedImage={selectedImage}  setSelectedImage={setSelectedImage} selectedInputImage={selectedInputImage}  setSelectedInputImage={setSelectedInputImage} setValue={setValue} rmThumbnailFile={rmThumbnailFile} setRmThumbnailFile={setRmThumbnailFile}/> */}
+                                      {/* <div
+                                         className={`text-red  text-[10px] md:text-sm transition-opacity duration-300  ${
+                                           errors?.image?.message ? "opacity-100" : "opacity-0"
+                                         }`}
+                                       >
+                                         {errors?.image?.message}
+                                       </div> */} 
+                                       {contentImages?.length > 0 ? 
+                                        <EmblaCarousel options={{ loop: false,direction:'rtl' }} dot={true} autoScroll={false}>
+                                                 {contentImages?.map((url,index) => (
+                                                  <div className="transform translate-x-0 translate-y-0 translate-z-0  flex-none basis-[100%] h-44 min-w-0 pl-4 " onClick={()=>{setThumnailIndex(url.replace(baseUrl, ''))}} key={index}>
+                                                     <div className={`${url.replace(baseUrl, '') === thumnailIndex && 'border-dashed border-4 border-black dark:border-white '} rounded-xl w-full h-44 relative cursor-pointer`}>
+                                                        <ImageCom className={`  w-full h-full object-cover rounded-xl`} size={'w-full h-full object-cover rounded-xl'} src={`${url.replace(baseUrl, '')}`} alt="thumnail" />
+                                                        {url.replace(baseUrl, '') === thumnailIndex &&
+                                                          <div className="absolute  inset-0 top-0 right-0  text-5xl text-white bg-black bg-opacity-50  rounded-xl flex items-center justify-center">
+                                                           <h1><FaCheck /></h1>
+                                                         </div>}
+                                                    </div>
+                                                     </div>
+                                                 ))}
+                                        </EmblaCarousel> 
+                                        :
+                                            <div 
+                                            type='button'
+                                            className='relative block w-full'
+                                            >
+                                             <div className= "h-full bg-gradient-to-tr p-3 from-lbtn to-lcard dark:from-dbtn dark:to-dcard rounded-xl items-center align-middle justify-center flex flex-col space-y-1 text-lfont text-center">
+                                                 <div className=" text-lg p-3">
+                                                   <FaImage />
+                                                 </div>
+                                                 <p className="text-sm text-black">Add Image to Content and select one of thats Images for your post Thumnail</p>
+                                                 <p className="text-[10px]">Add thumnail is good for visit and craete a popular post</p>
+                                              </div>
+                                            </div>
+                                        }
 
-//                                  </div>
-//                                  <p className="text-sm">Title , Tags & desc </p>
-//                                  <div>
-//                                   <TextArea
-//                                   placeholder={"Write Your Post Title ..."}
-//                                   name={"title"}
-//                                   type={"text"}
-//                                   ref={register} 
-//                                   // watch={watch('title')}
-//                                   label={false}
-//                                   className={
-//                                     "resize-none  bg-lcard dark:bg-dcard rounded-lg placeholder:text-[#000000a4] dark:placeholder:text-lfont text-lg  p-2 focus:ring-2 focus:ring-black dark:focus:ring-white outline-none duration-200"
-//                                   }
-//                                   error={errors?.title?.message}
-//                                     {...register("title")}
-//                                   />
-//                                  </div>
+                                 </div>
+                                 <p className="text-sm">Title , Tags & desc </p>
+                                 <div>
+                                  <TextArea
+                                  placeholder={"Write Your Post Title ..."}
+                                  name={"title"}
+                                  type={"text"}
+                                  ref={register} 
+                                  // watch={watch('title')}
+                                  label={false}
+                                  className={
+                                    "resize-none  bg-lcard dark:bg-dcard rounded-lg placeholder:text-[#000000a4] dark:placeholder:text-lfont text-lg  p-2 focus:ring-2 focus:ring-black dark:focus:ring-white outline-none duration-200"
+                                  }
+                                  error={errors?.title?.message}
+                                    {...register("title")}
+                                  />
+                                 </div>
 
-//                                  <div>
-//                                   <TextArea
-//                                   placeholder={"Write Your Post Description ..."}
-//                                   name={"desc"}
-//                                   type={"text"}
-//                                   label={false}
-//                                   ref={register}
-//                                   className={
-//                                     "resize-none  bg-lcard dark:bg-dcard rounded-lg placeholder:text-[#000000a4] dark:placeholder:text-lfont text-sm  p-2 focus:ring-2 focus:ring-black dark:focus:ring-white outline-none duration-200"
-//                                   }
-//                                   error={errors?.desc?.message}
-//                                     {...register("desc")}
-//                                   />
-//                                  </div>
+                                 <div>
+                                  <TextArea
+                                  placeholder={"Write Your Post Description ..."}
+                                  name={"desc"}
+                                  type={"text"}
+                                  label={false}
+                                  ref={register}
+                                  className={
+                                    "resize-none  bg-lcard dark:bg-dcard rounded-lg placeholder:text-[#000000a4] dark:placeholder:text-lfont text-sm  p-2 focus:ring-2 focus:ring-black dark:focus:ring-white outline-none duration-200"
+                                  }
+                                  error={errors?.desc?.message}
+                                    {...register("desc")}
+                                  />
+                                 </div>
                                  
-//                                  <div>
-//                                  <Dropdown
-//                                    title={
-//                                     <div className="flex space-x-5 border-2 border-black dark:border-white p-2 rounded-lg w-full max-h-36 overflow-y-auto text-wrap">
-//                                     <ul className="flex flex-wrap gap-2 text-sm w-full" disabled={dropTag.length === 4}>
-//                                       {dropTag.map((dropTag) => (
-//                                         <li  disabled={dropTag.length === 4} key={dropTag} 
-//                                             className="bg-lcard px-2 py-1 rounded-lg dark:bg-dcard space-x-2 "
-//                                             onClick={() => handleRemoveTag(dropTag)}>
-//                                           <span className="text-lfont">#</span>
-//                                              {dropTag}{' '}
-//                                           {/* <span  ><IoClose className="pt-1"/></span> */}
-//                                         </li>
-//                                       ))}
-//                                       <li className="my-auto w-fit">
-//                                        <input
-//                                          type="text"
-//                                          placeholder={
-//                                           //  dropTag.length < 4
-//                                           //    ? 
-//                                              "Add up to 4 tags for post..."
-//                                             //  : `You can only enter max. of ${4} tags`
-//                                          }
-//                                          onKeyDown={handleInputKeyPress}
-//                                         //  disabled={dropTag.length === 4}
-//                                          className="bg-transparent ring-0 outline-none w-fit text-wrap disabled:cursor-not-allowed px-1 "
-//                                        />
-//                                       </li>
-//                                     </ul>
-//                                   </div>
-//                                       } 
-//                                          btnStyle={"text-lg w-full"}
-//                                          className={"left-0 -top-44 z-[55] h-44 overflow-auto w-62 rounded-lg bg-white border border-lbtn  dark:border-dbtn dark:bg-black" }
-//                                        >
-//                                          <div className="  text-start px-2 text-sm space-y-2">
-//                                            {tags.map((tag)=>{
-//                                              return(
-//                                               <div
-//                                                 key={tag.name}
-//                                                 onClick={() => handleTag({ name: tag.name })}
-//                                                 className={` ${
-//                                                   dropTag.includes(tag.name)
-//                                                     ? "bg-black dark:bg-white text-white dark:text-black"
-//                                                     : "hover:bg-lcard dark:hover:bg-dcard text-black dark:text-white"
-//                                                 }  uppercase rounded-lg duration-500 px-3 py-1 cursor-pointer`}
-//                                               >
-//                                                 <p>{tag.name}</p>
-//                                                 <p className={` 
-//                                                      text-lfont
-//                                                   text-[10px] line-clamp-2`} >{tag.info}</p>
-//                                               </div>
-//                                              )
-//                                            })}
-//                                          </div>
-//                                  </Dropdown>
+                                 <div>
+                                 <Dropdown
+                                   title={
+                                    <div className="flex space-x-5 border-2 border-black dark:border-white p-2 rounded-lg w-full max-h-36 overflow-y-auto text-wrap">
+                                    <ul className="flex flex-wrap gap-2 text-sm w-full" disabled={dropTag.length === 4}>
+                                      {dropTag.map((dropTag) => (
+                                        <li  disabled={dropTag.length === 4} key={dropTag} 
+                                            className="bg-lcard px-2 py-1 rounded-lg dark:bg-dcard space-x-2 "
+                                            onClick={() => handleRemoveTag(dropTag)}>
+                                          <span className="text-lfont">#</span>
+                                             {dropTag}{' '}
+                                          {/* <span  ><IoClose className="pt-1"/></span> */}
+                                        </li>
+                                      ))}
+                                      <li className="my-auto w-fit">
+                                       <input
+                                         type="text"
+                                         placeholder={
+                                          //  dropTag.length < 4
+                                          //    ? 
+                                             "Add up to 4 tags for post..."
+                                            //  : `You can only enter max. of ${4} tags`
+                                         }
+                                         onKeyDown={handleInputKeyPress}
+                                        //  disabled={dropTag.length === 4}
+                                         className="bg-transparent ring-0 outline-none w-fit text-wrap disabled:cursor-not-allowed px-1 "
+                                       />
+                                      </li>
+                                    </ul>
+                                  </div>
+                                      } 
+                                         btnStyle={"text-lg w-full"}
+                                         className={"left-0 -top-44 z-[55] h-44 overflow-auto w-62 rounded-lg bg-white border border-lbtn  dark:border-dbtn dark:bg-black" }
+                                       >
+                                         <div className="  text-start px-2 text-sm space-y-2">
+                                           {tags.map((tag)=>{
+                                             return(
+                                              <div
+                                                key={tag.name}
+                                                onClick={() => handleTag({ name: tag.name })}
+                                                className={` ${
+                                                  dropTag.includes(tag.name)
+                                                    ? "bg-black dark:bg-white text-white dark:text-black"
+                                                    : "hover:bg-lcard dark:hover:bg-dcard text-black dark:text-white"
+                                                }  uppercase rounded-lg duration-500 px-3 py-1 cursor-pointer`}
+                                              >
+                                                <p>{tag.name}</p>
+                                                <p className={` 
+                                                     text-lfont
+                                                  text-[10px] line-clamp-2`} >{tag.info}</p>
+                                              </div>
+                                             )
+                                           })}
+                                         </div>
+                                 </Dropdown>
 
 
-//  <div
-//    className={`text-red  text-[10px] md:text-sm transition-opacity duration-300  ${
-//      errors?.tags?.message ? "opacity-100" : "opacity-0"
-//    }`}
-//  >
-//    {errors?.tags?.message}
-//  </div>
+ <div
+   className={`text-red  text-[10px] md:text-sm transition-opacity duration-300  ${
+     errors?.tags?.message ? "opacity-100" : "opacity-0"
+   }`}
+ >
+   {errors?.tags?.message}
+ </div>
 
-// </div>
+</div>
 
 
 
-//      <div className=" w-full ">
+     <div className=" w-full ">
 
-//            <button
-//            className="bg-black rounded-lg text-white dark:bg-white dark:text-black w-full text-sm py-2 disabled:brightness-90 disabled:cursor-not-allowed "
-//            disabled={mutation.isPending}
-//              type="submit"
-//            >
-//              {
-//              mutation.isPending
-//              ? <LoadingSpinner color={"text-black dark:text-white dark:fill-black fill-white mx-auto"}/>  : "CRAETE POST"}
-//            </button>     
+           <button
+           className="bg-black rounded-lg text-white dark:bg-white dark:text-black w-full text-sm py-2 disabled:brightness-90 disabled:cursor-not-allowed "
+           disabled={mutation.isPending}
+             type="submit"
+           >
+             {
+             mutation.isPending
+             ? <LoadingSpinner color={"text-black dark:text-white dark:fill-black fill-white mx-auto"}/>  : "CRAETE POST"}
+           </button>     
 
           
-//         </div>
+        </div>
 
 
 
 
-//                           </div>
+                          </div>
                                     
-//                        </Dropdown>   
+                       </Dropdown>   
 
 
 
-//                     </div>
+                    </div>
                     
-//                         <div>
-//                           <button
-//                               className={"bg-lcard text-lfont dark:bg-dcard rounded-full text-[10px] md:text-sm px-3 w-full py-1 border-2 "}
-//                               onClick={() => setCancel(true)}
-//                               type="button"
-//                                     >
-//                                   cancel
-//                           </button>
-//                         </div>
+                        <div>
+                          <button
+                              className={"bg-lcard text-lfont dark:bg-dcard rounded-full text-[10px] md:text-sm px-3 w-full py-1 border-2 "}
+                              onClick={() => setCancel(true)}
+                              type="button"
+                                    >
+                                  cancel
+                          </button>
+                        </div>
 
 
-//               </div> 
-<></>
+              </div> 
+
                       }
               <div className="flex  px-2 sm:px-5 py-2 w-full sticky top-0 z-[10]">
 
@@ -442,7 +442,7 @@ const CreatePost = () => {
 
 
             <div className="w-full md:w-2/3 mx-auto  space-y-3 px-3" >
-         {/* {session && 
+         {session && 
                      <div className="flex gap-2">
                       <div className="relative h-9 w-9">
                        <ImageCom src={session?.user.image} className="h-9 w-9 rounded-lg" size={'h-9 w-9'} alt="user Avatar" />
@@ -452,7 +452,7 @@ const CreatePost = () => {
                          <p className=" text-lfont text-[10px]">{new Date().toLocaleDateString()}</p>
                        </div>
                      </div>
-         } */}
+         }
 
 
 
