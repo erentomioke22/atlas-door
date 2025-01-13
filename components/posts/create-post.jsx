@@ -13,7 +13,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import BlockEditor from "@components/BlockEditor/BlockEditor";
 import {  useMemo,  } from 'react'
 import { Doc as YDoc } from 'yjs'
-import usePreventNavigation from "@hook/usePreventNavigation";
+// import usePreventNavigation from "@hook/usePreventNavigation";
 import { useSession } from "next-auth/react";
 import NotFound from "@app/(main)/not-found";
 import { useRouter } from "next/navigation";
@@ -34,7 +34,7 @@ const CreatePost = () => {
   const [editorContent,setEditorContent]=useState()
   const[deletedFiles,setDeletedFiles]=useState([])
   const[deletedPostFiles,setDeletedPostFiles]=useState([])
-  const [preventNavigation, setPreventNavigation] = useState(false); 
+  // const [preventNavigation, setPreventNavigation] = useState(false); 
   const [thumnailIndex, setThumnailIndex] = useState(0)
   const [contentImages, setContentImage] = useState();
   const [cancel, setCancel] = useState(false);
@@ -53,7 +53,7 @@ const CreatePost = () => {
     NotFound()
   }
   
-  usePreventNavigation(preventNavigation);
+  // usePreventNavigation(preventNavigation);
 
   
   // const queryClient = useQueryClient();
@@ -99,7 +99,7 @@ const CreatePost = () => {
   const onSubmit = async (values) => {
     try{
       // console.log(values)
-      setPreventNavigation(true);   
+      // setPreventNavigation(true);   
 
         if (thumnailIndex && !thumnailIndex.startsWith('blob:')) {
           setValue('image', thumnailIndex);
@@ -107,7 +107,7 @@ const CreatePost = () => {
         //  console.log(values)
          mutation.mutate(values,{
            onSuccess: () => {
-             setPreventNavigation(false);
+            //  setPreventNavigation(false);
              reset();
              setDropTag([]);
              setFiles([])
