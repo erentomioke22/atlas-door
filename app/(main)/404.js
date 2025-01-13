@@ -1,9 +1,6 @@
-// pages/404.js
-
 import Link from 'next/link'
-import styles from '../styles/NotFound.module.css' // Assuming you have a CSS module for styling
 
-const Custom404 = () => {
+export default  Custom404 = () => {
   return (
     <div >
       <h1 >Page Not Found</h1>
@@ -17,6 +14,5 @@ const Custom404 = () => {
   )
 }
 
-export default Custom404;
 
   

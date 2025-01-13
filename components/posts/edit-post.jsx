@@ -331,7 +331,7 @@ const EditPost = ({ params }) => {
                                                  {contentImages?.map((url,index) => (
                                                   <div className="transform translate-x-0 translate-y-0 translate-z-0  flex-none basis-[100%] h-44 min-w-0 pl-4 " onClick={()=>{setThumnailIndex(url.replace(baseUrl, ''))}} key={index}>
                                                      <div className={`${url.replace(baseUrl, '') === thumnailIndex && 'border-dashed border-4 border-black dark:border-white '} rounded-xl w-full h-44 relative cursor-pointer`}>
-                                                        <img className={`  w-full h-full object-cover rounded-xl`} src={`${url.replace(baseUrl, '')}`} alt="thumnail" />
+                                                     <ImageCom className={`  w-full h-full object-cover rounded-xl`} size={'w-full h-full object-cover rounded-xl'} src={`${url.replace(baseUrl, '')}`} alt="thumnail" />
                                                         {url.replace(baseUrl, '') === thumnailIndex &&
                                                           <div className="absolute  inset-0 top-0 right-0  text-5xl text-white bg-black bg-opacity-50  rounded-xl flex items-center justify-center">
                                                            <h1><FaCheck /></h1>
