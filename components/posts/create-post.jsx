@@ -455,32 +455,30 @@ const CreatePost = () => {
          }
 
 
-
-              {/* <Controller
-                  name='content'
-                  control={control}
-                  render={({ field :{ onChange, onBlur, value, name, ref } }) => (
-                    <BlockEditor
-                     content={value} 
-                     onChange={onChange} 
-                     ref={ref} 
-                     ydoc={ydoc} 
-                     files={files} 
-                     setFiles={setFiles} 
-                     setEditorContent={setEditorContent} 
-                     setDeletedFiles={setDeletedFiles} 
-                     deletedFiles={deletedFiles} 
-                     setDeletedPostFiles={setDeletedPostFiles} 
-                     deletedPostFiles={deletedPostFiles} 
-                     setValue={setValue} 
-                     contentImages={contentImages} setContentImage={setContentImage}
-                     thumnailIndex={thumnailIndex} setThumnailIndex={setThumnailIndex}
-                     //  hasCollab={hasCollab}  
-                    //  provider={provider} 
-                     />
-                    
-                  )}
-               /> */}
+              <Controller
+                name="content"
+                control={control}
+                render={({ field: { onChange, onBlur, value, name, ref } }) => (
+                  <BlockEditor
+                    content={value}
+                    onChange={onChange}
+                    ref={ref}
+                    setValue={setValue}
+                    files={files}
+                    setFiles={setFiles}
+                    setEditorContent={setEditorContent}
+                    setDeletedFiles={setDeletedFiles}
+                    deletedFiles={deletedFiles}
+                    setDeletedPostFiles={setDeletedPostFiles}
+                    deletedPostFiles={deletedPostFiles}
+                    ydoc={ydoc}
+                    contentImages={contentImages} setContentImage={setContentImage}
+                    thumnailIndex={thumnailIndex} setThumnailIndex={setThumnailIndex}
+                    // hasCollab={hasCollab}
+                    // provider={provider}
+                  />
+                )}
+              />
               <div
                 className={`text-red mt-2 text-[10px] md:text-sm transition-opacity duration-300  ${
                   errors?.content?.message ? "opacity-100" : "opacity-0"
