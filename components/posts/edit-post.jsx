@@ -25,6 +25,11 @@ import EditPostLoading from "@components/ui/loading/editPostLoading";
 import usePreventNavigation from "@hook/usePreventNavigation";
 import { FaQuestion } from "react-icons/fa";
 import NotFound from "@app/(main)/not-found";
+import { useUploadThing } from "@lib/uploadthing";
+import EmblaCarousel from "@components/ui/carousel/carousel";
+import { FaImage } from "react-icons/fa6";
+import { FaCheck } from "react-icons/fa";
+
 
 
 const EditPost = ({ params }) => {
@@ -34,32 +39,42 @@ const EditPost = ({ params }) => {
   const router = useRouter();
   const mutation = useEditPostMutation();
   const deleteMutation = useDeletePostMutation();
-  const [question, setQuestion] = useState("");
-  const [answer, setAnswer] = useState("");
-  const [faqs, setFaqs] = useState([]);
   const [files, setFiles] = useState([]);
   const [deletedPostFiles, setDeletedPostFiles] = useState([]);
   const [rmThumbnailFile, setRmThumbnailFile] = useState([]);
   const [deletedFiles, setDeletedFiles] = useState([]);
   const [editIndex, setEditIndex] = useState(null);
+    const [answer, setAnswer] = useState('');
+    const [question, setQuestion] = useState('');
+    const [faqs, setFaqs] = useState([]);
   const [selectedImage, setSelectedImage] = useState();
   const [selectedInputImage, setSelectedInputImage] = useState();
+  const ydoc = useMemo(() => new YDoc(), []);
+  const [preventNavigation, setPreventNavigation] = useState(false); 
+  const [items, setItems] = useState([])
+  const blobUrlToUploadedUrlMap = [];
+  const [editorContent, setEditorContent] = useState();
+  const [contentImages, setContentImage] = useState();
+  const [thumnailIndex, setThumnailIndex] = useState()
+  const [cancel, setCancel] = useState(false);
+  // const [thumnail, setThumnail] = useState()
   // const [provider, setProvider] = useState(null);
   // const [collabToken, setCollabToken] = useState();
   // const hasCollab =parseInt(searchParams?.get("noCollab")) !== 1 && collabToken !== null;
   // const searchParams = useSearchParams();
-  const ydoc = useMemo(() => new YDoc(), []);
-  const [preventNavigation, setPreventNavigation] = useState(false); 
-  const [items, setItems] = useState([])
   // const blobUrlToUploadedUrlMap = new Map();
   // const [content, setContent] = useState();
   // const [imageInput, setImageInput] = useState();
   // const [modal, setModal] = useState(false);
   // const [ThumbnailFile, setThumbnailFile] = useState([]);
-  const [editorContent, setEditorContent] = useState();
+
   // const ArchiveMutation = useCreateArchiveMutation();
   // console.log(items)
+
+  const baseUrl = `${process.env.NEXT_PUBLIC_BASE_URL}`;
+
   usePreventNavigation(preventNavigation);
+
   // console.log(files)
   // console.log(faqs);
   // console.log(deletedPostFiles);
@@ -67,7 +82,7 @@ const EditPost = ({ params }) => {
   // console.log(dropTag);
 
 
-
+  // console.log(thumnailIndex,contentImages)
 
   const {
     data: post,
@@ -80,19 +95,12 @@ const EditPost = ({ params }) => {
     queryKey: ["edit-post", params.title],
     queryFn: async () => {
       const response = await axios.get(`/api/posts/edit-post/${params.title}`);
+      console.log(response)
       return response.data;
     },
   });
 
   // console.log(post);
-
-  if (status === "success" && post?.length < 0) {
-    return (
-      <p className="text-center text-muted-foreground">
-        No posts found. Start following people to see their posts here.
-      </p>
-    );
-  }
 
   if (status === "error") {
     return (
@@ -101,6 +109,14 @@ const EditPost = ({ params }) => {
       </p>
     );
   }
+  if (status === "success" && post?.error) {
+    return (
+      <p className="text-center text-muted-foreground">
+        No posts found. Start following people to see their posts here.
+      </p>
+    );
+  }
+
 
   if(!session || !post){
     NotFound()
@@ -118,155 +134,82 @@ const EditPost = ({ params }) => {
     getValues
   } = useForm({
     defaultValues: {
-      postId: post?.id,
+      postId: '',
       title: '',
       desc:'',
       image:'',
+      rmfiles:[],
       contentImages: [],
       content: '',
       tags: [],
       faqs:[],
-      tocs:[]
+
     },
     resolver: yupResolver(postValidation),
   });
 
   useEffect(() => {
-    if (post) {
+    if (post?.id) {
       setValue("title", post?.title);
       setValue("desc", post?.desc);
       setValue("postId", post?.id);
       setValue("content", post?.content);
-      setValue("faqs", post?.faqs);
       setValue("image", post?.images[0]);
-      setValue("contentImages", post?.contentImages);
-      setValue('tocs',post?.tocs.map(toc => toc));
       setValue("tags",post?.tags.map((tag) => tag.name));
       setImageUrl(post?.images[0]);
-      setItems(post?.tocs)
-      setFaqs(post?.faqs)
       setDropTag(post?.tags.map((tag) => tag.name));
       setSelectedImage(post?.images[0]);
       setDeletedPostFiles((prevFiles) => [...prevFiles, post?.images[0]]);
+      setThumnailIndex(post?.images[0])
+      setValue("contentImages", post?.contentImages);
+      setFaqs(post?.faqs)
+      setValue("faqs", post?.faqs);
+
+
       // setContent(post?.content);
       // setDeletedPostFiles([...deletedPostFiles, post?.images[0]]);
     }
-  }, [post,
+  }, [post?.id
     // setValue,
     //  deletedPostFiles
     ]);
 
-// console.log(getValues('tocs'))
-
-
-
-  // const { startUpload, isUploading } = useUploadThing("thumbnail", {
-  //   onClientUploadComplete: (data) => {
-  //     toast.success("uploaded successfully!");
-  //     console.log(data);
-  //     setValue("image", data[0].url);
-  //   },
-  //   onUploadError: () => {
-  //     throw new Error("error occurred while uploading")
-  //   },
-  //   onUploadBegin: ({ file }) => {
-  //     console.log("upload has begun for", file);
-  //   },
-  // });
-
-  // const { startUpload: postUpload, isUploading: postIsUploading } =
-  //   useUploadThing("post", {
-  //     onClientUploadComplete: (data) => {
-  //       toast.success("uploaded successfully!");
-  //       console.log(data);
-  //       return data[0].url;
-  //     },
-  //     onUploadError: () => {
-  //       throw new Error("error occurred while uploading")
-  //     },
-  //     onUploadBegin: ({ file }) => {
-  //       console.log("upload has begun for", file);
-  //     },
-  //   });
 
     
-  const onSubmit = async (values) => {
-    try {
-      // console.log(values)
-      setPreventNavigation(true);
-      // const mixRemoves = [...deletedFiles, rmThumbnailFile];
-      // const removeKey = mixRemoves.map((mixRemove) => {
-      //   if (typeof mixRemove === "string") {
-      //     return mixRemove.split("/").pop();
-      //   }
-      //   return null;
-      // });
-      // setValue("rmFiles", removeKey.filter(Boolean));
-      // console.log(values, mixRemoves, removeKey);
+    const onSubmit = async (values) => {
+      try {
+        setPreventNavigation(true);
+    
 
-      // if (values.image && typeof values.image !== "string") {
-      //   const uploadPromises = await startUpload([values.image]);
-      //   console.log(uploadPromises);
-      // }
+    
+        if (thumnailIndex && !thumnailIndex.startsWith('blob:')) {
+          setValue('image', thumnailIndex);
+        }
+    
+    
+        mutation.mutate(values, {
+          onSuccess: () => {
+            reset();
+            setImageUrl("");
+            setDropTag([]);
+            setFiles([]);
+            setDeletedFiles([]);
+            setSelectedImage(null);
+            setSelectedInputImage(null);
+            setPreventNavigation(false);
+            setEditorContent(null);
+            router.back();
+            // setContent(null);
+          },
+        });
+      } catch (err) {
+        toast.error(err.message || 'An error occurred');
+        // console.log(err);
+      }
+    };
+    
 
-      // const uploadPostPromises = files.map(({ file, url }) => {
-      //   if (file && typeof file !== "string") {
-      //     const extension = file.name.split(".").pop();
-      //     const formData = new File(
-      //       [file],
-      //       `post_${crypto.randomUUID()}.${extension}`
-      //     );
-      //     return postUpload([formData]).then((uploadedData) => {
-      //       if (uploadedData.length > 0) {
-      //         const uploadedUrl = uploadedData[0].url;
-      //         blobUrlToUploadedUrlMap.set(url, uploadedUrl);
-      //         return uploadedUrl;
-      //       }
-      //     });
-      //   }
-      // });
-
-      // const uploadedImages = await Promise.all(uploadPostPromises);
-      // console.log(uploadedImages);
-      // if (uploadedImages.length > 0) updateEditorContentWithUploadedUrls();
-
-      mutation.mutate(values, {
-        onSuccess: () => {
-          reset();
-          setImageUrl("");
-          setDropTag([]);
-          setFiles([]);
-          setFaqs([]);
-          setItems([]);
-          setDeletedFiles([]);
-          setSelectedImage(null);
-          setSelectedInputImage(null);
-          setPreventNavigation(false);
-          // setContent(null)
-          setEditorContent(null)
-          router.back();
-        },
-      });
-    } catch (err) {
-      toast.error(err.message || 'An error occurred');
-      // console.log(err);
-    }
-  };
-  // function updateEditorContentWithUploadedUrls() {
-  //   const editorContents = editorContent.getHTML();
-  //   let updatedContent = editorContents;
-
-  //   blobUrlToUploadedUrlMap.forEach((uploadedUrl, blobUrl) => {
-  //     updatedContent = updatedContent.replace(
-  //       new RegExp(blobUrl, "g"),
-  //       uploadedUrl
-  //     );
-  //   });
-
-  //   editorContent.commands.setContent(updatedContent);
-  //   console.log(updatedContent);
-  //   setValue("content", updatedContent);
-  // }
+    
 
   const handleAddTag = (newTag) => {
     if (newTag && !dropTag.includes(newTag) 
@@ -357,178 +300,191 @@ const EditPost = ({ params }) => {
   ];
 
   return (
-    <div className="mb-20 px-3 md:px-5">
+    <div className="mb-2 ">
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-7">
-        <div className="flex justify-between w-full sticky top-0 bg-white dark:bg-black z-[10] py-2">
-          <div>
-            <div className="flex gap-2 ">
-              <Dropdown
-                title={"Edit Post"}
-                disabled={
-                  isPending || deleteMutation.isPending || mutation.isPending
-                }
-                btnStyle={
-                  "bg-black text-white border-2 border-black dark:border-white dark:bg-white dark:text-black rounded-full px-3 py-1 text-sm duration-300  disabled:cursor-not-allowed   "
-                }
-                className={
-                  "right-0  z-50 h-fit  w-72 px-3 bg-white border border-lbtn  dark:border-dbtn dark:bg-black"
-                }
-              >
-                <div className="space-y-2">
-                  <div className="space-y-2">
-                    <p className="text-sm">Thumbnail preview</p>
-                    <ImageInput
-                      selectedImage={selectedImage}
-                      setSelectedImage={setSelectedImage}
-                      selectedInputImage={selectedInputImage}
-                      setSelectedInputImage={setSelectedInputImage}
-                      setValue={setValue}
-                      rmThumbnailFile={rmThumbnailFile}
-                      setRmThumbnailFile={setRmThumbnailFile}
-                    />
-                    <div
-                      className={`text-red  text-[10px] md:text-sm transition-opacity duration-300  ${
-                        errors?.image?.message ? "opacity-100" : "opacity-0"
-                      }`}
-                    >
-                      {errors?.image?.message}
-                    </div>
-                  </div>
-                  <p className="text-sm">Title & Tags </p>
-                  <div>
-                    <TextArea
-                      title={"WRITE YOUR POST TITLE ..."}
-                      name={"title"}
-                      type={"text"}
-                      ref={register}
-                      label={false}
-                      className={
-                        "resize-none  bg-lcard dark:bg-dcard rounded-lg placeholder:text-[#000000a4] dark:placeholder:text-lfont text-lg  p-2 focus:ring-2 focus:ring-black dark:focus:ring-white outline-none duration-200"
-                      }
-                      error={errors?.title?.message}
-                      {...register("title")}
-                    />
-                  </div>
 
-                  <div>
-                      <TextArea
-                        title={"Write Your Post Description ..."}
-                      name={"desc"}
-                      type={"text"}
-                      ref={register}
-                      label={false}
-                      className={
-                        "resize-none  bg-lcard dark:bg-dcard rounded-lg placeholder:text-[#000000a4] dark:placeholder:text-lfont text-sm  p-2 focus:ring-2 focus:ring-black dark:focus:ring-white outline-none duration-200"
-                      }
-                      error={errors?.desc?.message}
-                        {...register("desc")}
-                      />
-                   </div>
+          {!cancel &&
+              <div className="flex justify-between  w-full sticky top-0 bg-white dark:bg-black z-[10] py-2 px-2 sm:px-5">
 
-                  <div>
-                    <Dropdown
-                      title={
-                        <div className="flex space-x-5 border-2 border-black dark:border-white p-2 rounded-lg w-full max-h-36 overflow-y-auto">
-                          <ul
-                            className="flex flex-wrap gap-2 text-sm w-full"
-                            disabled={dropTag.length === 4}
-                          >
-                            {dropTag.map((dropTag) => (
-                              <li
-                                disabled={dropTag.length === 4}
-                                onClick={() => handleRemoveTag(dropTag)}
-                                key={dropTag}
-                                className="bg-lcard px-2 py-1 rounded-lg dark:bg-dcard space-x-2 "
-                              >
-                                <span className="text-lfont">#</span>
-                                {dropTag}{" "}
-                              </li>
-                            ))}
-                            <li className="my-auto w-fit">
-                              <input
-                                type="text"
-                                placeholder={
-                                  // dropTag.length < 4
-                                  //   ? 
-                                    "Add up to 4 tags for post..."
-                                    // : `You can only enter max. of ${4} tags`
-                                }
-                                onKeyDown={handleInputKeyPress}
-                                // disabled={dropTag.length === 4}
-                                className="bg-transparent ring-0 outline-none w-fit text-wrap disabled:cursor-not-allowed px-1 "
-                              />
-                            </li>
-                          </ul>
-                        </div>
-                      }
-                      btnStyle={"text-lg w-full"}
-                      className={
-                        "left-0 -top-44  z-[55] h-44 overflow-auto w-62 rounded-lg bg-white border border-lbtn  dark:border-dbtn dark:bg-black"
-                      }
-                    >
-                      <div className="  text-start px-2 text-sm space-y-2">
-                        {tags.map((tag) => {
-                          return (
-                            <div
-                             key={tag.name}
-                              onClick={() => handleTag({ name: tag.name })}
-                              className={` ${
-                                dropTag.includes(tag.name)
-                                  ? "bg-black dark:bg-white text-white dark:text-black"
-                                  : "hover:bg-lcard dark:hover:bg-dcard text-black dark:text-white"
-                              }  uppercase rounded-lg duration-500 px-3 py-1 cursor-pointer`}
-                            >
-                              <p>{tag.name}</p>
-                              <p
-                                className={` 
-                                                     text-lfont
-                                                  text-[10px] line-clamp-2`}
-                              >
-                                {tag.info}
-                              </p>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </Dropdown>
 
-                    <div
-                      className={`text-red  text-[10px] md:text-sm transition-opacity duration-300  ${
-                        errors?.tags?.message ? "opacity-100" : "opacity-0"
-                      }`}
-                    >
-                      {errors?.tags?.message}
-                    </div>
-                  </div>
-
-                  <div>
-                    <button
-                      className="bg-black rounded-lg text-lcard dark:bg-white dark:text-black w-full py-2 mx-auto disabled:brightness-90 disabled:cursor-not-allowed text-center flex justify-center"
-                      disabled={
-                        mutation.isPending 
-                      }
-                      type="submit"
-                    >
-                      {mutation.isPending ? (
-                        <LoadingSpinner
-                          color={
-                            "text-black dark:text-white dark:fill-black fill-white mx-auto"
+                    <div className="flex gap-2 ">
+                    <Dropdown 
+                          title={"Edit Post"}
+                          disabled={
+                            isPending || deleteMutation.isPending || mutation.isPending 
                           }
-                        />
-                      ) : (
-                        "Edit Post"
-                      )}
-                    </button>
-                  </div>
-                </div>
-              </Dropdown>
-             
+                          btnStyle={"bg-black text-white  border-black dark:border-white dark:bg-white dark:text-black rounded-full border-2 text-[10px] md:text-sm px-3  py-1  md:text-sm duration-300  disabled:cursor-not-allowed   "}
+                          className={"right-0  z-50 h-fit w-72 px-3 bg-white border border-lbtn  dark:border-dbtn dark:bg-black"}>
+                             <div className="space-y-2">
+                                 <div className="space-y-2">
+                                 <p className="text-sm">Thumbnail preview</p>
+                                  {/* <ImageInput selectedImage={selectedImage}  setSelectedImage={setSelectedImage} selectedInputImage={selectedInputImage}  setSelectedInputImage={setSelectedInputImage} setValue={setValue} rmThumbnailFile={rmThumbnailFile} setRmThumbnailFile={setRmThumbnailFile}/> */}
+                                      {/* <div
+                                         className={`text-red  text-[10px] md:text-sm transition-opacity duration-300  ${
+                                           errors?.image?.message ? "opacity-100" : "opacity-0"
+                                         }`}
+                                       >
+                                         {errors?.image?.message}
+                                       </div> */} 
+                                       {contentImages?.length > 0 ? 
+                                        <EmblaCarousel options={{ loop: false,direction:'rtl' }} dot={true} autoScroll={false}>
+                                                 {contentImages?.map((url,index) => (
+                                                  <div className="transform translate-x-0 translate-y-0 translate-z-0  flex-none basis-[100%] h-44 min-w-0 pl-4 " onClick={()=>{setThumnailIndex(url.replace(baseUrl, ''))}} key={index}>
+                                                     <div className={`${url.replace(baseUrl, '') === thumnailIndex && 'border-dashed border-4 border-black dark:border-white '} rounded-xl w-full h-44 relative cursor-pointer`}>
+                                                        <img className={`  w-full h-full object-cover rounded-xl`} src={`${url.replace(baseUrl, '')}`} alt="thumnail" />
+                                                        {url.replace(baseUrl, '') === thumnailIndex &&
+                                                          <div className="absolute  inset-0 top-0 right-0  text-5xl text-white bg-black bg-opacity-50  rounded-xl flex items-center justify-center">
+                                                           <h1><FaCheck /></h1>
+                                                         </div>}
+                                                    </div>
+                                                     </div>
+                                                 ))}
+                                        </EmblaCarousel> 
+                                        :
+                                            <div 
+                                            type='button'
+                                            className='relative block w-full'
+                                            >
+                                             <div className= "h-full bg-gradient-to-tr p-3 from-lbtn to-lcard dark:from-dbtn dark:to-dcard rounded-xl items-center align-middle justify-center flex flex-col space-y-1 text-lfont text-center">
+                                                 <div className=" text-lg p-3">
+                                                   <FaImage />
+                                                 </div>
+                                                 <p className="text-sm text-black">Add Image to Content and select one of thats Images for your post Thumnail</p>
+                                                 <p className="text-[10px]">Add thumnail is good for visit and craete a popular post</p>
+                                              </div>
+                                            </div>
+                                        }
+
+                                 </div>
+                                 <p className="text-sm">Title , Tags & desc </p>
+                                 <div>
+                                  <TextArea
+                                  placeholder={"Write Your Post Title ..."}
+                                  name={"title"}
+                                  type={"text"}
+                                  ref={register} 
+                                  // watch={watch('title')}
+                                  label={false}
+                                  className={
+                                    "resize-none  bg-lcard dark:bg-dcard rounded-lg placeholder:text-[#000000a4] dark:placeholder:text-lfont text-lg  p-2 focus:ring-2 focus:ring-black dark:focus:ring-white outline-none duration-200"
+                                  }
+                                  error={errors?.title?.message}
+                                    {...register("title")}
+                                  />
+                                 </div>
+
+                                 <div>
+                                  <TextArea
+                                  placeholder={"Write Your Post Description ..."}
+                                  name={"desc"}
+                                  type={"text"}
+                                  label={false}
+                                  ref={register}
+                                  className={
+                                    "resize-none  bg-lcard dark:bg-dcard rounded-lg placeholder:text-[#000000a4] dark:placeholder:text-lfont text-sm  p-2 focus:ring-2 focus:ring-black dark:focus:ring-white outline-none duration-200"
+                                  }
+                                  error={errors?.desc?.message}
+                                    {...register("desc")}
+                                  />
+                                 </div>
+                                 
+                                 <div>
+                                 <Dropdown
+                                   title={
+                                    <div className="flex space-x-5 border-2 border-black dark:border-white p-2 rounded-lg w-full max-h-36 overflow-y-auto text-wrap">
+                                    <ul className="flex flex-wrap gap-2 text-sm w-full" disabled={dropTag.length === 4}>
+                                      {dropTag.map((dropTag) => (
+                                        <li disabled={dropTag.length === 4} key={dropTag} 
+                                            className="bg-lcard px-2 py-1 rounded-lg dark:bg-dcard space-x-2 "
+                                            onClick={() => handleRemoveTag(dropTag)}>
+                                          <span className="text-lfont">#</span>
+                                             {dropTag}{' '}
+                                          {/* <span  ><IoClose className="pt-1"/></span> */}
+                                        </li>
+                                      ))}
+                                      <li className="my-auto w-fit">
+                                       <input
+                                         type="text"
+                                         placeholder={
+                                          //  dropTag.length < 4
+                                          //    ? 
+                                             "Add up to 4 tags for post..."
+                                            //  : `You can only enter max. of ${4} tags`
+                                         }
+                                         onKeyDown={handleInputKeyPress}
+                                        //  disabled={dropTag.length === 4}
+                                         className="bg-transparent ring-0 outline-none w-fit text-wrap disabled:cursor-not-allowed px-1 "
+                                       />
+                                      </li>
+                                    </ul>
+                                  </div>
+                                      } 
+                                         btnStyle={"text-lg w-full"}
+                                         className={"left-0 -top-44 z-[55] h-44 overflow-auto w-62 rounded-lg bg-white border border-lbtn  dark:border-dbtn dark:bg-black" }
+                                       >
+                                         <div className="  text-start px-2 text-sm space-y-2">
+                                           {tags.map((tag)=>{
+                                             return(
+                                              <div
+                                                key={tag.name}
+                                                onClick={() => handleTag({ name: tag.name })}
+                                                className={` ${
+                                                  dropTag.includes(tag.name)
+                                                    ? "bg-black dark:bg-white text-white dark:text-black"
+                                                    : "hover:bg-lcard dark:hover:bg-dcard text-black dark:text-white"
+                                                }  uppercase rounded-lg duration-500 px-3 py-1 cursor-pointer`}
+                                              >
+                                                <p>{tag.name}</p>
+                                                <p className={` 
+                                                     text-lfont
+                                                  text-[10px] line-clamp-2`} >{tag.info}</p>
+                                              </div>
+                                             )
+                                           })}
+                                         </div>
+                                 </Dropdown>
+
+
+ <div
+   className={`text-red  text-[10px] md:text-sm transition-opacity duration-300  ${
+     errors?.tags?.message ? "opacity-100" : "opacity-0"
+   }`}
+ >
+   {errors?.tags?.message}
+ </div>
+
+</div>
+
+
+
+
+     <div>
+           <button
+           className="bg-black rounded-lg text-lcard dark:bg-white dark:text-black w-full py-2 mx-auto disabled:brightness-90 disabled:cursor-not-allowed text-center flex justify-center"
+           disabled={mutation.isPending }
+             type="submit"
+           >
+             {
+             mutation.isPending 
+            //  mutation.isPending || uploadMutation.isPending
+             ? <LoadingSpinner color={"text-black dark:text-white dark:fill-black fill-white mx-auto"}/>  : "Edit Post"}
+           </button>     
+
+          
+        </div>
+
+
+                          </div>
+                                    
+                       </Dropdown> 
+          
+            <div>
               <button
                 type="button"
                 disabled={
-                  isPending || deleteMutation.isPending || mutation.isPending
+                  isPending || deleteMutation.isPending || mutation.isPending 
                 }
-                className="bg-transparent border-2 text-sm text-redorange border-redorange rounded-full px-3 py-1 disabled:cursor-not-allowed"
+                className="bg-transparent border-2  text-redorange border-redorange rounded-full text-[10px] md:text-sm px-3  py-1 disabled:cursor-not-allowed"
                 onClick={() => {
                   const removeKey = deletedPostFiles.map((file) => {
                     if (typeof file === "string") {
@@ -558,32 +514,58 @@ const EditPost = ({ params }) => {
                 )}
               </button>
             </div>
-          </div>
+                   
+  
 
-          <div>
-            <button
-              className={
-                "bg-lcard text-lfont dark:bg-dcard rounded-full px-3 py-2 text-[10px] md:text-sm"
-              }
-              onClick={() => router.back()}
-              type="button"
-            >
-              cancel
-            </button>
-          </div>
 
-        </div>
+                    </div>
 
+                    <div>
+                          <button
+                              className={"bg-lcard text-lfont dark:bg-dcard rounded-full text-[10px] md:text-sm px-3 w-full py-1 border-2 "}
+                              onClick={() => setCancel(true)}
+                              type="button"
+                                    >
+                                  cancel
+                          </button>
+                        </div>
+              </div>
+                      }
+
+
+<div className="flex  px-2 sm:px-5 py-2 w-full sticky top-0 z-[10]">
+
+{ cancel && 
+<div className="flex gap-2">
+  <button
+  className={"bg-transparent text-redorange text-[10px] md:text-sm px-3  py-1  border-2 rounded-full  "}
+  onClick={() => router.back()}
+  type="button"
+        >
+      Cancle and Discard all Changes
+  </button>
+
+   <button
+     className={"bg-lcard text-lfont dark:bg-dcard border-2 rounded-full px-3 py-1 text-[10px] md:text-sm"}
+     onClick={() => setCancel(false)}
+     type="button"
+     >
+      Continue
+   </button>
+</div>
+}
+
+</div>
+
+<div className="w-full md:w-2/3 mx-auto  space-y-3 px-5">
         {isPending ? (
           <EditPostLoading />
         ) : (
           <>
-            <div className="w-full md:w-2/3 mx-auto  space-y-3 ">
               <Controller
                 name="content"
                 control={control}
                 render={({ field: { onChange, onBlur, value, name, ref } }) => (
-                  // <TextEditor content={value} onChange={onChange} ref={ref} provider={provider} />
                   <BlockEditor
                     content={value}
                     onChange={onChange}
@@ -599,6 +581,8 @@ const EditPost = ({ params }) => {
                     items={items}
                     setItems={setItems}
                     ydoc={ydoc}
+                    contentImages={contentImages} setContentImage={setContentImage}
+                    thumnailIndex={thumnailIndex} setThumnailIndex={setThumnailIndex}
                     // hasCollab={hasCollab}
                     // provider={provider}
                   />
@@ -612,7 +596,8 @@ const EditPost = ({ params }) => {
               >
                 {errors?.content?.message}
               </div>
-                       <Dropdown className={'right-0 bg-white px-2 dark:bg-black border border-lbtn  dark:border-dbtn'} title={<FaQuestion/>} btnStyle={'bg-black text-white dark:bg-white dark:text-black rounded-full px-3 py-2'}>
+
+              <Dropdown className={'right-0 bg-white px-2 dark:bg-black border border-lbtn  dark:border-dbtn'} title={<FaQuestion/>} btnStyle={'bg-black text-white dark:bg-white dark:text-black rounded-full px-3 py-2'}>
           <div className="flex flex-col space-y-1">
             <input type="text" className="resize-none block bg-lcard dark:bg-dcard px-2 py-2 rounded-lg focus:outline-none  w-full focus:ring-2 focus:ring-black dark:ring-white   duration-200 " placeholder="question" value={question} onChange={(e)=>{setQuestion(e.target.value)}}/>
             <textarea type="text" className="resize-none block bg-lcard dark:bg-dcard px-2 py-2 rounded-lg focus:outline-none  w-full focus:ring-2 focus:ring-black dark:ring-white   duration-200 " placeholder="answer"   value={answer} onChange={(e)=>{setAnswer(e.target.value)}}/>
@@ -621,13 +606,13 @@ const EditPost = ({ params }) => {
             </button>
           </div>
          </Dropdown>
-            </div>
 
 
 
 
           </>
         )}
+        </div>
       </form>
       <div>
               {faqs?.map((faq,index) => (

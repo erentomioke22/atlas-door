@@ -15,7 +15,7 @@ export default async function sitemap() {
     changeFrequency: 'yearly',
     priority: 1,
     images: [
-      `${process.env.NEXT_PUBLIC_BASE_URL}/${images[0]}`,
+      // `${process.env.NEXT_PUBLIC_BASE_URL}/${images[0]}`,
       ...contentImages.map(contentImage => `${process.env.NEXT_PUBLIC_BASE_URL}/${contentImage}`),
     ],
                 // alternates: {

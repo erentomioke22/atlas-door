@@ -19,7 +19,7 @@ const getPost = cache(async (title, loggedInUserId) => {
     return post;
   } catch (error) {
     console.error('Error fetching post:', error);
-    return null; // Handle error case
+    return null; 
   }
 });
 
@@ -37,7 +37,7 @@ export async function generateStaticParams() {
     }));
   } catch (error) {
     console.error('Error fetching posts:', error);
-    return []; // Return an empty array or handle it as necessary
+    return [];
   }
 }
 

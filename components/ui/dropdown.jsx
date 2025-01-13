@@ -34,7 +34,7 @@ const Dropdown = ({ children, title, close, className, btnStyle,disabled }) => {
       </button>
 
       <div
-        className={` absolute    ${className}    rounded-3xl py-5  opacity-0 z-[999999] ${
+        className={` absolute    ${className}    rounded-3xl py-5  opacity-0 z-[999999] bg-white dark:bg-black border dark:border-dcard border-lcard shadow-sm ${
           isOpen ? "opacity-100 " : " invisible"
         } transition-all duration-200 ease-in-out `}
       >

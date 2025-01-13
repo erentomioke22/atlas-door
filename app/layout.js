@@ -44,7 +44,7 @@ const RootLayout = async({children})=> {
       <link rel="manifest" href="/site.webmanifest" />
       <meta name="google-site-verification" content="aBsXlKo4-eSlSDTM1tjvPD5UzqTavw3GSOLQfNxaimE" />
     </head>
-  <body  className=" font-Rubik font-bold  bg-[#ffffff] text-[#1f2937] dark:bg-[#1d232a]  dark:text-[#a6adbb]"
+  <body  className=" font-Rubik font-bold  bg-[#ffffff] text-[#1f2937] dark:bg-[#1d232a]  dark:text-white"
   >
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange > 
     <NextTopLoader showSpinner={false} color='#13ce66'/>

@@ -45,11 +45,11 @@ import {
   Image,
   ImageFigure,
   Iframe,
-  Blockquote
+  Blockquote,
+  // TableOfContentsNode
   // TableOfContents,
     // BlockquoteFigure,
   // Video,
-  // TableOfContentsNode
     // SlashCommand,
   // CharacterCount,
   // ImageBlock,
@@ -60,10 +60,8 @@ import {
   // Blockquote,
 } from '.'
 
-// import { ImageUpload } from './ImageUpload'
-// import { TableOfContentsNode } from './TableOfContentsNode'
+
 import Youtube from '@tiptap/extension-youtube'
-// import {Blockquote} from '@tiptap/extension-blockquote'
 
 
 export const ExtensionKit = ({ provider }) => [
