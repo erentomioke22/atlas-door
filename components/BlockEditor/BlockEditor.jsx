@@ -18,6 +18,7 @@ import { NewItemMenu } from "@components/menus/ContentItemMenu/NewItemMenu";
 // import { ContentItemMenu } from '@components/menus/ContentItemMenu/ContentItemMenu'
 // import { TableColumnMenu,TableRowMenu } from '@extensions/Table/menus'
 // import { ColumnsMenu } from '@extensions/MultiColumn/menus'
+const isClient = typeof window !== 'undefined';
 
 export const BlockEditor = 
   forwardRef((
@@ -65,8 +66,8 @@ export const BlockEditor =
     // ) {
     //   return null;
     // }
-
-    useEffect(() => { if (!editor) return null; }, [editor]);
+    if (!isClient || !editor) return null;
+    // useEffect(() => { if (!editor) return null; }, [editor]);
 
     return (
       <div className="" ref={menuContainerRef}>
