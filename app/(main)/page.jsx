@@ -84,17 +84,8 @@ const projects=[
 
       <div className="mx-auto ">
         <div className=" px-5 pt-16  sm:px-16 md:pt-24 lg:flex lg:gap-x-20 lg:px-24 lg:pt-0">
-        {/* <div className=" mt-16 h-60 lg:mt-8">
-            <img
-              alt="App screenshot"
-              src="https://www.embla-carousel.com/static/embla-logo-light-theme-blur-db7093b8d7d20cb8c2429e3f6e05156a.svg"
-              width={1240}
-              height={600}
-              className="absolute left-0 top-0 w-[30rem] max-w-none rounded-md bg-white/5 ring-1 ring-white/10"
-            />
-         </div> */}
 
-          <div className="mt-10 text-center mx-auto  space-y-5">
+          <div className="mt-10 text-center mx-auto lg:w-2/3 space-y-5">
             <h1 className="leading-normal text-balance text-4xl md:text-[60px] font-semibold tracking-tight ">
             تمرکز ما بر <span className="bg-gradient-to-tr text-clip from-blue to-darkgreen text-transparent bg-clip-text">کیفیت و عملکرد</span>   هربار تجربه ای زیبا را تضمین میکند
             </h1>

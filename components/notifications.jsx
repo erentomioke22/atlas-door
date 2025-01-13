@@ -38,7 +38,7 @@ function Notifications() {
     initialPageParam: null,
     getNextPageParam: (lastPage) => lastPage.nextCursor,
   });
-  console.log(data);
+  // console.log(data);
 
   const { mutate } = useMutation({
     mutationFn: () => axios.patch("/api/notifications/mark-as-read"),
@@ -48,7 +48,7 @@ function Notifications() {
       });
     },
     onError(error) {
-      console.error("Failed to mark notifications as read", error);
+      console.error("Failed to mark notifications as read");
     },
   });
 

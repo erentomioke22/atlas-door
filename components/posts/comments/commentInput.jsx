@@ -50,7 +50,7 @@ const CommentInput = ({post,title,header,content,commentId,reply,edit,replyId,pl
             },[session,setValue])
 
   const onSubmit = async (values)=>{
-     console.log(values)
+    //  console.log(values)
     // if(!commentId && !content && !reply && !edit){
     // if(!content  && !edit){
       addMutation.mutate({

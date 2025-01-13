@@ -136,7 +136,7 @@ const CreatePost = () => {
     }
     catch(err){
       toast.error(err.message || 'An error occurred');
-      console.log(err.message)
+      // console.log(err.message)
     }
   };
 

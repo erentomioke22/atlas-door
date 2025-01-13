@@ -168,7 +168,7 @@ export async function editPost(values) {
 
 
 export async function deletePost(values) {
-  console.log(values)
+  // console.log(values)
   const id = values.id; 
 
 const session = await  auth();
