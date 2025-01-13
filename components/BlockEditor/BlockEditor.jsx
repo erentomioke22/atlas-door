@@ -88,16 +88,16 @@ export const BlockEditor =
             className="max-h-[500px] overflow-auto"
             ref={ref}
           />
-          <LinkMenu editor={editor} appendTo={menuContainerRef} />
-          <TextMenu editor={editor} />
-          <ImageBlockMenu editor={editor} appendTo={menuContainerRef} /> 
+          {/* <LinkMenu editor={editor} appendTo={menuContainerRef} />
+          <TextMenu editor={editor} /> */}
+          {/* <ImageBlockMenu editor={editor} appendTo={menuContainerRef} />  */}
         </div>
-        <NewItemMenu
+        {/* <NewItemMenu
           editor={editor}
           files={files}
           setFiles={setFiles}
           setValue={setValue}
-        />
+        /> */}
         {/* <div className="sidebar">
         <div className="sidebar-options">
           <div className="label-large">Table of contents</div>
