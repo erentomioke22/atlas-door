@@ -171,19 +171,19 @@ export const useBlockEditor = ({
 
 
 
-useEffect(() => {
-  if (editor && content !== editor.getHTML()) {
-    editor.commands.setContent(content)
-    const html = editor.getHTML();
-      const tempDiv = document.createElement('div');
-      tempDiv.innerHTML = html;
-      const imgTags = tempDiv.getElementsByTagName('img');
-      const newFiles = Array.from(imgTags).map(img =>img.src);
-      setPrevNewFiles(newFiles)
-      setContentImage(newFiles)
-      setDeletedPostFiles(prevDeletedPostFiles => [...prevDeletedPostFiles, ...newFiles]);
-  }
-}, [content,editor])
+// useEffect(() => {
+//   if (editor && content !== editor.getHTML()) {
+//     editor.commands.setContent(content)
+//     const html = editor.getHTML();
+//       const tempDiv = document.createElement('div');
+//       tempDiv.innerHTML = html;
+//       const imgTags = tempDiv.getElementsByTagName('img');
+//       const newFiles = Array.from(imgTags).map(img =>img.src);
+//       setPrevNewFiles(newFiles)
+//       setContentImage(newFiles)
+//       setDeletedPostFiles(prevDeletedPostFiles => [...prevDeletedPostFiles, ...newFiles]);
+//   }
+// }, [content,editor])
 
 
 
