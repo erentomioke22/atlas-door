@@ -1,5 +1,5 @@
 import { EditorContent } from "@tiptap/react";
-import React, {  forwardRef, useRef } from "react";
+import React, {  forwardRef, useRef ,useEffect} from "react";
 import { useBlockEditor } from "@hook/useBlockEditor";
 import LinkMenu from "@components/menus/LinkMenu/LinkMenu";
 import { TextMenu } from "@components/menus/TextMenu/TextMenu";
@@ -59,12 +59,14 @@ export const BlockEditor =
       setDeletedPostFiles,
       deletedPostFiles,contentImages, setContentImage,thumnailIndex,setThumnailIndex
     });
-    if (
-      !editor
-      // || !users
-    ) {
-      return null;
-    }
+    // if (
+    //   !editor
+    //   // || !users
+    // ) {
+    //   return null;
+    // }
+
+    useEffect(() => { if (!editor) return null; }, [editor]);
 
     return (
       <div className="" ref={menuContainerRef}>
