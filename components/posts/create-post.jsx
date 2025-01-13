@@ -34,7 +34,7 @@ const CreatePost = () => {
   const [editorContent,setEditorContent]=useState()
   const[deletedFiles,setDeletedFiles]=useState([])
   const[deletedPostFiles,setDeletedPostFiles]=useState([])
-  // const [preventNavigation, setPreventNavigation] = useState(false); 
+  const [preventNavigation, setPreventNavigation] = useState(false); 
   const [thumnailIndex, setThumnailIndex] = useState(0)
   const [contentImages, setContentImage] = useState();
   const [cancel, setCancel] = useState(false);
@@ -53,17 +53,10 @@ const CreatePost = () => {
     NotFound()
   }
   
-  // usePreventNavigation(preventNavigation);
+  usePreventNavigation(preventNavigation);
 
   
-  // const queryClient = useQueryClient();
-  // const { data,status,error,isFetching } = useQuery({
-  //   queryKey:["team-author"],
-  //   queryFn: async () => {const response = await axios.get(`/api/team`);
-  //     return response.data;
-  //   },
-  //     staleTime: Infinity,
-  //   });
+
 
 
 
@@ -83,10 +76,8 @@ const CreatePost = () => {
       content: '',
       tags: [],
       contentImages: [],
-      // teamId:''
     },
     resolver: yupResolver(postValidation),
-    // resolver: yupResolver(save ? savePostValidation : postValidation),
   });
 
 
@@ -99,7 +90,7 @@ const CreatePost = () => {
   const onSubmit = async (values) => {
     try{
       // console.log(values)
-      // setPreventNavigation(true);   
+      setPreventNavigation(true);   
 
         if (thumnailIndex && !thumnailIndex.startsWith('blob:')) {
           setValue('image', thumnailIndex);
@@ -107,7 +98,7 @@ const CreatePost = () => {
         //  console.log(values)
          mutation.mutate(values,{
            onSuccess: () => {
-            //  setPreventNavigation(false);
+             setPreventNavigation(false);
              reset();
              setDropTag([]);
              setFiles([])
@@ -450,7 +441,7 @@ const CreatePost = () => {
 
 
             <div className="w-full md:w-2/3 mx-auto  space-y-3 px-3" >
-         {session && 
+         {/* {session && 
                      <div className="flex gap-2">
                       <div className="relative h-9 w-9">
                        <ImageCom src={session?.user.image} className="h-9 w-9 rounded-lg" size={'h-9 w-9'} alt="user Avatar" />
@@ -460,7 +451,7 @@ const CreatePost = () => {
                          <p className=" text-lfont text-[10px]">{new Date().toLocaleDateString()}</p>
                        </div>
                      </div>
-         }
+         } */}
 
 
 

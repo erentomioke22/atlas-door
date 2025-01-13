@@ -1,7 +1,7 @@
 import CreatePost from "@components/posts/create-post";
 
 export const metadata = {
-  metadataBase: new URL("https://www.atlasdoor.ir/privacy-policy"),
+  metadataBase: new URL("https://www.atlasdoors.ir/create-post"),
   title :'create post',
 }
 const Page = () => {
