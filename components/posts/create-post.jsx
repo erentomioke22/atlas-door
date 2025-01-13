@@ -260,12 +260,12 @@ const CreatePost = () => {
                                             type='button'
                                             className='relative block w-full'
                                             >
-                                             <div className= "h-full bg-gradient-to-tr p-3 from-lbtn to-lcard dark:from-dbtn dark:to-dcard rounded-xl items-center align-middle justify-center flex flex-col space-y-1 text-lfont text-center">
+                                             <div className= "h-full bg-gradient-to-tr p-3 from-lbtn to-lcard dark:from-dbtn dark:to-dcard rounded-xl items-center align-middle justify-center flex flex-col space-y-1  text-center">
                                                  <div className=" text-lg p-3">
                                                    <FaImage />
                                                  </div>
-                                                 <p className="text-sm text-black">Add Image to Content and select one of thats Images for your post Thumnail</p>
-                                                 <p className="text-[10px]">Add thumnail is good for visit and craete a popular post</p>
+                                                 <p className="text-sm">Add Image to Content and select one of thats Images for your post Thumnail</p>
+                                                 <p className="text-[10px] text-lfont">Add thumnail is good for visit and craete a popular post</p>
                                               </div>
                                             </div>
                                         }

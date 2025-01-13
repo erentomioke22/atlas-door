@@ -31,6 +31,11 @@ export const useBlockEditor = ({
   // const [collabState, setCollabState] = useState(
   //   provider ? WebSocketStatus.Connecting : WebSocketStatus.Disconnected,
   // )
+
+  if (!editor) {
+    return null;
+  }
+  
   const [prevNewFiles, setPrevNewFiles] = useState([]);
   const [tempRemovedFiles, setTempRemovedFiles] = useState([]);
 
@@ -128,6 +133,7 @@ export const useBlockEditor = ({
     //   console.log('Deleted Files:', deletedFiles, removedFiles);
     // },
     onUpdate: ({ editor }) => {
+      if (typeof window !== 'undefined'){
       onChange(editor.getHTML());
       setEditorContent(editor);
 
@@ -160,6 +166,7 @@ export const useBlockEditor = ({
       // console.log(removedFiles)
       // console.log('New Files:', newFiles);
       // console.log('Deleted Files:', deletedFiles, removedFiles);
+    }
     },
     },
     
@@ -172,7 +179,7 @@ export const useBlockEditor = ({
 
 
 useEffect(() => {
-  if (editor && content !== editor.getHTML()) {
+  if (typeof window !== 'undefined' && editor && content !== editor.getHTML()) {
     editor.commands.setContent(content)
     const html = editor.getHTML();
       const tempDiv = document.createElement('div');
@@ -184,6 +191,14 @@ useEffect(() => {
       setDeletedPostFiles(prevDeletedPostFiles => [...prevDeletedPostFiles, ...newFiles]);
   }
 }, [content,editor])
+
+
+
+
+
+
+
+
 
 
 
