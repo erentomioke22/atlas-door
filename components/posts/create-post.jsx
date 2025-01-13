@@ -44,7 +44,7 @@ const CreatePost = () => {
   const ydoc = useMemo(() => new YDoc(), [])
   const mutation = useSubmitPostMutation();
   // const [preventNavigation, setPreventNavigation] = useState(false); 
-  const baseUrl = `${process.env.NEXT_PUBLIC_BASE_URL}`;
+  // const baseUrl = `${process.env.NEXT_PUBLIC_BASE_URL}`;
   
   
   
@@ -456,7 +456,7 @@ const CreatePost = () => {
 
 
 
-              <Controller
+              {/* <Controller
                   name='content'
                   control={control}
                   render={({ field :{ onChange, onBlur, value, name, ref } }) => (
@@ -480,7 +480,7 @@ const CreatePost = () => {
                      />
                     
                   )}
-               />
+               /> */}
               <div
                 className={`text-red mt-2 text-[10px] md:text-sm transition-opacity duration-300  ${
                   errors?.content?.message ? "opacity-100" : "opacity-0"
