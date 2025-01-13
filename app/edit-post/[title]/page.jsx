@@ -1,6 +1,6 @@
 import EditPost from "@components/posts/edit-post";
 export const metadata = {
-  metadataBase: new URL("https://www.atlasdoor.ir/privacy-policy"),
+  metadataBase: new URL("https://www.atlasdoors.ir/edit-post"),
   title :'edit post',
 }
 const Page = ({ params }) => {
