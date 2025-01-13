@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useEditor } from '@tiptap/react'
-import { ExtensionKit } from '@extensions/extension-kit'
+// import { ExtensionKit } from '@extensions/extension-kit'
 // import Collaboration from '@tiptap/extension-collaboration'
 // import CollaborationCursor from '@tiptap/extension-collaboration-cursor'
 // import { userColors, userNames } from '../lib/constants'
