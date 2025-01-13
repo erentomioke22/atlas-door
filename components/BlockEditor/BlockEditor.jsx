@@ -83,11 +83,11 @@ export const BlockEditor =
         <TableRowMenu editor={editor} appendTo={menuContainerRef} />
         <TableColumnMenu editor={editor} appendTo={menuContainerRef} /> */}
         <div className="space-y-5">
-          {/* <EditorContent
+          <EditorContent
             editor={editor}
             className="max-h-[500px] overflow-auto"
             ref={ref}
-          /> */}
+          />
           <LinkMenu editor={editor} appendTo={menuContainerRef} />
           <TextMenu editor={editor} />
           <ImageBlockMenu editor={editor} appendTo={menuContainerRef} /> 
