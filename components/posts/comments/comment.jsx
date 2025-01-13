@@ -126,6 +126,7 @@ const Comment = ({content,user,createdAt,userId,id,replies,likes,_count,parent,p
                               <Comment
                                 _count={_count}
                                 likes={likes}
+                                key={id}
                                 content={content}
                                 createdAt={createdAt}
                                 userId={userId}
