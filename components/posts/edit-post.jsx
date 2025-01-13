@@ -100,7 +100,7 @@ const EditPost = ({ params }) => {
   }
 
 
-  if(!session || !post){
+  if(!session){
    return NotFound()
   }
 
