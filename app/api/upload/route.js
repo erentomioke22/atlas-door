@@ -66,18 +66,12 @@
 //   }
 // }
 import fs from 'fs';
-import { writeFile } from 'fs/promises';
 import { NextResponse } from 'next/server';
-import path, { join } from 'path';
+import { join } from 'path';
 import sharp from 'sharp';
 import { auth } from '@auth';
 
-// export const runtime = 'nodejs';
-// export const config = {
-//   api: {
-//     bodyParser: false,
-//   },
-// };
+
 
 export async function POST(req) {
   try {

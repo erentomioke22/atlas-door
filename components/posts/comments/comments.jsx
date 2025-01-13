@@ -30,7 +30,7 @@ const Comments = ({post}) => {
     }
   });
 
-console.log(comments)
+// console.log(comments)
 
 
 

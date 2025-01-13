@@ -1,4 +1,3 @@
-
 import CreatePost from "@components/posts/create-post";
 
 export const metadata = {
