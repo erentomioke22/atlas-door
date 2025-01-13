@@ -60,9 +60,9 @@ export const useBlockEditor = ({
       //   }
       // },
       extensions: [
-        ...ExtensionKit({
-          // provider,
-        }),
+        // ...ExtensionKit({
+        //   // provider,
+        // }),
         // provider
         //   ? Collaboration.configure({
         //       document: ydoc,

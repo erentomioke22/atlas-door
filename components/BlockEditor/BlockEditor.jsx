@@ -40,32 +40,31 @@ export const BlockEditor =
   ) => {
     // const leftSidebar = useSidebar()
     const menuContainerRef = useRef(null);
-    // const {
-    //   editor,
-    //   // users,
-    //   //  collabState
-    // } = useBlockEditor({
-    //   // aiToken,
-    //   ydoc,
-    //   // provider,
-    //   content,
-    //   onChange,
-    //   files,
-    //   setFiles,
-    //   setValue,
-    //   deletedFiles,
-    //   setDeletedFiles,
-    //   setEditorContent,
-    //   setDeletedPostFiles,
-    //   deletedPostFiles,contentImages, setContentImage,thumnailIndex,setThumnailIndex
-    // });
-
-    // if (
-    //   !editor
-    //   // || !users
-    // ) {
-    //   return null;
-    // }
+    const {
+      editor,
+      // users,
+      //  collabState
+    } = useBlockEditor({
+      // aiToken,
+      ydoc,
+      // provider,
+      content,
+      onChange,
+      files,
+      setFiles,
+      setValue,
+      deletedFiles,
+      setDeletedFiles,
+      setEditorContent,
+      setDeletedPostFiles,
+      deletedPostFiles,contentImages, setContentImage,thumnailIndex,setThumnailIndex
+    });
+    if (
+      !editor
+      // || !users
+    ) {
+      return null;
+    }
 
     return (
       <div className="" ref={menuContainerRef}>
@@ -83,21 +82,21 @@ export const BlockEditor =
         <TableRowMenu editor={editor} appendTo={menuContainerRef} />
         <TableColumnMenu editor={editor} appendTo={menuContainerRef} /> */}
         <div className="space-y-5">
-          {/* <EditorContent
+          <EditorContent
             editor={editor}
             className="max-h-[500px] overflow-auto"
             ref={ref}
-          /> */}
-          {/* <LinkMenu editor={editor} appendTo={menuContainerRef} />
-          <TextMenu editor={editor} /> */}
-          {/* <ImageBlockMenu editor={editor} appendTo={menuContainerRef} />  */}
+          />
+          <LinkMenu editor={editor} appendTo={menuContainerRef} />
+          <TextMenu editor={editor} />
+          <ImageBlockMenu editor={editor} appendTo={menuContainerRef} /> 
         </div>
-        {/* <NewItemMenu
+        <NewItemMenu
           editor={editor}
           files={files}
           setFiles={setFiles}
           setValue={setValue}
-        /> */}
+        />
         {/* <div className="sidebar">
         <div className="sidebar-options">
           <div className="label-large">Table of contents</div>
