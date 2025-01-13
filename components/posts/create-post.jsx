@@ -13,7 +13,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import BlockEditor from "@components/BlockEditor/BlockEditor";
 import {  useMemo,  } from 'react'
 import { Doc as YDoc } from 'yjs'
-// import usePreventNavigation from "@hook/usePreventNavigation";
+import usePreventNavigation from "@hook/usePreventNavigation";
 import { useSession } from "next-auth/react";
 import NotFound from "@app/(main)/not-found";
 import { useRouter } from "next/navigation";
