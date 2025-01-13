@@ -32,9 +32,7 @@ export const useBlockEditor = ({
   //   provider ? WebSocketStatus.Connecting : WebSocketStatus.Disconnected,
   // )
 
-  if (!editor) {
-    return null;
-  }
+
   
   const [prevNewFiles, setPrevNewFiles] = useState([]);
   const [tempRemovedFiles, setTempRemovedFiles] = useState([]);
@@ -176,7 +174,9 @@ export const useBlockEditor = ({
     // [provider],
   )
 
-
+  if (!editor) {
+    return null;
+  }
 
 useEffect(() => {
   if (typeof window !== 'undefined' && editor && content !== editor.getHTML()) {
