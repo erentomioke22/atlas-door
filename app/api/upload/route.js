@@ -110,7 +110,7 @@ export async function POST(req) {
     // Return the WebP image URL
     return NextResponse.json({ status: 200, message: 'Image upload successful', imageUrl: `/uploads/post-content/${webpFileName}` });
   } catch (error) {
-    // console.error('Upload error', error);
+    console.error('Upload error', error);
     return NextResponse.json( 
       { error: 'Internal Server Error', details: error.message }, 
       { status: 500 } 
