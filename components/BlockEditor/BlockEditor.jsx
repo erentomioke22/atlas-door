@@ -24,17 +24,18 @@ export const BlockEditor =
     {
       // aiToken,
       // provider,
+      // files,
+      // setFiles,
+      // setDeletedPostFiles,
+      // deletedPostFiles,
+      // setDeletedFiles,
+      // deletedFiles,
+      // setEditorContent,
       ydoc,
       content,
       onChange,
-      files,
-      setFiles,
       setValue,
-      deletedFiles,
-      setEditorContent,
-      setDeletedPostFiles,
-      deletedPostFiles,
-      setDeletedFiles, contentImages, setContentImage,thumnailIndex,setThumnailIndex
+       contentImages, setContentImage,thumnailIndex,setThumnailIndex
     },ref
     
   ) => {
@@ -46,18 +47,19 @@ export const BlockEditor =
       //  collabState
     } = useBlockEditor({
       // aiToken,
-      ydoc,
       // provider,
+      // files,
+      // setFiles,
+      // deletedFiles,
+      // setDeletedFiles,
+      // setDeletedPostFiles,
+      // deletedPostFiles,
+      // setEditorContent,
+      ydoc,
       content,
       onChange,
-      files,
-      setFiles,
       setValue,
-      deletedFiles,
-      setDeletedFiles,
-      setEditorContent,
-      setDeletedPostFiles,
-      deletedPostFiles,contentImages, setContentImage,thumnailIndex,setThumnailIndex
+      contentImages, setContentImage,thumnailIndex,setThumnailIndex
     });
     if (
       !editor
@@ -93,9 +95,9 @@ export const BlockEditor =
         </div>
         <NewItemMenu
           editor={editor}
-          files={files}
-          setFiles={setFiles}
-          setValue={setValue}
+          // files={files}
+          // setFiles={setFiles}
+          // setValue={setValue}
         />
         {/* <div className="sidebar">
         <div className="sidebar-options">

@@ -1,4 +1,4 @@
-import EditPost from "@components/posts/edit-post";
+import EditPost from "./edit-post";
 export const metadata = {
   metadataBase: new URL("https://www.atlasdoors.ir/edit-post"),
   title :'edit post',

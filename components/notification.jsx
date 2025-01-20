@@ -106,11 +106,11 @@ export default function Notification({ notification }) {
 </div>
 
           <div>
-            <p className="text-sm space-x-1 ">
+            <div className="text-sm space-x-1 ">
               <p className=" text-[12px]">{notification?.name}</p>
               <p className=" text-[12px]">{notification?.email}</p>
               <span className="text-lfont text-[12px]">{message}</span>
-            </p>
+            </div>
             <div className=" text-[10px] text-lfont">
         <p>{moment(new Date(notification.createdAt), "YYYYMMDD").fromNow()}</p>
       </div>

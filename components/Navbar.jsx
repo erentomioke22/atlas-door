@@ -124,7 +124,16 @@ const Navbar = () => {
           <div className="flex gap-1  ">
 
                     {session?.user?.role === 'admin' &&   
-                    <Profile session={session} />
+                                  <>
+                                    <div>
+                                  <Profile session={session} />
+
+                                    </div>
+                                    <div>
+                                  <Notifications/>
+
+                                    </div>
+                                  </>
                     }
 
                 <Offcanvas       
@@ -229,11 +238,7 @@ const Navbar = () => {
                 <Darkmode />
               </div>
 
-              {session &&
-              <div>
-               <Notifications/>
-               </div>
-              }
+
 
 
               <Search/> 

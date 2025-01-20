@@ -22,10 +22,15 @@ const nextConfig = {
       remotePatterns: [
         {
           protocol: 'https',
+          hostname: '**',
+        },
+        {
+          protocol: 'https',
           hostname: 'encrypted-tbn0.gstatic.com',
           port: '',
           pathname: '/images/**',
         },
+        { protocol: 'http', hostname: 'localhost', port: '3000', pathname: '/media/**', },
         { protocol: 'https', hostname: 'api2.zoomg.ir', port: '', pathname: '/media/**', },
         { protocol: 'https', hostname: 'cdn.atlasdoor.ir', port: '', pathname: '/**', }, 
         { protocol: 'https', hostname: 'utfs.io', port: '', pathname: '/**', }, 

@@ -101,7 +101,7 @@ useEffect(()=>{
                 <div className="p-2 w-full mx-auto ">
                           <div className=' flex gap-2'>
                             <div className="relative w-[40px] h-[40px]">
-                              <ImageCom src={`${process.env.NEXT_PUBLIC_BASE_URL}${post?.images[0]}`} className="rounded-lg bg-lbtn dark:bg-dbtn  h-10 w-10" alt={'thumnail'} />
+                              <ImageCom src={post?.images[0].startsWith('https://')?  `${post?.images[0]}` : `${process.env.NEXT_PUBLIC_BASE_URL}${post?.images[0]}`} className="rounded-lg bg-lbtn dark:bg-dbtn  h-10 w-10" alt={'thumnail'} />
                             </div>
                               
                               <div className="flex-1 space-y-1">
