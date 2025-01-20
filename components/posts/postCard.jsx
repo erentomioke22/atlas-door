@@ -68,7 +68,7 @@ const formattedDate = createdAt.isValid() ? createdAt.fromNow(): 'تاریخ ن�
               <ImageCom 
                className={'object-cover  rounded-3xl w-full'}
                alt={post?.title} 
-               src={`${process.env.NEXT_PUBLIC_BASE_URL}${post.images[0]}`}
+               src={post?.images[0].startsWith('https://') ?  `${post?.images[0]}` :`${process.env.NEXT_PUBLIC_BASE_URL}${post.images[0]}`}
                size={'h-36 md:h-40'} 
                />
               </div>

@@ -56,7 +56,7 @@ export const ourFileRouter = {
 
 
   post: f({
-    image: { maxFileSize: "1MB", maxFileCount: 5 },
+    image: { maxFileSize: "5MB", maxFileCount: 5 },
     // video: { maxFileSize: "64MB", maxFileCount: 5 },
   })
     // .middleware(async () => {

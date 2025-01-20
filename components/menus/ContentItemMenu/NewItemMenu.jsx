@@ -14,7 +14,11 @@ import { imageUrlValidation } from "@lib/validation";
 import { useUploadMutation } from "@components/posts/mutations";
 import { toast } from 'sonner';
 import LoadingSpinner from "@components/ui/loading/loadingSpinner";
-export const NewItemMenu = ({ editor,getPos,setFiles,files,setValue }) => {
+import { useUploadThing } from "@lib/uploadthing";
+import Input from "@components/ui/input";
+
+
+export const NewItemMenu = ({ editor,getPos }) => {
   
   
   // const [menuOpen, setMenuOpen] = useState(false);
@@ -42,11 +46,47 @@ export const NewItemMenu = ({ editor,getPos,setFiles,files,setValue }) => {
       );
 
 
+      const addVideo = () => {
+        if (videoUrl && editor) {
+          // editor.chain().focus().setYoutubeVideo({ src: videoUrl });
+          // editor.commands.setYoutubeVideo({
+          //   src: videoUrl,
+            // width: Math.max(320, parseInt(width, 10)) || 640,
+            // height: Math.max(180, parseInt(height, 10)) || 480,
+          // })
+          editor.chain().focus().setIframe({ src: videoUrl }).run()
+          setVideoUrl('');
+          // setShowVideoInput(false);
+  
+        }
+      };
+
+
+      const {startUpload:postUpload,isUploading:postIsUploading} = useUploadThing("post", {
+        onClientUploadComplete: (data) => {
+          toast.success("uploaded successfully!");
+          // console.log(data)
+          // return data[0].url
+          if (data[0].url) {
+            editor.chain().focus().setFigure({ src: data[0].url, 
+              // caption:''
+             }).run()
+          }
+        },
+        onUploadError: () => {
+          toast.error('error occurred while uploading')
+        },
+        onUploadBegin: ({ file }) => {
+          // console.log("upload has begun for", file);
+        },
+      });
+
+
           const handleImageUpload = (file) => {
               const formData = new FormData();
               formData.append('file', file);
           
-              uploadMutation.mutate(formData, {
+              uploadMutation.mutate(formData,{
                 onSuccess: (data) => {
                   // console.log('File uploaded:', data.imageUrl);
                   toast.success('File uploaded');
@@ -64,46 +104,50 @@ export const NewItemMenu = ({ editor,getPos,setFiles,files,setValue }) => {
                 },
               });
           };
-    const addVideo = () => {
-      if (videoUrl && editor) {
-        // editor.chain().focus().setYoutubeVideo({ src: videoUrl });
-        // editor.commands.setYoutubeVideo({
-        //   src: videoUrl,
-          // width: Math.max(320, parseInt(width, 10)) || 640,
-          // height: Math.max(180, parseInt(height, 10)) || 480,
-        // })
-        editor.chain().focus().setIframe({ src: videoUrl }).run()
-        setVideoUrl('');
-        // setShowVideoInput(false);
 
-      }
-    };
   
 
     const onUpload = useCallback(
       (file) => {
         if (file) {
           handleImageUpload(file)
-          const url = URL.createObjectURL(file)
-            setFileError(''); 
+          setFileError(''); 
+          // const url = URL.createObjectURL(file)
             // editor.chain().focus().setImage({ src: url }).run()
             // editor.chain().focus().setFigure({ src: url, 
             //   // caption:''
             //  }).run()
-            setFiles((prevFiles) => {
-              const updatedFiles = [...prevFiles, {file,url}];
-              return updatedFiles; });
+            // setFiles((prevFiles) => {
+            //   const updatedFiles = [...prevFiles, {file,url}];
+            //   return updatedFiles; });
         }
       },
       [
         // getPos, editor,
-        handleImageUpload, setFiles],
+        handleImageUpload],
     )
+
+    const onUploadThing = useCallback((file) => {
+      if (file) {
+        const extension = file.name.split(".").pop();
+        const formData = new File([file],`post_${crypto.randomUUID()}.${extension}.webp`);
+         postUpload([formData])
+      }
+      // const url = URL.createObjectURL(file)
+        // setFiles((prevFiles) => {
+        //   const updatedFiles = [...prevFiles, {file,url}];
+        //   return updatedFiles; });
+      },
+      [
+        // getPos, editor,
+        postUpload],
+    )
+
     const onUploadUrl = useCallback(
       (imageUrl) => {
         if (imageUrl) {
             setFileError(''); 
-            editor.chain().setImage({ src: imageUrl }).focus().run()
+            editor.chain().setFigure({ src: imageUrl }).focus().run()
         }
       },
       [
@@ -199,7 +243,10 @@ export const NewItemMenu = ({ editor,getPos,setFiles,files,setValue }) => {
          height={150}
          className='size-32 w-full flex-none rounded-2xl object-cover'/>
           <button type="button" disabled={!!fileError || uploadMutation.isPending} onClick={()=> {selectedImageUrl ? onUploadUrl(selectedImageUrl) :onUpload(selectedFile) ;setSelectedImage(null);setSelectedImageUrl(null) ;setOpen(!open)}} className="text-black border-2 rounded-lg px-3 py-1 w-full text-center text-sm dark:border-white etxt-black dark:text-white disabled:cursor-not-allowed">
-              {uploadMutation.isPending? <LoadingSpinner color={"text-black dark:text-white dark:fill-black fill-white mx-auto"}/>  : "Add Image"}
+              {uploadMutation.isPending? <LoadingSpinner color={"text-white dark:text-black dark:fill-white fill-black mx-auto"}/>  : "Add Image"}
+          </button>
+          <button type="button" disabled={!!fileError || postIsUploading} onClick={()=> {selectedImageUrl ? onUploadUrl(selectedImageUrl) :onUploadThing(selectedFile) ;setSelectedImage(null);setSelectedImageUrl(null) ;setOpen(!open)}} className="text-black border-2 rounded-lg px-3 py-1 w-full text-center text-sm dark:border-white etxt-black dark:text-white disabled:cursor-not-allowed">
+              {postIsUploading ? <LoadingSpinner color={"text-white dark:text-black dark:fill-white fill-black mx-auto"}/>  : "upload Image"}
           </button>
           <button type="button" disabled={!!fileError || uploadMutation.isPending} onClick={()=>{setSelectedImage(null);setSelectedImageUrl(null)}} className="text-black border-2 rounded-lg px-3 py-1 w-full text-center text-sm dark:border-white etxt-black dark:text-white disabled:cursor-not-allowed">
               Change Image
@@ -219,7 +266,7 @@ export const NewItemMenu = ({ editor,getPos,setFiles,files,setValue }) => {
          <p className="text-[10px]">upload file up to 2mb</p>
       </div>
     </button>
-    <input type="text" className=' block bg-lcard dark:bg-dcard px-2 py-2 rounded-lg focus:outline-none  w-full focus:ring-2 focus:ring-black dark:ring-white   duration-200 ' placeholder='Image Url' onChange={(e)=>{setSelectedInputImage(e.target.value)}} value={selectedImage}/>
+    <Input type="text"  placeholder='Image Url' onChange={(e)=>{setSelectedInputImage(e.target.value)}} value={selectedInputImage || ''}/>
     <button className='bg-black text-white w-full py-2 px-3 dark:bg-white dark:text-black rounded-lg ' type='button' onClick={()=>{setImageByUrl(selectedInputImage);setSelectedInputImage('')}}>Add Image by Url</button>
     {fileError && <p className='text-red'>{fileError}</p>} 
     </div>

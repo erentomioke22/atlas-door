@@ -16,8 +16,6 @@ import Comment from "./comment";
 
 
 const Comments = ({post}) => {
-  const [close, setClose] = useState(false);
-  const [ShowAll,setShowAll]=useState(false)
   const { data: session } = useSession(); 
 
 

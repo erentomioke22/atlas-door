@@ -19,43 +19,43 @@ import {useMemo } from "react";
 import { Doc as YDoc } from "yjs";
 import Accordion from "@components/ui/Accordion";
 import EditPostLoading from "@components/ui/loading/editPostLoading";
-import usePreventNavigation from "@hook/usePreventNavigation";
 import { FaQuestion } from "react-icons/fa";
 import NotFound from "@app/(main)/not-found";
 import EmblaCarousel from "@components/ui/carousel/carousel";
 import { FaImage } from "react-icons/fa6";
 import { FaCheck } from "react-icons/fa";
 import ImageCom from "@components/ui/Image";
+import Offcanvas from "@components/ui/offcanvas";
+import { IoClose } from "react-icons/io5";
 
 
 const EditPost = ({ params }) => {
   const { data: session } = useSession();
   const [dropTag, setDropTag] = useState([]);
-  const [imageUrl, setImageUrl] = useState();
+  const [onClose,setOnClose]=useState(false);
   const router = useRouter();
   const mutation = useEditPostMutation();
   const deleteMutation = useDeletePostMutation();
-  const [files, setFiles] = useState([]);
-  const [deletedPostFiles, setDeletedPostFiles] = useState([]);
-  const [rmThumbnailFile, setRmThumbnailFile] = useState([]);
-  const [deletedFiles, setDeletedFiles] = useState([]);
   const [editIndex, setEditIndex] = useState(null);
-    const [answer, setAnswer] = useState('');
-    const [question, setQuestion] = useState('');
-    const [faqs, setFaqs] = useState([]);
-  const [selectedImage, setSelectedImage] = useState();
-  const [selectedInputImage, setSelectedInputImage] = useState();
+  const [answer, setAnswer] = useState('');
+  const [question, setQuestion] = useState('');
+  const [faqs, setFaqs] = useState([]);
   const ydoc = useMemo(() => new YDoc(), []);
-  const [preventNavigation, setPreventNavigation] = useState(false); 
   const [items, setItems] = useState([])
-  const [editorContent, setEditorContent] = useState();
   const [contentImages, setContentImage] = useState();
   const [thumnailIndex, setThumnailIndex] = useState()
   const [cancel, setCancel] = useState(false);
+  // const [editorContent, setEditorContent] = useState();
+  // const [deletedPostFiles, setDeletedPostFiles] = useState([]);
+  // const [deletedFiles, setDeletedFiles] = useState([]);
+  // const [imageUrl, setImageUrl] = useState();
+  // const [selectedImage, setSelectedImage] = useState();
+  // const [selectedInputImage, setSelectedInputImage] = useState();
+  // const [files, setFiles] = useState([]);
+  // const [rmThumbnailFile, setRmThumbnailFile] = useState([]);
 
   const baseUrl = `${process.env.NEXT_PUBLIC_BASE_URL}`;
 
-  usePreventNavigation(preventNavigation);
 
   // console.log(files)
   // console.log(faqs);
@@ -64,7 +64,7 @@ const EditPost = ({ params }) => {
   // console.log(dropTag);
 
 
-  // console.log(thumnailIndex,contentImages)
+  console.log(thumnailIndex)
 
   const {
     data: post,
@@ -138,14 +138,14 @@ const EditPost = ({ params }) => {
       setValue("content", post?.content);
       setValue("image", post?.images[0]);
       setValue("tags",post?.tags.map((tag) => tag.name));
-      setImageUrl(post?.images[0]);
       setDropTag(post?.tags.map((tag) => tag.name));
-      setSelectedImage(post?.images[0]);
-      setDeletedPostFiles((prevFiles) => [...prevFiles, post?.images[0]]);
       setThumnailIndex(post?.images[0])
       setValue("contentImages", post?.contentImages);
       setFaqs(post?.faqs)
       setValue("faqs", post?.faqs);
+      // setDeletedPostFiles((prevFiles) => [...prevFiles, post?.images[0]]);
+      // setImageUrl(post?.images[0]);
+      // setSelectedImage(post?.images[0]);
 
 
       // setContent(post?.content);
@@ -160,10 +160,6 @@ const EditPost = ({ params }) => {
     
     const onSubmit = async (values) => {
       try {
-        setPreventNavigation(true);
-    
-
-    
         if (thumnailIndex && !thumnailIndex.startsWith('blob:')) {
           setValue('image', thumnailIndex);
         }
@@ -172,15 +168,15 @@ const EditPost = ({ params }) => {
         mutation.mutate(values, {
           onSuccess: () => {
             reset();
-            setImageUrl("");
             setDropTag([]);
-            setFiles([]);
-            setDeletedFiles([]);
-            setSelectedImage(null);
-            setSelectedInputImage(null);
-            setPreventNavigation(false);
-            setEditorContent(null);
-            router.back();
+            setFaqs([]);
+            // setDeletedFiles([]);
+            // router.back();
+            // setEditorContent(null);
+            // setImageUrl("");
+            // setSelectedInputImage(null);
+            // setSelectedImage(null);
+            // setFiles([]);
             // setContent(null);
           },
         });
@@ -290,30 +286,68 @@ const EditPost = ({ params }) => {
 
 
                     <div className="flex gap-2 ">
-                    <Dropdown 
+                    <div>
+                    <Offcanvas 
                           title={"Edit Post"}
                           disabled={
                             isPending || deleteMutation.isPending || mutation.isPending 
                           }
                           btnStyle={"bg-black text-white  border-black dark:border-white dark:bg-white dark:text-black rounded-full border-2 text-[10px] md:text-sm px-3  py-1  md:text-sm duration-300  disabled:cursor-not-allowed   "}
-                          className={"right-0  z-50 h-fit w-72 px-3 bg-white border border-lbtn  dark:border-dbtn dark:bg-black"}>
+                          // className={"right-0  z-50 h-fit w-72 px-3 bg-white border border-lbtn  dark:border-dbtn dark:bg-black"}
+                          position={"top-0 right-0"} size={"h-screen max-w-full w-80 border-l-2 border-l-lcard dark:border-l-dcard"} openTransition={"translate-x-0"} closeTransition={"translate-x-full"} onClose={onClose}
+>
+
+<div className="flex justify-between mb-5">
+          <h1 className={" text-xl "}>
+          Edit Post
+          </h1>
+
+        <button
+          onClick={() => {setOnClose(!onClose)
+          }}
+          className="  text-lg bg-lcard dark:bg-dcard px-2 py-1  rounded-full border-2 text-lfont"
+          type="button"
+        >
+          <IoClose/>
+        </button>
+        </div>
                              <div className="space-y-2">
                                  <div className="space-y-2">
                                  <p className="text-sm">Thumbnail preview</p>
                                        {contentImages?.length > 0 ? 
-                                        <EmblaCarousel options={{ loop: false,direction:'rtl' }} dot={true} autoScroll={false}>
-                                                 {contentImages?.map((url,index) => (
-                                                  <div className="transform translate-x-0 translate-y-0 translate-z-0  flex-none basis-[100%] h-44 min-w-0 pl-4 " onClick={()=>{setThumnailIndex(url.replace(baseUrl, ''))}} key={index}>
-                                                     <div className={`${url.replace(baseUrl, '') === thumnailIndex && 'border-dashed border-4 border-black dark:border-white '} rounded-xl w-full h-44 relative cursor-pointer`}>
-                                                     <ImageCom className={`  w-full h-full object-cover rounded-xl`} size={'w-full h-full object-cover rounded-xl'} src={`${url.replace(baseUrl, '')}`} alt="thumnail" />
-                                                        {url.replace(baseUrl, '') === thumnailIndex &&
-                                                          <div className="absolute  inset-0 top-0 right-0  text-5xl text-white bg-black bg-opacity-50  rounded-xl flex items-center justify-center">
-                                                           <h1><FaCheck /></h1>
-                                                         </div>}
-                                                    </div>
-                                                     </div>
-                                                 ))}
-                                        </EmblaCarousel> 
+                      <EmblaCarousel
+                      options={{ loop: false, direction: "rtl" }}
+                      dot={true}
+                      autoScroll={false}
+                    >
+                      {contentImages?.map((url, index) => (
+                        <div
+                          className="transform translate-x-0 translate-y-0 translate-z-0  flex-none basis-[100%] h-44 min-w-0 pl-4 "
+                          onClick={() => {
+                            url.startsWith('https://') ? setThumnailIndex(url) : setThumnailIndex(url.replace(baseUrl, ""));
+                          }}
+                          key={index}
+                        >
+                          <div
+                            className={`${(url === thumnailIndex || url.replace(baseUrl, "") === thumnailIndex) ? "border-dashed border-4 border-black dark:border-white" : ""} rounded-xl w-full h-44 relative cursor-pointer`}
+                          >
+                            <ImageCom
+                              className={`  w-full h-full object-cover rounded-xl`}
+                              size={"w-full h-full object-cover rounded-xl"}
+                              src={`${url.startsWith('https://') ? url : url.replace(baseUrl, "")}`}
+                              alt="thumnail"
+                            />
+                            {(url === thumnailIndex || url.replace(baseUrl, "") === thumnailIndex)  && (
+                              <div className="absolute  inset-0 top-0 right-0  text-5xl text-white bg-black bg-opacity-50  rounded-xl flex items-center justify-center">
+                                <h1>
+                                  <FaCheck />
+                                </h1>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </EmblaCarousel>
                                         :
                                             <div 
                                             type='button'
@@ -365,7 +399,7 @@ const EditPost = ({ params }) => {
                                  <div>
                                  <Dropdown
                                    title={
-                                    <div className="flex space-x-5 border-2 border-black dark:border-white p-2 rounded-lg w-full max-h-36 overflow-y-auto text-wrap">
+                                    <div className="flex space-x-5 border-2 border-lbtn dark:border-dbtn p-2 rounded-lg w-full max-h-36 overflow-y-auto text-wrap">
                                     <ul className="flex flex-wrap gap-2 text-sm w-full" disabled={dropTag.length === 4}>
                                       {dropTag.map((dropTag) => (
                                         <li disabled={dropTag.length === 4} key={dropTag} 
@@ -450,7 +484,8 @@ const EditPost = ({ params }) => {
 
                           </div>
                                     
-                       </Dropdown> 
+                       </Offcanvas> 
+                    </div>
           
             <div>
               <button
@@ -545,18 +580,18 @@ const EditPost = ({ params }) => {
                     onChange={onChange}
                     ref={ref}
                     setValue={setValue}
-                    files={files}
-                    setFiles={setFiles}
-                    setEditorContent={setEditorContent}
-                    setDeletedFiles={setDeletedFiles}
-                    deletedFiles={deletedFiles}
-                    setDeletedPostFiles={setDeletedPostFiles}
-                    deletedPostFiles={deletedPostFiles}
                     items={items}
                     setItems={setItems}
                     ydoc={ydoc}
                     contentImages={contentImages} setContentImage={setContentImage}
                     thumnailIndex={thumnailIndex} setThumnailIndex={setThumnailIndex}
+                    // setEditorContent={setEditorContent}
+                    // setDeletedFiles={setDeletedFiles}
+                    // deletedFiles={deletedFiles}
+                    // setDeletedPostFiles={setDeletedPostFiles}
+                    // deletedPostFiles={deletedPostFiles}
+                    // files={files}
+                    // setFiles={setFiles}
                     // hasCollab={hasCollab}
                     // provider={provider}
                   />

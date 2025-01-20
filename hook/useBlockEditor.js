@@ -5,11 +5,11 @@ import { ExtensionKit } from '@extensions/extension-kit'
 // import CollaborationCursor from '@tiptap/extension-collaboration-cursor'
 // import { userColors, userNames } from '../lib/constants'
 // import { randomElement } from '@lib/utils/index'
-import { getHierarchicalIndexes, TableOfContents } from '@tiptap-pro/extension-table-of-contents'
+// import { getHierarchicalIndexes, TableOfContents } from '@tiptap-pro/extension-table-of-contents'
 
 // import  { AnyExtension, Editor } from '@tiptap/core'
 // import { TiptapCollabProvider, WebSocketStatus } from '@hocuspocus/provider'
-import  { Doc as YDoc } from 'yjs'
+// import  { Doc as YDoc } from 'yjs'
 // import  { EditorUser } from '../components/BlockEditor/types'
 // import { initialContent } from '@lib/data/initialContent'
 // import { Ai } from '@/extensions/Ai'
@@ -28,13 +28,19 @@ export const useBlockEditor = ({
   // provider,
   // userId,
   // userName = 'Maxi',
-  content,onChange,files,setFiles,setValue,deletedFiles,setDeletedFiles,setEditorContent,setDeletedPostFiles,deletedPostFiles, setContentImage,thumnailIndex,setThumnailIndex
+  // files,setFiles,
+  // deletedFiles,setDeletedFiles,
+  // setDeletedPostFiles,deletedPostFiles,
+  // setEditorContent,
+  content,onChange,setValue,
+   setContentImage,
+  thumnailIndex,setThumnailIndex
 }) => {
   // const [collabState, setCollabState] = useState(
   //   provider ? WebSocketStatus.Connecting : WebSocketStatus.Disconnected,
   // )
-  const [prevNewFiles, setPrevNewFiles] = useState([]);
-  const [tempRemovedFiles, setTempRemovedFiles] = useState([]);
+  // const [prevNewFiles, setPrevNewFiles] = useState([]);
+  // const [tempRemovedFiles, setTempRemovedFiles] = useState([]);
 
   // console.log(prevNewFiles)
   // console.log(tempRemovedFiles)
@@ -131,7 +137,7 @@ export const useBlockEditor = ({
     // },
     onUpdate: ({ editor }) => {
       onChange(editor.getHTML());
-      setEditorContent(editor);
+      // setEditorContent(editor);
 
       const html = editor.getHTML();
       const tempDiv = document.createElement('div');
@@ -139,21 +145,23 @@ export const useBlockEditor = ({
       const imgTags = tempDiv.getElementsByTagName('img');
       const newFiles = Array.from(imgTags).map((img) => img.src);
       setContentImage(newFiles)
-      const remainingFiles = files.filter((file) => newFiles.includes(file.url));
-      const removedFiles = files.filter((file) => !newFiles.includes(file.url));
-      setTempRemovedFiles((prev) => [...prev, ...removedFiles.filter((removedFile) => !prev.includes(removedFile.url))]);
-      const restoredFiles = tempRemovedFiles.filter((tempRemovedFile) => newFiles.includes(tempRemovedFile.url));  
-      const updatedFiles = [...remainingFiles, ...restoredFiles].filter((file, index, self) => index === self.findIndex((f) => f.url === file.url) ); 
-      setFiles(updatedFiles);
-      const removedFilesUrls = prevNewFiles.filter(prevNewFile =>!newFiles.includes(prevNewFile));
-      setDeletedFiles((prev) => [
-        ...prev,
-        ...removedFilesUrls.filter((removedFileUrl) => !prev.includes(removedFileUrl)),
-      ].filter((deletedFile) => !newFiles.includes(deletedFile)));
+      // const remainingFiles = files.filter((file) => newFiles.includes(file.url));
+      // const removedFiles = files.filter((file) => !newFiles.includes(file.url));
+      // setTempRemovedFiles((prev) => [...prev, ...removedFiles.filter((removedFile) => !prev.includes(removedFile.url))]);
+      // const restoredFiles = tempRemovedFiles.filter((tempRemovedFile) => newFiles.includes(tempRemovedFile.url));  
+      // const updatedFiles = [...remainingFiles, ...restoredFiles].filter((file, index, self) => index === self.findIndex((f) => f.url === file.url) ); 
+      // setFiles(updatedFiles);
+      // const removedFilesUrls = prevNewFiles.filter(prevNewFile =>!newFiles.includes(prevNewFile));
+      // setDeletedFiles((prev) => [
+      //   ...prev,
+      //   ...removedFilesUrls.filter((removedFileUrl) => !prev.includes(removedFileUrl)),
+      // ].filter((deletedFile) => !newFiles.includes(deletedFile)));
+
       if (!newFiles.includes(thumnailIndex)) { 
        const baseUrl = `${process.env.NEXT_PUBLIC_BASE_URL}`;
-        setThumnailIndex(newFiles.length > 0 ? newFiles[0].replace(baseUrl, '') : null); 
+        setThumnailIndex(newFiles.length > 0 ? newFiles[0].startsWith('https://') ? newFiles[0] : newFiles[0].replace(baseUrl, '') : null); 
        }
+
       setValue('contentImages',newFiles)
       // const removedFiles = prevNewFiles.filter((prevNewFile) => !newFiles.includes(prevNewFile.url));
       // setFiles([...remainingFiles, ...restoredFiles]);
@@ -181,9 +189,9 @@ useEffect(() => {
       tempDiv.innerHTML = html;
       const imgTags = tempDiv.getElementsByTagName('img');
       const newFiles = Array.from(imgTags).map(img =>img.src);
-      setPrevNewFiles(newFiles)
+      // setPrevNewFiles(newFiles)
       setContentImage(newFiles)
-      setDeletedPostFiles(prevDeletedPostFiles => [...prevDeletedPostFiles, ...newFiles]);
+      // setDeletedPostFiles(prevDeletedPostFiles => [...prevDeletedPostFiles, ...newFiles]);
   }
 }, [content,editor])
 

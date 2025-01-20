@@ -51,7 +51,7 @@ const RootLayout = async({children})=> {
       <ReactQueryProvider>
         <AuthProvider>
                  {children}     
-             <Toaster richColors  position="bottom-left"/>
+             <Toaster richColors  position="bottom-right"/>
        </AuthProvider>
       </ReactQueryProvider>
     </ThemeProvider> 
