@@ -4,7 +4,7 @@ import { cache } from 'react';
 import NotFound from '@app/(main)/not-found';
 import { prisma } from '@utils/database';
 import { getPostDataInclude } from '@lib/types';
-// import Head from 'next/head';
+import Head from 'next/head';
 
 const getPost = cache(async (title, loggedInUserId) => {
   try {
@@ -91,13 +91,40 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function Page({ params }) {
-  // const post = await getPost(params.title);
-  // if (!post) {
-  //   return NotFound();
-  // }
+  const post = await getPost(params.title);
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": post?.title,
+    "description": post?.desc,
+    "datePublished": post?.createdAt,
+    "dateModified": post?.updatedAt,
+    "author": {
+      "@type": "Person",
+      "name": post?.user?.displayName,
+    },
+    "image": post?.contentImages.map((img) => `${process.env.NEXT_PUBLIC_BASE_URL}/${img}`),
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": `${process.env.NEXT_PUBLIC_BASE_URL}/posts/${post?.title}`,
+    },
+  };
 
   return (
     <>
+      <Head>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      </Head>
+      <div>
+        <PostPage params={params} />
+      </div>
+    </>
+  );
+}
+
+
+
     {/* <Head>
     <title>{post?.title} - {post?.desc.slice(0, 50)}...</title>
     <meta name="description" content={post?.desc} />
@@ -113,12 +140,7 @@ export default async function Page({ params }) {
       <meta key={index} property="og:image" content={`https://www.atlasdoor.ir/${contentImage}`} />
     ))}
   </Head> */}
-    <div>
-      <PostPage params={params}
-      //  post={post} 
-       />
-    </div>
-    </>
-  );
-}
+
+
+
 

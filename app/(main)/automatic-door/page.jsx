@@ -1,29 +1,59 @@
-// import Link from "next/link";
-// import EmblaCarousel from "@components/ui/carousel/carousel";
-// import { FaCaretRight } from "react-icons/fa6";
-// import ImageCom from "@components/ui/Image";
+import React from 'react';
 import PostPage from "@components/posts/postPage";
-
+import Head from 'next/head';
 
 export const metadata = {
   metadataBase: new URL(`${process.env.NEXT_PUBLIC_BASE_URL}/automatic-door`),
-  title :"درب‌های اتوماتیک - انواع درب‌های اتوماتیک با نصب حرفه‌ای و خدمات پس از فروش",
-  description:"فروش و نصب درب‌های اتوماتیک با کیفیت بالا و امنیت بیشتر. ارائه بهترین خدمات نصب و تعمیر درب‌های اتوماتیک. مشاوره و بازدید رایگان.",
-  keywords:"درب‌های اتوماتیک, فروش درب‌های اتوماتیک, نصب درب‌های اتوماتیک, تعمیر درب‌های اتوماتیک, درب‌های خودکار, درب‌های حفاظتی, درب‌های امنیتی, درب برای منازل, درب برای کسب‌وکارها, قیمت درب‌های اتوماتیک, خدمات پس از فروش درب‌های اتوماتیک, مشاوره درب‌های اتوماتیک, خرید درب‌های اتوماتیک",
-  twitter:{
-   card:'summary_large_image'
+  title: "درب‌های اتوماتیک - انواع درب‌های اتوماتیک با نصب حرفه‌ای و خدمات پس از فروش",
+  description: "فروش و نصب درب‌های اتوماتیک با کیفیت بالا و امنیت بیشتر. ارائه بهترین خدمات نصب و تعمیر درب‌های اتوماتیک. مشاوره و بازدید رایگان.",
+  keywords: "درب‌های اتوماتیک, فروش درب‌های اتوماتیک, نصب درب‌های اتوماتیک, تعمیر درب‌های اتوماتیک, درب‌های خودکار, درب‌های حفاظتی, درب‌های امنیتی, درب برای منازل, درب برای کسب‌وکارها, قیمت درب‌های اتوماتیک, خدمات پس از فروش درب‌های اتوماتیک, مشاوره درب‌های اتوماتیک, خرید درب‌های اتوماتیک",
+  twitter: {
+    card: 'summary_large_image'
   },
-  openGraph:{
-    title :"درب‌های اتوماتیک - انواع درب‌های اتوماتیک با نصب حرفه‌ای و خدمات پس از فروش",
-    description:"فروش و نصب درب‌های اتوماتیک با کیفیت بالا و امنیت بیشتر. ارائه بهترین خدمات نصب و تعمیر درب‌های اتوماتیک. مشاوره و بازدید رایگان.",
-    keywords:"درب‌های اتوماتیک, فروش درب‌های اتوماتیک, نصب درب‌های اتوماتیک, تعمیر درب‌های اتوماتیک, درب‌های خودکار, درب‌های حفاظتی, درب‌های امنیتی, درب برای منازل, درب برای کسب‌وکارها, قیمت درب‌های اتوماتیک, خدمات پس از فروش درب‌های اتوماتیک, مشاوره درب‌های اتوماتیک, خرید درب‌های اتوماتیک",
-    type:"website",
-    locale:"fa_IR",
-    url:`${process.env.NEXT_PUBLIC_BASE_URL}/automatic-door`,
-    siteName:"Atas door"
+  openGraph: {
+    title: "درب‌های اتوماتیک - انواع درب‌های اتوماتیک با نصب حرفه‌ای و خدمات پس از فروش",
+    description: "فروش و نصب درب‌های اتوماتیک با کیفیت بالا و امنیت بیشتر. ارائه بهترین خدمات نصب و تعمیر درب‌های اتوماتیک. مشاوره و بازدید رایگان.",
+    keywords: "درب‌های اتوماتیک, فروش درب‌های اتوماتیک, نصب درب‌های اتوماتیک, تعمیر درب‌های اتوماتیک, درب‌های خودکار, درب‌های حفاظتی, درب‌های امنیتی, درب برای منازل, درب برای کسب‌وکارها, قیمت درب‌های اتوماتیک, خدمات پس از فروش درب‌های اتوماتیک, مشاوره درب‌های اتوماتیک, خرید درب‌های اتوماتیک",
+    type: "website",
+    locale: "fa_IR",
+    url: `${process.env.NEXT_PUBLIC_BASE_URL}/automatic-door`,
+    siteName: "Atlas Door"
   }
 }
-export default async function Page({params}) {
+
+export default async function Page({ params }) {
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": "درب‌های اتوماتیک",
+    "description": "فروش و نصب درب‌های اتوماتیک با کیفیت بالا و امنیت بیشتر. ارائه بهترین خدمات نصب و تعمیر درب‌های اتوماتیک. مشاوره و بازدید رایگان.",
+    "url": `${process.env.NEXT_PUBLIC_BASE_URL}/automatic-door`,
+    "image": [`${process.env.NEXT_PUBLIC_BASE_URL}/your-default-image.jpg`], // Update with your default image
+    "brand": {
+      "@type": "Brand",
+      "name": "Atlas Door"
+    },
+    "offers": {
+      "@type": "Offer",
+      "priceCurrency": "IRR",
+      "url": `${process.env.NEXT_PUBLIC_BASE_URL}/automatic-door`,
+      "itemCondition": "http://schema.org/NewCondition",
+      "availability": "http://schema.org/InStock"
+    }
+  };
+
+  return (
+    <>
+      <Head>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      </Head>
+      <div className="my-10">
+        <PostPage params={{ title: 'درب-اتوماتیک_k474nwj6qb' }} />
+      </div>
+    </>
+  );
+}
 
 
   // const models=[
@@ -113,12 +143,7 @@ export default async function Page({params}) {
   // ]
 
 
-
-
-  return (
-    <>
-
-    {/* <div className="bg-lcard  py-16 dark:bg-dcard">
+      {/* <div className="bg-lcard  py-16 dark:bg-dcard">
       <div className="space-y-10 ">
         <div className="px-6">
           <p className=" text-4xl md:text-[60px] leading-normal">انواع درب اتوماتیک</p>
@@ -184,15 +209,3 @@ export default async function Page({params}) {
         </EmblaCarousel>
       </div>
     </div> */}
-
-
-
-  <div className="my-10">
-     <PostPage params={{title:'درب-اتوماتیک_k474nwj6qb'}}/>
-  </div>
-
-
-    </>
-  );
-}
-
