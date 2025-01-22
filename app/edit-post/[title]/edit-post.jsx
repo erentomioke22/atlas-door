@@ -498,7 +498,7 @@ const EditPost = ({ params }) => {
                   // console.log(removeKey);
                   let id = post?.id;
                   deleteMutation.mutate(
-                    id ,
+                    {id} ,
                     {
                       onSuccess: () => {
                         reset();
