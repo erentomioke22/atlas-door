@@ -495,16 +495,10 @@ const EditPost = ({ params }) => {
                 }
                 className="bg-transparent border-2  text-redorange border-redorange rounded-full text-[10px] md:text-sm px-3  py-1 disabled:cursor-not-allowed"
                 onClick={() => {
-                  const removeKey = deletedPostFiles.map((file) => {
-                    if (typeof file === "string") {
-                      return file.split("/").pop();
-                    }
-                    return null;
-                  });
                   // console.log(removeKey);
                   let id = post?.id;
                   deleteMutation.mutate(
-                    { id, removeKey },
+                    id ,
                     {
                       onSuccess: () => {
                         reset();
