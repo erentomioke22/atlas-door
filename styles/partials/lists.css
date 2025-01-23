@@ -9,7 +9,7 @@
 
   ul,
   ol {
-    @apply py-0 px-8 my-6 first:mt-0 last:mb-0;
+    @apply py-0 px-8 my-6 first:mt-0 last:mb-0 space-y-3;
 
     ul,
     ol,
@@ -18,7 +18,7 @@
     }
 
     p {
-      @apply mt-0 mb-1;
+      @apply  text-lfont;
     }
   }
 

@@ -11,7 +11,7 @@ import Report from "@components/report";
 import { LuReply } from "react-icons/lu";
 import ImageCom from "@components/ui/Image";
 
-const Comment = ({content,user,createdAt,userId,id,replies,likes,_count,parent,post,margin,name,email,image}) => {
+const Comment = ({content,user,createdAt,userId,id,replies,likes,_count,parent,post,margin,name,email}) => {
  
   const [ShowAll,setShowAll]=useState(false)
   const { data: session } = useSession();
@@ -28,8 +28,8 @@ const Comment = ({content,user,createdAt,userId,id,replies,likes,_count,parent,p
                             <ImageCom
                               className="rounded-lg "
                               src={
-                                image
-                                  ? `${process.env.NEXT_PUBLIC_BASE_URL}${image}`
+                                user?.image
+                                  ? `${process.env.NEXT_PUBLIC_BASE_URL}${user?.image}`
                                   : `${process.env.NEXT_PUBLIC_BASE_URL}/images/logo/user-avatar-people-icon-solid-style-icon-design-element-icon-template-background-free-vector.jpg`
                               }
                               alt={'avatar'}

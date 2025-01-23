@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react'
 import { useEditor } from '@tiptap/react'
 import { ExtensionKit } from '@extensions/extension-kit'
+import { getHierarchicalIndexes, TableOfContents } from '@tiptap-pro/extension-table-of-contents'
 // import Collaboration from '@tiptap/extension-collaboration'
 // import CollaborationCursor from '@tiptap/extension-collaboration-cursor'
 // import { userColors, userNames } from '../lib/constants'
 // import { randomElement } from '@lib/utils/index'
-// import { getHierarchicalIndexes, TableOfContents } from '@tiptap-pro/extension-table-of-contents'
 
 // import  { AnyExtension, Editor } from '@tiptap/core'
 // import { TiptapCollabProvider, WebSocketStatus } from '@hocuspocus/provider'
@@ -14,7 +14,6 @@ import { ExtensionKit } from '@extensions/extension-kit'
 // import { initialContent } from '@lib/data/initialContent'
 // import { Ai } from '@/extensions/Ai'
 // import { AiImage, AiWriter } from '@/extensions'
-
 // declare global {
 //   interface Window {
 //     editor: Editor | null
@@ -82,14 +81,14 @@ export const useBlockEditor = ({
         //       },
         //     })
         //   : undefined,
-          // TableOfContents.configure({
-          //   getIndex: getHierarchicalIndexes,
-          //   onUpdate(content) {
-          //     setItems(content);
-          //     const tocs = content.map(({ dom, editor, node,isActive,isScrolledOver,pos, ...cleanedItem }) => cleanedItem);
-          //     setValue('tocs',tocs);
-          //   },
-          // }),
+          TableOfContents.configure({
+            getIndex: getHierarchicalIndexes,
+            // onUpdate(content) {
+            //   setItems(content);
+            //   const tocs = content.map(({ dom, editor, node,isActive,isScrolledOver,pos, ...cleanedItem }) => cleanedItem);
+            //   setValue('tocs',tocs);
+            // },
+          }),
         // aiToken
         //   ? AiWriter.configure({
         //       authorId: userId,
