@@ -28,7 +28,7 @@ const Comments = ({post}) => {
     }
   });
 
-// console.log(comments)
+console.log(comments)
 
 
 
@@ -48,9 +48,9 @@ const Comments = ({post}) => {
            <ImageCom
              className="rounded-xl h-10 w-10"
              src={
-               session?.user?.image === null
-                 ? `${process.env.NEXT_PUBLIC_BASE_URL}/images/logo/user-avatar-people-icon-solid-style-icon-design-element-icon-template-background-free-vector.jpg`
-                 : `${process.env.NEXT_PUBLIC_BASE_URL}${session?.user.image}`
+               session?.user?.image 
+                 ? `${process.env.NEXT_PUBLIC_BASE_URL}${session?.user.image}` 
+                 : `${process.env.NEXT_PUBLIC_BASE_URL}/images/logo/user-avatar-people-icon-solid-style-icon-design-element-icon-template-background-free-vector.jpg`
              }
              alt={'avatar'}
             />
@@ -68,7 +68,7 @@ const Comments = ({post}) => {
         مشکلی در برقراری ارباط وجود دارد
       </p>
   }
-    {status === "success" && !comments.length &&
+    {status === "success" && ( comments.error|| comments.length <= 0) &&
       <p className="text-center  text-sm text-lfont my-5">
         هنوز بازخوردی اینجا اضافه نشده 
       </p>

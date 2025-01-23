@@ -43,7 +43,7 @@ const {data: post,status,}=useQuery({
 
 // console.log(post)
 
-  if (status === "success" && post?.error) {
+  if (status === "success" && (post?.error || post?.lenght >= 1) ) {
     return NotFound();
   }
 
@@ -92,10 +92,9 @@ const formattedDate = createdAt.isValid() ? createdAt.fromNow(): 'تاریخ ن�
                     <div className="relative h-[40px] w-[40px]">
                       <ImageCom
                         src={
-                          post?.user?.image === null
-                            ? 
-                            `${process.env.NEXT_PUBLIC_BASE_URL}/images/logo/user-avatar-people-icon-solid-style-icon-design-element-icon-template-background-free-vector.jpg`
-                            : `${process.env.NEXT_PUBLIC_BASE_URL}${post?.user?.image}`
+                          post?.user?.image 
+                            ? `${process.env.NEXT_PUBLIC_BASE_URL}${post?.user?.image}`
+                            :  `${process.env.NEXT_PUBLIC_BASE_URL}/images/logo/user-avatar-people-icon-solid-style-icon-design-element-icon-template-background-free-vector.jpg`
                         }
                         className="rounded-xl"
                         alt={'avatar'}
@@ -142,12 +141,13 @@ const formattedDate = createdAt.isValid() ? createdAt.fromNow(): 'تاریخ ن�
 
                </div>
               <div className="h-[200px]  sm:h-[300px] md:h-[400px] w-full relative order-1 lg:order-2">
+              {post?.images[0] &&
                <ImageCom 
                  className=" rounded-xl md:rounded-2xl absolute  mx-auto max-md:order-last"
                  alt={post?.title} 
-                 src={post?.images[0].startsWith('https://')? `${post?.images[0]}` : `${process.env.NEXT_PUBLIC_BASE_URL}${post?.images[0]}`} 
+                 src={post?.images[0].startsWith('https://') ? `${post?.images[0]}` : `${process.env.NEXT_PUBLIC_BASE_URL}${post?.images[0]}`} 
                  size={'h-[200px]  sm:h-[300px] md:h-[400px]'}
-               />
+               />}
               </div>
 
 
@@ -202,7 +202,7 @@ const formattedDate = createdAt.isValid() ? createdAt.fromNow(): 'تاریخ ن�
 
           <Conneccted postTitle={post?.title} postId={post?.id}/>
 
-           <AboutUs/>
+           <AboutUs/> 
           </div>
 
           

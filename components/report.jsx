@@ -95,6 +95,7 @@ const Report = ({type}) => {
 
         <div>
                   <TextArea
+                    placeholder={"پیام خود را بنویسید..."}
                     title={"...پیام خود را بنویسید"}
                   name={"message"}
                   type={"text"}
