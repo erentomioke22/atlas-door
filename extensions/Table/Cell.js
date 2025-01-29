@@ -4,10 +4,6 @@ import { Decoration, DecorationSet } from '@tiptap/pm/view'
 
 import { getCellsInColumn, isRowSelected, selectRow } from './utils'
 
-// export interface TableCellOptions {
-//   HTMLAttributes: Record<string, any>
-// }
-
 export const TableCell = Node.create({
   name: 'tableCell',
 
@@ -35,29 +31,23 @@ export const TableCell = Node.create({
     return {
       colspan: {
         default: 1,
-        parseHTML: element => {
+        parseHTML: (element) => {
           const colspan = element.getAttribute('colspan')
-          const value = colspan ? parseInt(colspan, 10) : 1
-
-          return value
+          return colspan ? parseInt(colspan, 10) : 1
         },
       },
       rowspan: {
         default: 1,
-        parseHTML: element => {
+        parseHTML: (element) => {
           const rowspan = element.getAttribute('rowspan')
-          const value = rowspan ? parseInt(rowspan, 10) : 1
-
-          return value
+          return rowspan ? parseInt(rowspan, 10) : 1
         },
       },
       colwidth: {
         default: null,
-        parseHTML: element => {
+        parseHTML: (element) => {
           const colwidth = element.getAttribute('colwidth')
-          const value = colwidth ? [parseInt(colwidth, 10)] : null
-
-          return value
+          return colwidth ? [parseInt(colwidth, 10)] : null
         },
       },
       style: {
@@ -72,17 +62,17 @@ export const TableCell = Node.create({
     return [
       new Plugin({
         props: {
-          decorations: state => {
+          decorations: (state) => {
             if (!isEditable) {
               return DecorationSet.empty
             }
 
             const { doc, selection } = state
-            const decorations= []
+            const decorations = []
             const cells = getCellsInColumn(0)(selection)
 
             if (cells) {
-              cells.forEach(({ pos }) => {
+              cells.forEach(({ pos }, index) => {
                 decorations.push(
                   Decoration.widget(pos + 1, () => {
                     const rowSelected = isRowSelected(index)(selection)
@@ -103,7 +93,7 @@ export const TableCell = Node.create({
                     const grip = document.createElement('a')
 
                     grip.className = className
-                    grip.addEventListener('mousedown', event => {
+                    grip.addEventListener('mousedown', (event) => {
                       event.preventDefault()
                       event.stopImmediatePropagation()
 
@@ -123,3 +113,4 @@ export const TableCell = Node.create({
     ]
   },
 })
+

@@ -89,9 +89,12 @@ const projects=[
             <h1 className="leading-normal text-balance text-4xl md:text-[60px] font-semibold tracking-tight ">
             تمرکز ما بر <span className="bg-gradient-to-tr text-clip from-blue to-darkgreen text-transparent bg-clip-text">کیفیت و عملکرد</span>   هربار تجربه ای زیبا را تضمین میکند
             </h1>
-            <h2 className=" text-pretty text-md text-lfont">
+            <h1 className=" text-pretty text-lg underline decoration-4 underline-offset-8">
+            نمايندگي شيشه سكوريت و خام - فروش و ارائه خدمات كركره برقي - فروش و ارائه خدمات انواع درب اتوماتيك - نصب و تعميرانواع پارتيشن هاي اداري و حمامي و جام بالكن ها
+            </h1>
+            <h3 className=" text-pretty text-md text-lfont">
              قدرت محصولات با کیفیت مارا که برای عملکرد زیبا در طول زمان طراحی شده اند ; تجربه کنید
-            </h2>
+            </h3>
             <div className=" flex justify-center  gap-3">
               <a href="tel:02155589837" onClick={()=>{toast.success('شماره کپی شد');navigator.clipboard.writeText('02155589837')}} className="bg-black w-20 md:w-28 text-center py-2 text-sm text-white dark:bg-white dark:text-black rounded-full">
                 تماس
@@ -162,7 +165,7 @@ const projects=[
                   قیمت 
                 </p>
                 <p className="text-2xl">
-                  سعی ما بر مشتری مداری باعث میشود قیمت های ما بسیار رقابتی و پایین باشند
+                  سعی ما بر مشتری مداری باعث میشود قیمت های ما بسیار رقابتی باشند
                 </p>
               </div>
 
@@ -175,7 +178,7 @@ const projects=[
                    عملکرد
                 </p>
                 <p className="text-2xl">
-                  عملکرد بالا در طول مدت زمان بلند را با محصولات ما تجربه کنید
+                  عملکرد بالا در مدت زمان طولاني را با محصولات ما تجربه کنید
                 </p>
               </div>
             </div>
@@ -241,13 +244,12 @@ const projects=[
       }
         <div className="max-sm:space-y-5 sm:flex sm:flex-wrap justify-center gap-3 max-sm:px-3  ">
           {status === "pending" && 
-                  Array(3)
+                  Array(10)
                     .fill({})
                     .map((_,index) => {
                       return <LoadingPage key={index}/>;
                 })
           }
-
 
           {posts?.map((post) => (
             <div key={post?.id}>

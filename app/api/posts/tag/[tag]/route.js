@@ -5,9 +5,8 @@ import { auth } from "@/auth";
 
 export async function GET(req,{params}) {
   try {
-    const cursor = req.nextUrl.searchParams.get("cursor") || undefined;
-
-    const pageSize = 10;
+    const pgnum = +(req.nextUrl.searchParams.get('pgnum') ?? 0);
+    const pgsize = +(req.nextUrl.searchParams.get('pgsize') ?? 10);
 
     const session = await auth();
 
@@ -20,18 +19,23 @@ export async function GET(req,{params}) {
             },
         },
       include: getPostDataInclude(session?.user?.id),
-      take: pageSize + 1,
-      cursor: cursor ? { id: cursor } : undefined,
+      orderBy: [
+        {createdAt: "desc" },
+      ],
+      skip:pgnum * pgsize,
+      take: pgsize,
     });
 
-    const nextCursor = posts.length > pageSize ? posts[pageSize].id : null;
+    const count = await prisma.post.count({ 
+    where:{
+      tags:{
+          some:{
+              name:params.tag
+          },
+      },
+  },});
 
-    const data = {
-      posts: posts.slice(0, pageSize),
-      nextCursor,
-    };
-
-    return Response.json(data);
+    return Response.json({posts,count});
   } catch (error) {
     console.error(error);
     return Response.json({ error: "Internal server error" }, { status: 500 });
