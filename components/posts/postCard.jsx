@@ -37,7 +37,7 @@ const formattedDate = createdAt.isValid() ? createdAt.fromNow(): 'تاریخ ن�
 
   return (
 
-    <div className="  bg-lcard dark:bg-dcard  dark:hover:ring-dbtn sm:w-64  hover:ring-2 hover:ring-lbtn  duration-500  mx-auto max-sm:w-full  rounded-3xl py-2 space-y-1 px-3  ">
+    <div className="  bg-lcard dark:bg-dcard  dark:hover:ring-dbtn sm:w-64  hover:ring-2 hover:ring-lbtn  duration-500   max-sm:w-full  rounded-3xl py-2 space-y-1 px-3  ">
               <div className='flex justify-between'>
                   <div
                    className='flex gap-1 sm:gap-2   p-1 text-[10px]   '>
@@ -63,20 +63,22 @@ const formattedDate = createdAt.isValid() ? createdAt.fromNow(): 'تاریخ ن�
                   </div>
 
               </div>
-          <Link href={link}>
-             <div className='relative w-full h-36 md:h-40  rounded-3xl'>
+          <Link href={link} className='flex flex-col justify-between h-full'>
+                <div>
+              {post?.images[0] && 
+                <div className='relative w-full h-36 md:h-40  rounded-3xl '>
               <ImageCom 
                className={'object-cover  rounded-3xl w-full'}
                alt={post?.title} 
                src={post?.images[0].startsWith('https://') ?  `${post?.images[0]}` :`${process.env.NEXT_PUBLIC_BASE_URL}${post.images[0]}`}
-               size={'h-36 md:h-40'} 
-               />
+               size={'h-36 md:h-40'} />
               </div>
+               }
               <div className="space-y-1 text-wrap">
-                <h1 className='text-wrap line-clamp-3 break-all hover:underline duration-150 decoration-2'>{post.title}</h1>
-                <h3 className="text-lfont text-[10px] line-clamp-2 break-all">{post?.desc}</h3>
+                <h1 className='text-wrap line-clamp-3  hover:underline duration-150 decoration-2'>{post.title}</h1>
+                <h3 className="text-lfont text-[10px] line-clamp-2 ">{post?.desc}</h3>
               </div>
-
+              </div>
               <div className='flex justify-between mt-2' >
                <div>
                 <p className="text-sm text-lfont flex">  {formatNumber(post._count.comments)} <TbMessageCircleFilled className="my-auto mr-1"/></p>
@@ -89,15 +91,9 @@ const formattedDate = createdAt.isValid() ? createdAt.fromNow(): 'تاریخ ن�
 
               </div> 
 
+
          </Link>
-
-
-       
-
           </div>
-
-
-
   )
 }
 

@@ -1,16 +1,7 @@
-import { Editor } from '@tiptap/react'
-import { EditorState } from '@tiptap/pm/state'
-import { EditorView } from '@tiptap/pm/view'
-
 import { isTableSelected } from '../../utils'
 import { Table } from '../..'
 
-export const isRowGripSelected = ({
-  editor,
-  view,
-  state,
-  from,
-}) => {
+export const isRowGripSelected = ({ editor, view, state, from }) => {
   const domAtPos = view.domAtPos(from).node
   const nodeDOM = view.nodeDOM(from)
   const node = nodeDOM || domAtPos
@@ -30,4 +21,5 @@ export const isRowGripSelected = ({
   return !!gripRow
 }
 
-export default isRowGripSelected
+export default isRowGripSelected;
+

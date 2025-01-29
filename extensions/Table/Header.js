@@ -15,9 +15,9 @@ export const TableHeader = TiptapTableHeader.extend({
       },
       colwidth: {
         default: null,
-        parseHTML: element => {
+        parseHTML: (element) => {
           const colwidth = element.getAttribute('colwidth')
-          const value = colwidth ? colwidth.split(',').map(item => parseInt(item, 10)) : null
+          const value = colwidth ? colwidth.split(',').map((item) => parseInt(item, 10)) : null
 
           return value
         },
@@ -34,17 +34,17 @@ export const TableHeader = TiptapTableHeader.extend({
     return [
       new Plugin({
         props: {
-          decorations: state => {
+          decorations: (state) => {
             if (!isEditable) {
               return DecorationSet.empty
             }
 
             const { doc, selection } = state
-            const decorations= []
+            const decorations = []
             const cells = getCellsInRow(0)(selection)
 
             if (cells) {
-              cells.forEach(({ pos }) => {
+              cells.forEach(({ pos }, index) => {
                 decorations.push(
                   Decoration.widget(pos + 1, () => {
                     const colSelected = isColumnSelected(index)(selection)
@@ -65,7 +65,7 @@ export const TableHeader = TiptapTableHeader.extend({
                     const grip = document.createElement('a')
 
                     grip.className = className
-                    grip.addEventListener('mousedown', event => {
+                    grip.addEventListener('mousedown', (event) => {
                       event.preventDefault()
                       event.stopImmediatePropagation()
 
@@ -86,4 +86,5 @@ export const TableHeader = TiptapTableHeader.extend({
   },
 })
 
-export default TableHeader
+export default TableHeader;
+

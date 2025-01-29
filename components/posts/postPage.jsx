@@ -78,8 +78,8 @@ const formattedDate = createdAt.isValid() ? createdAt.fromNow(): 'تاریخ ن�
             <ProgressBar/>
      
      
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-               <div className="space-y-5 md:space-y-10 md:mt-7 text-right text-black dark:text-white order-2 lg:order-1">
+            <div className={`grid grid-cols-1 ${post?.images[0] && 'lg:grid-cols-2'} gap-5`}>
+               <div className="space-y-5 md:space-y-10 md:mt-7 text-right text-black dark:text-white order-2 lg:order-1 ">
                 <div className="space-y-4 ">
                    <h1 className="text-xl md:text-5xl w-full break-words ">{post?.title}</h1>   
                            <h3 className="flex gap-2 flex-wrap">
@@ -140,15 +140,16 @@ const formattedDate = createdAt.isValid() ? createdAt.fromNow(): 'تاریخ ن�
 
 
                </div>
-              <div className="h-[200px]  sm:h-[300px] md:h-[400px] w-full relative order-1 lg:order-2">
+
               {post?.images[0] &&
+              <div className="h-[200px]  sm:h-[300px] md:h-[400px] w-full relative order-1 lg:order-2">
                <ImageCom 
                  className=" rounded-xl md:rounded-2xl absolute  mx-auto max-md:order-last"
                  alt={post?.title} 
                  src={post?.images[0].startsWith('https://') ? `${post?.images[0]}` : `${process.env.NEXT_PUBLIC_BASE_URL}${post?.images[0]}`} 
                  size={'h-[200px]  sm:h-[300px] md:h-[400px]'}
-               />}
-              </div>
+               />
+              </div>}
 
 
 

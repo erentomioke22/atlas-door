@@ -180,9 +180,9 @@ const List = () => {
           )}
         </div>
 
-        {!count || status === "pending" || !posts.length || (
+        {status === "pending" || posts.length <= 0 || count <= 0 ||  (
           <>
-            <div className="flex justify-center mt-10 space-x-2 text-[10px]">
+            <div className="flex justify-center mt-10 gap-2 text-[10px]">
               {arrOfCurrentPage.map((page, index) => {
                 return (
                   <button
@@ -205,32 +205,32 @@ const List = () => {
                 );
               })}
             </div>
-            <div className="flex justify-center space-x-2 mt-5 text-[10px]">
+            <div className="flex justify-center gap-2 mt-5 text-[10px]">
               <button
                 disabled={currentPage === 0}
                 className={`${
                   currentPage === 0
-                    ? "disabled disabled:cursor-not-allowed   bg-lbtn border-lbtn text-lfont  py-1 px-3 rounded-lg dark:bg-dbtn"
-                    : "bg-lcard rounded-lg  py-1 px-3 duration-500 border border-lbtn text-lfont hover:bg-lbtn dark:bg-dcard dark:hover:bg-dbtn dark:border-dbtn"
+                    ? "disabled disabled:cursor-not-allowed   bg-lbtn border-lbtn  py-1 px-3 rounded-lg dark:bg-dbtn"
+                    : "bg-lcard rounded-lg  py-1 px-3 duration-500 border border-lbtn   dark:bg-dcard  dark:border-dbtn"
                 }`}
                 onClick={() => {
                   setCurrentPage(currentPage - 1);
                 }}
               >
-                PREV
+                قبلي
               </button>
               <button
                 disabled={currentPage === Math.ceil(count / postPerPage) - 1}
                 className={`${
                   currentPage === Math.ceil(count / postPerPage) - 1
-                    ? "disabled disabled:cursor-not-allowed   bg-lbtn border-lbtn text-lfont  py-1 px-3 rounded-lg dark:bg-dbtn"
-                    : "bg-lcard rounded-lg  py-1 px-3 duration-500 border border-lbtn text-lfont hover:bg-lbtn dark:bg-dcard dark:hover:bg-dbtn dark:border-dbtn"
+                    ? "disabled disabled:cursor-not-allowed   bg-lbtn border-lbtn   py-1 px-3 rounded-lg dark:bg-dbtn"
+                    : "bg-lcard rounded-lg  py-1 px-3 duration-500 border border-lbtn   dark:bg-dcard  dark:border-dbtn"
                 }`}
                 onClick={() => {
                   setCurrentPage(currentPage + 1);
                 }}
               >
-                NEXT
+                بعدي
               </button>
             </div>
           </>

@@ -5,12 +5,12 @@ import LinkMenu from "@components/menus/LinkMenu/LinkMenu";
 import { TextMenu } from "@components/menus/TextMenu/TextMenu";
 import ImageBlockMenu from "@extensions/Image/components/ImageMenu";
 import { NewItemMenu } from "@components/menus/ContentItemMenu/NewItemMenu";
+import { TableColumnMenu, TableRowMenu } from '@extensions/Table/menus'
 
 // import '@/styles/index.css'
 // import { Sidebar } from '@components/Sidebar/Sidebar'
 // import ImageBlockMenu from '@extensions/ImageBlock/components/ImageBlockMenu'
 // import { ColumnsMenu } from '@/extensions/MultiColumn/menus'
-// import { TableColumnMenu, TableRowMenu } from '@extensions/Table/menus'
 // import { EditorHeader } from './components/EditorHeader'
 // import { useSidebar } from '@hook/useSidebar'
 // import * as Y from 'yjs'
@@ -80,9 +80,7 @@ export const BlockEditor =
           /> */}
         {/* <Toolbar editor={editor} content={content}/> */}
         {/* <ContentItemMenu editor={editor} /> */}
-        {/* <ColumnsMenu editor={editor} appendTo={menuContainerRef} />
-        <TableRowMenu editor={editor} appendTo={menuContainerRef} />
-        <TableColumnMenu editor={editor} appendTo={menuContainerRef} /> */}
+        {/* <ColumnsMenu editor={editor} appendTo={menuContainerRef} />*/}
         <div className="space-y-5">
           <EditorContent
             editor={editor}
@@ -91,6 +89,8 @@ export const BlockEditor =
           />
           <LinkMenu editor={editor} appendTo={menuContainerRef} />
           <TextMenu editor={editor} />
+          <TableRowMenu editor={editor} appendTo={menuContainerRef} />
+          <TableColumnMenu editor={editor} appendTo={menuContainerRef} /> 
           <ImageBlockMenu editor={editor} appendTo={menuContainerRef} /> 
         </div>
         <NewItemMenu
