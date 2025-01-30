@@ -44,7 +44,7 @@ const CreatePost = () => {
   // const [deletedFiles, setDeletedFiles] = useState([]);
   // const [deletedPostFiles, setDeletedPostFiles] = useState([]);
 
-  console.log(thumnailIndex)
+  // console.log(thumnailIndex)
   if (!session) {
     return NotFound();
   }

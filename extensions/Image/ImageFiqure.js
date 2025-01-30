@@ -61,8 +61,8 @@ export const ImageFigure = Figure.extend({
     ];
   },
   
-  
 
+  
   addCommands() {
     return {
       setFigure: ({ caption, ...attrs }) => ({ chain }) => {

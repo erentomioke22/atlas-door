@@ -12,7 +12,7 @@ import Head from 'next/head';
 export const metadata = {
   metadataBase: new URL(`${process.env.NEXT_PUBLIC_BASE_URL}`),
   title: {
-    default: "Atlas Door | 0912-375-8621 | اطلس دٌر  | 55589837-021",
+    default: "Atlas Door | 0912-375-8621 | اطلس در  | 55589837-021",
     template: '%s - 0912-3758621| اطلس در | 55589837-021'
   },
   description: "نمایندگی شیشه سکوریت و فروش محصولات کرکره برقی و درب اتوماتیک ونصب انواع پارتیشن و جام بالکن ها",

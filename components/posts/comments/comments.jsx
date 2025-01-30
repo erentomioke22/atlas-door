@@ -83,7 +83,7 @@ console.log(comments)
               })
         ) : (
           <div className=" divide-y-2 divide-lcard dark:divide-dcard">
-            {comments?.map(({content,user,createdAt,userId,id,replies,likes,_count,parent,name,email,image}) => {
+            {comments?.map(({content,user,createdAt,userId,id,replies,likes,_count,parent,name,email}) => {
                 return (
                   <Comment
                   _count={_count}
@@ -102,7 +102,6 @@ console.log(comments)
                   margin={true}
                   name={name}
                   email={email}
-                  image={image}
                   // params={params}
                 />
                 );

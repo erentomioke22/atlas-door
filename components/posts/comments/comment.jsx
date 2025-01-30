@@ -140,7 +140,6 @@ const Comment = ({content,user,createdAt,userId,id,replies,likes,_count,parent,p
                                 margin={false}
                                 name={name}
                                 email={email}
-                                image={image}
                                 // params={params}
                               />
                             );

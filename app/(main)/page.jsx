@@ -89,8 +89,8 @@ const projects=[
             <h1 className="leading-normal text-balance text-4xl md:text-[60px] font-semibold tracking-tight ">
             تمرکز ما بر <span className="bg-gradient-to-tr text-clip from-blue to-darkgreen text-transparent bg-clip-text">کیفیت و عملکرد</span>   هربار تجربه ای زیبا را تضمین میکند
             </h1>
-            <h1 className=" text-pretty text-lg underline decoration-4 underline-offset-8">
-            نمايندگي شيشه سكوريت و خام - فروش و ارائه خدمات كركره برقي - فروش و ارائه خدمات انواع درب اتوماتيك - نصب و تعميرانواع پارتيشن هاي اداري و حمامي و جام بالكن ها
+            <h1 className=" text-pretty text-lg  leading-loose">
+            نمايندگی شيشه سكوريت و خام - فروش و ارائه خدمات كركره برقی - فروش و ارائه خدمات انواع درب اتوماتيک - نصب و تعميرانواع پارتيشن های اداری و حمامی و جام بالكن ها 
             </h1>
             <h3 className=" text-pretty text-md text-lfont">
              قدرت محصولات با کیفیت مارا که برای عملکرد زیبا در طول زمان طراحی شده اند ; تجربه کنید
