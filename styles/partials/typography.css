@@ -53,7 +53,7 @@
   }
 
   strong {
-    @apply font-black
+    @apply font-black text-black dark:text-white
   }
 
   s {

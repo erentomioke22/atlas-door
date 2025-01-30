@@ -29,7 +29,7 @@ export default async function Page({ params }) {
     "name": "کرکره برقی",
     "description": "کرکره برقی با بهترین کیفیت و امنیت برای منازل و کسب‌وکارها. ارائه‌دهنده خدمات فروش، نصب و تعمیر کرکره‌های برقی با قیمت مناسب. مشاوره رایگان.",
     "url": `${process.env.NEXT_PUBLIC_BASE_URL}/roller-shutter`,
-    "image": [`${process.env.NEXT_PUBLIC_BASE_URL}/your-default-image.jpg`], // Update with your default image
+    "image": [`${process.env.NEXT_PUBLIC_BASE_URL}/your-default-image.jpg`],
     "brand": {
       "@type": "Brand",
       "name": "Atlas Door"
