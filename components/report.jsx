@@ -62,13 +62,13 @@ const Report = ({type}) => {
     ]
 
   return (
-    <Dropdown 
-    title={`گزارش مشکل`}   
-    header={"Report"}
-    headerStyle={"capitalize text-xl"} 
-    btnStyle={"hover:bg-lcard  duration-300 dark:hover:bg-dcard px-2 py-1 text-start w-full rounded-lg "}
-    className={"-left-5 sm:left-0 bg-white dark:bg-black dark:border-dbtn border border-lbtn px-3 w-60 sm:w-72  shadow-lg"}
-    onClose={onClose}
+    <div 
+    // title={`گزارش مشکل`}   
+    // header={"Report"}
+    // headerStyle={"capitalize text-xl"} 
+    // btnStyle={"hover:bg-lcard  duration-300 dark:hover:bg-dcard px-2 py-1 text-start w-full rounded-lg "}
+    // className={"-left-5 sm:left-0 bg-white dark:bg-black dark:border-dbtn border border-lbtn px-3 w-60 sm:w-72  shadow-lg"}
+    // onClose={onClose}
     >
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-5 text-right"> 
         <div className="space-y-3">
@@ -120,7 +120,7 @@ const Report = ({type}) => {
                     </button>
                 </div>
     </form>
-    </Dropdown>
+    </div>
   )
 }
 
