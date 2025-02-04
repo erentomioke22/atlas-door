@@ -10,6 +10,8 @@ import { useDeleteCommentMutation } from "./mutations";
 import Report from "@components/report";
 import { LuReply } from "react-icons/lu";
 import ImageCom from "@components/ui/Image";
+import { FaArrowLeftLong } from "react-icons/fa6";
+
 
 const Comment = ({content,user,createdAt,userId,id,replies,likes,_count,parent,post,margin,name,email}) => {
  
@@ -17,6 +19,7 @@ const Comment = ({content,user,createdAt,userId,id,replies,likes,_count,parent,p
   const { data: session } = useSession();
   const mutation = useDeleteCommentMutation()
   const [showAllReply,setShowAllReply]=useState(false)
+  const [showReport,setShowReport] = useState(false)
 
 
 
@@ -53,17 +56,34 @@ const Comment = ({content,user,createdAt,userId,id,replies,likes,_count,parent,p
                          
                           <Dropdown
                             title={<BsThreeDots className="text-sm"/>}
-                            className={" px-2 z-[99999] left-0 mb-1 w-44 bg-white dark:bg-black shadow-sm border border-lbtn dark:border-dbtn"}
+                            className={`px-2 z-[99999] left-0 mb-1 ${showReport ? 'w-72': 'w-44'} bg-white dark:bg-black shadow-sm border border-lbtn dark:border-dbtn`}
                           >
                             <div className="text-[10px] w-full space-y-1">
-                                <Report type={"COMMENT"}/>
-                                {session?.user.role === 'admin' && 
+                            {!showReport ? 
                                 <>
-                                 <button disabled={mutation.isPending} className="disabled:cursor-not-allowed w-full py-1 px-3  rounded-lg hover:bg-lcard dark:hover:bg-dcard text-start text-[10px]" type="button" onClick={()=>{mutation.mutate(id)}}>Delete</button>
-                                 {/* {session && session.user.id === userId && ( */}
-                                  <CommentInput post={post} header={"edit comment"} btnStyle={"hover:bg-lcard  duration-300 dark:hover:bg-dcard px-2 py-1 text-start w-full rounded-lg "} title={ "Edit your Comment"} content={content} commentId={id}  reply={false} placeHolder={"EDIT COMMENT"}/>
-                                  {/* // )} */}
-                                </>
+                                                                  <button onClick={()=>{setShowReport(true)}} className="hover:bg-lcard dark:bg-dcard p-2 rounded-lg  duration-200 mb-2 w-full text-start">
+                                    گزارش
+                                  </button>
+   {session?.user.role === 'admin' && 
+   <>
+    <button disabled={mutation.isPending} className="disabled:cursor-not-allowed w-full py-1 px-3  rounded-lg hover:bg-lcard dark:hover:bg-dcard text-start text-[10px]" type="button" onClick={()=>{mutation.mutate(id)}}>Delete</button>
+    {/* {session && session.user.id === userId && ( */}
+     <CommentInput post={post} header={"edit comment"} btnStyle={"hover:bg-lcard  duration-300 dark:hover:bg-dcard px-2 py-1 text-start w-full rounded-lg "} title={ "Edit your Comment"} content={content} commentId={id}  reply={false} placeHolder={"EDIT COMMENT"}/>
+     {/* // )} */}
+   </>
+   }
+</>
+                                :
+ <div className="space-y-3">
+                                   <button onClick={()=>{setShowReport(false)}} 
+                                   className="flex"                       
+                                    type="button"
+                                   >
+                                بازگشت
+                                <FaArrowLeftLong className="my-auto text-sm"/>
+                         </button>
+                                  <Report type={"Comment"}/>
+                                </div>
                                 }
                             </div>
                           </Dropdown>
