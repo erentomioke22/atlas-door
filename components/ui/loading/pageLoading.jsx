@@ -2,7 +2,7 @@ import React from 'react'
 
 const PageLoading = () => {
   return (
-    <div className="mx-auto my-5 px-7 lg:px-32 xl:px-44  space-y-5 md:space-y-10">
+    <div className="mx-auto my-5">
     <div className="animate-pulse space-y-5 ">
       
 

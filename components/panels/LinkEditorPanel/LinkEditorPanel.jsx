@@ -13,14 +13,16 @@ export const LinkEditorPanel = ({ onSetLink, initialOpenInNewTab, initialUrl }) 
     setUrl(event.target.value)
   }, [])
 
-  const isValidUrl = useMemo(() => /^(\S+):(\/\/)?\S+$/.test(url), [url])
+  // const isValidUrl = useMemo(() => /^(\S+):(\/\/)?\S+$/.test(url), [url])
 
   const handleSubmit = useCallback((e) => {
     // e.preventDefault()
-    if (isValidUrl) {
+    // if (isValidUrl) {
         onSetLink(url, openInNewTab)
-    }
-}, [url, isValidUrl, openInNewTab, onSetLink])
+    // }
+}, [url,
+  //  isValidUrl,
+    openInNewTab, onSetLink])
 
   return (
     <Surface className="p-1" >
@@ -37,7 +39,9 @@ export const LinkEditorPanel = ({ onSetLink, initialOpenInNewTab, initialUrl }) 
             onChange={onChange}
           />
         </label>
-        <button className='bg-transparent text-sm text-white border-2  px-2 py-2   rounded-lg  dark:text-black disabled:brightness-75 disabled:cursor-not-allowed' buttonSize="small" type="button" onClick={handleSubmit} disabled={!isValidUrl}>
+        <button className='bg-transparent text-sm text-white border-2  px-2 py-2   rounded-lg  dark:text-black disabled:brightness-75 disabled:cursor-not-allowed' buttonSize="small" type="button" onClick={handleSubmit} 
+        // disabled={!isValidUrl}
+        >
           Set Link
         </button>
       </form>

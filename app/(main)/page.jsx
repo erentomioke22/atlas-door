@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React,{useState} from "react";
 import PostCard from "@components/posts/postCard";
 import LoadingPage from "@components/ui/loading/loadingPage";
 import Link from "next/link";
@@ -14,13 +14,14 @@ import ImageCom from "@components/ui/Image";
 
 
 function Home() {
+  const [item,setItem] = useState("new-post")
 
   const {
     data:posts,
     status,
   } = useQuery({
-    queryKey: ["new-post"],
-    queryFn: async () => {const response = await axios.get('/api/posts/new-post');
+    queryKey: ["home-post"],
+    queryFn: async () => {const response = await axios.get(`/api/posts/home?category=${item}`);
       return response.data;
     },
   });

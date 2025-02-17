@@ -1,25 +1,28 @@
 import { memo, useCallback, useEffect, useState } from 'react'
 import Dropdown from '@components/ui/dropdown'
-
+import Input from '@components/ui/input'
+import Button from '@components/ui/button'
+import { BsFillFileRichtextFill } from "react-icons/bs";
 
 export const ImageAlt = memo(({ onChange, value }) => {
 const [altText,setAltText]=useState('')
 
   return (
-    <Dropdown className="right-0 px-2 bg-black dark:bg-white rounded-lg" title={'Alt Text'} btnStyle={'text-white dark:text-black p-1 my-auto text-sm'}>
-      <div className='space-y-1 text-white dark:text-black'>
-      <label htmlFor="altText" >Alt Text</label>
-      <input
+    <Dropdown className="right-0 px-2  rounded-lg w-44" title={<BsFillFileRichtextFill/>} btnStyle={'text-white dark:text-black p-1 my-auto text-xl my-auto '}>
+      <div className='space-y-1 '>
+      <Input
         id="altText"
         type="text"
+        title="Alt Text"
+        label={true}
         value={altText}
         onChange={(e) => setAltText(e.target.value)}
-        className="bg-transparent p-2  ring-0 outline-none border-2 border-white dark:border-black rounded-lg"
+        className=""
         placeholder="Enter alt text"
       />
-      <button className='text-black bg-white dark:bg-black dark:text-white w-full py-1 text-sm rounded-lg' onClick={()=>{onChange(altText);}} type='button'> 
+      <Button variant='menuActive' className=' w-full py-1 text-sm rounded-lg' onClick={()=>{onChange(altText);}} type='button'> 
         Set Alt Text
-      </button>
+      </Button>
       </div>
     </Dropdown>
   )
