@@ -6,7 +6,7 @@ import TextArea from "@components/ui/TextArea";
 import Dropdown from "@components/ui/dropdown";
 import { toast } from "sonner";
 import { useSubmitPostMutation } from "../../components/posts/mutations";
-import LoadingSpinner from "@components/ui/loading/loadingSpinner";
+import LoadingIcon from "@components/ui/loading/loadingIcon";
 import { postValidation } from "@lib/validation";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -48,7 +48,6 @@ const CreatePost = () => {
   if (!session) {
     return NotFound();
   }
-
 
   const {
     register,
@@ -287,20 +286,32 @@ const CreatePost = () => {
                           <div
                             className="transform translate-x-0 translate-y-0 translate-z-0  flex-none basis-[100%] h-44 min-w-0 pl-4 "
                             onClick={() => {
-                              url.startsWith('https://') ? setThumnailIndex(url) : setThumnailIndex(url.replace(baseUrl, ""));
+                              url.startsWith("https://")
+                                ? setThumnailIndex(url)
+                                : setThumnailIndex(url.replace(baseUrl, ""));
                             }}
                             key={index}
                           >
                             <div
-                              className={`${(url === thumnailIndex || url.replace(baseUrl, "") === thumnailIndex) ? "border-dashed border-4 border-black dark:border-white" : ""} rounded-xl w-full h-44 relative cursor-pointer`}
+                              className={`${
+                                url === thumnailIndex ||
+                                url.replace(baseUrl, "") === thumnailIndex
+                                  ? "border-dashed border-4 border-black dark:border-white"
+                                  : ""
+                              } rounded-xl w-full h-44 relative cursor-pointer`}
                             >
                               <ImageCom
                                 className={`  w-full h-full object-cover rounded-xl`}
                                 size={"w-full h-full object-cover rounded-xl"}
-                                src={`${url.startsWith('https://') ? url : url.replace(baseUrl, "")}`}
+                                src={`${
+                                  url.startsWith("https://")
+                                    ? url
+                                    : url.replace(baseUrl, "")
+                                }`}
                                 alt="thumnail"
                               />
-                              {(url === thumnailIndex || url.replace(baseUrl, "") === thumnailIndex)  && (
+                              {(url === thumnailIndex ||
+                                url.replace(baseUrl, "") === thumnailIndex) && (
                                 <div className="absolute  inset-0 top-0 right-0  text-5xl text-white bg-black bg-opacity-50  rounded-xl flex items-center justify-center">
                                   <h1>
                                     <FaCheck />
@@ -445,7 +456,7 @@ const CreatePost = () => {
                       type="submit"
                     >
                       {mutation.isPending ? (
-                        <LoadingSpinner
+                        <LoadingIcon
                           color={
                             "text-black dark:text-white dark:fill-black fill-white mx-auto"
                           }

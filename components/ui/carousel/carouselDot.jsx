@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react'
 
 export const useDotButton = (emblaApi) => {
-  const [selectedIndex, setSelectedIndex] = useState(0)
+  const [selectedIndexDot, setSelectedIndexDot] = useState(0)
   const [scrollSnaps, setScrollSnaps] = useState([])
 
   const onDotButtonClick = useCallback(
@@ -17,7 +17,7 @@ export const useDotButton = (emblaApi) => {
   }, [])
 
   const onSelect = useCallback((emblaApi) => {
-    setSelectedIndex(emblaApi.selectedScrollSnap())
+    setSelectedIndexDot(emblaApi.selectedScrollSnap())
   }, [])
 
   useEffect(() => {
@@ -29,7 +29,7 @@ export const useDotButton = (emblaApi) => {
   }, [emblaApi, onInit, onSelect])
 
   return {
-    selectedIndex,
+    selectedIndexDot,
     scrollSnaps,
     onDotButtonClick
   }

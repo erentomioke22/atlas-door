@@ -2,6 +2,7 @@ import { Icon } from '@components/ui/Icon'
 import { Surface } from '@components/ui/Surface'
 // import { Toggle } from '@components/ui/Toggle/Toggle'
 import { useState, useCallback, useMemo } from 'react'
+import { FaCheck } from "react-icons/fa";
 
 
 
@@ -42,7 +43,7 @@ export const LinkEditorPanel = ({ onSetLink, initialOpenInNewTab, initialUrl }) 
         <button className='bg-transparent text-sm text-white border-2  px-2 py-2   rounded-lg  dark:text-black disabled:brightness-75 disabled:cursor-not-allowed' buttonSize="small" type="button" onClick={handleSubmit} 
         // disabled={!isValidUrl}
         >
-          Set Link
+          <FaCheck/>
         </button>
       </form>
       <div className="mt-3">

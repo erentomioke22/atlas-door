@@ -3,20 +3,27 @@
 import React from "react";
 import { useTheme } from "next-themes";
 import { IoSunny } from "react-icons/io5";
-import { FaMoon } from "react-icons/fa";
+import { FaRobot } from "react-icons/fa6";
+import { IoMoon } from "react-icons/io5";
+import Button from "./button";
 
-const Darkmode = () => {
+
+const Darkmode = ({name}) => {
   const { theme, setTheme } = useTheme("light");
 
   return (
-    <button
-      className=" bg-lcard hover:bg-lbtn rounded-full px-3 py-1 duration-500 dark:bg-dcard dark:hover:bg-dbtn  border-lbtn border dark:border-dbtn"
+    <Button
+      className={name ? "flex justify-between py-2 px-3" : "text-sm p-1 md:p-[6px]  rounded-lg"}
+      variant={name ? 'darkMode' : 'home'}
       onClick={() => {
-        setTheme(theme === "light" ? "dark" : "light");
+        setTheme(theme === "light" ? "dark" : theme === "dark" ? "system" :theme === "system" ? "light" : "system");
       }}
+      type="button"
     >
-      {theme === "light" ? <IoSunny /> : <FaMoon />}
-    </button>
+      {/* {theme === "light" ? <IoSunny /> : <FaMoon />} */}
+      {name && <span>{theme === "light" ? "Light"  : theme === "dark" ? "Dark" :theme === "system" ? "System" : "Light"}</span>}
+      {theme === "light" ? <IoSunny className="text-xl my-auto sm:text-lg"/>  : theme === "dark" ? <IoMoon className="text-xl my-auto sm:text-lg"/> :theme === "system" ? <FaRobot className="text-xl my-auto sm:text-lg"/> : <IoSunny className="text-xl my-auto sm:text-lg"/>}
+    </Button>
   );
 };
 

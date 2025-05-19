@@ -2,7 +2,7 @@
 
 import React,{useState} from "react";
 import PostCard from "@components/posts/postCard";
-import LoadingPage from "@components/ui/loading/loadingPage";
+import LoadingPage from "@components/ui/loading/loadingCard";
 import Link from "next/link";
 import EmblaCarousel from "@components/ui/carousel/carousel";
 import { FaCaretRight } from "react-icons/fa6";
@@ -36,11 +36,11 @@ const projects=[
     url:'/automatic-door',
     image:'/images/automatic-door/slide/thumnail.jpg'
   },
-  {
-    name:'کرکره برقی',
-    url:'/roller-shutter',
-    image:'/images/roller-shutter/blade/thumnail.jpg'
-  },
+  // {
+  //   name:'کرکره برقی',
+  //   url:'/roller-shutter',
+  //   image:'/images/roller-shutter/blade/thumnail.jpg'
+  // },
   {
     name:'شیشه سکوریت',
     url:'/tempered-glass',

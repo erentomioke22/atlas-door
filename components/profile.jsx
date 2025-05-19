@@ -91,6 +91,26 @@ const Profile = ({ session }) => {
      <span>Create Post</span>
       </Link>
 
+      <Link 
+        href={"/create-product"}   
+        onClick={() => {
+          setClose(!close);
+        }}
+        className={" flex justify-between py-2 w-full  px-3  rounded-lg  hover:bg-lcard dark:hover:bg-dcard hover:text-black dark:hover:text-white text-lfont duration-500"} >
+     {/* <IoPencil className="text-lg" />  */}
+     <span>Create product</span>
+      </Link>
+
+      <Link 
+        href={`/${session?.user.name}/orders`}   
+        onClick={() => {
+          setClose(!close);
+        }}
+        className={" flex justify-between py-2 w-full  px-3  rounded-lg  hover:bg-lcard dark:hover:bg-dcard hover:text-black dark:hover:text-white text-lfont duration-500"} >
+     {/* <IoPencil className="text-lg" />  */}
+     <span>My Orders</span>
+      </Link>
+
 
 
 

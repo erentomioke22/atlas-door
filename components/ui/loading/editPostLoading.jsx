@@ -2,9 +2,15 @@ import React from 'react'
 
 const EditPostLoading = () => {
   return (
-    <div className=" w-full mx-auto  ">
+    <div className=" w-full mx-auto  md:w-2/3 ">
     <div className="animate-pulse space-y-5 ">
-
+      <div className='flex gap-1  max-w-52'>
+        <div className='h-10 w-10 bg-lcard dark:bg-dcard rounded-xl'></div>
+        <div className='flex-1 space-y-1 my-auto'>
+          <div className='h-3 bg-lcard dark:bg-dcard  rounded'></div>
+          <div className='h-3 bg-lcard dark:bg-dcard  rounded'></div>
+        </div>
+      </div>
        <div className=' flex-1 space-y-3 w-full'>
              <div className="h-4 bg-lcard dark:bg-dcard  rounded col-span-2"></div>
              <div className="h-4 bg-lcard dark:bg-dcard  rounded col-span-1"></div>     

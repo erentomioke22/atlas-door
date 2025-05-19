@@ -1,0 +1,241 @@
+  async function getComment() {
+    const response = await axios.get(
+      `http://localhost:3000/api/news/comment?newsTitle=${params.title
+        .split("-")
+        .join(" ")}`
+    );
+    console.log(response);
+    if (response.data.message) {
+      setCommentData(response.data.data.comments);
+      setIsLoading(false);
+      setIsLoadingNew(false);
+      setIsLoadingEdit(null);
+      setIsLoadingReply(null);
+    }
+  }
+
+
+  
+  const Formik = useFormik({
+    initialValues: {
+      userName: session ? session.user.name : "",
+      userId: session ? session.user.id : "",
+      userImage: session ? session.user.image : "",
+      desc: "",
+    },
+    enableReinitialize: true,
+
+    onSubmit: async (values) => {
+      setIsLoadingNew(true);
+      const response = await axios.post(
+        `http://localhost:3000/api/news/comment?newsTitle=${params.title
+          .split("-")
+          .join(" ")}`,
+        values
+      );
+      console.log(response);
+      if (response.data.message) {
+        setNewComment(!newComment);
+        Formik.resetForm();
+        toast.success(response.data.message);
+      } else if (response.data.error) {
+        toast.error(response.data.error);
+      }
+    },
+  });
+
+  const Formik2 = useFormik({
+    initialValues: {
+      userName: session ? session.user.name : "",
+      userId: session ? session.user.id : "",
+      userImage: session ? session.user.image : "",
+      desc: "",
+    },
+    enableReinitialize: true,
+
+    onSubmit: async (values) => {
+      setIsLoadingEdit(edit);
+      const response = await axios.put(
+        `http://localhost:3000/api/news/comment?commentId=${edit}`,
+        values
+      );
+      console.log(response);
+      if (response.data.message) {
+        setNewComment(!newComment);
+        setEdit(null);
+        Formik2.resetForm();
+        toast.success(response.data.message);
+      } else if (response.data.error) {
+        toast.error(response.data.error);
+      }
+    },
+  });
+
+  async function likeComment(id) {
+    try {
+      setLikeLoading(true);
+      const response = await axios.post(
+        `http://localhost:3000/api/news/comment/like?commentId=${id}&userId=${session.user.id}`
+      );
+      if (response.data.message) {
+        setNewComment(!newComment);
+        setLikeLoading(false);
+        setCurrentLike(null);
+        toast.success(response.data.message);
+      } else {
+        toast.error(response.data.error);
+      }
+    } catch (error) {
+      toast.error(error);
+    }
+  }
+
+  async function deleteComment(id) {
+    try {
+      const response = await axios.delete(
+        `http://localhost:3000/api/news/comment?commentId=${id}`
+      );
+      console.log(response);
+      if (response.data.message) {
+        setNewComment(!newComment);
+        toast.success(response.data.message);
+      } else if (response.data.error) {
+        toast.error(response.data.error);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const Formik3 = useFormik({
+    initialValues: {
+      userName: session ? session.user.name : "",
+      userId: session ? session.user.id : "",
+      userImage: session ? session.user.image : "",
+      desc: "",
+    },
+    enableReinitialize: true,
+
+
+    onSubmit: async (values) => {
+      setIsLoadingReply(replyCom);
+      const response = await axios.post(
+        `http://localhost:3000/api/news/comment/reply?commentId=${replyCom}`,
+        values
+      );
+      if (response.data.message) {
+        setNewComment(!newComment);
+        Formik3.resetForm();
+        setReplyCom(null);
+        toast.success(response.data.message);
+      } else if (response.data.error) {
+        toast.error(response.data.error);
+      }
+    },
+  });
+
+  useEffect(() => {
+    getComment();
+  }, [newComment]);
+
+
+
+
+
+
+
+
+  async function likeComment(id) {
+    setLikeLoading(true);
+    const response = await axios.post(
+      `http://localhost:3000/api/news/comment/reply/like?newsTitle=${params.title
+        .split("-")
+        .join(" ")}&commentId=${commentId}&userId=${
+        session.user.id
+      }&replyId=${id}`
+    );
+    console.log(response);
+    if (response.data.message) {
+      setNewComment(!newComment);
+      toast.success(response.data.message);
+      setLikeLoading(false);
+      setCurrentLike(null);
+    } else if (response.data.error) {
+      toast.error(response.data.error);
+      setLikeLoading(false);
+    }
+  }
+
+  const Formik = useFormik({
+    initialValues: {
+      userName: session ? session.user.name : "",
+      userId: session ? session.user.id : "",
+      userImage: session ? session.user.image : "",
+      desc: "",
+    },
+    enableReinitialize: true,
+    validationSchema: yup.object().shape({
+      desc: yup
+        .string()
+        .required("comment field must not be empty")
+        .min(10, "your comment must be amounter 8 characters long")
+        .max(1000, "your comment must not be amounter 1000 characters long")
+        .test(
+          "no-word-greater-than-10",
+          "A word in the text is longer than 10 letters",
+          (value) => {
+            if (!value) return true;
+            const words = value.split(" ");
+            for (let word of words) {
+              if (word.length > 15) return false;
+            }
+            return true;
+          }
+        )
+        .test(
+          "no-abusive-words",
+          "The text contains abusive words",
+          (value) => {
+            if (!value) return true;
+            const words = value.split(" ");
+            for (let word of words) {
+              if (abusiveWords.includes(word.toLowerCase())) return false;
+            }
+            return true;
+          }
+        ),
+    }),
+    onSubmit: async (values) => {
+      setIsLoadingEdit(edit);
+      const response = await axios.put(
+        `http://localhost:3000/api/news/comment/reply?replyId=${edit}`,
+        values
+      );
+      console.log(response);
+      if (response.data.message) {
+        setNewComment(!newComment);
+        setEdit(null);
+        Formik.resetForm();
+        toast.success(response.data.message);
+      } else if (response.data.error) {
+        toast.error(response.data.error);
+      }
+    },
+  });
+
+  async function deleteReply(id) {
+    try {
+      const response = await axios.delete(
+        `http://localhost:3000/api/news/comment/reply?replyId=${id}`
+      );
+      console.log(response);
+      if (response.data.message) {
+        setNewComment(!newComment);
+        toast.success(response.data.message);
+      } else if (response.data.error) {
+        toast.error(response.data.error);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }

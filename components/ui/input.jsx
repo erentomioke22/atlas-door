@@ -1,6 +1,6 @@
 import React, { forwardRef } from 'react'
 
-export const Input = forwardRef(({title,value,error,name,type,className,onChange,onBlur,onInput,label,placeholder},ref) => (
+export const Input = forwardRef(({title,value,error,name,type,className,onChange,onBlur,onInput,label,placeholder,min,max,step},ref) => (
     <>
        <div className="relative space-y-1">
        {label && <label className='truncate text-wrap text-sm  capitalize'>{title}</label>}
@@ -19,6 +19,9 @@ export const Input = forwardRef(({title,value,error,name,type,className,onChange
            value={value}
            error={error}
            onInput={onInput}
+           min={min}
+           max={max}
+           step={step}
          />
          
          {/* <label

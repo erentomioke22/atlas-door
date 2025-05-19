@@ -10,7 +10,8 @@ const Button = ({children,variant = "primary",className,...props}) => {
 
   const variantStyles = {
     simple: "",
-    home: "bg-lcard dark:bg-dcard border-2 border-lcard dark:border-dcard",
+    home: "bg-lcard dark:bg-dcard border-2 border-lcard dark:border-dcard hover:brightness-95 dark:hover:brightness-125",
+    darkMode:" w-full rounded-lg  hover:bg-lcard dark:hover:bg-dcard sm:hover:text-black sm:dark:hover:text-white sm:text-lfont duration-500",
     menu: "bg-transparent border-2 border-black dark:border-white dark:text-white rounded-full ",
     menuActive: "bg-black dark:bg-white text-white dark:border-white dark:text-black rounded-full border-2 border-black",
     close:"bg-lcard dark:bg-dcard rounded-full border-2 text-lfont",

@@ -1,8 +1,8 @@
 import React, { useState, useTransition } from "react";
 import axios from "axios";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
-import { toast } from 'sonner'
-import LoadingSpinner from "@components/ui/loading/loadingSpinner";
+import { toast } from "sonner";
+import LoadingIcon from "@components/ui/loading/loadingIcon";
 import { useForm } from "react-hook-form";
 import { signupValidation } from "@lib/validation";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -29,9 +29,9 @@ const Signup = ({ setShow }) => {
   const onSubmit = async (values) => {
     startTransition(async () => {
       try {
-      const { confirmPassword, ...data } = values;
-      const response = await axios.post("/api/auth/register", data);
-      // console.log(values, response);
+        const { confirmPassword, ...data } = values;
+        const response = await axios.post("/api/auth/register", data);
+        // console.log(values, response);
         if (response.data.message) {
           toast.success(response.data.message);
           reset();
@@ -143,7 +143,7 @@ const Signup = ({ setShow }) => {
                       }`}
                     ></span>
                     <button
-                       className="bg-black rounded-full text-lcard dark:bg-white dark:text-black   px-3  "
+                      className="bg-black rounded-full text-lcard dark:bg-white dark:text-black   px-3  "
                       onClick={() => setShowPsss(!showpass)}
                       type="button"
                     >
@@ -161,7 +161,15 @@ const Signup = ({ setShow }) => {
             disabled={isPending}
             type="submit"
           >
-            {isPending ? <LoadingSpinner color={"text-black dark:text-white dark:fill-black fill-white mx-auto"}/> : "REGISTER"}
+            {isPending ? (
+              <LoadingIcon
+                color={
+                  "text-black dark:text-white dark:fill-black fill-white mx-auto"
+                }
+              />
+            ) : (
+              "REGISTER"
+            )}
           </button>
         </div>
       </form>

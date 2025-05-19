@@ -2,7 +2,7 @@
 
 import React, { useEffect } from "react";
 import { useState } from "react";
-import LoadingPage from "@components/ui/loading/loadingPage";
+import LoadingPage from "@components/ui/loading/loadingCard";
 import axios from "axios";
 import PostCard from "@components/posts/postCard";
 import { useQuery } from "@tanstack/react-query";
