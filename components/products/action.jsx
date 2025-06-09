@@ -3,7 +3,7 @@
 import { prisma } from "@utils/database";
 import { getProductDataInclude } from "@/lib/types";
 import { auth } from "@auth";
-// import { utapi } from "@server/uploadthing";
+import { utapi } from "@server/uploadthing";
 
 export async function submitProduct(values) {
   try {
@@ -16,10 +16,10 @@ export async function submitProduct(values) {
         (faq) => faq !== undefined && faq.question && faq.answer
       ) || [];
 
-    const colors =
-      values.colors?.filter(
-        (color) => color !== undefined && color.colorName && color.colorHex && color.colorPrice
-      ) || [];
+    // const colors =
+    //   values.colors?.filter(
+    //     (color) => color !== undefined && color.name && color.hexCode && color.price && color.discount && color.stocks
+    //   ) || [];
 
     const newProduct = await prisma.product.create({
       data: {
@@ -27,7 +27,6 @@ export async function submitProduct(values) {
         desc: values.desc,
         content: values.content,
         images: values.images,
-        status: "EXISTENT",
         sellerId: session?.user.id,
         faqs: {
           create: faqs.map((faq) => ({
@@ -36,23 +35,15 @@ export async function submitProduct(values) {
           })),
         },
         colors: {
-          create: colors.map((color) => ({
-            name: color.colorName,
-            hexCode: color.colorHex,
-            price: parseFloat(color.colorPrice),
-            discount: parseFloat(values.colorDiscount),
-            stocks: parseInt(values.colorStocks),
+          create: values.colors.map((color) => ({
+            status: "EXISTENT",
+            name: color.name,
+            hexCode: color.hexCode,
+            price: parseFloat(color.price),
+            discount: parseFloat(color.discount),
+            stocks: parseInt(color.stocks),
           })),
         },
-        //   tocs: {
-        //     create:tocs.map((toc) => ({
-        //       link: toc.id,
-        //       itemIndex: toc.itemIndex,
-        //       level: toc.level,
-        //       originalLevel: toc.originalLevel,
-        //       textContent: toc.textContent,
-        //     })),
-        // },
       },
       include: getProductDataInclude(session?.user?.id),
     });
@@ -71,23 +62,29 @@ export async function editProduct(values) {
   try {
     const session = await auth();
     if (!session) throw new Error("Unauthorized");
-
+    console.log(values)
     const faqs =
       values.faqs?.filter(
         (faq) => faq !== undefined && faq.question && faq.answer
       ) || [];
-
+      
+      if(values.rmFiles.length > 0){
+        try{
+         const deletedImages = await utapi.deleteFiles(values.rmFiles);
+         console.log(deletedImages)
+        }
+        catch(err){
+          console.error(err)
+          throw new Error('field to delete archive image')
+        }
+      }
     const editedProduct = await prisma.product.update({
       where: { id: values.productId },
       data: {
         name: values.name,
         desc: values.desc,
         content: values.content,
-        images: [values.image],
-        // price: values.price,
-        discount: values.discount,
-        stocks: values.stocks,
-        colors: values.colors,
+        images: values.images,
         faqs: {
           deleteMany:{},
           create: faqs.map((faq) => ({
@@ -97,10 +94,13 @@ export async function editProduct(values) {
         },
         colors: {
           deleteMany:{},
-          create: colors.map((color) => ({
-            name: color.colorName,
-            hexCode: color.colorHex,
-            price:parseFloat(color.colorPrice),
+          create:values.colors.map((color) => ({
+            status: "EXISTENT",
+            name: color.name,
+            hexCode: color.hexCode,
+            price: parseFloat(color.price),
+            discount: parseFloat(color.discount),
+            stocks: parseInt(color.stocks),
           })),
         },
       },
@@ -114,7 +114,7 @@ export async function editProduct(values) {
 }
 
 export async function deleteProduct(values) {
-  // console.log(values)
+  console.log(values)
   const id = values.id;
 
   const session = await auth();
@@ -129,15 +129,15 @@ export async function deleteProduct(values) {
   if (product.sellerId !== session?.user?.id) throw new Error("Unauthorized");
 
   // console.log(values.removeKey)
-  // if(values.removeKey.length > 0){
-  //   try{
-  //     await utapi.deleteFiles(values.removeKey);
-  //   }
-  //   catch(err){
-  //     console.error(err)
-  //     throw new Error('field to delete archive image')
-  //   }
-  // }
+  if(values.removeKey.length > 0){
+    try{
+      await utapi.deleteFiles(values.removeKey);
+    }
+    catch(err){
+      console.error(err)
+      throw new Error('field to delete archive image')
+    }
+  }
 
   const deletedProduct = await prisma.product.delete({
     where: { id },

@@ -14,7 +14,8 @@ export const Input = forwardRef(({title,value,error,name,type,className,onChange
           //  className={`${error  ? "border-red block px-2.5 pb-2.5 pt-4 w-full text-sm bg-lcard dark:bg-dfont rounded-xl border-2  appearance-none dark:focus:border-red focus:outline-none focus:ring-0 focus:border-red peer transition-colors ease-in delay-50" : 
           //                                     "border-lbtn shadow-md dark:border-dbtn block px-2.5 pb-2.5 pt-4 w-full text-sm bg-lcard dark:bg-dfont rounded-xl border-2  appearance-none dark:focus:border-purple focus:outline-none focus:ring-0 focus:border-purple peer transition-colors ease-in delay-50"
           //                                   } ${className}`}
-           className={`${error  ? "border-red  focus:ring-2 ring-red" : " focus:ring-2 ring-black dark:ring-white "} ${className} w-full appearance-none  rounded-xl px-3 py-3 block  text-sm focus:outline-none dark:bg-dcard  bg-lcard  duration-200  `}
+          //  className={`${error  ? "border-red  focus:ring-2 ring-red" : " focus:ring-2 ring-black dark:ring-white "} ${className} w-full appearance-none  rounded-xl px-3 py-3 block  text-sm focus:outline-none dark:bg-dcard  bg-lcard  duration-200  `}
+          className={`${error  ? "border-red  focus:ring-2 focus:ring-red" : " focus:ring-2 ring-black dark:ring-white "} ${className} resize-none w-full appearance-none  rounded-xl px-3 py-2 block border-2 text-sm focus:outline-none dark:bg-dcard  bg-lcard dark:border-dcard  border-lcard  duration-200  `}
            placeholder={placeholder}
            value={value}
            error={error}

@@ -183,7 +183,7 @@ const formattedDate = createdAt.isValid() ? createdAt.fromNow(): 'تاریخ ن�
        <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-5 mx-auto  my-20"> 
                        <div className="space-y-5"> 
              {post?.faqs?.map((faq,index)=>(
-                     <Accordion title={faq.question} key={index}> <p>{faq.answer}</p> </Accordion>
+                     <Accordion menuStyle={"p-4 text-lfont text-sm"} btnStyle={"text-lg sm:text-xl lg:text-2xl"} title={faq.question} key={index}> <p>{faq.answer}</p> </Accordion>
                  ))}
              </div>  
        

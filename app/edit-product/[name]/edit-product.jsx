@@ -1,26 +1,35 @@
 "use client";
 
-import React from "react";
-import { useState, useRef } from "react";
+import React, { useState,useRef, useEffect } from "react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import TextArea from "@components/ui/TextArea";
 import Dropdown from "@components/ui/dropdown";
 import { toast } from "sonner";
-import { useSubmitProductMutation } from "../../components/products/mutations";
-import LoadingIcon from "@components/ui/loading/loadingIcon";
-import { useForm, useFieldArray, Controller } from 'react-hook-form'
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { IoClose } from "react-icons/io5";
+import { useEditProductMutation } from "@components/products/mutations";
+import { useDeleteProductMutation } from "@components/products/mutations";
+import LoadingIcon from "@components/ui/loading/LoadingIcon";
 import BlockEditor from "@components/BlockEditor/BlockEditor";
 import { useMemo } from "react";
 import { Doc as YDoc } from "yjs";
-import { useSession } from "next-auth/react";
-import NotFound from "@app/(main)/not-found";
-import { useRouter } from "next/navigation";
-import EmblaCarousel from "@components/ui/carousel/carousel";
-import { FaImage, FaPlus, FaCheck, FaQuestion } from "react-icons/fa6";
+import { useSearchParams } from "next/navigation";
 import Accordion from "@components/ui/Accordion";
+import ImageInput from "@components/ui/imageInput";
+import EditPostLoading from "@components/ui/loading/editPostLoading";
+import usePreventNavigation from "@hook/usePreventNavigation";
+import NotFound from "@app/(main)/not-found";
+import { useUploadThing } from "@lib/uploadthing";
+import EmblaCarousel from "@components/ui/carousel/carousel";
+import { FaImage, FaPlus, FaCheck, FaQuestion,FaPalette} from "react-icons/fa6";
 import ImageCom from "@components/ui/Image";
 import Offcanvas from "@components/ui/offcanvas";
-import { IoClose } from "react-icons/io5";
+import Button from "@components/ui/button";
+import Darkmode from "@components/ui/darkmode";
 import Input from "@components/ui/input";
 import * as yup from "yup";
 import {
@@ -28,23 +37,28 @@ import {
   imageFileValidation,
   imageUrlValidation,
 } from "@lib/validation";
-import { useUploadThing } from "@lib/uploadthing";
-import { FaPalette } from "react-icons/fa6"; // Add this import
 import { formatPrice } from "@lib/utils";
 import { IoPencil } from "react-icons/io5";
-import Darkmode from "@components/ui/darkmode";
 
-
-
-const CreateProduct = () => {
+const EditProduct = ({ name }) => {
   const { data: session } = useSession();
-  const [onClose, setOnClose] = useState(false);
+  const [dropTag, setDropTag] = useState([]);
   const router = useRouter();
-  const [thumnailIndex, setThumnailIndex] = useState(0);
-  const [productThumnail, setProductThumnail] = useState(0);
-  const [contentImages, setContentImages] = useState([]);
-  const [productPictures, setProductPictures] = useState([]);
+  const mutation = useEditProductMutation();
+  const deleteMutation = useDeleteProductMutation();
+  const [files, setFiles] = useState([]);
+  const [deletedPostFiles, setDeletedPostFiles] = useState([]);
+  const [deletedFiles, setDeletedFiles] = useState([]);
+  const [onClose, setOnClose] = useState(false);
+  const ydoc = useMemo(() => new YDoc(), []);
+  const [preventNavigation, setPreventNavigation] = useState(false);
+  const blobUrlToUploadedUrlMap = [];
+  const [editorContent, setEditorContent] = useState();
+  const [contentImages, setContentImages] = useState();
+  const [thumnailIndex, setThumnailIndex] = useState();
   const [cancel, setCancel] = useState(false);
+  const [productThumnail, setProductThumnail] = useState(0);
+  const [productPictures, setProductPictures] = useState([]);
   const [editIndex, setEditIndex] = useState(null);
   const [editColorIndex, setEditColorIndex] = useState(null);
   const [answer, setAnswer] = useState("");
@@ -56,25 +70,42 @@ const CreateProduct = () => {
   const [colorPrice, setColorPrice] = useState('');
   const [colorDiscount, setColorDiscount] = useState('');
   const [colorStocks, setColorStocks] = useState('');
-  const ydoc = useMemo(() => new YDoc(), []);
-  const mutation = useSubmitProductMutation();
-  const baseUrl = `${process.env.NEXT_PUBLIC_BASE_URL}`;
   const [fileError, setFileError] = useState("");
   const [selectedInputImage, setSelectedInputImage] = useState();
   const [selectedImage, setSelectedImage] = useState();
   const [selectedImageUrl, setSelectedImageUrl] = useState();
-  const [files, setFiles] = useState([]);
-  const [blobUrlToUploadedUrlMap, setBlobUrlToUploadedUrlMap] = useState([]);
   const fileInputRef = useRef(null);
   const [editingColorIndex, setEditingColorIndex] = useState(null);
+  // const [items, setItems] = useState([])
+  // const [rmThumbnailFile, setRmThumbnailFile] = useState([]);
+  // const [imageUrl, setImageUrl] = useState();
+  // const [selectedImage, setSelectedImage] = useState();
+  // const [selectedInputImage, setSelectedInputImage] = useState();
+  // const [thumnail, setThumnail] = useState()
+  // const [provider, setProvider] = useState(null);
+  // const [collabToken, setCollabToken] = useState();
+  // const hasCollab =parseInt(searchParams?.get("noCollab")) !== 1 && collabToken !== null;
+  // const searchParams = useSearchParams();
+  // const blobUrlToUploadedUrlMap = new Map();
+  // const [content, setContent] = useState();
+  // const [imageInput, setImageInput] = useState();
+  // const [modal, setModal] = useState(false);
+  // const [ThumbnailFile, setThumbnailFile] = useState([]);
 
-  console.log(colors,editColorIndex)
-  // const [editorContent, setEditorContent] = useState();
-  // const[files,setFiles]=useState([])
-  // const [deletedFiles, setDeletedFiles] = useState([]);
-  // const [deletedPostFiles, setDeletedPostFiles] = useState([]);
+  // const ArchiveMutation = useCreateArchiveMutation();
+  // console.log(items)
 
-  console.log(productPictures);
+  usePreventNavigation(preventNavigation);
+
+  console.log(colors)
+  console.log(productPictures,productThumnail,thumnailIndex,deletedFiles)
+  // console.log(faqs);
+  // console.log(deletedPostFiles);
+  // console.log(deletedFiles);
+  // console.log(dropTag);
+
+
+
 
 
   const predefinedColors = [
@@ -93,6 +124,44 @@ const CreateProduct = () => {
   ];
 
   const {
+    data: product,
+    isPending,
+    fetchNextPage,
+    isFetching,
+    isFetchingNextPage,
+    status,
+  } = useQuery({
+    queryKey: ["edit-product", name],
+    queryFn: async () => {
+      const response = await axios.get(`/api/product/edit-product/${name}`);
+      console.log(response);
+      return response.data;
+    },
+  });
+
+  console.log(product);
+
+  if (status === "success" && product?.error) {
+    return (
+      <p className="text-center text-muted-foreground">
+        No products found. Start following people to see their product here.
+      </p>
+    );
+  }
+
+  if (status === "error") {
+    return (
+      <p className="text-center text-destructive">
+        An error occurred while loading product.
+      </p>
+    );
+  }
+
+  if (!session || !product) {
+    NotFound();
+  }
+
+  const {
     register,
     handleSubmit,
     formState: { errors },
@@ -102,37 +171,53 @@ const CreateProduct = () => {
     getValues,
   } = useForm({
     defaultValues: {
+      productId: product?.id,
       name: "",
       desc: "",
       images: [],
-      content: "",
       faqs: [],
-      // price: "",
-      // discount: "",
-      // stocks: "",
-      // colors: [{
-      //   name: '',
-      //   hexCode: '#000000',
-      //   price: 0,
-      //   imageUrl: ''
-      // }]
+      rmFiles: [],
+      colors: [],
+      content: "",
+      // faqs:[],
+      // tocs:[]
+      // contentImages: [],
     },
     resolver: yupResolver(productValidation),
   });
 
-  // if (!session) {
-  //   return NotFound();
-  // }
+  useEffect(() => {
+    if (product) {
+      setValue("name", product?.name);
+      setValue("desc", product?.desc);
+      setValue("productId", product?.id);
+      setValue("content", product?.content);
+      setValue("images", product?.images);
+      setValue("colors", product?.colors);
+      setProductThumnail(product?.images[0]);
+      setColors(product?.colors);
+      setFaqs(product?.faqs);
+      setProductPictures(product?.images);
+      // setImageUrl(post?.images[0]);
+      // setSelectedImage(post?.images[0]);
+      // setDeletedPostFiles((prevFiles) => [...prevFiles, post?.images[0]]);
+      // setContent(post?.content);
+      // setDeletedPostFiles([...deletedPostFiles, post?.images[0]]);
+    }
+  }, [
+    product,
+    // setValue,
+    //  deletedPostFiles
+  ]);
 
+  // console.log(getValues('tocs'))
 
-
-
-
-  const { startUpload: postUpload, isUploading: postIsUploading } =
+  const { startUpload: postUpload, isUploading: productIsUploading } =
     useUploadThing("post", {
       onClientUploadComplete: (data) => {
         toast.success("uploaded successfully!");
         console.log(data);
+        // return data[0].url;
       },
       onUploadError: () => {
         throw new Error("error occurred while uploading");
@@ -142,9 +227,21 @@ const CreateProduct = () => {
       },
     });
 
+
+
   const onSubmit = async (values) => {
     try {
-      // console.log(values)
+     console.log(values)
+      const removeKey = deletedFiles.map((deletedFile) => {
+        if (typeof deletedFile === "string") {
+          return deletedFile.split("/").pop();
+        }
+        return null;
+      });
+
+      setValue("rmFiles", removeKey.filter(Boolean));
+
+
       const filesData = productPictures
         .map(({ file }) => {
           if (file && typeof file !== "string") {
@@ -158,46 +255,7 @@ const CreateProduct = () => {
         })
         .filter(Boolean);
 
-      // if (filesData.length >= 1) {
-      //   const uploadedData = await postUpload(filesData);
-      //   uploadedData.forEach((data, index) => {
-      //     const { url } = files[index];
-      //     const uploadedUrl = data.url;
-      //     blobUrlToUploadedUrlMap.push({ blobUrl: url, uploadedUrl });
-      //   });
-      //   console.log(uploadedData.map(item => item.url))
-
-      //   if (productThumnail && !productThumnail.startsWith("blob:")) {
-      //     setValue("images", );
-      //     setValue("images", [productThumnail,uploadedData.map(item => item.url)]);
-      //   } else {
-      //     const uploadedThumbnail = blobUrlToUploadedUrlMap.find(
-      //       (item) => item.blobUrl === productThumnail
-      //     );
-      //     if (uploadedThumbnail) {
-      //       setValue("images", [uploadedThumbnail.uploadedUrl,uploadedData.map(item => item.url)]);
-      //     }
-      //   }
-      // }
-
-      // if (filesData.length >= 1) {
-      //   const uploadedData = await postUpload(filesData);
-      //   const uploadedUrls = uploadedData.map(item => item.url);
-
-      //   // Create a map of uploaded URLs
-      //   const newBlobUrlMap = productPictures.map((picture, index) => ({
-      //     blobUrl: picture.url,
-      //     uploadedUrl: uploadedData[index]?.url
-      //   })).filter(item => item.uploadedUrl); // Filter out any undefined uploads
-
-      //   setBlobUrlToUploadedUrlMap(newBlobUrlMap);
-
-      //   if (productThumnail) {
-      //     const imageUrl = productPictures.filter(picture => !picture.file && picture.url !== productThumnail).map(picture=> picture.url)
-      //     console.log(imageUrl)
-      //     const thumbnailUrl = productPictures.find(picture => picture.url === productThumnail).url || newBlobUrlMap.find(item => item.blobUrl === productThumnail)?.uploadedUrl;
-      //     setValue("images", thumbnailUrl ? [thumbnailUrl, ...uploadedUrls.filter(url => url !== thumbnailUrl),...imageUrl] : uploadedUrls);
-      //   }
+console.log(filesData)
 
       if (filesData.length >= 1) {
         const uploadedData = await postUpload(filesData);
@@ -214,40 +272,72 @@ const CreateProduct = () => {
           } else {
             // For URLs that were already provided
             return {
-              blobUrl: picture.url,
-              url: picture.url, // Keep the original URL
+              blobUrl: picture || picture.url,
+              url: picture || picture.url, // Keep the original URL
             };
           }
         });
 
         setProductPictures(newBlobUrlMap);
-
-        // Set the images array with thumbnail as first image
+        console.log(newBlobUrlMap)
         if (productThumnail) {
+          console.log(productThumnail)
           const allImages = newBlobUrlMap.map((item) => item.url);
+          console.log(allImages)
           const thumbnailIndex = productPictures.findIndex(
             (picture) => picture.url === productThumnail
           );
           if (thumbnailIndex !== -1) {
             // Move thumbnail to the front
             const thumbnailUrl = allImages[thumbnailIndex];
-            allImages.splice(thumbnailIndex, 1); // Remove from current position
-            setValue("images", [thumbnailUrl, ...allImages]);
+            const remainingImages = allImages.filter((_, index) => index !== thumbnailIndex);
+            setValue("images", [thumbnailUrl, ...remainingImages]);
+          } else {
+            setValue("images", allImages);
+          }
+        }
+      }
+      else{
+        console.log(productPictures)
+        if (productThumnail) {
+          console.log(productThumnail)
+          const allImages = productPictures.map((item) => item || item.url);
+          console.log(allImages)
+          const thumbnailIndex = productPictures.findIndex(
+            (picture) => picture === productThumnail || picture.url === productThumnail
+          );
+          console.log(thumnailIndex)
+          if (thumbnailIndex !== -1) {
+            // Move thumbnail to the front
+            const thumbnailUrl = allImages[thumbnailIndex];
+            console.log(thumbnailUrl)
+            const remainingImages = allImages.filter((_, index) => index !== thumbnailIndex);
+            console.log(remainingImages)
+            const currentImages = [thumbnailUrl, ...remainingImages];
+            console.log(currentImages)
+            setValue("images", currentImages);
           } else {
             setValue("images", allImages);
           }
         }
       }
 
+
+
        console.log(values)
+       const finalValues = getValues();
+       console.log("Submitting form with values:", finalValues);
+
       mutation.mutate(values, {
         onSuccess: () => {
-          reset();
-          setFaqs([]);
-          setColors([]);
-          setProductPictures([]);
+          // reset();
+          // setFaqs([]);
+          // setColors([]);
+          // setProductPictures([]);
+          // setProductThumnail(null);
+          // setDeletedFiles([]);
+          // setFiles([])
           // router.back();
-          //  setFiles([])
         },
       });
     } catch (err) {
@@ -255,6 +345,8 @@ const CreateProduct = () => {
       // console.log(err.message)
     }
   };
+
+
 
   const handleAddFaq = () => {
     if (editIndex !== null) {
@@ -319,7 +411,6 @@ const CreateProduct = () => {
         });
     }
   }
-  console.log(productPictures);
 
   const setImageByUrl = (url) => {
     if (url) {
@@ -334,12 +425,12 @@ const CreateProduct = () => {
           if (productPictures.length === 0) {
             setProductThumnail(url);
             setProductPictures((prevFiles) => {
-              const updatedFiles = [...prevFiles, { url }];
+              const updatedFiles = [...prevFiles, url];
               return updatedFiles;
             });
           } else {
             setProductPictures((prevFiles) => {
-              const updatedFiles = [...prevFiles, { url }];
+              const updatedFiles = [...prevFiles, url];
               return updatedFiles;
             });
           }
@@ -351,22 +442,32 @@ const CreateProduct = () => {
     }
   };
 
+
+
   const handleRemoveImage = (indexToRemove, urlToRemove) => {
+    setDeletedFiles(prev => [...prev, urlToRemove]);
+    // setValue('rmFiles', prev => [...prev, urlToRemove]);
+    
     if (urlToRemove === productThumnail) {
-      if (productPictures.length > 1) {
-        setProductThumnail(productPictures[1].url);
+      // Get the remaining images after removal
+      const remainingImages = productPictures.filter((_, index) => index !== indexToRemove);
+      setValue("images",remainingImages)
+      
+      if (remainingImages.length > 0) {
+        // Try to get the next image first, if not available, get the previous one
+        const nextImage = productPictures[indexToRemove + 1] || productPictures[indexToRemove - 1];
+        if (nextImage) {
+          // Handle both string and object cases
+          const nextImageUrl = typeof nextImage === 'string' ? nextImage : nextImage.url;
+          setProductThumnail(nextImageUrl);
+        }
       }
-      setProductPictures((prevImages) =>
-        prevImages.filter((_, index) => index !== indexToRemove)
-      );
-    } else {
-      setProductPictures((prevImages) =>
-        prevImages.filter((_, index) => index !== indexToRemove)
-      );
     }
+    
+    setProductPictures((prevImages) =>
+      prevImages.filter((_, index) => index !== indexToRemove)
+    );
   };
-
-
 
 
   const handleAddColor = () => {
@@ -411,102 +512,143 @@ const CreateProduct = () => {
 
 
   return (
-    <div className="mb-2">
+    <div className="mb-2 px-2 sm:px-5">
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-7">
         {!cancel && (
-          <div className="flex justify-between  w-full sticky top-0 bg-white dark:bg-black z-[10] py-2 px-2 sm:px-5">
-            <div className="">
-              <Offcanvas
-                title={"CRAETE POST"}
-                btnStyle={
-                  "bg-black text-white  border-black dark:border-white dark:bg-white dark:text-black rounded-full border-2 text-[10px] md:text-sm px-3  py-1  md:text-sm duration-300  disabled:cursor-not-allowed   "
-                }
-                // className={"right-0  z-50 h-fit w-72 px-3 bg-white border border-lbtn  dark:border-dbtn dark:bg-black"}
-                position={"top-0 right-0"}
-                size={
-                  "h-screen max-w-full w-80 border-l-2 border-l-lcard dark:border-l-dcard"
-                }
-                openTransition={"translate-x-0"}
-                closeTransition={"translate-x-full"}
-                onClose={onClose}
-              >
-                <div className="flex justify-between mb-5">
-                  <h1 className={" text-xl "}>Create Product</h1>
+          <div className="flex justify-between  w-full sticky top-0 bg-white dark:bg-black z-[10] py-2 ">
 
-                  <button
-                    onClick={() => {
-                      setOnClose(!onClose);
-                    }}
-                    className="  text-lg bg-lcard dark:bg-dcard px-2 py-1  rounded-full border-2 text-lfont"
-                    type="button"
-                  >
-                    <IoClose />
-                  </button>
-                </div>
 
-                <div className="space-y-2">
+            <div className="flex gap-2 ">
+              <div>
+                <Button
+                  type="button"
+                  disabled={
+                    isPending ||
+                    deleteMutation.isPending ||
+                    mutation.isPending ||
+                    productIsUploading
+                  }
+                  variant="delete"
+                  className="text-[10px] md:text-sm px-3  py-1"
+                  onClick={() => {
+                    const removeKey = deletedFiles.map((file) => {
+                      if (typeof file === "string") {
+                        return file.split("/").pop();
+                      }
+                      return null;
+                    });
+                    console.log(removeKey);
+                    let id = product?.id;
+                    deleteMutation.mutate(
+                      { id, removeKey },
+                      {
+                        onSuccess: () => {
+                          reset();
+                          router.push("/");
+                        },
+                      }
+                    );
+                  }}
+                >
+                  {deleteMutation.isPending ? (
+                    <LoadingIcon color={"bg-redorange"}/>
+                  ) : (
+                    "Delete Product"
+                  )}
+                </Button>
+              </div>
+              <div className="flex gap-1">
+                <Offcanvas
+                  title={"Edit Product"}
+                  disabled={
+                    isPending ||
+                    deleteMutation.isPending ||
+                    mutation.isPending ||
+                    productIsUploading
+                  }
+                  btnStyle={
+                    "bg-black text-white  border-black dark:border-white dark:bg-white dark:text-black rounded-full border-2 text-[10px] md:text-sm px-3  py-1  md:text-sm duration-300  disabled:cursor-not-allowed   "
+                  }
+                  // className={"right-0  z-50 h-fit w-72 px-3 bg-white border border-lbtn  dark:border-dbtn dark:bg-black"}
+                  position={"top-0 right-0"}
+                  size={
+                    "h-screen max-w-full w-80 border-l-2 border-l-lcard dark:border-l-dcard"
+                  }
+                  openTransition={"translate-x-0"}
+                  closeTransition={"translate-x-full"}
+                  onClose={onClose}
+                >
+                  <div className="flex justify-between mb-5">
+                    <h1 className={" text-xl "}>Edit Product</h1>
+
+                    <Button
+                      onClick={() => {
+                        setOnClose(!onClose);
+                      }}
+                      variant="close"
+                      className="text-lg px-2 py-1"
+                      type="button"
+                    >
+                      <IoClose />
+                    </Button>
+                  </div>
                   <div className="space-y-2">
-                    <p className="text-sm">Thumbnail preview</p>
-                    {/* <ImageInput selectedImage={selectedImage}  setSelectedImage={setSelectedImage} selectedInputImage={selectedInputImage}  setSelectedInputImage={setSelectedInputImage} setValue={setValue} rmThumbnailFile={rmThumbnailFile} setRmThumbnailFile={setRmThumbnailFile}/> */}
-                    {/* <div
-                                         className={`text-red  text-[10px] md:text-sm transition-opacity duration-300  ${
-                                           errors?.image?.message ? "opacity-100" : "opacity-0"
-                                         }`}
-                                       >
-                                         {errors?.image?.message}
-                                       </div> */}
+                    <div className="space-y-2">
+                      <button className="text-lg underline underline-offset-2 decoration-2" type="button" onClick={()=>{setProductPictures(product?.images);setProductThumnail(product?.images[0]);setDeletedFiles([])}}>reset Images</button>
+                      <p className="text-sm">Thumbnail preview</p>
 
                     <EmblaCarousel
                       options={{ loop: false, direction: "rtl" }}
                       dot={true}
                       autoScroll={false}
+                      length={productPictures.length > 1}
                     >
-                      {productPictures?.map(({ url }, index) => (
-                        <div
-                          className="transform translate-x-0 translate-y-0 translate-z-0  flex-none basis-[100%] h-44 min-w-0 pl-4 "
-                          onClick={() => {
-                            setProductThumnail(url);
-                          }}
-                          key={index}
-                        >
-                          <div
-                            className={`
-        ${
-          url === productThumnail &&
-          "border-dashed border-4 border-black dark:border-white"
-        }
-        rounded-xl w-full h-44 relative cursor-pointer group
-      `}
-                          >
-                            <ImageCom
-                              className="w-full h-full object-cover rounded-xl"
-                              size="w-full h-full"
-                              src={`${url}`}
-                              alt="post thumnail"
-                            />
+{productPictures?.map((item, index) => {
+  // Get the URL whether it's a string or object
+  const imageUrl = typeof item === 'string' ? item : item.url;
+  const isSelected = imageUrl === productThumnail;
 
-                            <button
-                              onClick={(e) => {
-                                e.stopPropagation(); // Prevents triggering the thumbnail selection
-                                handleRemoveImage(index, url);
-                              }}
-                              type="button"
-                              className="absolute top-3 right-3 p-2 text-white text-3xl rounded-full z-10 shadow-md  bg-black/35 ring-white/30 ring-1 backdrop-blur-sm"
-                            >
-                              <IoClose className="text-lg" />
-                            </button>
+  return (
+    <div
+      className="transform translate-x-0 translate-y-0 translate-z-0 flex-none basis-[100%] h-44 min-w-0 pl-4"
+      onClick={() => setProductThumnail(imageUrl)}
+      key={index}
+    >
+      <div
+        className={`
+          rounded-xl w-full h-44 relative cursor-pointer group
+          ${isSelected ? "border-dashed border-4 border-black dark:border-white" : ""}
+        `}
+      >
+        <ImageCom
+          className="w-full h-full object-cover rounded-xl"
+          size="w-full h-full"
+          src={imageUrl}
+          alt="post thumbnail"
+        />
 
-                            {url === productThumnail && (
-                              <div className="absolute inset-0 bg-black bg-opacity-50 rounded-xl flex items-center justify-center">
-                                <h1>
-                                  <FaCheck className="text-5xl text-white" />
-                                </h1>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      ))}
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            handleRemoveImage(index, imageUrl);
+          }}
+          type="button"
+          className="absolute top-3 right-3 p-2 text-white text-3xl rounded-full z-10 shadow-md bg-black/35 ring-white/30 ring-1 backdrop-blur-sm"
+        >
+          <IoClose className="text-lg" />
+        </button>
 
+        {isSelected && (
+          <div className="absolute inset-0 bg-black bg-opacity-50 rounded-xl flex items-center justify-center">
+            <h1>
+              <FaCheck className="text-5xl text-white" />
+            </h1>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+})}
                       <div className="transform translate-x-0 translate-y-0 translate-z-0  flex-none basis-[100%] h-44 min-w-0 pl-4 space-y-2">
                         <input
                           type="file"
@@ -560,47 +702,11 @@ const CreateProduct = () => {
                         </div>
                         {fileError && <p className="text-red">{fileError}</p>}
                       </div>
-                      {/* {contentImages?.map(({url, index}) => (
-                          <div
-                            className="transform translate-x-0 translate-y-0 translate-z-0  flex-none basis-[100%] h-44 min-w-0 pl-4 "
-                            onClick={() => {
-                              setThumnailIndex(url);
-                            }}
-                            key={index}
-                          >
-                            <div
-                              className={`${
-                                url === thumnailIndex &&
-                                "border-dashed border-4 border-black dark:border-white "
-                              } rounded-xl w-full h-44 relative cursor-pointer`}
-                            >
-                              <ImageCom
-                                className={`  w-full h-full object-cover rounded-xl`}
-                                src={`${url}`}
-                                alt={"post thumnail"}
-                              />
-                              {url === thumnailIndex && (
-                                <div className="absolute  inset-0 top-0 right-0  text-5xl text-white bg-black bg-opacity-50  rounded-xl flex items-center justify-center">
-                                  <h1>
-                                    <FaCheck />
-                                  </h1>
-                                </div>
-                              )}
-                              <div className="absolute inset-0 right-3 bottom-3 bg-black/30 backdrop-blur-sm">
-                                <button 
-                                  onClick={() => handleRemoveImage(index)} 
-                                  className="bg-transparent text-red  rounded-full">
-                                  <FaXmark />
-                                  </button>                          
-                              </div>
-                            </div>
-                              </div>
-                        ))} */}
-                    </EmblaCarousel>
-                  </div>
 
-                  <p className="text-sm">name , Tags & desc </p>
-                  <div>
+                    </EmblaCarousel>
+                    </div>
+                    <p className="text-sm">Title , Tags & desc </p>
+                    <div>
                     <TextArea
                       placeholder={"Write Your Post name ..."}
                       name={"name"}
@@ -632,136 +738,139 @@ const CreateProduct = () => {
                   </div>
 
 
-
-                  <div className=" w-full ">
-                    <button
-                      className="bg-black rounded-lg text-white dark:bg-white dark:text-black w-full text-sm py-2 disabled:brightness-90 disabled:cursor-not-allowed "
-                      disabled={postIsUploading || mutation.isPending}
-                      type="submit"
-                    >
-                      {postIsUploading || mutation.isPending ? (
-                        <LoadingIcon
-                          color={
-                            "text-black dark:text-white dark:fill-black fill-white mx-auto"
-                          }
-                        />
-                      ) : (
-                        "Create Product"
-                      )}
-                    </button>
+                    <div>
+                      <Button
+                        className="rounded-lg  w-full py-2"
+                        variant="menuActive"
+                        disabled={
+                          mutation.isPending ||
+                          // isUploading ||
+                          productIsUploading
+                        }
+                        type="submit"
+                      >
+                        {mutation.isPending || productIsUploading ? (
+                          //  mutation.isPending || uploadMutation.isPending
+                          <LoadingIcon color={"bg-white dark:bg-black"}/>
+                        ) : (
+                          "Edit Product"
+                        )}
+                      </Button>
+                    </div>
                   </div>
-                </div>
-              </Offcanvas>
+                </Offcanvas>
+
+
+              </div>
             </div>
 
             <div>
-              <button
-                className={
-                  "bg-lcard text-lfont dark:bg-dcard rounded-full text-[10px] md:text-sm px-3 w-full py-1 border-2 "
-                }
+              <Button
+                className={"text-[10px] md:text-sm px-3 w-full py-1"}
+                variant="close"
                 onClick={() => setCancel(true)}
                 type="button"
               >
                 cancel
-              </button>
+              </Button>
             </div>
           </div>
         )}
-        <div className="flex  px-2 sm:px-5 py-2 w-full sticky top-0 z-[10]">
-          {cancel && (
-            <div className="flex gap-2">
-              <button
-                className={
-                  "bg-transparent text-redorange text-[10px] md:text-sm px-3  py-1  border-2 rounded-full  "
-                }
-                onClick={() => router.back()}
-                type="button"
-              >
-                Cancle and delete All data
-              </button>
 
-              <button
-                className={
-                  "bg-lcard text-lfont dark:bg-dcard border-2 rounded-full px-3 py-1 text-[10px] md:text-sm"
-                }
+          {cancel && (
+        <div className="flex justify-between  py-2 w-full sticky top-0 z-[10]">
+            {/* <div className="space-x-2"> */}
+              <Button
+                className={"px-3 py-1 text-[10px] md:text-sm"}
+                variant="close"
                 onClick={() => setCancel(false)}
                 type="button"
               >
                 Continue
-              </button>
-            </div>
-          )}
-        </div>
+              </Button>
 
-        <div className="w-full md:w-2/3 mx-auto  space-y-3 px-3">
-          {session && (
-            <div className="flex gap-2">
-              <div className="relative h-10 w-10">
-                {session?.user?.image === null ? (
-                  <div className="h-10 w-10 rounded-xl bg-gradient-to-tr from-redorange to-yellow"></div>
-                ) : (
+              <Button
+                className={"text-[10px] md:text-sm px-3  py-1"}
+                variant="delete"
+                onClick={() => router.back()}
+                type="button"
+              >
+                Cancle and Discard all Changes
+              </Button>
+
+            {/* </div> */}
+            
+        </div>
+          )}
+
+
+
+
+
+        {isPending ? (
+          <EditPostLoading />
+        ) : (
+            <div className="w-full md:w-2/3 mx-auto  space-y-3 ">
+            <div className="flex space-x-2">
+                <div className="relative  w-9 h-9">
+                {product?.seller?.image === null ?
+                  <div className="h-8 w-8 rounded-lg bg-gradient-to-tr from-redorange to-yellow"></div>
+                  :
                   <ImageCom
-                    className="rounded-xl h-10 w-10 "
-                    size={"h-10 w-10"}
-                    src={
-                      session.user?.image === null
-                        ? `${process.env.NEXT_PUBLIC_BASE_URL}/images/logo/user-avatar-people-icon-solid-style-icon-design-element-icon-template-background-free-vector.jpg`
-                        : `${process.env.NEXT_PUBLIC_BASE_URL}${session.user.image}`
-                    }
-                    alt={`${session.user?.name} avatar`}
+                  src={
+                    product?.seller?.image && product?.seller?.image 
+                  }
+                  className="h-9 w-9 rounded-lg"
+                  alt=""
+                  />
+                }
+                </div>
+                <div className="flex flex-col ">
+                  <p className="text-sm ">
+                    {product?.seller.displayName
+                      && product?.seller.displayName}
+                  </p>
+                  <p className=" text-lfont text-[10px] text-start">
+                    {new Date().toLocaleDateString()}
+                  </p>
+                </div>
+
+              </div>
+              <Controller
+                name="content"
+                control={control}
+                render={({ field: { onChange, onBlur, value, name, ref } }) => (
+                  <BlockEditor
+                    content={value}
+                    onChange={onChange}
+                    ref={ref}
+                    setValue={setValue}
+                    ydoc={ydoc}
+                    initialContent={value}
+                    files={files}
+                    setFiles={setFiles}
+                    contentImages={contentImages}
+                    setContentImage={setContentImages}
+                    thumnailIndex={thumnailIndex}
+                    setThumnailIndex={setThumnailIndex}
+                    // items={items}
+                    // setItems={setItems}
+                    // hasCollab={hasCollab}
+                    // provider={provider}
                   />
                 )}
-              </div>
-              <div className="flex flex-col ">
-                <p className=" text-black dark:text-white text-sm">
-                  {session?.user.displayName}
-                </p>
-                <p className=" text-lfont text-[10px]">
-                  {new Date().toLocaleDateString()}
-                </p>
-              </div>
-            </div>
-          )}
-
-          <Controller
-            name="content"
-            control={control}
-            render={({ field: { onChange, onBlur, value, name, ref } }) => (
-              <BlockEditor
-                content={value}
-                onChange={onChange}
-                ref={ref}
-                setValue={setValue}
-                ydoc={ydoc}
-                initialContent={value}
-                files={files}
-                setFiles={setFiles}
-                contentImages={contentImages}
-                setContentImage={setContentImages}
-                thumnailIndex={thumnailIndex}
-                setThumnailIndex={setThumnailIndex}
               />
-            )}
-          />
-          <div
-            className={`text-red mt-2 text-[10px] md:text-sm transition-opacity duration-300  ${
-              errors?.content?.message ? "opacity-100" : "opacity-0"
-            }`}
-          >
-            {errors?.content?.message}
-          </div>
 
-          <div
-            className={`text-red mt-2 text-[10px] md:text-sm transition-opacity duration-300  ${
-              errors?.content?.message ? "opacity-100" : "opacity-0"
-            }`}
-          >
-            {errors?.content?.message}
-          </div>
+              <div
+                className={`text-red mt-2 text-[10px] md:text-sm transition-opacity duration-300  ${
+                  errors?.content?.message ? "opacity-100" : "opacity-0"
+                }`}
+              >
+                {errors?.content?.message}
+              </div>
 
 
-
-          <Dropdown
+              <Dropdown
             className={
               "right-0 bg-white px-2 dark:bg-black border border-lbtn  dark:border-dbtn"
             }
@@ -892,17 +1001,13 @@ const CreateProduct = () => {
               </button>
             </div>
           </Dropdown>
-          
 
 
 
 
-
-        </div>
+            </div>
+        )}
       </form>
-
-
-
 
 
 
@@ -910,7 +1015,7 @@ const CreateProduct = () => {
       <div>
         {faqs?.map((faq, index) => (
           <div key={index} className="flex space-x-2">
-            <Accordion title={faq.question}>
+            <Accordion menuStyle={"p-4 text-lfont text-sm"} btnStyle={"text-lg sm:text-xl lg:text-2xl"} title={faq.question}>
               {" "}
               <p>{faq.answer}</p>{" "}
             </Accordion>
@@ -966,7 +1071,6 @@ const CreateProduct = () => {
         ))}
       </div>
 
-
       <div className="fixed bottom-10 right-10">
         <div>
           <Darkmode name={false} />
@@ -976,6 +1080,4 @@ const CreateProduct = () => {
   );
 };
 
-export default CreateProduct;
-// ... existing imports and code ...
-
+export default EditProduct;

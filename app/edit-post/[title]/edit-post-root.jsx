@@ -19,7 +19,6 @@ import BlockEditor from "@components/BlockEditor/BlockEditor";
 import { useMemo } from "react";
 import { Doc as YDoc } from "yjs";
 import { useSearchParams } from "next/navigation";
-import Accordion from "@components/ui/Accordion";
 import ImageInput from "@components/ui/imageInput";
 import EditPostLoading from "@components/ui/loading/editPostLoading";
 import usePreventNavigation from "@hook/usePreventNavigation";

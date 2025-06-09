@@ -710,7 +710,7 @@ const EditPost = ({ params }) => {
       <div>
         {faqs?.map((faq, index) => (
           <div key={index} className="flex space-x-2">
-            <Accordion title={faq.question}>
+            <Accordion menuStyle={"p-4 text-lfont text-sm"} btnStyle={"text-lg sm:text-xl lg:text-2xl"} title={faq.question}>
               {" "}
               <p>{faq.answer}</p>{" "}
             </Accordion>

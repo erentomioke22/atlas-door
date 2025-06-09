@@ -20,14 +20,14 @@ const Page = ({ params }) => {
   return (
     <div>
       <Head>
-        <title>{metadata.title}</title>
+        <title>{metadata.name}</title>
         <meta property="og:url" content={metadata.metadataBase} />
         <meta name="description" content="Edit an existing post on Atlas Door" />
-        <meta property="og:title" content={metadata.title} />
+        <meta property="og:title" content={metadata.name} />
         <meta name="twitter:card" content="summary_large_image" />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       </Head>
-      <EditProduct params={params} />
+      <EditProduct name={params.name} />
     </div>
   );
 };

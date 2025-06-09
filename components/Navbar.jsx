@@ -75,6 +75,10 @@ const Navbar = () => {
       name: "مقاله ها",
       href:'/posts',
     },
+    { id: "7", 
+      name: "فروشگاه",
+      href:'/products',
+    },
     // { id: "11", 
     //   name: "آیینه",
     //   href:'/mirror',
@@ -106,10 +110,6 @@ const Navbar = () => {
     // { id: "7", 
     //   name: "سایبان برقی",
     //   href:'/electric-canopies',
-    // },
-    // { id: "13", 
-    //   name: "ابزار و یراق",
-    //   href:'/',
     // },
 
   ];

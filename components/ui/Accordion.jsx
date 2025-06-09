@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FaCaretDown } from 'react-icons/fa6';
 
-const Accordion = ({ title, children }) => {
+const Accordion = ({ title, children,menuStyle,btnStyle }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleAccordion = () => {
@@ -11,7 +11,7 @@ const Accordion = ({ title, children }) => {
   return (
     <div className='w-full '>
       <button
-        className="flex  justify-between items-center w-full p-4 focus:outline-none text-lg sm:text-xl space-x-3 lg:text-2xl text-right"
+        className={`flex ${btnStyle} justify-between items-center w-full px-2 py-4 focus:outline-none  gap-3  text-right `}
         type='button'
         onClick={toggleAccordion}
       >
@@ -22,7 +22,7 @@ const Accordion = ({ title, children }) => {
       </button>
       <div
         className={`overflow-hidden transition-max-height duration-500 ease-in-out ${isOpen ? 'max-h-96' : 'max-h-0'}`}>
-        <div className="p-4 text-lfont text-sm ">
+        <div className={` ${menuStyle}  `}>
           {children}
         </div>
       </div>
