@@ -7,18 +7,18 @@ import Dropdown from "@components/ui/dropdown";
 import { toast } from "sonner";
 import {
   useSubmitPostMutation,
-  useSavePostMutation,
+  // useSavePostMutation,
 } from "@components/posts/mutations";
 import LoadingIcon from "@components/ui/loading/LoadingIcon";
 import { postValidation } from "@lib/validation";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import BlockEditor from "@components/BlockEditor/BlockEditor";
+import BlockEditor from "@components/BlockEditor/BlockEditor-root";
 import { useMemo } from "react";
 import { Doc as YDoc } from "yjs";
 import usePreventNavigation from "@hook/usePreventNavigation";
 import { useSession } from "next-auth/react";
-import { savePostValidation } from "@lib/validation";
+// import { savePostValidation } from "@lib/validation";
 import { useUploadThing } from "@lib/uploadthing";
 import NotFound from "@app/(main)/not-found";
 import {
@@ -31,7 +31,7 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import EmblaCarousel from "@components/ui/carousel/carousel";
 import { FaImage } from "react-icons/fa6";
-import { FaCheck } from "react-icons/fa";
+import { FaCheck,FaQuestion } from "react-icons/fa";
 import ImageCom from "@components/ui/Image";
 import Offcanvas from "@components/ui/offcanvas";
 import { FaCaretRight } from "react-icons/fa6";
@@ -54,13 +54,15 @@ const CreatePostRoot = () => {
   const [thumnailIndex, setThumnailIndex] = useState(0);
   const [contentImages, setContentImage] = useState();
   const [cancel, setCancel] = useState(false);
-  const [save, setSave] = useState(false);
+  const [editIndex, setEditIndex] = useState(null);
+  const [answer, setAnswer] = useState("");
+  const [question, setQuestion] = useState("");
+  const [faqs, setFaqs] = useState([]);
   const ydoc = useMemo(() => new YDoc(), []);
   const blobUrlToUploadedUrlMap = [];
   const mutation = useSubmitPostMutation();
-  const saveMutation = useSavePostMutation();
+  // const saveMutation = useSavePostMutation();
   usePreventNavigation(preventNavigation);
-  const [selectedTeam, setSelectedTeam] = useState(null);
 
   // const [selectedImage, setSelectedImage] = useState();
   // const[rmThumbnailFile,setRmThumbnailFile]=useState([])
@@ -80,15 +82,6 @@ const CreatePostRoot = () => {
     NotFound();
   }
 
-  const queryClient = useQueryClient();
-  const { data, isPending, status, error, isFetching } = useQuery({
-    queryKey: ["team-author"],
-    queryFn: async () => {
-      const response = await axios.get(`/api/team`);
-      return response.data;
-    },
-    staleTime: Infinity,
-  });
 
   console.log(files);
 
@@ -189,75 +182,75 @@ const CreatePostRoot = () => {
     }
   };
 
-  const onSaveDraft = async (values) => {
-    try {
-      setPreventNavigation(true);
-      const filesData = files.map(({ file }) => {
-        if (file && typeof file !== "string") {
-          const extension = file.name.split(".").pop();
-          return new File(
-            [file],
-            `post_${crypto.randomUUID()}.${extension}.webp`
-          );
-        }
-      });
-      if (filesData.length >= 1) {
-        const uploadedData = await postUpload(filesData);
-        uploadedData.forEach((data, index) => {
-          const { url } = files[index];
-          const uploadedUrl = data.url;
-          blobUrlToUploadedUrlMap.push({ blobUrl: url, uploadedUrl });
-        });
-        setValue("files", uploadedData.map(item => item.url));
-      }
+  // const onSaveDraft = async (values) => {
+  //   try {
+  //     setPreventNavigation(true);
+  //     const filesData = files.map(({ file }) => {
+  //       if (file && typeof file !== "string") {
+  //         const extension = file.name.split(".").pop();
+  //         return new File(
+  //           [file],
+  //           `post_${crypto.randomUUID()}.${extension}.webp`
+  //         );
+  //       }
+  //     });
+  //     if (filesData.length >= 1) {
+  //       const uploadedData = await postUpload(filesData);
+  //       uploadedData.forEach((data, index) => {
+  //         const { url } = files[index];
+  //         const uploadedUrl = data.url;
+  //         blobUrlToUploadedUrlMap.push({ blobUrl: url, uploadedUrl });
+  //       });
+  //       setValue("files", uploadedData.map(item => item.url));
+  //     }
 
-      // const uploadPostPromises = files.map(({ file, url }) => {
-      //           if (file && typeof file !== "string") {
-      //             const extension = file.name.split(".").pop();
-      //             const formData = new File(
-      //               [file],
-      //               `post_${crypto.randomUUID()}.${extension}.webp`
-      //             );
-      //             return postUpload([formData]).then((uploadedData) => {
-      //               if (uploadedData.length > 0) {
-      //                 const uploadedUrl = uploadedData[0].url;
-      //                 blobUrlToUploadedUrlMap.push({ blobUrl: url, uploadedUrl });
-      //                 return uploadedUrl;
-      //               }
-      //             });
-      //           }
-      //         });
+  //     // const uploadPostPromises = files.map(({ file, url }) => {
+  //     //           if (file && typeof file !== "string") {
+  //     //             const extension = file.name.split(".").pop();
+  //     //             const formData = new File(
+  //     //               [file],
+  //     //               `post_${crypto.randomUUID()}.${extension}.webp`
+  //     //             );
+  //     //             return postUpload([formData]).then((uploadedData) => {
+  //     //               if (uploadedData.length > 0) {
+  //     //                 const uploadedUrl = uploadedData[0].url;
+  //     //                 blobUrlToUploadedUrlMap.push({ blobUrl: url, uploadedUrl });
+  //     //                 return uploadedUrl;
+  //     //               }
+  //     //             });
+  //     //           }
+  //     //         });
 
-      //         const uploadedImages = await Promise.all(uploadPostPromises);
+  //     //         const uploadedImages = await Promise.all(uploadPostPromises);
 
-      if (thumnailIndex && !thumnailIndex.startsWith("blob:")) {
-        setValue("image", thumnailIndex);
-      } else {
-        const uploadedThumbnail = blobUrlToUploadedUrlMap.find(
-          (item) => item.blobUrl === thumnailIndex
-        );
-        if (uploadedThumbnail) {
-          setValue("image", uploadedThumbnail.uploadedUrl);
-        }
-        updateEditorContentWithUploadedUrls();
-      }
+  //     if (thumnailIndex && !thumnailIndex.startsWith("blob:")) {
+  //       setValue("image", thumnailIndex);
+  //     } else {
+  //       const uploadedThumbnail = blobUrlToUploadedUrlMap.find(
+  //         (item) => item.blobUrl === thumnailIndex
+  //       );
+  //       if (uploadedThumbnail) {
+  //         setValue("image", uploadedThumbnail.uploadedUrl);
+  //       }
+  //       updateEditorContentWithUploadedUrls();
+  //     }
 
-      console.log(values);
-      saveMutation.mutate(values, {
-        onSuccess: () => {
-          localStorage.removeItem('postDraft');
-          setPreventNavigation(false);
-          reset();
-          setDropTag([]);
-          setFiles([]);
-          router.back();
-        },
-      });
-    } catch (err) {
-      toast.error(err.message || "An error occurred");
-      console.log(err.message);
-    }
-  };
+  //     console.log(values);
+  //     saveMutation.mutate(values, {
+  //       onSuccess: () => {
+  //         localStorage.removeItem('postDraft');
+  //         setPreventNavigation(false);
+  //         reset();
+  //         setDropTag([]);
+  //         setFiles([]);
+  //         router.back();
+  //       },
+  //     });
+  //   } catch (err) {
+  //     toast.error(err.message || "An error occurred");
+  //     console.log(err.message);
+  //   }
+  // };
 
   function updateEditorContentWithUploadedUrls() {
     const editorContents = editorContent.getHTML();
@@ -312,80 +305,100 @@ const CreatePostRoot = () => {
     }
   };
 
-  const handleTeamChange = (team) => {
-    setSelectedTeam(team);
-    setValue("teamId", team ? team.id : "");
+
+
+  const handleAddFaq = () => {
+    if (editIndex !== null) {
+      const updatedFaqs = faqs.map((faq, index) =>
+        index === editIndex ? { question, answer } : faq
+      );
+      setFaqs(updatedFaqs);
+      setValue("faqs", updatedFaqs, { shouldValidate: true });
+      setEditIndex(null);
+    } else {
+      setFaqs([...faqs, { question, answer }]);
+      setValue("faqs", [...faqs, { question, answer }], {
+        shouldValidate: true,
+      });
+    }
+    setAnswer("");
+    setQuestion("");
   };
+
+  const handleRemoveFaq = (index) => {
+    const removeFaq = faqs.filter((_, i) => i !== index);
+    setFaqs(removeFaq);
+    setValue("faqs", removeFaq);
+  };
+
+  const handleEditFaq = (index) => {
+    const faq = faqs[index];
+    setQuestion(faq.question);
+    setAnswer(faq.answer);
+    setEditIndex(index);
+  };
+
+  // console.log(files)
 
   const tags = [
     {
       id: "1",
-      name: "crypto",
+      name: "درب اتوماتیک",
       info: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sed, rerum!",
     },
     {
       id: "2",
-      name: "forex",
+      name: "کرکره برقی",
       info: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sed, rerum!",
     },
     {
       id: "3",
-      name: "stocks",
+      name: "جک پارکیگ",
       info: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sed, rerum!",
     },
     {
       id: "4",
-      name: "futures",
+      name: "راهبند پارکینگ",
       info: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sed, rerum!",
     },
     {
       id: "5",
-      name: "airdrops",
+      name: "شیشه بالکنی",
       info: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sed, rerum!",
     },
     {
       id: "6",
-      name: "latest",
+      name: "پرده برقی",
       info: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sed, rerum!",
     },
     {
       id: "7",
-      name: "news",
+      name: "سایبان برقی",
       info: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sed, rerum!",
     },
     {
       id: "8",
-      name: "learning",
+      name: "شیشه سکوریت",
       info: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sed, rerum!",
     },
     {
       id: "9",
-      name: "exchange",
+      name: "جام بالکن",
       info: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sed, rerum!",
     },
     {
       id: "10",
-      name: "trade",
+      name: "لمینت",
       info: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sed, rerum!",
     },
     {
       id: "11",
-      name: "begginers",
+      name: "آیینه",
       info: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sed, rerum!",
     },
     {
       id: "12",
-      name: "skills",
-      info: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sed, rerum!",
-    },
-    {
-      id: "12",
-      name: "ai",
-      info: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sed, rerum!",
-    },
-    {
-      id: "12",
-      name: "tuturial",
+      name: "upvc",
       info: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sed, rerum!",
     },
   ];
@@ -431,17 +444,6 @@ const CreatePostRoot = () => {
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-7">
         {!cancel && (
           <div className="flex justify-between  w-full sticky top-0 bg-white dark:bg-black z-[10] py-2 ">
-            <div>
-              <Button
-                className={"text-[10px] md:text-sm px-3 w-full py-1"}
-                variant="close"
-                onClick={() => setCancel(true)}
-                type="button"
-              >
-                cancel
-              </Button>
-            </div>
-
               <Offcanvas
                 title={"CRAETE POST"}
                 btnStyle={
@@ -482,7 +484,11 @@ const CreatePostRoot = () => {
                                          {errors?.image?.message}
                                        </div> */}
                     {contentImages?.length > 0 ? (
-                      <EmblaCarousel options={{ loop: false }}>
+                      <EmblaCarousel 
+                      options={{ loop: false, direction: "rtl" }}
+                      dot={true}
+                      autoScroll={false}
+                      >
                         {contentImages?.map((url, index) => (
                           <div
                             className="transform translate-x-0 translate-y-0 translate-z-0  flex-none basis-[100%] h-44 min-w-0 pl-4 "
@@ -641,7 +647,7 @@ const CreatePostRoot = () => {
 
 
 
-                  <div className="space-y-2">
+                  {/* <div className="space-y-2">
   <p className="text-sm">Schedule Publication</p>
   <div className="flex flex-col space-y-2">
     <label htmlFor="scheduledPublish" className="text-sm">
@@ -658,22 +664,9 @@ const CreatePostRoot = () => {
       If not set, your post will be published immediately
     </p>
   </div>
-</div>
+</div> */}
 
 
-                  {!save && (
-                    <div className="grid grid-cols-2 w-full gap-2">
-                      <Button
-                        variant="menu"
-                        className="rounded-lg w-full text-sm py-2"
-                        type="button"
-                        onClick={() => {
-                          setSave(true);
-                        }}
-                        disabled={mutation.isPending || postIsUploading}
-                      >
-                        Save Draft
-                      </Button>
                       <Button
                         variant="menuActive"
                         className="rounded-lg w-full text-sm py-2"
@@ -690,40 +683,21 @@ const CreatePostRoot = () => {
                           "CRAETE POST"
                         )}
                       </Button>
-                    </div>
-                  )}
 
-                  {save && (
-                    <div className="space-x-2 grid grid-cols-2 w-full">
-                      <Button
-                        className="rounded-lg text-sm py-2"
-                        variant="close"
-                        type="button"
-                        disabled={saveMutation.isPending || postIsUploading}
-                        onClick={() => {
-                          setSave(false);
-                        }}
-                      >
-                        Cancel
-                      </Button>
 
-                      <Button
-                        disabled={saveMutation.isPending || postIsUploading}
-                        className="rounded-lg text-sm py-2"
-                        variant="menuActive"
-                        type="button"
-                        onClick={handleSubmit(onSaveDraft)}
-                      >
-                        {saveMutation.isPending || postIsUploading ? (
-                          <LoadingIcon color={"bg-white dark:bg-black"} />
-                        ) : (
-                          "Save Draft"
-                        )}
-                      </Button>
-                    </div>
-                  )}
                 </div>
               </Offcanvas>
+            <div>
+              <Button
+                className={"text-[10px] md:text-sm px-3 w-full py-1"}
+                variant="close"
+                onClick={() => setCancel(true)}
+                type="button"
+              >
+                cancel
+              </Button>
+            </div>
+
 
           </div>
         )}
@@ -751,113 +725,40 @@ const CreatePostRoot = () => {
         )}
 
         <div className="w-full md:w-2/3 mx-auto  space-y-4 ">
-          <Dropdown
-            title={
-              <div className="flex space-x-2">
-                <div className="relative  w-9 h-9">
-                  <ImageCom
-                    src={
-                      selectedTeam ? selectedTeam.image : session?.user.image
-                    }
-                    className="h-9 w-9 rounded-lg"
-                    alt=""
-                  />
-                </div>
-                <div className="flex flex-col ">
-                  <p className="text-sm ">
-                    {selectedTeam
-                      ? selectedTeam.displayName
-                      : session?.user.displayName}
-                  </p>
-                  <p className=" text-lfont text-[10px] text-start">
-                    {new Date().toLocaleDateString()}
-                  </p>
-                </div>
-                {data?.length >= 1 && (
-                  <div className="my-auto">
-                    <FaCaretRight />
-                  </div>
-                )}
-              </div>
-            }
-            className={
-              "left-0  w-60 px-3  border border-lbtn dark:border-dbtn "
-            }
-            btnStyle={
-              "hover:bg-lcard dark:hover:bg-dcard p-2 rounded-xl duration-200"
-            }
-            disabled={isPending || data?.length < 1}
-          >
-            <div className="space-y-2">
-              <div key="personal">
-                <input
-                  className="hidden peer"
-                  type="radio"
-                  value=""
-                  {...register("teamId")}
-                  id="personal"
-                  name="teamId"
-                  onChange={() => handleTeamChange(null)}
+        {session && (
+            <div className="flex gap-2">
+              {/* <div className="relative h-9 w-9">
+                <ImageCom
+                  src={session?.user.image}
+                  className="h-9 w-9 rounded-lg"
+                  size={"h-9 w-9"}
+                  alt="user Avatar"
                 />
-                <label
-                  className="flex flex-col py-2 px-3 hover:bg-lcard dark:hover:bg-dcard peer-checked:bg-lcard dark:peer-checked:bg-dcard dark:peer-checked:text-white peer-checked:text-black cursor-pointer rounded-lg duration-300"
-                  htmlFor="personal"
-                >
-                  <div className="flex space-x-2 ">
-                    <div className="relative  w-9 h-9">
-                      <ImageCom
-                        src={session?.user.image}
-                        className="h-9 w-9 rounded-lg"
-                        alt=""
-                      />
-                    </div>
-                    <div className="flex flex-col">
-                      <p className="text-sm ">{session?.user.displayName}</p>
-                      <p className="text-[10px] text-lfont">Personal</p>
-                    </div>
-                  </div>
-                </label>
-              </div>
-              {data?.map((team) => (
-                <div key={team.displayName}>
-                  <input
-                    className="hidden peer"
-                    type="radio"
-                    value={team.id}
-                    {...register("teamId")}
-                    id={team.displayName}
-                    name="teamId"
-                    onChange={() => handleTeamChange(team)}
-                  />
-                  <label
-                    className="flex flex-col py-2 px-3 hover:bg-lcard dark:hover:bg-dcard peer-checked:bg-lcard dark:peer-checked:bg-dcard dark:peer-checked:text-white peer-checked:text-black cursor-pointer rounded-lg duration-300"
-                    htmlFor={team.displayName}
-                  >
-                    <div className="flex space-x-2">
-                      <div className="relative w-9 h-9">
-                        <ImageCom
-                          src={team.image}
-                          className="h-9 w-9 rounded-lg"
-                          alt=""
-                        />
-                      </div>
-                      <div className="flex flex-col">
-                        <p className="text-sm">{team.displayName}</p>
-                        <p className="text-[10px] text-redorange">Team</p>
-                      </div>
-                    </div>
-                  </label>
-                </div>
-              ))}
-              <div
-                className={`text-red mt-1 text-[10px] md:text-sm transition-opacity duration-300 ${
-                  errors?.teamId?.message ? "opacity-100" : "opacity-0"
-                }`}
-              >
-                {errors?.teamId?.message}
+              </div> */}
+                        {session?.user?.image === null ?
+                  <div className="h-9 w-9 rounded-lg bg-gradient-to-tr from-redorange to-yellow"></div>
+                  :
+                  <ImageCom
+                  className="rounded-lg h-9 w-9 "
+                  size={"h-9 w-9"}
+                  src={
+                    session.user?.image === null
+                      ? `${process.env.NEXT_PUBLIC_BASE_URL}/images/logo/user-avatar-people-icon-solid-style-icon-design-element-icon-template-background-free-vector.jpg`
+                      : `${process.env.NEXT_PUBLIC_BASE_URL}${session.user.image}`
+                  }
+                  alt={`${session.user?.name} avatar`}
+                /> 
+                  }
+              <div className="flex flex-col ">
+                <p className=" text-black dark:text-white text-sm">
+                  {session?.user.displayName}
+                </p>
+                <p className=" text-lfont text-[10px]">
+                  {new Date().toLocaleDateString()}
+                </p>
               </div>
             </div>
-          </Dropdown>
+          )}
 
           <div>
           <textarea
@@ -902,14 +803,74 @@ const CreatePostRoot = () => {
               />
             )}
           />
-          <div
+
+<div
             className={`text-red mt-2 text-[10px] md:text-sm transition-opacity duration-300  ${
               errors?.content?.message ? "opacity-100" : "opacity-0"
             }`}
           >
             {errors?.content?.message}
           </div>
+<Dropdown
+            className={
+              "right-0 bg-white px-2 dark:bg-black border border-lbtn  dark:border-dbtn"
+            }
+            title={<FaQuestion />}
+            btnStyle={
+              "bg-black text-white dark:bg-white dark:text-black rounded-full px-3 py-2"
+            }
+          >
+            <div className="flex flex-col space-y-1">
+              <input
+                type="text"
+                className="resize-none block bg-lcard dark:bg-dcard px-2 py-2 rounded-lg focus:outline-none  w-full focus:ring-2 focus:ring-black dark:ring-white   duration-200 "
+                placeholder="question"
+                value={question}
+                onChange={(e) => {
+                  setQuestion(e.target.value);
+                }}
+              />
+              <textarea
+                type="text"
+                className="resize-none block bg-lcard dark:bg-dcard px-2 py-2 rounded-lg focus:outline-none  w-full focus:ring-2 focus:ring-black dark:ring-white   duration-200 "
+                placeholder="answer"
+                value={answer}
+                onChange={(e) => {
+                  setAnswer(e.target.value);
+                }}
+              />
+              <button
+                type="button"
+                className="bg-black text-white rounded-lg w-full py-2 px-3 text-sm dark:bg-white dark:text-black"
+                onClick={handleAddFaq}
+              >
+                {editIndex !== null ? "Update FAQ" : "Add FAQ"}
+              </button>
+            </div>
+          </Dropdown>
+
         </div>
+
+        <div>
+        {faqs?.map((faq, index) => (
+          <div key={index} className="flex space-x-2">
+            <Accordion menuStyle={"p-4 text-lfont text-sm"} btnStyle={"text-lg sm:text-xl lg:text-2xl"} title={faq.question}>
+              {" "}
+              <p>{faq.answer}</p>{" "}
+            </Accordion>
+            <button className="text-red" onClick={() => handleRemoveFaq(index)}>
+              delete
+            </button>
+            <button
+              className="text-yellow"
+              onClick={() => handleEditFaq(index)}
+            >
+              {" "}
+              Edit{" "}
+            </button>
+          </div>
+        ))}
+      </div>
       </form>
       <div className="fixed bottom-10 right-10">
         <div>

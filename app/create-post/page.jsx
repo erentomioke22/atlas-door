@@ -1,5 +1,5 @@
 import React from 'react';
-import CreatePost from "./create-post";
+import CreatePostRoot from "./create-post-root";
 import Head from 'next/head';
 
 export const metadata = {
@@ -27,7 +27,7 @@ const Page = () => {
         <meta name="twitter:card" content="summary_large_image" />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       </Head>
-      <CreatePost />
+      <CreatePostRoot />
     </div>
   );
 };

@@ -1,0 +1,98 @@
+import { EditorContent } from "@tiptap/react";
+import React, {  forwardRef, useRef } from "react";
+import { useBlockEditor } from "@hook/useBlockEditor-root";
+import LinkMenu from "@components/menus/LinkMenu/LinkMenu";
+import { TextMenu } from "@components/menus/TextMenu/TextMenu";
+import ImageBlockMenu from "@extensions/Image/components/ImageMenu";
+import { NewItemMenu } from "@components/menus/ContentItemMenu/NewItemMenu-root";
+
+// import '@/styles/index.css'
+// import { Sidebar } from '@components/Sidebar/Sidebar'
+// import ImageBlockMenu from '@extensions/ImageBlock/components/ImageBlockMenu'
+// import { ColumnsMenu } from '@/extensions/MultiColumn/menus'
+// import { TableColumnMenu, TableRowMenu } from '@extensions/Table/menus'
+// import { EditorHeader } from './components/EditorHeader'
+// import { useSidebar } from '@hook/useSidebar'
+// import * as Y from 'yjs'
+// import { TiptapCollabProvider } from '@hocuspocus/provider'
+// import { ContentItemMenu } from '@components/menus/ContentItemMenu/ContentItemMenu'
+// import { TableColumnMenu,TableRowMenu } from '@extensions/Table/menus'
+// import { ColumnsMenu } from '@extensions/MultiColumn/menus'
+
+export const BlockEditor = 
+  forwardRef((
+    {
+      // aiToken,
+      // provider,
+      ydoc,
+      initialContent,
+      onChange,
+      files,
+      setFiles,
+      setValue,
+      deletedFiles,
+      setEditorContent,
+      setDeletedPostFiles,
+      deletedPostFiles,
+      setDeletedFiles,
+      contentImages, setContentImage,thumnailIndex,setThumnailIndex
+    },ref
+    
+  ) => {
+    const menuContainerRef = useRef(null);
+    const {
+      editor,
+      // users,
+      //  collabState
+    } = useBlockEditor({
+      // aiToken,
+      // provider,
+      ydoc,
+      initialContent,
+      onChange,
+      files,
+      setFiles,
+      setValue,
+      deletedFiles,
+      setDeletedFiles,
+      setEditorContent,
+      setDeletedPostFiles,
+      deletedPostFiles,contentImages, setContentImage,thumnailIndex,setThumnailIndex
+    });
+    if (
+      !editor
+      // || !users
+    ) {
+      return null;
+    }
+
+    return (
+      <div className="" ref={menuContainerRef}>
+
+        {/* <Toolbar editor={editor} content={content}/> */}
+        {/* <ContentItemMenu editor={editor} /> */}
+        {/* <ColumnsMenu editor={editor} appendTo={menuContainerRef} />
+        <TableRowMenu editor={editor} appendTo={menuContainerRef} />
+        <TableColumnMenu editor={editor} appendTo={menuContainerRef} /> */}
+        <div className="space-y-5">
+          <EditorContent
+            editor={editor}
+            className="max-h-[500px] overflow-auto"
+            ref={ref}
+          />
+          <LinkMenu editor={editor} appendTo={menuContainerRef} />
+          <TextMenu editor={editor} />
+          <ImageBlockMenu editor={editor} appendTo={menuContainerRef} />  
+        </div>
+        <NewItemMenu
+          editor={editor}
+          files={files}
+          setFiles={setFiles}
+          setValue={setValue}
+        />
+      </div>
+    );
+  })
+
+  BlockEditor.displayName = 'BlockEditor'; 
+export default BlockEditor;

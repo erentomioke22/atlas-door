@@ -278,9 +278,9 @@ const CreatePost = () => {
                                        </div> */}
                     {contentImages?.length > 0 ? (
                       <EmblaCarousel
-                        options={{ loop: false, direction: "rtl" }}
-                        dot={true}
-                        autoScroll={false}
+                      options={{ loop: false, direction: "rtl" }}
+                      dot={true}
+                      autoScroll={false}
                       >
                         {contentImages?.map((url, index) => (
                           <div
@@ -565,13 +565,7 @@ const CreatePost = () => {
             {errors?.content?.message}
           </div>
 
-          <div
-            className={`text-red mt-2 text-[10px] md:text-sm transition-opacity duration-300  ${
-              errors?.content?.message ? "opacity-100" : "opacity-0"
-            }`}
-          >
-            {errors?.content?.message}
-          </div>
+
           <Dropdown
             className={
               "right-0 bg-white px-2 dark:bg-black border border-lbtn  dark:border-dbtn"

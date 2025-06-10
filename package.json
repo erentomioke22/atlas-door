@@ -100,6 +100,7 @@
     "tailwindcss-animate": "^1.0.7",
     "tippy.js": "^6.3.7",
     "uploadthing": "^7.3.0",
+    "use-debounce": "^10.0.5",
     "uuidv4": "^6.2.13",
     "y-prosemirror": "^1.2.11",
     "yjs": "^13.6.20",
