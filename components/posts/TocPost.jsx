@@ -68,12 +68,14 @@
 
 
 
+import Offcanvas from '@components/ui/offcanvas';
 import { useEffect, useState, useRef } from 'react';
 
 const TableOfContents = ({ content }) => {
   const [headings, setHeadings] = useState([]);
   const [activeId, setActiveId] = useState('');
   const observerRef = useRef(null);
+  const [close, setClose] = useState(false);
 
   useEffect(() => {
     // if (content) {
@@ -126,7 +128,22 @@ const TableOfContents = ({ content }) => {
   };
 
   return (
+    <Offcanvas 
+    title={activeId}
+    btnStyle={'bg-lcard dark:bg-dcard rounded-full p-2 text-sm sm:text-lg'}
+    position={"bottom-0 left-0"} size={"h-3/4 w-full border-t-2 border-lcard dark:border-dcard rounded-t-3xl"} openTransition={"translate-y-0"} closeTransition={"translate-y-full"} onClose={close}
+    >
     <div className="py-2 max-h-80  md:max-h-128 overflow-y-scroll">
+    <div className=" flex justify-between">
+      <h1 className="text-xl">Comment</h1>
+      <button
+        className={" text-lg bg-lcard dark:bg-dcard px-2 py-1  rounded-full border-2 text-lfont "}
+        onClick={() => setClose(!close)}
+        type="button"
+              >
+            <IoClose/>
+      </button>
+    </div>
      {headings && headings?.length >= 1 &&  <p>فهرست مطالب</p>}
       <div className="p-1 h-full space-y-3 text-sm">
         {headings.map((heading, index) => (
@@ -146,6 +163,7 @@ const TableOfContents = ({ content }) => {
         ))}
       </div>
     </div>
+    </Offcanvas>
   );
 };
 

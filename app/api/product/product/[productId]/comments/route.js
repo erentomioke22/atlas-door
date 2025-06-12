@@ -29,7 +29,7 @@ import { LikeType } from "@prisma/client";
 
 export async function GET(req,{params}) {
   try {
-    const {postId} =await params;
+    const {productId} =await params;
     const category = req.nextUrl.searchParams.get("category") || undefined;
     const cursor = req.nextUrl.searchParams.get("cursor") || undefined;
     const pageSize = 10;
@@ -66,7 +66,7 @@ export async function GET(req,{params}) {
       case 'toppest':
          comments = await prisma.comment.findMany({
           where: {
-            postId:postId
+            productId:productId
             // ,parent:null
           },
           include: getCommentDataInclude(session?.user?.id),
@@ -82,7 +82,7 @@ export async function GET(req,{params}) {
       case 'latest':
         comments = await prisma.comment.findMany({
           where: {
-            postId:postId
+            productId:productId
             // ,parent:null
           },
           include: getCommentDataInclude(session?.user?.id),

@@ -1,5 +1,5 @@
 import React from 'react';
-import PostPage from '@components/posts/postPage';
+import PostPage from './postPage';
 import { cache } from 'react';
 import NotFound from '@app/(main)/not-found';
 import { prisma } from '@utils/database';
@@ -92,7 +92,7 @@ export async function generateMetadata({ params }) {
 
 export default async function Page({ params }) {
   const post = await getPost(params.title);
-
+  const  {title}  = await params;
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
@@ -117,7 +117,7 @@ export default async function Page({ params }) {
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       </Head>
       <div>
-        <PostPage params={params} />
+        <PostPage title={title} />
       </div>
     </>
   );

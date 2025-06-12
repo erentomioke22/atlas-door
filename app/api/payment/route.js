@@ -104,6 +104,18 @@ import { NextResponse } from "next/server";
 import { auth } from "@auth";
 import { prisma } from "@utils/database";
 
+
+function generatePaymentId() {
+  // Generate a random 6-digit number
+  const randomNum = Math.floor(100000 + Math.random() * 900000);
+  // Get current timestamp
+  const timestamp = Date.now().toString().slice(-6);
+  // Combine and hash
+  const uniqueString = `${randomNum}${timestamp}`;
+  return crypto.createHash('md5').update(uniqueString).digest('hex').slice(0, 8).toUpperCase();
+}
+
+
 export async function POST(req) {
   try {
     const {user, phone, address, rule} = await req.json();
@@ -112,7 +124,7 @@ export async function POST(req) {
     if (!session) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
-
+    const paymentId = generatePaymentId();
     // Get cart items for the user
     const cartItems = await prisma.cartItem.findMany({
       where: {

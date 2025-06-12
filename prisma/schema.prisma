@@ -185,6 +185,8 @@ model Product {
   sellerId      String
   cartItems     CartItem[]
   orderItems    OrderItem[]
+  linkedNotifications Notification[]
+
   // price         Float
   // code          String?        @unique @default(autoincrement())
 
@@ -260,10 +262,10 @@ model Comment {
   userId       String?
   name         String
   email        String
-  post         Post        @relation(fields: [postId], references: [id], onDelete: Cascade)
-  postId       String
-  product      Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
-  productId    String
+  post         Post?        @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId       String?
+  product      Product?     @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId    String?
   parent       Comment?    @relation("CommentReplies", fields: [parentId], references: [id] , onDelete: Cascade) 
   parentId     String? 
   replies      Comment[]   @relation("CommentReplies")  
@@ -285,6 +287,8 @@ model Notification {
   email       String
   postId      String?
   post        Post?            @relation(fields: [postId], references: [id], onDelete: Cascade)
+  productId      String?
+  product        Product?            @relation(fields: [productId], references: [id], onDelete: Cascade)
   type        NotificationType?
   read        Boolean          @default(false)
 

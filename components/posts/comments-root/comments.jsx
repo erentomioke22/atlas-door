@@ -146,8 +146,8 @@ const scrollToComment = (id) => {
               })
         ) : (
           <>
-          {comments.length >= 1 && 
-          <div  className=" px-1 py-2  flex text-nowrap overflow-x-auto space-x-2 md:text-sm text-[10px]">
+          {/* {comments.length >= 1 && 
+          <div  className=" px-1 py-2  flex text-nowrap overflow-x-auto gap-2 md:text-sm text-[10px]">
               
           <button className={`duration-300  ${item === "latest" ? "bg-black dark:bg-white text-white dark:border-white dark:text-black rounded-full border-2 border-black px-2 py-1  "  : "bg-transparent border-2 border-black dark:border-white dark:text-white rounded-full  px-2 py-1"   }`} onClick={()=>{setItem("latest")}}>
            Latest
@@ -158,15 +158,15 @@ const scrollToComment = (id) => {
           </button>
   
          </div>
-           }
+           } */}
       <InfiniteScrollContainer className={''} onBottomReached={() => hasNextPage && !isFetching && fetchNextPage()}>
-      {status === "success" && (!comments.length || comments.error) && !hasNextPage &&
+      {status === "success" && (!comments.length || comments?.error) && !hasNextPage &&
       <p className="text-center  text-sm text-lfont">
         Not Found Any Comment. Start Writing New Comment .
       </p>
   }
           <div className=" divide-y-2 divide-lcard dark:divide-dcard">
-            {comments.map(({content,user,createdAt,userId,id,replies,likes,_count,parent}) => {
+            {/* {comments?.map(({content,user,createdAt,userId,id,replies,likes,_count,parent,name,email}) => {
                 return (
                   <Comment
                   _count={_count}
@@ -191,10 +191,43 @@ const scrollToComment = (id) => {
                   message={message}
                   setMessage={setMessage}
                   setReplyInfo={setReplyInfo}
+                  name={name}
+                  email={email}
                 />
                 );
               }
-            )}
+            )} */}
+           {comments?.filter(comment => comment) // Filter out any undefined/null comments
+  .map(({content,user,createdAt,userId,id,replies,likes,_count,parent,name,email}) => {
+    return (
+      <Comment
+        _count={_count}
+        likes={likes}
+        content={content}
+        createdAt={createdAt}
+        userId={userId}
+        user={user}
+        id={id}
+        key={id}
+        commentId={id}
+        writerId={post?.userId}
+        post={post}
+        replies={replies}
+        parent={parent}
+        margin={true}
+        name={name}
+        email={email}
+        category={item}
+        // params={params}
+        scrollToComment={scrollToComment}
+        currentCommentId={commentId}
+        setCurrentCommentId={setCommentId}
+        message={message}
+        setMessage={setMessage}
+        setReplyInfo={setReplyInfo}
+      />
+    );
+  })} 
           </div>
      <div className=" space-y-5 ">
           {isFetchingNextPage &&
@@ -219,6 +252,9 @@ const scrollToComment = (id) => {
       :
       <div className="py-1 px-2  w-full flex items-start space-x-1 text-start  ">
     <div className="relative w-9 h-9 overflow-hidden flex-shrink-0 my-auto">
+    {replyInfo?.user.image === null ?
+                  <div className="h-9 w-9 rounded-lg bg-gradient-to-tr from-redorange to-yellow"></div>
+                  :
       <ImageCom
         className="rounded-lg object-cover absolute inset-0"
         src={
@@ -228,6 +264,7 @@ const scrollToComment = (id) => {
         }
         alt={replyInfo?.user?.displayName}
       />
+                  }
     </div>
     <div className="min-w-0">
       <p className="text-sm">{replyInfo.user.displayName}</p>
@@ -241,8 +278,11 @@ const scrollToComment = (id) => {
       <button onClick={()=>{setCommentId(null) ; setMessage('');setReplyInfo(null)}}><IoClose/></button>
     </div>
     }
-    <div className="flex space-x-2">
+    <div className="flex gap-2">
     <div className="relative h-10 w-10">
+    {session?.user.image === null ?
+                  <div className="h-9 w-9 rounded-lg bg-gradient-to-tr from-redorange to-yellow"></div>
+                  :
        <ImageCom
           className="rounded-xl h-10 w-10"
           src={
@@ -252,6 +292,7 @@ const scrollToComment = (id) => {
           }
           alt={session.user?.displayName}
          />
+                  }
       </div>
   <CommentInput post={post}  header={"write comment"} btnStyle={"w-full"}  category={item} placeHolder={"COMMENT"}  content={message}  commentId={commentId} setCommentId={setCommentId} setMessage={setMessage} setReplyInfo={setReplyInfo}/>
     </div>

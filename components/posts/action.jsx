@@ -36,7 +36,7 @@ export async function submitPost(values) {
       link:sanitizedTitle,
       desc:values.desc,
       images: [values.image],
-      contentImages: values.contentImages,
+      contentImages:values.files,
       content: values.content,
       userId: session.user.id,
       tags: {
@@ -51,6 +51,13 @@ export async function submitPost(values) {
           answer: faq.answer, 
         })), 
     },
+    status: values.scheduledPublish && new Date(values.scheduledPublish) > new Date() 
+    ? "SCHEDULED" 
+    : "PUBLISHED",
+  // If there's a scheduled publish date, set it as expiresAt (which we'll use as publishAt)
+  ...(values.scheduledPublish && new Date(values.scheduledPublish) > new Date() && {
+    expiresAt: new Date(values.scheduledPublish)
+  }),
     //   tocs: { 
     //     create:tocs.map((toc) => ({ 
     //       link: toc.id, 
@@ -113,7 +120,7 @@ export async function editPost(values) {
       title: values.title,
       desc: values.desc,
       images: [values.image],
-      contentImages: values.contentImages,
+      contentImages:values.files,
       content: values.content,
       items: values.items,
       userId: session?.user.id,

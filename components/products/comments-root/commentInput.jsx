@@ -14,7 +14,7 @@ import { FaCaretRight } from "react-icons/fa6";
 import { FaCheck } from "react-icons/fa6";
 
 const CommentInput = ({
-  post,
+  product,
   title,
   header,
   content,
@@ -30,8 +30,8 @@ const CommentInput = ({
 setMessage
 }) => {
   const { data: session } = useSession();
-  const addMutation = useSubmitCommentMutation(post?.id,category);
-  const editMutation = useEditCommentMutation(post?.id,category);
+  const addMutation = useSubmitCommentMutation(product?.id,category);
+  const editMutation = useEditCommentMutation(product?.id,category);
 
   const [onClose, setOnClose] = useState(false);
 
@@ -48,8 +48,21 @@ setMessage
       content: "",
       userId: session?.user?.id,
       parentId: commentId,
+      name: session?.user?.name,
+      email: session?.user?.email,
+      userId: session?.user?.id,
+      image: session?.user?.image,
     },
   });
+
+  useEffect(() => {
+    if (session) {
+      setValue("name", session?.user.displayName);
+      setValue("userId", session?.user.id);
+      setValue("email", session?.user.email);
+      setValue("image", session?.user.image);
+    }
+  }, [session, setValue]);
 
   useEffect(() => {
     setValue("content", content);
@@ -62,10 +75,12 @@ setMessage
       // If edit is true, we're editing a comment
       editMutation.mutate(
         {
-          post,
+          product,
           content: values.content,
           userId: values.userId,
-          commentId: replyId || commentId, // Use the appropriate ID
+          commentId: replyId || commentId,
+          name:values.name, 
+          email:values.email, 
         },
         {
           onSuccess: () => {
@@ -81,10 +96,12 @@ setMessage
       // Otherwise we're adding a new comment or reply
       addMutation.mutate(
         {
-          post,
+          product,
           content: values.content,
           userId: values.userId,
-          parentId: commentId, // For replies, use the commentId as parentId
+          parentId: commentId,
+          name:values.name, 
+          email:values.email, 
         },
         {
           onSuccess: () => {
@@ -174,6 +191,38 @@ setMessage
     >
       <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-5 gap-1">
         <div className="col-span-4 flex-1">
+        {(session && session?.user.role === "admin") || (
+          <>
+            <input
+              className="block  w-full p-2 text-sm bg-lcard dark:bg-dcard focus:outline-none focus:ring-2 rounded-lg duration-200 focus:ring-black dark:focus:ring-white text-right"
+              type="text"
+              placeholder="نام "
+              {...register("name")}
+              name="name"
+            />
+            <div
+              className={`text-red mt-2  text-[10px] md:text-sm transition-opacity duration-300  ${
+                errors?.name?.message ? "opacity-100" : "opacity-0"
+              }`}
+            >
+              {errors?.name?.message}
+            </div>
+            <input
+              className="block  w-full p-2 text-sm bg-lcard dark:bg-dcard focus:outline-none focus:ring-2 rounded-lg duration-200 focus:ring-black dark:focus:ring-white text-right"
+              type="email"
+              placeholder="ایمیل"
+              {...register("email")}
+              name="email"
+            />
+            <div
+              className={`text-red mt-2  text-[10px] md:text-sm transition-opacity duration-300  ${
+                errors?.email?.message ? "opacity-100" : "opacity-0"
+              }`}
+            >
+              {errors?.email?.message}
+            </div>
+          </>
+        )}
         <Controller
           name="content"
           control={control}

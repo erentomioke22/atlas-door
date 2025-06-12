@@ -5,7 +5,7 @@ import { prisma } from "@utils/database";
 import { getCommentDataInclude} from "@/lib/types";
 
 
-export async function submitComment({post,content,userId,parentId}) {
+export async function submitComment({product,content,userId,parentId,name,email,image}) {
   const session = auth()
   if (!session) throw new Error("Unauthorized");
   
@@ -13,19 +13,21 @@ export async function submitComment({post,content,userId,parentId}) {
     prisma.comment.create({
       data: {
         content,
-        postId: post?.id,
+        productId: product?.id,
         userId,
-        parentId
+        parentId,
+        email,
+        name,
       },
-      include: getCommentDataInclude(userId),
+      // include: getCommentDataInclude(userId),
     }),
-    ...(post?.user?.id !== userId
+    ...(product?.sellerId?.id !== userId
       ? [
           prisma.notification.create({
             data: {
               issuerId: userId,
-              recipientId: post?.user?.id,
-              postId: post?.id,
+              recipientId: product?.sellerId?.id,
+              productId: product?.id,
               type: "COMMENT",
             },
           }),
@@ -36,7 +38,7 @@ export async function submitComment({post,content,userId,parentId}) {
   return newComment;
 }
 
-export async function editComment({post,content,userId,commentId}) {
+export async function editComment({product,content,userId,commentId}) {
   const session = auth()
   if (!session) throw new Error("Unauthorized");
 
@@ -45,18 +47,18 @@ export async function editComment({post,content,userId,commentId}) {
       where:{id:commentId},
       data: {
         content,
-        postId: post?.id,
+        productId: product?.id,
         userId,
       },
       include: getCommentDataInclude(userId),
     }),
-    ...(post?.user?.id !== userId
+    ...(product?.sellerId?.id !== userId
       ? [
           prisma.notification.create({
             data: {
               issuerId: userId,
-              recipientId: post?.user?.id,
-              postId: post?.id,
+              recipientId: product?.sellerId?.id,
+              productId: product?.id,
               type: "COMMENT",
             },
           }),

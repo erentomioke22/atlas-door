@@ -42,7 +42,11 @@ const formattedDate = createdAt.isValid() ? createdAt.fromNow(): 'تاریخ ن�
                   <div
                    className='flex gap-1 sm:gap-2   p-1 text-[10px]   '>
                     <div className='relative w-[32px] h-[32px]'>
+                    {post.user.image === null ?
+                  <div className="h-9 w-9 rounded-lg bg-gradient-to-tr from-redorange to-yellow"></div>
+                  :
                       <ImageCom src={`${process.env.NEXT_PUBLIC_BASE_URL}${post.user.image}`} className='  rounded-lg' alt={`${post?.user?.name} avatar`}/>
+                  }
                     </div>
                    <div className='flex flex-col truncate'>
                      <p className='truncate'>{post.user.displayName}</p>

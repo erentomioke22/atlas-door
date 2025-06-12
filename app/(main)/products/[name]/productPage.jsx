@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import Comments from "@components/posts/comments/comments";
+import Comments from "@components/products/comments-root/comments";
 import PageLoading from "@components/ui/loading/pageLoading";
 import { toast } from "sonner";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -150,11 +150,11 @@ const PostPage = ({ name }) => {
                   </Link>
                 )}
 
-                {/* 
+                
 
-<div>
-<Comments product={product}  />
-</div> */}
+                <div>
+                <Comments product={product}  />
+                </div>
               </div>
 
             <div className=" space-y-5 md:mt-7">

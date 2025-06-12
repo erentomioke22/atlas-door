@@ -4,13 +4,13 @@ import { deleteComment, submitComment, editComment } from "./action";
 
  
 
-export function useSubmitCommentMutation(postId, category) {
+export function useSubmitCommentMutation(productId, category) {
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
     mutationFn: submitComment,
     onSuccess: async (comment) => {
-      const queryKey = ["comments", postId, category];
+      const queryKey = ["comments", productId, category];
       await queryClient.cancelQueries({ queryKey });
 
       // If it's a reply (has parentId), update the parent comment's replies array
@@ -70,13 +70,13 @@ export function useSubmitCommentMutation(postId, category) {
   return mutation;
 }
 
-export function useEditCommentMutation(postId, category) {
+export function useEditCommentMutation(productId, category) {
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
     mutationFn: editComment,
     onSuccess: async (comment) => {
-      const queryKey = ["comments", postId, category];
+      const queryKey = ["comments", productId, category];
 
       await queryClient.cancelQueries({ queryKey });
       queryClient.setQueryData(queryKey, (oldData) => {
@@ -116,13 +116,13 @@ export function useEditCommentMutation(postId, category) {
 
 
 
-export function useDeleteCommentMutation(postId, category) {
+export function useDeleteCommentMutation(productId, category) {
   const queryClient = useQueryClient();
-console.log(postId, category)
+console.log(productId, category)
   const mutation = useMutation({
     mutationFn: deleteComment,
     onSuccess: async (deletedComment) => {
-      const queryKey = ["comments", postId, category];
+      const queryKey = ["comments", productId, category];
 
       await queryClient.cancelQueries({ queryKey });
 

@@ -4,6 +4,7 @@ import { auth } from "@auth";
 import { prisma } from "@utils/database";
 import { getCommentDataInclude} from "@/lib/types";
 
+
 export async function submitComment({post,content,userId,parentId,name,email,image}) {
   const session = auth()
   if (!session) throw new Error("Unauthorized");
@@ -12,21 +13,19 @@ export async function submitComment({post,content,userId,parentId,name,email,ima
     prisma.comment.create({
       data: {
         content,
-        email,
-        // image,
-        name,
         postId: post?.id,
         userId,
-        parentId
+        parentId,
+        email,
+        name,
       },
-      include: getCommentDataInclude(userId),
+      // include: getCommentDataInclude(userId),
     }),
     ...(post?.user?.id !== userId
       ? [
           prisma.notification.create({
             data: {
-              email,
-              name,
+              issuerId: userId,
               recipientId: post?.user?.id,
               postId: post?.id,
               type: "COMMENT",
@@ -48,6 +47,8 @@ export async function editComment({post,content,userId,commentId}) {
       where:{id:commentId},
       data: {
         content,
+        postId: post?.id,
+        userId,
       },
       include: getCommentDataInclude(userId),
     }),
@@ -87,3 +88,53 @@ export async function deleteComment(id) {
 }
 
 
+// export async function submitReply({content,userId,commentId}) {
+//   const session = auth()
+//   if (!session) throw new Error("Unauthorized");
+  
+//   const newReply =  prisma.reply.create({
+//       data: {
+//         content,
+//         commentId,
+//         userId,
+//       },
+//       include: getReplyDataInclude(userId),
+//     })
+
+
+//   return newReply;
+// }
+
+// export async function editReply({content,userId,replyId}) {
+//   const session = auth()
+//   if (!session) throw new Error("Unauthorized");
+
+//   const editReply =prisma.reply.update({
+//       where:{id:replyId},
+//       data: {
+//         content,
+//       },
+//       // include: getCommentDataInclude(userId),
+//     })
+
+
+//   return editReply;
+// }
+
+// export async function deleteReply(id) {
+
+
+//   const reply = await prisma.reply.findUnique({
+//     where: { id },
+//   });
+
+//   if (!reply) throw new Error("reply not found");
+
+
+//   const deletedReply = await prisma.reply.delete({
+//     where: { id },
+//     // include: getCommentDataInclude(session?.user.id),
+//   });
+
+//   return deletedReply;
+// }

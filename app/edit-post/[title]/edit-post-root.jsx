@@ -15,7 +15,7 @@ import { IoClose } from "react-icons/io5";
 import { useEditPostMutation } from "@components/posts/mutations";
 import { useDeletePostMutation } from "@components/posts/mutations";
 import LoadingIcon from "@components/ui/loading/LoadingIcon";
-import BlockEditor from "@components/BlockEditor/BlockEditor";
+import BlockEditor from "@components/BlockEditor/BlockEditor-root";
 import { useMemo } from "react";
 import { Doc as YDoc } from "yjs";
 import { useSearchParams } from "next/navigation";
@@ -50,6 +50,11 @@ const EditPostRoot = ({ title }) => {
   const [contentImages, setContentImage] = useState();
   const [thumnailIndex, setThumnailIndex] = useState();
   const [cancel, setCancel] = useState(false);
+  const [editIndex, setEditIndex] = useState(null);
+  const [answer, setAnswer] = useState("");
+  const [question, setQuestion] = useState("");
+  const [faqs, setFaqs] = useState([]);
+  const [items, setItems] = useState([]);
   // const [items, setItems] = useState([])
   // const [rmThumbnailFile, setRmThumbnailFile] = useState([]);
   // const [imageUrl, setImageUrl] = useState();
@@ -134,6 +139,8 @@ const EditPostRoot = ({ title }) => {
       rmfiles: [],
       content: "",
       tags: [],
+      contentImages: [],
+      faqs: [],
       // faqs:[],
       // tocs:[]
       // contentImages: [],
@@ -142,7 +149,7 @@ const EditPostRoot = ({ title }) => {
   });
 
   useEffect(() => {
-    if (post) {
+    if (post?.id) {
       setValue("title", post?.title);
       setValue("desc", post?.desc);
       setValue("postId", post?.id);
@@ -154,6 +161,9 @@ const EditPostRoot = ({ title }) => {
       );
       setDropTag(post?.tags.map((tag) => tag.name));
       setThumnailIndex(post?.images[0]);
+      setValue("contentImages", post?.contentImages);
+      setFaqs(post?.faqs);
+      setValue("faqs", post?.faqs);
       // setImageUrl(post?.images[0]);
       // setSelectedImage(post?.images[0]);
       // setDeletedPostFiles((prevFiles) => [...prevFiles, post?.images[0]]);
@@ -161,7 +171,7 @@ const EditPostRoot = ({ title }) => {
       // setDeletedPostFiles([...deletedPostFiles, post?.images[0]]);
     }
   }, [
-    post,
+    post?.id,
     // setValue,
     //  deletedPostFiles
   ]);
@@ -300,77 +310,100 @@ const EditPostRoot = ({ title }) => {
     }
   };
 
+
+
   console.log(contentImages);
+
+  const handleAddFaq = () => {
+    if (editIndex !== null) {
+      const updatedFaqs = faqs.map((faq, index) =>
+        index === editIndex ? { question, answer } : faq
+      );
+      setFaqs(updatedFaqs);
+      setValue("faqs", updatedFaqs, { shouldValidate: true });
+      setEditIndex(null);
+    } else {
+      setFaqs([...faqs, { question, answer }]);
+      setValue("faqs", [...faqs, { question, answer }], {
+        shouldValidate: true,
+      });
+    }
+    setAnswer("");
+    setQuestion("");
+  };
+
+  const handleRemoveFaq = (index) => {
+    const removeFaq = faqs.filter((_, i) => i !== index);
+    setFaqs(removeFaq);
+    setValue("faqs", removeFaq);
+  };
+
+  const handleEditFaq = (index) => {
+    const faq = faqs[index];
+    setQuestion(faq.question);
+    setAnswer(faq.answer);
+    setEditIndex(index);
+  };
 
   const tags = [
     {
       id: "1",
-      name: "crypto",
+      name: "درب اتوماتیک",
       info: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sed, rerum!",
     },
     {
       id: "2",
-      name: "forex",
+      name: "کرکره برقی",
       info: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sed, rerum!",
     },
     {
       id: "3",
-      name: "stocks",
+      name: "جک پارکیگ",
       info: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sed, rerum!",
     },
     {
       id: "4",
-      name: "futures",
+      name: "راهبند پارکینگ",
       info: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sed, rerum!",
     },
     {
       id: "5",
-      name: "airdrops",
+      name: "شیشه بالکنی",
       info: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sed, rerum!",
     },
     {
       id: "6",
-      name: "latest",
+      name: "پرده برقی",
       info: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sed, rerum!",
     },
     {
       id: "7",
-      name: "news",
+      name: "سایبان برقی",
       info: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sed, rerum!",
     },
     {
       id: "8",
-      name: "learning",
+      name: "شیشه سکوریت",
       info: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sed, rerum!",
     },
     {
       id: "9",
-      name: "exchange",
+      name: "جام بالکن",
       info: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sed, rerum!",
     },
     {
       id: "10",
-      name: "trade",
+      name: "لمینت",
       info: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sed, rerum!",
     },
     {
       id: "11",
-      name: "begginers",
+      name: "آیینه",
       info: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sed, rerum!",
     },
     {
       id: "12",
-      name: "skills",
-      info: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sed, rerum!",
-    },
-    {
-      id: "13",
-      name: "ai",
-      info: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sed, rerum!",
-    },
-    {
-      id: "14",
-      name: "tuturial",
+      name: "upvc",
       info: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sed, rerum!",
     },
   ];
@@ -755,9 +788,67 @@ const EditPostRoot = ({ title }) => {
               >
                 {errors?.content?.message}
               </div>
+
+              <Dropdown
+                className={
+                  "right-0 bg-white px-2 dark:bg-black border border-lbtn  dark:border-dbtn"
+                }
+                title={<FaQuestion />}
+                btnStyle={
+                  "bg-black text-white dark:bg-white dark:text-black rounded-full px-3 py-2"
+                }
+              >
+                <div className="flex flex-col space-y-1">
+                  <input
+                    type="text"
+                    className="resize-none block bg-lcard dark:bg-dcard px-2 py-2 rounded-lg focus:outline-none  w-full focus:ring-2 focus:ring-black dark:ring-white   duration-200 "
+                    placeholder="question"
+                    value={question}
+                    onChange={(e) => {
+                      setQuestion(e.target.value);
+                    }}
+                  />
+                  <textarea
+                    type="text"
+                    className="resize-none block bg-lcard dark:bg-dcard px-2 py-2 rounded-lg focus:outline-none  w-full focus:ring-2 focus:ring-black dark:ring-white   duration-200 "
+                    placeholder="answer"
+                    value={answer}
+                    onChange={(e) => {
+                      setAnswer(e.target.value);
+                    }}
+                  />
+                  <button
+                    type="button"
+                    className="bg-black text-white rounded-lg w-full py-2 px-3 text-sm dark:bg-white dark:text-black"
+                    onClick={handleAddFaq}
+                  >
+                    {editIndex !== null ? "Update FAQ" : "Add FAQ"}
+                  </button>
+                </div>
+              </Dropdown>
             </div>
         )}
       </form>
+      <div>
+        {faqs?.map((faq, index) => (
+          <div key={index} className="flex space-x-2">
+            <Accordion menuStyle={"p-4 text-lfont text-sm"} btnStyle={"text-lg sm:text-xl lg:text-2xl"} title={faq.question}>
+              {" "}
+              <p>{faq.answer}</p>{" "}
+            </Accordion>
+            <button className="text-red" onClick={() => handleRemoveFaq(index)}>
+              delete
+            </button>
+            <button
+              className="text-yellow"
+              onClick={() => handleEditFaq(index)}
+            >
+              {" "}
+              Edit{" "}
+            </button>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

@@ -61,6 +61,7 @@ const CreatePostRoot = () => {
   const ydoc = useMemo(() => new YDoc(), []);
   const blobUrlToUploadedUrlMap = [];
   const mutation = useSubmitPostMutation();
+  
   // const saveMutation = useSavePostMutation();
   usePreventNavigation(preventNavigation);
 
@@ -102,9 +103,10 @@ const CreatePostRoot = () => {
       content: "",
       tags: [],
       files:[],
+      faqs: [],
+      // contentImages: [],
       scheduledPublish: null,
       // teamId:''
-      // contentImages: [],
     },
     resolver: yupResolver(postValidation),
     // resolver: yupResolver(save ? savePostValidation : postValidation),
