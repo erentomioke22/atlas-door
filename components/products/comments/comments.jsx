@@ -20,7 +20,7 @@ import ImageCom from "@components/ui/Image";
 
 
 
-const Comments = ({post}) => {
+const Comments = ({product}) => {
   const [close, setClose] = useState(false);
   const { data: session } = useSession(); 
   const [item,setItem] = useState('latest')
@@ -37,9 +37,9 @@ const Comments = ({post}) => {
     isFetchingNextPage,
     status,
   } = useInfiniteQuery({
-    queryKey: ["comments", post?.id,item],
+    queryKey: ["comments-product", product?.id,item],
     queryFn: async ({ pageParam = null }) => {
-      const response = await axios.get(`/api/posts/${post?.id}/comments?category=${item}`, {
+      const response = await axios.get(`/api/product/product/${product?.id}/comments?category=${item}`, {
         params: pageParam ? { cursor: pageParam } : {},
       });
       return response.data;
@@ -122,7 +122,7 @@ const scrollToComment = (id) => {
     </p>
     :
  <div>
-  {!post.discussions && 
+  {!product.discussions && 
       <div className="my-10 space-y-5 ">
         {status === "pending" ? (
             Array(8)
@@ -151,8 +151,8 @@ const scrollToComment = (id) => {
                   id={id}
                   key={id}
                   commentId={id}
-                  writerId={post?.userId}
-                  post={post}
+                  writerId={product?.userId}
+                  post={product}
                   replies={replies}
                   parent={parent}
                   margin={true}
@@ -245,7 +245,7 @@ const scrollToComment = (id) => {
           />
       </div>
         }
-  <CommentInput post={post}  header={"write comment"} btnStyle={"w-full"}  category={item} placeHolder={"COMMENT"}  content={message}  commentId={commentId} setCommentId={setCommentId} setMessage={setMessage} setReplyInfo={setReplyInfo}/>
+  <CommentInput product={product}  header={"write comment"} btnStyle={"w-full"}  category={item} placeHolder={"COMMENT"}  content={message}  commentId={commentId} setCommentId={setCommentId} setMessage={setMessage} setReplyInfo={setReplyInfo}/>
     </div>
   </div>
  </div>

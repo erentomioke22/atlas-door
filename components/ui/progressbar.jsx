@@ -24,3 +24,34 @@ const ProgressBar = () => {
 };
 
 export default ProgressBar;
+
+
+{/* <div className="relative text-lbtn dark:text-[#a6adbb]">
+<div className="w-5 h-5 md:w-6 md:h-6">
+  <div className="absolute top-0 left-0 w-full h-full">
+    <svg className="w-full h-full" viewBox="0 0 100 100">
+      <circle
+        strokeWidth="18"
+        stroke="currentColor"
+        fill="transparent"
+        r="40"
+        cx="50"
+        cy="50"
+      />
+      <circle
+        className={` ${progress >= 95 ? "text-darkgreen" : "text-black dark:text-white"} rounded-xl stroke-current transition-all duration-300 ease-out`}
+        strokeWidth="21"
+        strokeDasharray="251.2"
+        strokeDashoffset="251.2"
+        strokeLinecap="round"
+        stroke="currentColor"
+        fill="transparent"
+        r="40"
+        cx="50"
+        cy="50"
+        style={{ strokeDashoffset: `calc(251.2 - (251.2 * ${progress}) / 100)` }}
+      />
+    </svg>
+  </div>
+</div>
+  </div> */}

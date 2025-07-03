@@ -94,118 +94,129 @@ catch(err){
 
 
 export async function editPost(values) {
-  const session = await auth();
-  if (!session) throw new Error("Unauthorized");
-
- const faqs = values.faqs?.filter(faq => faq !== undefined && faq.question && faq.answer) || [];
-//  const tocs = values.tocs?.filter(toc => toc !== undefined && toc.textContent) || [];
- const tags = values.tags?.filter(tag => tag !== undefined) || [];
-  // console.log(values);
-  // console.log(faqs);
-  // console.log(tocs);
-  // console.log(tags);
+  try{
+    const session = await auth();
+    if (!session) throw new Error("Unauthorized");
   
-  const existingTags = await prisma.tag.findMany({
-    where: {
-      name: {
-        in:tags,
+   const faqs = values.faqs?.filter(faq => faq !== undefined && faq.question && faq.answer) || [];
+  //  const tocs = values.tocs?.filter(toc => toc !== undefined && toc.textContent) || [];
+   const tags = values.tags?.filter(tag => tag !== undefined) || [];
+    // console.log(values);
+    // console.log(faqs);
+    // console.log(tocs);
+    // console.log(tags);
+    
+    const existingTags = await prisma.tag.findMany({
+      where: {
+        name: {
+          in:tags,
+        },
       },
-    },
-  });
-
-
-  const newPost = await prisma.post.update({
-    where: { id: values.postId },
-    data: {
-      title: values.title,
-      desc: values.desc,
-      images: [values.image],
-      contentImages:values.files,
-      content: values.content,
-      items: values.items,
-      userId: session?.user.id,
-      tags: {
-        set:[],
-        connect: existingTags.map(tag => ({ id: tag.id })), 
-        create: tags
-          .filter(tagName => !existingTags.some(tag => tag.name === tagName))
-          .map(tagName => ({ name: tagName })), 
+    });
+  
+  
+    const newPost = await prisma.post.update({
+      where: { id: values.postId },
+      data: {
+        title: values.title,
+        desc: values.desc,
+        images: [values.image],
+        contentImages:values.files,
+        content: values.content,
+        items: values.items,
+        userId: session?.user.id,
+        tags: {
+          set:[],
+          connect: existingTags.map(tag => ({ id: tag.id })), 
+          create: tags
+            .filter(tagName => !existingTags.some(tag => tag.name === tagName))
+            .map(tagName => ({ name: tagName })), 
+        },
+        faqs: {
+          deleteMany:{},
+          create: faqs.map(faq => ({ 
+            id: faq.id,
+            question: faq.question, 
+            answer: faq.answer, 
+          })),
+          // update: values.faqs.map(faq => ({
+          //   where: { id: faq.id },
+          //   data: {
+          //     question: faq.question,
+          //     answer: faq.answer,
+          //   },
+          // })),
+        },
+        // tocs: {
+        //   deleteMany:{},
+        //   create:tocs.map(toc => ({
+        //     link:toc.id, 
+        //     itemIndex: toc.itemIndex, 
+        //     level: toc.level, 
+        //     originalLevel: toc.originalLevel, 
+        //     textContent: toc.textContent, 
+        //   })),
+        //   // update: values.tocs.map(toc => ({
+        //   //   where: { id: toc.id },
+        //   //   data: {
+        //   //     link: toc.link,
+        //   //     itemIndex: toc.itemIndex,
+        //   //     level: toc.level,
+        //   //     originalLevel: toc.originalLevel,
+        //   //     textContent: toc.textContent,
+        //   //   },
+        //   // })),
+        // },
       },
-      faqs: {
-        deleteMany:{},
-        create: faqs.map(faq => ({ 
-          id: faq.id,
-          question: faq.question, 
-          answer: faq.answer, 
-        })),
-        // update: values.faqs.map(faq => ({
-        //   where: { id: faq.id },
-        //   data: {
-        //     question: faq.question,
-        //     answer: faq.answer,
-        //   },
-        // })),
-      },
-      // tocs: {
-      //   deleteMany:{},
-      //   create:tocs.map(toc => ({
-      //     link:toc.id, 
-      //     itemIndex: toc.itemIndex, 
-      //     level: toc.level, 
-      //     originalLevel: toc.originalLevel, 
-      //     textContent: toc.textContent, 
-      //   })),
-      //   // update: values.tocs.map(toc => ({
-      //   //   where: { id: toc.id },
-      //   //   data: {
-      //   //     link: toc.link,
-      //   //     itemIndex: toc.itemIndex,
-      //   //     level: toc.level,
-      //   //     originalLevel: toc.originalLevel,
-      //   //     textContent: toc.textContent,
-      //   //   },
-      //   // })),
-      // },
-    },
-    include: getPostDataInclude(session?.user?.id),
-  });
-
-  return newPost;
+      include: getPostDataInclude(session?.user?.id),
+    });
+  
+    return newPost;
+  }
+  catch(error){
+   throw new Error(error)
+  }
 }
 
 
 export async function deletePost(values) {
+  try{
+    const id = values.id; 
+  
+  const session = await  auth();
+  if (!session) throw new Error("Unauthorized");
+  
+  const post = await prisma.post.findUnique({
+    where: { id },
+  });
+  
+  if (!post) throw new Error("Post not found");
+  
+  if (post.userId !== session?.user?.id) throw new Error("Unauthorized");
+  
+  // console.log(values.removeKey)
+  // if(values.removeKey.length > 0){
+  //   try{
+  //     await utapi.deleteFiles(values.removeKey);
+  //   }
+  //   catch(err){
+  //     console.error(err)
+  //     throw new Error('field to delete archive image')
+  //   }
+  // }
+  
+  const deletedPost = await prisma.post.delete({
+    where: { id },
+    include: getPostDataInclude(session?.user?.id),
+  });
+  
+    return deletedPost;
+
+  }
+  catch(error){
+    throw new Error(error)
+  }
   // console.log(values)
-  const id = values.id; 
-
-const session = await  auth();
-if (!session) throw new Error("Unauthorized");
-
-const post = await prisma.post.findUnique({
-  where: { id },
-});
-
-if (!post) throw new Error("Post not found");
-
-if (post.userId !== session?.user?.id) throw new Error("Unauthorized");
-
-// console.log(values.removeKey)
-// if(values.removeKey.length > 0){
-//   try{
-//     await utapi.deleteFiles(values.removeKey);
-//   }
-//   catch(err){
-//     console.error(err)
-//     throw new Error('field to delete archive image')
-//   }
-// }
-
-const deletedPost = await prisma.post.delete({
-  where: { id },
-  include: getPostDataInclude(session?.user?.id),
-});
-
-  return deletedPost;
 }
 
 

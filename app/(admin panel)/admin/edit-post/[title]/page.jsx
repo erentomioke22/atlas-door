@@ -1,5 +1,5 @@
 import React from 'react';
-import EditPost from "./edit-post";
+import EditPost from "./edit-post-root";
 import Head from 'next/head';
 
 export const metadata = {
@@ -27,7 +27,7 @@ const Page = ({ params }) => {
         <meta name="twitter:card" content="summary_large_image" />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       </Head>
-      <EditPost params={params} />
+      <EditPost title={params.title} />
     </div>
   );
 };

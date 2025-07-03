@@ -16,7 +16,7 @@ import Offcanvas from "./ui/offcanvas";
 import Banner from "./ui/Banner";
 import Profile from "./profile";
 import Notifications from "./notifications";
-
+import Sign from "./authenticate-root/sign";
 
 const Navbar = () => {
   const { data: session } = useSession();
@@ -27,7 +27,7 @@ const Navbar = () => {
   const [close, setClose] = useState(false);
   const[isOpen,setIsOpen]=useState(false)
   
-  // console.log(url,path);
+  console.log(url,path,session);
   useEffect(() => {
     setIsOnline(window.navigator.onLine);
     const handleOnlineStatus = () => {
@@ -115,42 +115,152 @@ const Navbar = () => {
   ];
 
   return (
-    <>
-      <header className={`  w-full  `}>
+      <header className={`  w-full  fixed top-0 z-50`}>
 
-        <nav className="fixed w-full backdrop-blur-sm  z-30">
-         <Banner />
-          <div className="flex  bg-white dark:bg-black  bg-opacity-85 dark:bg-opacity-75 justify-between md:justify-arround    px-2 md:px-3 xl-px-5 py-2 h-full">
-          <div className="flex gap-1  ">
+      <Banner />
 
+
+
+       <nav className="flex  md:justify-arround bg-white dark:bg-black    justify-between w-full  px-1  lg:px-5 xl:px-14 py-2 border-b-2 border-lcard dark:border-dcard">
+          {/* <div className="flex  bg-white dark:bg-black  bg-opacity-85 dark:bg-opacity-90 justify-between md:justify-arround    px-2 md:px-3 xl-px-5 py-2 h-full"> */}
+      
+            <div className="flex gap-1">
+
+                 <Offcanvas       
+                  title={<HiMenuAlt4/>}   
+                  onClose={close}
+                  btnStyle={"visible lg:hidden  bg-lcard dark:bg-dcard dark:text-white text-lg p-2  rounded-lg text-black"}
+                  headerStyle={"flex justify-end"} 
+                  position={"top-0 right-0"} size={"h-screen max-w-full w-96 border-l-2 border-l-lcard dark:border-l-dcard "} openTransition={"translate-x-0"} closeTransition={"translate-x-full"}  navbarSetIsOpen={setIsOpen} setMenu={setMenu}>
+                
+                <button
+                     className={" text-lg bg-lcard dark:bg-dcard px-2 py-1  rounded-full border-2 text-lfont "}
+                    onClick={() => {setClose(!close) ; setMenu('')}}
+                    type="button"
+                          >
+                        <IoClose/>
+                </button>
+      
+
+
+
+                 <div
+            className={`transition-all   duration-[1200ms]  delay-100 ease-in-out w-full px-3 right-0 ${
+              isOpen ? "opacity-100 translate-x-0  delay-100 " : "opacity-0 translate-x-full  "
+            }`}
+          >
+
+              <div className=" flex flex-col space-y-2 w-full">
+                {items.map((item,index) => {
+                  return (
+                      <Link
+                        href={item.href}
+                        key={item.id}
+                        onClick={() => {
+                          setClose(!close);
+                        }}
+                        // onClick={()=>menu === item.name ? setMenu('') :setMenu(item.name)}
+                        className="text-2xl font-bold text-right  py-2 px-3 hover:bg-lcard hover:dark:bg-dbtn duration-500 rounded-lg capitalize  w-full"
+                      >
+                        {/* <FaCaretLeft className="my-auto"/> */}
+                        {item.name}
+                      </Link>
+                  );
+                })}
+
+              </div>
+
+                </div>
+                 
+
+
+              
+
+
+
+
+
+                 </Offcanvas>
                     {session?.user?.role === 'admin' &&   
                                   <>
                                     <div>
                                   <Profile session={session} />
 
                                     </div>
-                                    <div>
-                                  <Notifications/>
-
-                                    </div>
                                   </>
                     }
 
-                <Offcanvas       
-                  title={<HiMenuAlt4/>}   
-                  onClose={close}
-                  btnStyle={"visible lg:hidden bg-lcard hover:bg-lbtn rounded-full px-3 py-1 duration-500 dark:bg-dcard dark:hover:bg-dbtn text-lfont border-lbtn border dark:border-dbtn"}
-                  headerStyle={"flex justify-end"} 
-                  position={"top-0 left-0"} size={"h-screen w-full "} openTransition={"translate-x-0"} closeTransition={"translate-x-full"}  navbarSetIsOpen={setIsOpen} setMenu={setMenu}>
+            {!session ? (
+                <div className="my-auto">
+                  <Sign session={session}/>
+                </div>
+              ) : (
+                <>
+                <div className="my-auto">
+                  <Profile session={session} />
+                </div>
                 
-                <Button
-                    className={"my-2"}
-                    onClick={() => {setClose(!close) ; setMenu('')}}
-                    type="button"
-                          >
-                        <IoClose/>
-                </Button>
-      
+                <div>
+                  <Notifications/>
+                </div>
+                </>
+              )}
+
+            {!session && 
+              <div>
+                <Darkmode />
+              </div>
+            }
+
+
+
+           <div>
+              <Search session={session}/> 
+           </div>
+
+
+
+            </div>
+            
+            <div className="max-lg:hidden lg:flex md:gap-4 my-auto   capitalize font-bold  md:text-sm">
+                   {items.map((item,index) => (                   
+                      <Link 
+                      key={item.id}
+                      href={item.href}
+                      className={`  duration-300 ${path === item.href ? 'text-black dark:text-white':'text-lfont hover:text-black dark:hover:text-white'}`}
+                      // onClick={()=>menu === item.name ? setMenu('') :setMenu(item.name)}
+                      >
+                        {item.name}
+                      </Link>                    
+                     )
+                   )}
+            </div>
+    
+            <div>
+              <Link
+                href="/"
+                className="font-blanka text-md text-lfont hover:dark:text-white hover:text-black duration-300"
+              >
+                ATLAS DOOR
+              </Link>
+            </div>
+
+          {/* </div> */}
+         
+
+        </nav> 
+
+
+
+
+
+      </header>
+  );
+};
+
+export default Navbar;
+
+
 
 
 
@@ -188,92 +298,31 @@ const Navbar = () => {
                    </div>
                 </div> */}
 
-                 <div
-            className={`transition-all   duration-[1200ms]  delay-100 ease-in-out w-full px-3 right-0 ${
-              isOpen ? "opacity-100 translate-x-0  delay-100 " : "opacity-0 translate-x-full  "
-            }`}
-          >
-
-              <div className=" flex flex-col space-y-2 w-full">
-                {items.map((item,index) => {
-                  return (
-                      <Link
-                        href={item.href}
-                        key={item.id}
-                        onClick={() => {
-                          setClose(!close);
-                        }}
-                        // onClick={()=>menu === item.name ? setMenu('') :setMenu(item.name)}
-                        className="text-2xl font-bold text-right  py-2 px-3 hover:bg-lcard hover:dark:bg-dbtn duration-500 rounded-lg capitalize  w-full"
-                      >
-                        {/* <FaCaretLeft className="my-auto"/> */}
-                        {item.name}
-                      </Link>
-                  );
-                })}
-                {/* <button className="text-2xl font-bold text-right  py-2 px-3 hover:bg-lcard hover:dark:bg-dbtn duration-500 rounded-lg capitalize  w-full">
-                  TELEGRAM
-                </button>
-                <button className="text-2xl font-bold text-right  py-2 px-3 hover:bg-lcard hover:dark:bg-dbtn duration-500 rounded-lg capitalize  w-full">
-                  INSTAGRAM
-                </button>
-                <button className="text-2xl font-bold text-right  py-2 px-3 hover:bg-lcard hover:dark:bg-dbtn duration-500 rounded-lg capitalize  w-full">
-                  YOUTUBE
-                </button> */}
-              </div>
-
-                </div>
-                 
 
 
-              
+{/* <div
+    className={` inset-0  transition-opcaity duration-500 ease-in-out max-md:hidden -z-20   ${
+      menu ? "fixed backdrop-blur-sm overflow-hidden overscroll-none" : " invisible backdrop-blur-0"
+  } `}
+    onClick={() => setMenu('')}
+ /> */}
 
 
 
 
-
-                 </Offcanvas>
-
-              <div>
-                <Darkmode />
-              </div>
-
-
-
-
-              <Search/> 
-
+{/* <Link
+  href={item.link}
+                             className={`${
+                               path === item.link || url.includes(item.name)
+                                 ? "text-purple"  
+                                 : "text-lfont  hover:dark:text-white hover:text-black text-[10px] duration-300  "
+                             }`}
+                           >
+                             {item.name}
+                           </Link> */}
 
 
-            </div>
-
-
-            
-            <div className="max-lg:hidden lg:flex md:gap-4 my-auto   capitalize font-bold  md:text-sm">
-                   {items.map((item,index) => (                   
-                      <Link 
-                      key={item.id}
-                      href={item.href}
-                      className={`  duration-300 ${path === item.href ? 'text-black dark:text-white':'text-lfont hover:text-black dark:hover:text-white'}`}
-                      // onClick={()=>menu === item.name ? setMenu('') :setMenu(item.name)}
-                      >
-                        {item.name}
-                      </Link>                    
-                     )
-                   )}
-             </div>
-    
-             <div>
-              <Link
-                href="/"
-                className="font-blanka text-md text-lfont hover:dark:text-white hover:text-black duration-300"
-              >
-                ATLAS DOOR
-              </Link>
-            </div>
-          </div>
-         
-          {/* <div
+                                     {/* <div
                      className={`bg-white dark:bg-black  fixed top-0 left-0 p-4 transform space-y-7 offcanvas max-md:hidden
                          ${menu  ? ` translate-y-0 h-fit duration-300` : "-translate-y-full "}   w-full    bg-black transition-transform duration-[350ms] overflow-auto  -z-10 `}
                       >
@@ -298,35 +347,4 @@ const Navbar = () => {
                         </div>
                         </div>
           </div> */}
-        </nav>
-
-
-
-
-
-
-
-
-      {/* <div
-          className={` inset-0  transition-opcaity duration-500 ease-in-out max-md:hidden -z-20   ${
-            menu ? "fixed backdrop-blur-sm overflow-hidden overscroll-none" : " invisible backdrop-blur-0"
-        } `}
-          onClick={() => setMenu('')}
-       /> */}
-      </header>
-
-    </>
-  );
-};
-
-export default Navbar;
-                           {/* <Link
-                             href={item.link}
-                             className={`${
-                               path === item.link || url.includes(item.name)
-                                 ? "text-purple"  
-                                 : "text-lfont  hover:dark:text-white hover:text-black text-[10px] duration-300  "
-                             }`}
-                           >
-                             {item.name}
-                           </Link> */}
+          

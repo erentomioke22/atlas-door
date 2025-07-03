@@ -14,11 +14,11 @@ import { FaArrowLeftLong } from "react-icons/fa6";
 // import LikeButton from "@components/posts/likeButton";
 
 
-const Comment = ({content,user,createdAt,userId,id,replies,likes,_count,parent,post,margin,category,scrollToComment,setCurrentCommentId,setMessage,setReplyInfo}) => {
+const Comment = ({content,user,createdAt,userId,id,replies,likes,_count,parent,product,margin,category,scrollToComment,setCurrentCommentId,setMessage,setReplyInfo}) => {
  
   const [ShowAll,setShowAll]=useState(false)
   const { data: session } = useSession();
-  const deleteMutation = useDeleteCommentMutation(post?.id,category)
+  const deleteMutation = useDeleteCommentMutation(product?.id,category)
   const [showAllReply,setShowAllReply]=useState(false)
   const [showReport,setShowReport] = useState(false)
 
@@ -78,7 +78,7 @@ const Comment = ({content,user,createdAt,userId,id,replies,likes,_count,parent,p
            <p className="text-[8px] md:text-[10px]  ">
             <span className="text-lfont">{moment(new Date(createdAt), "YYYYMMDD").fromNow()}  .</span>
              {"   "}<span className="truncate uperrcase">
-             {(userId === post?.userId && "ادمين") ||
+             {(userId === product?.sellerId && "ادمين") ||
                (userId === session?.user?.id &&
                  session?.user?.role === "admin" &&
                  "ادمين")}
@@ -196,8 +196,8 @@ const Comment = ({content,user,createdAt,userId,id,replies,likes,_count,parent,p
                                 user={user}
                                 id={id}
                                 commentId={id}
-                                writerId={post?.userId}
-                                post={post}
+                                writerId={post?.sellerId}
+                                product={product}
                                 replies={replies}
                                 parent={parent}
                                 margin={false}

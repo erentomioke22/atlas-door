@@ -33,7 +33,7 @@ const CommentTextEditor = forwardRef(({content,onChange,title},ref) => {
     ],
     editorProps:{
         attributes:{
-             class: "  w-full p-2 text-sm outline-0 min-h-20 focus:outline-none focus:ring-2 ring-black dark:ring-white rounded-xl duration-200  bg-lcard dark:bg-dcard",
+             class: "  w-full p-2 text-sm outline-0 min-h-14 focus:outline-none focus:ring-2 ring-black dark:ring-white rounded-xl duration-200  bg-lcard dark:bg-dcard",
             spellcheck: 'false',
         },
     },

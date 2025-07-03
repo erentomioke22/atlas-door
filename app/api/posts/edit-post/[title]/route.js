@@ -2,6 +2,7 @@ import { validateRequest } from "@/auth";
 import { prisma } from "@utils/database";
 import { getPostDataInclude, PostsPage } from "@/lib/types";
 import { auth } from "@/auth";
+import { NextResponse } from "next/server";
 
 
 
@@ -10,18 +11,19 @@ export async function GET(req,{params}) {
     const session = await auth();
 
     if (!session) {
-      return Response.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const posts = await prisma.post.findFirst({
+    const post = await prisma.post.findFirst({
       include: getPostDataInclude(session?.user?.id),
       where:{link:params.title},
     });
 
+    if(!post) return NextResponse.json({error:'not found any post'},{status:400});
 
-    return Response.json(posts);
+    return NextResponse.json(post);
   } catch (error) {
     // console.error(error);
-    return Response.json({ error: "Internal server error" }, { status: 500 });
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }

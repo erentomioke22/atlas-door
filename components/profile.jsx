@@ -5,14 +5,14 @@ import Dropdown from "./ui/dropdown";
 import { FaCaretLeft } from "react-icons/fa6";
 import { IoPencil,IoLogOut } from "react-icons/io5";
 import ImageCom from "./ui/Image";
-
-
+import DropDrawer from "./ui/dropdrawer";
+import Darkmode from "./ui/darkmode";
 
 const Profile = ({ session }) => {
   const [close, setClose] = useState(false);
 // console.log(session)
   return (
-    <Dropdown
+    <DropDrawer
       title={
         <div className="relative h-8 w-8">
           {session?.user?.image === null ?
@@ -24,7 +24,7 @@ const Profile = ({ session }) => {
                   src={
                     session.user?.image === null
                       ? `${process.env.NEXT_PUBLIC_BASE_URL}/images/logo/user-avatar-people-icon-solid-style-icon-design-element-icon-template-background-free-vector.jpg`
-                      : `${process.env.NEXT_PUBLIC_BASE_URL}${session.user.image}`
+                      : session.user.image
                   }
                   alt={`${session.user?.name} avatar`}
                 /> 
@@ -37,7 +37,7 @@ const Profile = ({ session }) => {
       disabled={!session}
     >
       <div
-        className=" flex justify-around  p-3   mx-3 hover:bg-lcard dark:hover:bg-dcard rounded-2xl  gap-3 truncate duration-300"
+        className=" flex justify-around  p-3   mx-3  rounded-2xl  gap-3 truncate duration-300"
       >
         <div className="relative h-10 w-10">
         {session?.user?.image === null ?
@@ -49,7 +49,7 @@ const Profile = ({ session }) => {
                   src={
                     session.user?.image === null
                       ? `${process.env.NEXT_PUBLIC_BASE_URL}/images/logo/user-avatar-people-icon-solid-style-icon-design-element-icon-template-background-free-vector.jpg`
-                      : `${process.env.NEXT_PUBLIC_BASE_URL}${session.user.image}`
+                      : session.user.image
                   }
                   alt={`${session.user?.name} avatar`}
                 /> 
@@ -59,47 +59,36 @@ const Profile = ({ session }) => {
           <p className="text-sm  text-black dark:text-white truncate">{session?.user?.displayName}</p>
           <p className="text-sm  text-lfont truncate">{session?.user?.email}</p>
         </div>
-        <div className="flex flex-col justify-center text-lfont ">
+        {/* <div className="flex flex-col justify-center text-lfont ">
           <FaCaretLeft />
-        </div>
+        </div> */}
 
       </div>
 
       <div className="flex flex-col text-start text-[12px] space-y-2 mt-2 px-3">
-        {/* {session.user.role === "admin" && (
+        {session.user.role === "admin" && (
           <>
-            <Link
-              onClick={() => {
-                setClose(!close);
-              }}
-              href={"/admin"}
-              className={" flex justify-between py-2 w-full  px-3  rounded-lg  hover:bg-lcard dark:hover:bg-dcard hover:text-black dark:hover:text-white text-lfont duration-500"}               >
-               <IoBookmark className="text-[18px]"/>
-               <span > Admin Panel</span>
-           </Link>
+      <Link 
+        href={"/admin/create-post"}   
+        onClick={() => {
+          setClose(!close);
+        }}
+        className={" flex justify-between py-2 w-full  px-3  rounded-lg  hover:bg-lcard dark:hover:bg-dcard hover:text-black dark:hover:text-white text-lfont duration-500"} >
+     <span>ساخت بلاگ</span>
+      </Link>
+
+      <Link 
+        href={"/admin/create-product"}   
+        onClick={() => {
+          setClose(!close);
+        }}
+        className={" flex justify-between py-2 w-full  px-3  rounded-lg  hover:bg-lcard dark:hover:bg-dcard hover:text-black dark:hover:text-white text-lfont duration-500"} >
+     <span>ساخت محصول</span>
+      </Link>
           </>
-        )} */}
+        )}
 
  
-      <Link 
-        href={"/create-post"}   
-        onClick={() => {
-          setClose(!close);
-        }}
-        className={" flex justify-between py-2 w-full  px-3  rounded-lg  hover:bg-lcard dark:hover:bg-dcard hover:text-black dark:hover:text-white text-lfont duration-500"} >
-     <IoPencil className="text-lg" /> 
-     <span>Create Post</span>
-      </Link>
-
-      <Link 
-        href={"/create-product"}   
-        onClick={() => {
-          setClose(!close);
-        }}
-        className={" flex justify-between py-2 w-full  px-3  rounded-lg  hover:bg-lcard dark:hover:bg-dcard hover:text-black dark:hover:text-white text-lfont duration-500"} >
-     {/* <IoPencil className="text-lg" />  */}
-     <span>Create product</span>
-      </Link>
 
       <Link 
         href={`/${session?.user.name}/orders`}   
@@ -107,27 +96,33 @@ const Profile = ({ session }) => {
           setClose(!close);
         }}
         className={" flex justify-between py-2 w-full  px-3  rounded-lg  hover:bg-lcard dark:hover:bg-dcard hover:text-black dark:hover:text-white text-lfont duration-500"} >
-     {/* <IoPencil className="text-lg" />  */}
-     <span>My Orders</span>
+     <span>سفارش هاي من</span>
       </Link>
+        
+        <div>
+            <Darkmode name={true}/>
+        </div>
 
-
-
-
-
+        <Link
+          onClick={() => {
+            setClose(!close);
+          }}
+          href={`/${session?.user.name}/setting`}
+          className={"flex justify-between py-2 w-full  px-3  rounded-lg  hover:bg-lcard dark:hover:bg-dcard sm:hover:text-black sm:dark:hover:text-white sm:text-lfont duration-500"}           >
+            <span>تنظيمات</span>
+        </Link>
 
         <button
           type="button"
           onClick={() => {
             signOut();
           }}
-          className={"flex justify-between py-2 w-full  px-3  rounded-lg  hover:bg-lcard dark:hover:bg-dcard hover:text-black dark:hover:text-white text-lfont duration-500"}           >
-          <IoLogOut className="text-[18px]"/>
-          <span > Logout</span>
+          className={"flex justify-between py-2 w-full  px-3  rounded-lg  hover:bg-lcard dark:hover:bg-dcard  text-orange duration-500"}           >
+          <span >خروج از حساب</span>
         </button>
         
       </div>
-    </Dropdown>
+    </DropDrawer>
   );
 };
 

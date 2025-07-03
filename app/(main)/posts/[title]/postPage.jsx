@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useEffect,useRef } from "react";
+import React, { useEffect,useRef,useState } from "react";
 import axios from "axios";
-import Comments from "@components/posts/comments-root/comments";
+import Comments from "@components/posts/comments/comments"
 import PageLoading from "@components/ui/loading/pageLoading";
 import {  toast } from 'sonner'
 import { useQuery,useQueryClient } from "@tanstack/react-query";
@@ -20,17 +20,20 @@ import { useRouter } from "next/navigation";
 import { FaArrowLeftLong } from "react-icons/fa6";
 import Link from "next/link";
 import { FaEraser } from "react-icons/fa6";
-import  TOC  from "@component/posts/TocPost";
+import TableOfContents from "@components/posts/TocPost";
+import Accordion from "@components/ui/Accordion";
+
 
 const PostPage = ({title}) => {
 
   const {data:session,update}=useSession()
   const contentRef = useRef(null);
+  const [progress, setProgress] = useState(0);
   const pathName = usePathname();
   const currentUrl = `http://localhost:3000/${pathName}`;
   const router = useRouter()
   const queryClient = useQueryClient();
-const {data: post,isFetching,status,}=useQuery({
+const {data: post,isFetching,status,error}=useQuery({
     queryKey: ["post", title],
     queryFn: async()=>{
      const response = await axios.get(`/api/posts?postTitle=${title}`);
@@ -40,7 +43,7 @@ const {data: post,isFetching,status,}=useQuery({
 
 console.log(post)
 
-  if (status === "success" && (post.error || post.length <= 0) ) {
+  if (status === "success" && post?.length <= 0 ) {
     return (
       <p className="text-center text-muted-foreground">
         No posts found. Start following people to see their posts here.
@@ -48,7 +51,15 @@ console.log(post)
     );
   }
 
-  if (status === "error") {
+  if (error) {
+    return (
+      <p className="text-center text-destructive">
+        An error occurred while loading posts.!!!
+      </p>
+    );
+  }
+  
+  if (status === "error" || post?.error) {
     return (
       <p className="text-center text-destructive">
         An error occurred while loading posts.
@@ -68,7 +79,17 @@ console.log(post)
   // }, [status, post]);
 
 
-
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = document.documentElement.scrollTop;
+      const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrollProgress = (scrollTop / scrollHeight) * 100;
+      setProgress(scrollProgress);
+    };
+  
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  },[]);
 
 
   const copyToClipboard = () => {
@@ -85,12 +106,12 @@ console.log(post)
            ) : (
           <div className="mx-auto w-full space-y-10">
                      <button
-                         className={"text-sm px-3  py-1   flex"}
+                         className={"text-sm px-3  py-1  max-sm:mt-5 flex"}
                          onClick={() => router.back()}
                          type="button"
                                >
+                                بازگشت
                                 <FaArrowLeftLong className="my-auto text-lg"/>
-                                BACK
                          </button>
 
                <div className=" space-y-5 md:mt-7">
@@ -129,7 +150,7 @@ console.log(post)
                   {post?.team  && <span className='text-redorange'>{post?.user.displayName} .</span>} 
                   {moment(new Date(post?.createdAt), "YYYYMMDD").fromNow()} - 
                   <span className="">
-                     {Math.ceil(post?.content?.length / 2044) >= 18 ? Math.ceil(post?.content?.length / 2044) - 5 : Math.ceil(post?.content?.length / 2044)} min read
+                     {Math.ceil(post?.content?.length / 2044) >= 18 ? Math.ceil(post?.content?.length / 2044) - 5 : Math.ceil(post?.content?.length / 2044)} دقيقه
                   </span>
                   </p>
                </div>
@@ -164,7 +185,7 @@ console.log(post)
             <button className="bg-lcard dark:bg-dcard rounded-full p-2 text-sm sm:text-lg" onClick={copyToClipboard}><IoShareOutline/></button>
          </div>
           {session?.user.id === post.userId &&
-           <Link className={"bg-lcard dark:bg-dcard rounded-full p-2 text-sm sm:text-lg"} href={`/edit-post/${post?.link}`}>
+           <Link className={"bg-lcard dark:bg-dcard rounded-full p-2 text-sm sm:text-lg"} href={`/admin/edit-post/${post?.link}`}>
              <FaEraser/>
            </Link>
            }
@@ -185,21 +206,15 @@ console.log(post)
                 <Comments post={post}  />
             </div>
 
+               <div>
+                  <TableOfContents content={contentRef?.current}
+                   //  items={post?.tocs}
+                  />
+               </div>
             
 
              </div>
                </div>
-   
-               <div className="my-10  ">
-               {/* {post?.tocs.length >= 2 &&  */}
-               <div className="sticky top-32">
-                  <TOC content={contentRef?.current}
-                   //  items={post?.tocs}
-                  />
-               </div>
-                    
-                    {/* } */}
-          </div>
        
             <div
             id="post-content" ref={contentRef}
@@ -218,7 +233,7 @@ console.log(post)
                  </div>
                </div>
              {post?.faqs?.map((faq,index)=>(
-                     <Accordion menuStyle={"p-4 text-lfont text-sm"} btnStyle={"text-lg sm:text-xl lg:text-2xl"} title={faq.question} key={index}> <p>{faq.answer}</p> </Accordion>
+                     <Accordion menuStyle={"p-4 text-lfont text-sm bg-lcard dark:bg-dcard rounded-xl"} btnStyle={"text-lg sm:text-xl lg:text-2xl border-b-2 border-b-lcard dark:border-b-dcard"} title={faq.question} key={index}> <p>{faq.answer}</p> </Accordion>
                  ))}
              </div>  
        

@@ -1,90 +1,221 @@
-import {useMutation,useQueryClient,} from "@tanstack/react-query";
-import { toast } from 'sonner'
-import { deleteComment,submitComment ,editComment,submitReply,editReply,deleteReply} from './action'
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
+import { deleteComment, submitComment, editComment } from "./action";
 
-export function useSubmitCommentMutation(postId) {
+ 
 
+export function useSubmitCommentMutation(postId, category) {
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
     mutationFn: submitComment,
-    onSuccess: async (newComment) => {
-      const commentsQueryKey = ["comments", postId];
-      const notificationsQueryKey = ["notifications"];
-      
-      await queryClient.cancelQueries({ queryKey: commentsQueryKey });
-      await queryClient.cancelQueries({ queryKey: notificationsQueryKey });
-      
+    onSuccess: async (comment) => {
+      const queryKey = ["comments", postId, category];
+      await queryClient.cancelQueries({ queryKey });
 
-      queryClient.invalidateQueries({ queryKey: commentsQueryKey });
-      queryClient.invalidateQueries({ queryKey: notificationsQueryKey });
-      
-      
-      toast.success("بازخورد شما ثبت شد",);
+      // If it's a reply (has parentId), update the parent comment's replies array
+      // if (comment.parentId) {
+      //   queryClient.setQueryData(queryKey, (oldData) => {
+      //     if (!oldData?.pages?.length) return oldData;
+
+      //     return {
+      //       ...oldData,
+      //       pages: oldData.pages.map((page) => ({
+      //         ...page,
+      //         comments: page.comments.map((c) => {
+      //           // If this is the parent comment, add the new reply to its replies array
+      //           if (c.id === comment.parentId) {
+      //             return {
+      //               ...c,
+      //               replies: [comment, ...(c.replies || [])],
+      //             };
+      //           }
+      //           return c;
+      //         }),
+      //       })),
+      //     };
+      //   });
+      // } else {
+        // It's a top-level comment, add it to the beginning of the list
+        queryClient.setQueryData(queryKey, (oldData) => {
+          const firstPage = oldData?.pages[0];
+          if (firstPage) {
+            return {
+              ...oldData,
+              pages: [
+                {
+                  ...firstPage,
+                  comments: [comment, ...firstPage.comments],
+                },
+                ...oldData.pages.slice(1),
+              ],
+            };
+          }
+          return oldData;
+        });
+      // }
+
+      toast.success(comment.parentId ? "بازخورد شما با موفقيت ثبت شد" : "بازخورد شما با موفقيت ثبت شد");
     },
     onError(error) {
-      // console.error(error);
-      toast.error("Failed to submit comment. Please try again.");
+      console.error(error);
+      if (error.message) {
+        toast.error(error.message);
+      } else {
+        toast.error("مشكلي در برقراري ارتباط وجود دارد");
+      }
     },
   });
 
   return mutation;
 }
 
-export function useEditCommentMutation(postId) {
-
+export function useEditCommentMutation(postId, category) {
   const queryClient = useQueryClient();
+  console.log(postId, category)
 
   const mutation = useMutation({
     mutationFn: editComment,
-    onSuccess: async (newComment) => {
-      const commentsQueryKey = ["comments", postId];
-      const notificationsQueryKey = ["notifications"];
-      
-      await queryClient.cancelQueries({ queryKey: commentsQueryKey });
-      await queryClient.cancelQueries({ queryKey: notificationsQueryKey });
-      
+    onSuccess: async (comment) => {
+      const queryKey = ["comments", postId, category];
+      await queryClient.cancelQueries({ queryKey });
+      // queryClient.setQueryData(queryKey, (oldData) => {
+      //   if (!oldData?.pages?.length) return oldData;
 
-      queryClient.invalidateQueries({ queryKey: commentsQueryKey });
-      queryClient.invalidateQueries({ queryKey: notificationsQueryKey });
+      //   return {
+      //     ...oldData,
+      //     pages: oldData.pages.map((page) => ({
+      //       ...page,
+      //       comments: page.comments.map((c) =>
+      //         c.id === comment.id ? comment : c
+      //       ),
+      //     })), 
+      //   };
+      // });
 
-      toast.success("Comment edited",);
+      // queryClient.invalidateQueries({queryKey,});
+
+
+
+      queryClient.setQueryData(queryKey, (oldData) => {
+        if (!oldData?.pages?.length) return oldData;
+      
+        return {
+          ...oldData,
+          pages: oldData.pages.map((page) => ({
+            ...page,
+            comments: page.comments.map((c) => {
+              if (c.id === comment.id) {
+                return comment;
+              }
+              if (c.parentId === comment.id) {
+                return {
+                  ...c,
+                  parentContent: comment.content, // update this field as needed
+                };
+              }
+              return c;
+            }),
+          })),
+        };
+      });
+      toast.success("بازخورد شما تغيير پيدا كرد");
     },
     onError(error) {
-      // console.error(error);
-      toast.error("Failed to edit comment. Please try again.");
+      console.error(error);
+      if (error.message) {
+        toast.error(error.message);
+      } else {
+        toast.error("مشكلي در برقراري ارتباط وجود دارد");
+      }
     },
   });
 
   return mutation;
 }
 
-export function useDeleteCommentMutation(){
 
+
+
+
+
+export function useDeleteCommentMutation(postId, category) {
   const queryClient = useQueryClient();
-
+console.log(postId, category)
   const mutation = useMutation({
     mutationFn: deleteComment,
     onSuccess: async (deletedComment) => {
+      const queryKey = ["comments", postId, category];
+      await queryClient.cancelQueries({ queryKey });
 
-      const commentsQueryKey = ["comments", deletedComment.postId];
-      const notificationsQueryKey = ["notifications"];
+      queryClient.setQueryData(queryKey, (oldData) => {
+        console.log(oldData)
+        if (!oldData) return oldData;
+        return {
+          ...oldData,
+          pages: oldData.pages.map((page) => ({
+            ...page,
+            comments: removeCommentAndDescendants(page.comments, deletedComment.id),
+          })),
+        };
+      });
+
+
+      // queryClient.setQueryData(queryKey, (oldData) => {
+      //   if (!oldData) return oldData;
+    
+      //   const newPages = oldData.pages.map((page) => ({
+      //     ...page,
+      //     comments: page.comments.filter((c) => c.id !== deletedComment.id),
+      //   }));
+      //   return {
+      //     ...oldData,
+      //     pages: newPages,
+      //   };
+      // });
       
-      await queryClient.cancelQueries({ queryKey: commentsQueryKey });
-      await queryClient.cancelQueries({ queryKey: notificationsQueryKey });
-      
-
-      queryClient.invalidateQueries({ queryKey: commentsQueryKey });
-      queryClient.invalidateQueries({ queryKey: notificationsQueryKey });
-
-      toast.success("Comment deleted");
+      toast.success("بارخورد با موفقيت حذف شد");
     },
+
     onError(error) {
-      // console.error(error);
-      toast.error("Failed to delete comment. Please try again.");
+      console.error(error);
+      toast.error("مشكلي در برقراري ارتباط وجود دارد");
     },
   });
 
   return mutation;
+}
+
+
+
+// function removeCommentAndReplies(comments, commentId) {
+//   return comments
+//     .filter(comment => comment.id !== commentId)
+//     .map(comment => ({
+//       ...comment,
+//       replies: comment.replies ? removeCommentAndReplies(comment.replies, commentId) : [],
+//     }));
+// }
+
+function removeCommentAndDescendants(comments, commentId) {
+  // Find all direct children
+  const directChildren = comments.filter(c => c.parentId === commentId);
+  // Recursively remove all descendants
+  let idsToRemove = [commentId];
+  for (const child of directChildren) {
+    idsToRemove = idsToRemove.concat(
+      getAllDescendantIds(comments, child.id)
+    );
+  }
+  return comments.filter(c => !idsToRemove.includes(c.id));
+}
+
+function getAllDescendantIds(comments, parentId) {
+  const children = comments.filter(c => c.parentId === parentId);
+  let ids = [parentId];
+  for (const child of children) {
+    ids = ids.concat(getAllDescendantIds(comments, child.id));
+  }
+  return ids;
 }
 

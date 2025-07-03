@@ -14,7 +14,7 @@ import { FaCheck } from "react-icons/fa6";
 // import { IoSend } from "react-icons/io5";
 
 const CommentInput = ({
-  post,
+  product,
   title,
   header,
   content,
@@ -30,8 +30,8 @@ const CommentInput = ({
 setMessage
 }) => {
   const { data: session } = useSession();
-  const addMutation = useSubmitCommentMutation(post?.id,category);
-  const editMutation = useEditCommentMutation(post?.id,category);
+  const addMutation = useSubmitCommentMutation(product?.id,category);
+  const editMutation = useEditCommentMutation(product?.id,category);
 
   const [onClose, setOnClose] = useState(false);
 
@@ -62,7 +62,7 @@ setMessage
       // If edit is true, we're editing a comment
       editMutation.mutate(
         {
-          post,
+          product,
           content: values.content,
           userId: values.userId,
           commentId: replyId || commentId, // Use the appropriate ID
@@ -81,7 +81,7 @@ setMessage
       // Otherwise we're adding a new comment or reply
       addMutation.mutate(
         {
-          post,
+          product,
           content: values.content,
           userId: values.userId,
           parentId: commentId, // For replies, use the commentId as parentId
@@ -165,7 +165,7 @@ export default CommentInput;
 
 
 // const CommentInput = ({
-//   post,
+//   product,
 //   title,
 //   header,
 //   content,
@@ -181,8 +181,8 @@ export default CommentInput;
 // setMessage
 // }) => {
 //   const { data: session } = useSession();
-//   const addMutation = useSubmitCommentMutation(post?.id,category);
-//   const editMutation = useEditCommentMutation(post?.id,category);
+//   const addMutation = useSubmitCommentMutation(product?.id,category);
+//   const editMutation = useEditCommentMutation(product?.id,category);
 
 //   const [onClose, setOnClose] = useState(false);
 
@@ -226,7 +226,7 @@ export default CommentInput;
 //       // If edit is true, we're editing a comment
 //       editMutation.mutate(
 //         {
-//           post,
+//           product,
 //           content: values.content,
 //           userId: values.userId,
 //           commentId: replyId || commentId,
@@ -247,7 +247,7 @@ export default CommentInput;
 //       // Otherwise we're adding a new comment or reply
 //       addMutation.mutate(
 //         {
-//           post,
+//           product,
 //           content: values.content,
 //           userId: values.userId,
 //           parentId: commentId,
@@ -274,7 +274,7 @@ export default CommentInput;
 //   //   // if(!content  && !edit){
 //   //   addMutation.mutate(
 //   //     {
-//   //       post,
+//   //       product,
 //   //       content: values.content,
 //   //       userId: values.userId,
 //   //       parentId: commentId,
@@ -291,7 +291,7 @@ export default CommentInput;
 //   //   if (commentId && !reply && !edit) {
 //   //     editMutation.mutate(
 //   //       {
-//   //         post,
+//   //         product,
 //   //         content: values.content,
 //   //         userId: values.userId,
 //   //         commentId,

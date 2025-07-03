@@ -4,7 +4,7 @@ const LoadingNotifications = () => {
   return (
     <div className="w-full mx-auto">
       <div className="animate-pulse space-y-3 ">
-        <div className=" flex space-x-2">
+        <div className=" flex gap-2">
           <div className="rounded-lg bg-lcard dark:bg-dcard   h-10 w-10"></div>
 
           <div className="flex-1  space-y-2 mt-1">

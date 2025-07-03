@@ -260,13 +260,13 @@ model Comment {
   content      String
   user         User?       @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId       String?
-  name         String
-  email        String
   post         Post?        @relation(fields: [postId], references: [id], onDelete: Cascade)
   postId       String?
   product      Product?     @relation(fields: [productId], references: [id], onDelete: Cascade)
   productId    String?
   parent       Comment?    @relation("CommentReplies", fields: [parentId], references: [id] , onDelete: Cascade) 
+  // name         String
+  // email        String
   parentId     String? 
   replies      Comment[]   @relation("CommentReplies")  
 

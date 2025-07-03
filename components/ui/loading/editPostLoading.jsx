@@ -29,7 +29,7 @@ const EditPostLoading = () => {
        </div>
 
 
-      <div className="flex space-x-2 pt-3">
+      <div className="flex gap-2 pt-3">
           <div className="h-10 w-10 bg-lcard dark:bg-dcard rounded-full"></div>
           <div className="h-10 w-10 bg-lcard dark:bg-dcard rounded-full"></div>
           <div className="h-10 w-10 bg-lcard dark:bg-dcard rounded-full"></div>

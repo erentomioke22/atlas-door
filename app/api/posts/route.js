@@ -13,10 +13,10 @@ export async function GET (req){
     where:{link:postTitle},
     include: getPostDataInclude(session?.user?.id),
 }) 
-   if(!currentPost) return NextResponse.json({error:'not found any post'});
+   if(!currentPost) return NextResponse.json({error:'not found any post'},{status:400});
    return NextResponse.json(currentPost)
  }
  catch(error){
-    return NextResponse.json({error})
+    return NextResponse.json({error},{status:500})
  }
 }

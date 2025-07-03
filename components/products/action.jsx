@@ -114,35 +114,40 @@ export async function editProduct(values) {
 }
 
 export async function deleteProduct(values) {
-  console.log(values)
-  const id = values.id;
-
-  const session = await auth();
-  if (!session) throw new Error("Unauthorized");
-
-  const product = await prisma.product.findUnique({
-    where: { id },
-  });
-
-  if (!product) throw new Error("product not found");
-
-  if (product.sellerId !== session?.user?.id) throw new Error("Unauthorized");
-
-  // console.log(values.removeKey)
-  if(values.removeKey.length > 0){
-    try{
-      await utapi.deleteFiles(values.removeKey);
+  try{
+    console.log(values)
+    const id = values.id;
+  
+    const session = await auth();
+    if (!session) throw new Error("Unauthorized");
+  
+    const product = await prisma.product.findUnique({
+      where: { id },
+    });
+  
+    if (!product) throw new Error("product not found");
+  
+    if (product.sellerId !== session?.user?.id) throw new Error("Unauthorized");
+  
+    // console.log(values.removeKey)
+    if(values.removeKey.length > 0){
+      try{
+        await utapi.deleteFiles(values.removeKey);
+      }
+      catch(err){
+        console.error(err)
+        throw new Error('field to delete archive image')
+      }
     }
-    catch(err){
-      console.error(err)
-      throw new Error('field to delete archive image')
-    }
+  
+    const deletedProduct = await prisma.product.delete({
+      where: { id },
+      include: getProductDataInclude(session?.user?.id),
+    });
+  
+    return deletedProduct;
   }
-
-  const deletedProduct = await prisma.product.delete({
-    where: { id },
-    include: getProductDataInclude(session?.user?.id),
-  });
-
-  return deletedProduct;
+  catch(error){
+    throw new Error(error)
+  }
 }

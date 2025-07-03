@@ -16,25 +16,7 @@ import ImageCom from "./ui/Image";
 
 
 export default function Notification({ notification }) {
-  const queryClient = useQueryClient();
-  const queryKey = ["notifications"];
-  const joinTeamUserMutate = useMutation({
-    mutationKey: ["join-team"],
-    mutationFn: ({ userId, teamId }) =>
-      axios.post(`/api/team/teamName/${teamId}/members?userId=${userId}`),
-    onSuccess: async () => {
-      await queryClient.cancelQueries({ queryKey });
-      await queryClient.invalidateQueries({ queryKey });
-      toast.success("you join team successfully");
-    },
-    onError(error, variables, context) {
-      if (error.response?.data?.error) {
-        toast.error(error.response.data.error);
-      } else {
-        toast.error("Failed to create team. Please try again.");
-      }
-    },
-  });
+
 
 
   const notificationTypeMap = {

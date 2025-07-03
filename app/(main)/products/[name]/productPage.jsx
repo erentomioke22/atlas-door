@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import Comments from "@components/products/comments-root/comments";
+import Comments from "@components/products/comments/comments";
 import PageLoading from "@components/ui/loading/pageLoading";
 import { toast } from "sonner";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -65,18 +65,18 @@ const PostPage = ({ name }) => {
 
   console.log(product, currentColor, currentPrice);
 
-  if (status === "success" && (product.error || product.length <= 0)) {
+  if (status === "success" && product.length <= 0 ) {
     return (
       <p className="text-center text-muted-foreground">
-        No products found. Start following people to see their products here.
+         .هيچ محصولي يافت نشد
       </p>
     );
   }
 
-  if (status === "error") {
+  if (status === "error" || product?.error) {
     return (
       <p className="text-center text-destructive">
-        An error occurred while loading products.
+        مشكلي در برقراري ارتباط وجود دارد
       </p>
     );
   }
@@ -97,8 +97,6 @@ const PostPage = ({ name }) => {
   };
 
   return (
-    <>
-      <ProgressBar />
       <div className="px-5 w-full sm:w-4/5 lg:w-4/6 xl:w-3/5 mx-auto space-y-10 md:space-y-20">
         {status === "pending" ? (
           <PageLoading />
@@ -109,8 +107,8 @@ const PostPage = ({ name }) => {
               onClick={() => router.back()}
               type="button"
             >
+              بازگشت
               <FaArrowLeftLong className="my-auto text-lg" />
-              BACK
             </button>
             <div className="flex gap-2 sm:gap-3   my-auto">
                 {/* <div>
@@ -144,7 +142,7 @@ const PostPage = ({ name }) => {
                     className={
                       "bg-lcard dark:bg-dcard rounded-full p-2 text-sm sm:text-lg"
                     }
-                    href={`/edit-product/${product?.name}`}
+                    href={`/admin/edit-product/${product?.name}`}
                   >
                     <FaEraser />
                   </Link>
@@ -216,7 +214,7 @@ const PostPage = ({ name }) => {
             <div className="flex flex-wrap gap-2 justify-between">
               <div className="flex my-auto gap-2">
                 <button className="bg-lcard dark:bg-dcard rounded-xl text-sm px-3 py-2 ">
-                  Buy Now
+                  خريد
                 </button>
 
                 <AddToCartButton
@@ -301,7 +299,6 @@ const PostPage = ({ name }) => {
           </div>
         )}
       </div>
-    </>
   );
 };
 

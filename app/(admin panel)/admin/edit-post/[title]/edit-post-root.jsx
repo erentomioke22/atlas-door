@@ -32,6 +32,8 @@ import ImageCom from "@components/ui/Image";
 import Offcanvas from "@components/ui/offcanvas";
 import Button from "@components/ui/button";
 import Darkmode from "@components/ui/darkmode";
+import Accordion from "@components/ui/Accordion";
+
 
 const EditPostRoot = ({ title }) => {
   const { data: session } = useSession();
@@ -91,18 +93,18 @@ const EditPostRoot = ({ title }) => {
     isFetching,
     isFetchingNextPage,
     status,
+    error
   } = useQuery({
     queryKey: ["edit-post", title],
     queryFn: async () => {
       const response = await axios.get(`/api/posts/edit-post/${title}`);
-      console.log(response);
       return response.data;
     },
   });
 
   console.log(post);
 
-  if (status === "success" && post?.error) {
+  if (status === "success" && post?.length <= 0) {
     return (
       <p className="text-center text-muted-foreground">
         No posts found. Start following people to see their posts here.
@@ -110,7 +112,7 @@ const EditPostRoot = ({ title }) => {
     );
   }
 
-  if (status === "error") {
+  if (status === "error" || post?.error) {
     return (
       <p className="text-center text-destructive">
         An error occurred while loading posts.
@@ -118,9 +120,19 @@ const EditPostRoot = ({ title }) => {
     );
   }
 
-  if (!session || !post) {
-    NotFound();
+  if (error) {
+    return (
+      <p className="text-center text-destructive">
+        An error occurred while loading posts.!!!
+      </p>
+    );
   }
+
+//   useEffect(()=>{
+//   if (!session || !post.id) {
+//     NotFound();
+//   }
+// },[session,post?.id])
 
   const {
     register,
@@ -139,7 +151,7 @@ const EditPostRoot = ({ title }) => {
       rmfiles: [],
       content: "",
       tags: [],
-      contentImages: [],
+      files: [],
       faqs: [],
       // faqs:[],
       // tocs:[]
@@ -155,19 +167,17 @@ const EditPostRoot = ({ title }) => {
       setValue("postId", post?.id);
       setValue("content", post?.content);
       setValue("image", post?.images[0]);
-      setValue(
-        "tags",
-        post?.tags.map((tag) => tag.name)
-      );
+      setValue("tags",post?.tags.map((tag) => tag.name));
       setDropTag(post?.tags.map((tag) => tag.name));
       setThumnailIndex(post?.images[0]);
-      setValue("contentImages", post?.contentImages);
+      setValue("files", post?.contentImages);
       setFaqs(post?.faqs);
       setValue("faqs", post?.faqs);
+      // setContent(post?.content);
+      // setValue("contentImages", post?.contentImages);
       // setImageUrl(post?.images[0]);
       // setSelectedImage(post?.images[0]);
       // setDeletedPostFiles((prevFiles) => [...prevFiles, post?.images[0]]);
-      // setContent(post?.content);
       // setDeletedPostFiles([...deletedPostFiles, post?.images[0]]);
     }
   }, [
@@ -411,19 +421,37 @@ const EditPostRoot = ({ title }) => {
   return (
     <div className="mb-2 px-2 sm:px-5">
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-7">
-        {!cancel && (
-          <div className="flex justify-between  w-full sticky top-0 bg-white dark:bg-black z-[10] py-2 ">
-            <div>
+      
+      {cancel && (
+        <div className="flex justify-between  py-2 w-full sticky top-0 z-[10]">
+            {/* <div className="space-x-2"> */}
               <Button
-                className={"text-[10px] md:text-sm px-3 w-full py-1"}
+                className={"px-3 py-1 text-[10px] md:text-sm"}
                 variant="close"
-                onClick={() => setCancel(true)}
+                onClick={() => setCancel(false)}
                 type="button"
               >
-                cancel
+                Continue
               </Button>
-            </div>
 
+              <Button
+                className={"text-[10px] md:text-sm px-3  py-1"}
+                variant="delete"
+                onClick={() => router.back()}
+                type="button"
+              >
+                Cancle and Discard all Changes
+              </Button>
+
+            {/* </div> */}
+            
+        </div>
+          )}
+      
+      
+      
+        {!cancel && (
+          <div className="flex justify-between  w-full sticky top-0 bg-white dark:bg-black z-[10] py-2 ">
             <div className="flex gap-2 ">
               <div>
                 <Button
@@ -510,7 +538,11 @@ const EditPostRoot = ({ title }) => {
                                          {errors?.image?.message}
                                        </div> */}
                       {contentImages?.length > 0 ? (
-                        <EmblaCarousel options={{ loop: false }}>
+                        <EmblaCarousel 
+                        options={{ loop: false, direction: "rtl" }}
+                        dot={true}
+                        autoScroll={false}
+                        >
                           {contentImages?.map((url, index) => (
                             <div
                               className="transform translate-x-0 translate-y-0 translate-z-0  flex-none basis-[100%] h-44 min-w-0 pl-4 "
@@ -689,49 +721,35 @@ const EditPostRoot = ({ title }) => {
                   </div>
                 </Offcanvas>
 
-                <div>
-                <Darkmode name={false}/>
-              </div>
               </div>
             </div>
+
+            <div>
+              <Button
+                className={"text-[10px] md:text-sm px-3 w-full py-1"}
+                variant="close"
+                onClick={() => setCancel(true)}
+                type="button"
+              >
+                cancel
+              </Button>
+            </div>
+
           </div>
         )}
 
-          {cancel && (
-        <div className="flex justify-between  py-2 w-full sticky top-0 z-[10]">
-            {/* <div className="space-x-2"> */}
-              <Button
-                className={"px-3 py-1 text-[10px] md:text-sm"}
-                variant="close"
-                onClick={() => setCancel(false)}
-                type="button"
-              >
-                Continue
-              </Button>
-
-              <Button
-                className={"text-[10px] md:text-sm px-3  py-1"}
-                variant="delete"
-                onClick={() => router.back()}
-                type="button"
-              >
-                Cancle and Discard all Changes
-              </Button>
-
-            {/* </div> */}
-            
-        </div>
-          )}
 
 
 
 
 
-        {!isPending ? (
+
+        {isPending ? (
           <EditPostLoading />
         ) : (
             <div className="w-full md:w-2/3 mx-auto  space-y-3 ">
-            <div className="flex space-x-2">
+        
+            {/* <div className="flex space-x-2">
                 <div className="relative  w-9 h-9">
                   <ImageCom
                     src={
@@ -751,13 +769,66 @@ const EditPostRoot = ({ title }) => {
                   </p>
                 </div>
 
+              </div> */}
+                      {session && (
+            <div className="flex gap-2">
+              {/* <div className="relative h-9 w-9">
+                <ImageCom
+                  src={session?.user.image}
+                  className="h-9 w-9 rounded-lg"
+                  size={"h-9 w-9"}
+                  alt="user Avatar"
+                />
+              </div> */}
+                        {session?.user?.image === null ?
+                  <div className="h-9 w-9 rounded-lg bg-gradient-to-tr from-redorange to-yellow"></div>
+                  :
+                  <ImageCom
+                  className="rounded-lg h-9 w-9 "
+                  size={"h-9 w-9"}
+                  src={
+                    session.user?.image === null
+                      ? `${process.env.NEXT_PUBLIC_BASE_URL}/images/logo/user-avatar-people-icon-solid-style-icon-design-element-icon-template-background-free-vector.jpg`
+                      : `${process.env.NEXT_PUBLIC_BASE_URL}${session.user.image}`
+                  }
+                  alt={`${session.user?.name} avatar`}
+                /> 
+                  }
+              <div className="flex flex-col ">
+                <p className=" text-black dark:text-white text-sm">
+                  {session?.user.displayName}
+                </p>
+                <p className=" text-lfont text-[10px]">
+                  {new Date().toLocaleDateString()}
+                </p>
               </div>
+            </div>
+          )}
+
+
+<div>
+          <textarea
+            placeholder={"Write Your Post Title ..."}
+            name={"title"}
+            type={"text"}
+            {...register("title")}
+            className={
+              "resize-none  bg-transparent   text-2xl  focus:ring-none focus:outline-none ring-0 w-full  border-0 placeholder-black dark:placeholder-white px-2.5"
+            }
+            error={errors?.title?.message}
+          />
+
+            <div className={`text-red mt-2 text-[10px] md:text-sm transition-opacity duration-300 ${errors?.title?.message ? "opacity-100" : "opacity-0"}`}>
+              {errors?.title?.message}
+            </div>
+        </div>
+
               <Controller
                 name="content"
                 control={control}
                 render={({ field: { onChange, onBlur, value, name, ref } }) => (
                   <BlockEditor
-                    content={value}
+                    initialContent={value}
                     onChange={onChange}
                     ref={ref}
                     setValue={setValue}
@@ -773,6 +844,8 @@ const EditPostRoot = ({ title }) => {
                     setContentImage={setContentImage}
                     thumnailIndex={thumnailIndex}
                     setThumnailIndex={setThumnailIndex}
+                    items={items}
+                    setItems={setItems}
                     // items={items}
                     // setItems={setItems}
                     // hasCollab={hasCollab}
@@ -836,11 +909,11 @@ const EditPostRoot = ({ title }) => {
               {" "}
               <p>{faq.answer}</p>{" "}
             </Accordion>
-            <button className="text-red" onClick={() => handleRemoveFaq(index)}>
+            <button className="text-red" type="button" onClick={() => handleRemoveFaq(index)}>
               delete
             </button>
             <button
-              className="text-yellow"
+              className="text-yellow" type="button"
               onClick={() => handleEditFaq(index)}
             >
               {" "}
@@ -848,6 +921,12 @@ const EditPostRoot = ({ title }) => {
             </button>
           </div>
         ))}
+      </div>
+
+      <div className="fixed bottom-10 right-10">
+        <div>
+          <Darkmode name={false} />
+        </div>
       </div>
     </div>
   );

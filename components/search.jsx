@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useDeferredValue } from "react";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { BiSearchAlt } from "react-icons/bi";
@@ -7,10 +7,13 @@ import LoadingSearch from "./ui/loading/loadingSearch";
 import Link from 'next/link';
 import ImageCom from "./ui/Image";
 import Input from "./ui/input";
+import DropDrawer from "./ui/dropdrawer";
 
-const Search = () => {
+const Search = ({session}) => {
   const [searchValue, setSearchValue] = useState("");
   const [open, setOpen] = useState(false);
+  const deferredQuery = useDeferredValue(searchValue);
+
   
 useEffect(()=>{
   if(open){
@@ -31,11 +34,11 @@ useEffect(()=>{
     status,
     isFetching,
   } = useQuery({
-    queryKey: ["post search", searchValue],
-    enabled: searchValue.length >= 1,
+    queryKey: ["post search", deferredQuery],
+    enabled: deferredQuery.length >= 1,
     queryFn: async () => {
       const response = await axios.get(
-        `/api/search?searchQuery=${searchValue}`
+        `/api/search?searchQuery=${deferredQuery}`
       );
       return response.data;
     },
@@ -50,12 +53,19 @@ useEffect(()=>{
 
   return (
 
-  <Dropdown title={<BiSearchAlt />} className={' -right-[90px] sm:right-0   bg-white dark:bg-black w-72 sm:w-96  border-2 border-lbtn dark:border-dbtn px-3 max-h-62 overflow-auto shadow-sm'} 
-  btnStyle={'bg-lcard hover:bg-lbtn rounded-full px-3 py-1 duration-500 dark:bg-dcard dark:hover:bg-dbtn  border-lbtn border dark:border-dbtn'}>
-  <div className="space-y-5">
+    <DropDrawer
+      title={<BiSearchAlt />}
+      className={`${session ?'-right-[88px]' :'-right-11'} md:-right-14   w-96  px-3 max-h-96 overflow-auto`}
+      btnStyle={
+        "bg-lcard dark:bg-dcard dark:text-white text-lg p-2  rounded-lg text-black"
+      }
+    >
+      <div>
   <h1 className={" text-xl "}>
             جستجو
           </h1>
+      </div>
+      <div className="space-y-5 px-2">
      <form onSubmit={handleSubmit} className="bg-white dark:bg-black border-lbtn  rounded-lg space-x-1 ">
          {/* <span className="text-lfont max-md:text-sm  my-auto ml-2">
            <BiSearchAlt />
@@ -112,9 +122,9 @@ useEffect(()=>{
                      </div>
              </Link>
            ))}
-     </div>
-     </div>
-  </Dropdown>
+          </div>
+      </div>
+  </DropDrawer>
 
 
   );
