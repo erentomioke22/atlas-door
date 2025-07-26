@@ -18,12 +18,9 @@ import LoadingIcon from "@components/ui/loading/LoadingIcon";
 import BlockEditor from "@components/BlockEditor/BlockEditor-root";
 import { useMemo } from "react";
 import { Doc as YDoc } from "yjs";
-import { useSearchParams } from "next/navigation";
-import ImageInput from "@components/ui/imageInput";
 import EditPostLoading from "@components/ui/loading/editPostLoading";
 import usePreventNavigation from "@hook/usePreventNavigation";
 import { FaQuestion } from "react-icons/fa";
-import NotFound from "@app/(main)/not-found";
 import { useUploadThing } from "@lib/uploadthing";
 import EmblaCarousel from "@components/ui/carousel/carousel";
 import { FaImage } from "react-icons/fa6";
@@ -33,6 +30,7 @@ import Offcanvas from "@components/ui/offcanvas";
 import Button from "@components/ui/button";
 import Darkmode from "@components/ui/darkmode";
 import Accordion from "@components/ui/Accordion";
+import { notFound } from "next/navigation";
 
 
 const EditPostRoot = ({ title }) => {
@@ -47,7 +45,6 @@ const EditPostRoot = ({ title }) => {
   const [onClose, setOnClose] = useState(false);
   const ydoc = useMemo(() => new YDoc(), []);
   const [preventNavigation, setPreventNavigation] = useState(false);
-  const blobUrlToUploadedUrlMap = [];
   const [editorContent, setEditorContent] = useState();
   const [contentImages, setContentImage] = useState();
   const [thumnailIndex, setThumnailIndex] = useState();
@@ -57,34 +54,17 @@ const EditPostRoot = ({ title }) => {
   const [question, setQuestion] = useState("");
   const [faqs, setFaqs] = useState([]);
   const [items, setItems] = useState([]);
-  // const [items, setItems] = useState([])
-  // const [rmThumbnailFile, setRmThumbnailFile] = useState([]);
-  // const [imageUrl, setImageUrl] = useState();
-  // const [selectedImage, setSelectedImage] = useState();
-  // const [selectedInputImage, setSelectedInputImage] = useState();
-  // const [thumnail, setThumnail] = useState()
-  // const [provider, setProvider] = useState(null);
-  // const [collabToken, setCollabToken] = useState();
-  // const hasCollab =parseInt(searchParams?.get("noCollab")) !== 1 && collabToken !== null;
-  // const searchParams = useSearchParams();
-  // const blobUrlToUploadedUrlMap = new Map();
-  // const [content, setContent] = useState();
-  // const [imageInput, setImageInput] = useState();
-  // const [modal, setModal] = useState(false);
-  // const [ThumbnailFile, setThumbnailFile] = useState([]);
 
-  // const ArchiveMutation = useCreateArchiveMutation();
-  // console.log(items)
+
+
+  if (session?.user.role !== "admin") {
+    notFound()
+  }
+
 
   usePreventNavigation(preventNavigation);
 
-  // console.log(files)
-  // console.log(faqs);
-  // console.log(deletedPostFiles);
-  // console.log(deletedFiles);
-  // console.log(dropTag);
 
-  console.log(thumnailIndex);
 
   const {
     data: post,
@@ -102,7 +82,6 @@ const EditPostRoot = ({ title }) => {
     },
   });
 
-  console.log(post);
 
   if (status === "success" && post?.length <= 0) {
     return (
@@ -128,11 +107,7 @@ const EditPostRoot = ({ title }) => {
     );
   }
 
-//   useEffect(()=>{
-//   if (!session || !post.id) {
-//     NotFound();
-//   }
-// },[session,post?.id])
+
 
   const {
     register,
@@ -147,13 +122,12 @@ const EditPostRoot = ({ title }) => {
       postId: post?.id,
       title: "",
       desc: "",
-      image: "",
-      rmfiles: [],
+      images: [],
+      rmFiles: [],
       content: "",
       tags: [],
-      files: [],
       faqs: [],
-      // faqs:[],
+      // files: [],
       // tocs:[]
       // contentImages: [],
     },
@@ -166,19 +140,13 @@ const EditPostRoot = ({ title }) => {
       setValue("desc", post?.desc);
       setValue("postId", post?.id);
       setValue("content", post?.content);
-      setValue("image", post?.images[0]);
+      setValue("images", post?.images);
       setValue("tags",post?.tags.map((tag) => tag.name));
-      setDropTag(post?.tags.map((tag) => tag.name));
-      setThumnailIndex(post?.images[0]);
-      setValue("files", post?.contentImages);
-      setFaqs(post?.faqs);
       setValue("faqs", post?.faqs);
-      // setContent(post?.content);
-      // setValue("contentImages", post?.contentImages);
-      // setImageUrl(post?.images[0]);
-      // setSelectedImage(post?.images[0]);
-      // setDeletedPostFiles((prevFiles) => [...prevFiles, post?.images[0]]);
-      // setDeletedPostFiles([...deletedPostFiles, post?.images[0]]);
+      setFaqs(post?.faqs);
+      setThumnailIndex(post?.images[0]);
+      setFiles(post.images.map((image)=>({url:image})))
+      setDropTag(post?.tags.map((tag) => tag.name));
     }
   }, [
     post?.id,
@@ -186,13 +154,11 @@ const EditPostRoot = ({ title }) => {
     //  deletedPostFiles
   ]);
 
-  // console.log(getValues('tocs'))
 
   const { startUpload: postUpload, isUploading: postIsUploading } =
     useUploadThing("post", {
       onClientUploadComplete: (data) => {
         toast.success("uploaded successfully!");
-        console.log(data);
         // return data[0].url;
       },
       onUploadError: () => {
@@ -216,35 +182,71 @@ const EditPostRoot = ({ title }) => {
 
       setValue("rmFiles", removeKey.filter(Boolean));
 
-      const filesData = files.map(({ file }) => {
-        if (file && typeof file !== "string") {
-          const extension = file.name.split(".").pop();
-          return new File(
-            [file],
-            `post_${crypto.randomUUID()}.${extension}.webp`
-          );
-        }
-      });
+
+      const filesData = files
+        .map(({ file }) => {
+          if (file && typeof file !== "string") {
+            const extension = file.name.split(".").pop();
+            return new File(
+              [file],
+              `post_${crypto.randomUUID()}.${extension}.webp`
+            );
+          }
+          return null;
+        })
+        .filter(Boolean);
+
+
       if (filesData.length >= 1) {
         const uploadedData = await postUpload(filesData);
-        uploadedData.forEach((data, index) => {
-          const { url } = files[index];
-          const uploadedUrl = data.url;
-          blobUrlToUploadedUrlMap.push({ blobUrl: url, uploadedUrl });
+        const newBlobUrlMap = files.map((file, index) => {
+          if (file.file) {
+            return {
+              blobUrl: file.url,
+              url: uploadedData.shift()?.url, 
+            };
+          } else {
+            return {
+              blobUrl: file.url,
+              url: file.url, 
+            };
+          }
         });
+
+        setFiles(newBlobUrlMap);
+        if (thumnailIndex) {
+          const allImages = newBlobUrlMap.map((item) => item.url);
+          const thumbnailIndex = files.findIndex(
+            (file) => file.url === thumnailIndex
+          );
+          if (thumbnailIndex !== -1) {
+            // Move thumbnail to the front
+            const thumbnailUrl = allImages[thumbnailIndex];
+            const remainingImages = allImages.filter((_, index) => index !== thumbnailIndex);
+            setValue("images", [thumbnailUrl, ...remainingImages]);
+          } else {
+            setValue("images", allImages);
+          }
+        }
+        updateEditorContentWithUploadedUrls(newBlobUrlMap);
+      }
+      else{
+        if (thumnailIndex) {
+          const allImages = files.map((item) => item.url);
+          const thumbnailIndex = files.findIndex(
+            (file) =>  file.url === thumnailIndex
+          );
+          if (thumbnailIndex !== -1) {
+            const thumbnailUrl = allImages[thumbnailIndex];
+            const remainingImages = allImages.filter((_, index) => index !== thumbnailIndex);
+            const currentImages = [thumbnailUrl, ...remainingImages];
+            setValue("images", currentImages);
+          } else {
+            setValue("images", allImages);
+          }
+        }
       }
 
-      if (thumnailIndex && !thumnailIndex.startsWith("blob:")) {
-        setValue("image", thumnailIndex);
-      } else {
-        const uploadedThumbnail = blobUrlToUploadedUrlMap.find(
-          (item) => item.blobUrl === thumnailIndex
-        );
-        if (uploadedThumbnail) {
-          setValue("image", uploadedThumbnail.uploadedUrl);
-        }
-        updateEditorContentWithUploadedUrls();
-      }
 
       mutation.mutate(values, {
         onSuccess: () => {
@@ -255,10 +257,6 @@ const EditPostRoot = ({ title }) => {
           setPreventNavigation(false);
           setEditorContent(null);
           router.back();
-          // setSelectedInputImage(null);
-          // setImageUrl("");
-          // setSelectedImage(null);
-          // setContent(null);
         },
       });
     } catch (err) {
@@ -267,24 +265,24 @@ const EditPostRoot = ({ title }) => {
     }
   };
 
-  function updateEditorContentWithUploadedUrls() {
+  function updateEditorContentWithUploadedUrls(newBlobUrlMap) {
+    if (!editorContent) return;
     const editorContents = editorContent.getHTML();
     let updatedContent = editorContents;
-
-    blobUrlToUploadedUrlMap.forEach(({ blobUrl, uploadedUrl }) => {
+  newBlobUrlMap.forEach(({blobUrl,url}) => {
       updatedContent = updatedContent.replace(
         new RegExp(blobUrl, "g"),
-        uploadedUrl
+        url
       );
     });
 
     editorContent.commands.setContent(updatedContent);
-    console.log(updatedContent);
     setValue("content", updatedContent);
   }
 
   const handleAddTag = (newTag) => {
-    if (newTag && !dropTag.includes(newTag) && dropTag.length < 4) {
+    // if (newTag && !dropTag.includes(newTag) && dropTag.length < 4) {
+    if (newTag && !dropTag.includes(newTag)) {
       const addTags = [...dropTag, newTag].filter((tag) => tag);
       setDropTag(addTags);
       setValue("tags", addTags, { shouldValidate: true });
@@ -302,13 +300,13 @@ const EditPostRoot = ({ title }) => {
 
     if (existTag) {
       const updateTag = dropTag.filter((tag) => tag !== name.name);
-      // console.log(updateTag);
       setDropTag(updateTag);
       setValue("tags", updateTag, { shouldValidate: true });
-    } else if (dropTag.length < 4) {
+    }
+    //  else if (dropTag.length < 4) {
       setDropTag([...dropTag, name.name]);
       setValue("tags", [...dropTag, name.name], { shouldValidate: true });
-    }
+    // }
   }
 
   const handleInputKeyPress = (e) => {
@@ -322,7 +320,6 @@ const EditPostRoot = ({ title }) => {
 
 
 
-  console.log(contentImages);
 
   const handleAddFaq = () => {
     if (editIndex !== null) {
@@ -471,7 +468,6 @@ const EditPostRoot = ({ title }) => {
                       }
                       return null;
                     });
-                    console.log(removeKey);
                     let id = post?.id;
                     deleteMutation.mutate(
                       { id, removeKey },
@@ -503,7 +499,6 @@ const EditPostRoot = ({ title }) => {
                   btnStyle={
                     "bg-black text-white  border-black dark:border-white dark:bg-white dark:text-black rounded-full border-2 text-[10px] md:text-sm px-3  py-1  md:text-sm duration-300  disabled:cursor-not-allowed   "
                   }
-                  // className={"right-0  z-50 h-fit w-72 px-3 bg-white border border-lbtn  dark:border-dbtn dark:bg-black"}
                   position={"top-0 right-0"}
                   size={
                     "h-screen max-w-full w-80 border-l-2 border-l-lcard dark:border-l-dcard"
@@ -537,13 +532,13 @@ const EditPostRoot = ({ title }) => {
                                        >
                                          {errors?.image?.message}
                                        </div> */}
-                      {contentImages?.length > 0 ? (
+                      {files?.length > 0 ? (
                         <EmblaCarousel 
                         options={{ loop: false, direction: "rtl" }}
                         dot={true}
                         autoScroll={false}
                         >
-                          {contentImages?.map((url, index) => (
+                          {files?.map(({url}, index) => (
                             <div
                               className="transform translate-x-0 translate-y-0 translate-z-0  flex-none basis-[100%] h-44 min-w-0 pl-4 "
                               onClick={() => {
@@ -647,12 +642,13 @@ const EditPostRoot = ({ title }) => {
                                 <input
                                   type="text"
                                   placeholder={
-                                    dropTag.length < 4
-                                      ? "Add up to 4 tags for post..."
-                                      : `You can only enter max. of ${4} tags`
+                                    // dropTag.length < 4
+                                      // ? 
+                                      "Add up to 4 tags for post..."
+                                      // : `You can only enter max. of ${4} tags`
                                   }
                                   onKeyDown={handleInputKeyPress}
-                                  disabled={dropTag.length === 4}
+                                  // disabled={dropTag.length === 4}
                                   className="bg-transparent ring-0 outline-none w-fit text-wrap disabled:cursor-not-allowed px-1 "
                                 />
                               </li>
@@ -749,50 +745,21 @@ const EditPostRoot = ({ title }) => {
         ) : (
             <div className="w-full md:w-2/3 mx-auto  space-y-3 ">
         
-            {/* <div className="flex space-x-2">
-                <div className="relative  w-9 h-9">
-                  <ImageCom
-                    src={
-                      post?.user?.image && post?.user?.image 
-                    }
-                    className="h-9 w-9 rounded-lg"
-                    alt=""
-                  />
-                </div>
-                <div className="flex flex-col ">
-                  <p className="text-sm ">
-                    {post?.user.displayName
-                      && post?.user.displayName}
-                  </p>
-                  <p className=" text-lfont text-[10px] text-start">
-                    {new Date().toLocaleDateString()}
-                  </p>
-                </div>
 
-              </div> */}
                       {session && (
             <div className="flex gap-2">
-              {/* <div className="relative h-9 w-9">
-                <ImageCom
-                  src={session?.user.image}
-                  className="h-9 w-9 rounded-lg"
-                  size={"h-9 w-9"}
-                  alt="user Avatar"
-                />
-              </div> */}
-                        {session?.user?.image === null ?
+
+                        {post?.user?.image === null ?
                   <div className="h-9 w-9 rounded-lg bg-gradient-to-tr from-redorange to-yellow"></div>
                   :
-                  <ImageCom
-                  className="rounded-lg h-9 w-9 "
-                  size={"h-9 w-9"}
-                  src={
-                    session.user?.image === null
-                      ? `${process.env.NEXT_PUBLIC_BASE_URL}/images/logo/user-avatar-people-icon-solid-style-icon-design-element-icon-template-background-free-vector.jpg`
-                      : `${process.env.NEXT_PUBLIC_BASE_URL}${session.user.image}`
-                  }
-                  alt={`${session.user?.name} avatar`}
-                /> 
+                  <div className="relative w-9 h-9">
+                    <ImageCom
+                    className="rounded-lg h-9 w-9 "
+                    size={"h-9 w-9"}
+                    src={post?.user.image}
+                    alt={`${post?.user?.name} avatar`}
+                  /> 
+                  </div>
                   }
               <div className="flex flex-col ">
                 <p className=" text-black dark:text-white text-sm">

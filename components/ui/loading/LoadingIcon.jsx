@@ -2,7 +2,7 @@ import React from 'react'
 
 const LoadingIcon = ({color}) => {
   return (
-    <div className="flex gap-1 justify-center">
+    <div className="flex gap-1 justify-center my-2">
     <div className={`w-2 h-2 rounded-full animate-pulse  ${color} `}></div>
     <div className={`w-2 h-2 rounded-full animate-pulse  ${color} `}></div>
     <div className={`w-2 h-2 rounded-full animate-pulse  ${color} `}></div>

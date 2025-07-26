@@ -27,7 +27,6 @@ export async function GET(req,{params}) {
 
     return Response.json({data});
   } catch (error) {
-    // console.error(error);
     return Response.json({ error: "Internal server error" }, { status: 500 });
   }
 }
@@ -57,7 +56,6 @@ export async function POST(req,{params}) {
 
     return new Response();
   } catch (error) {
-    // console.error(error);
     return Response.json({ error: "Internal server error" }, { status: 500 });
   }
 }

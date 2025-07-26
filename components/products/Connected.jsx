@@ -24,9 +24,6 @@ function Conneccted({postTitle,postId}) {
   });
 
   // const posts = data?.pages.flatMap((page) => page.posts) || [];
-  // console.log("posts", data);
-
-// console.log(postTitle,postId,posts)
 
 
   return (

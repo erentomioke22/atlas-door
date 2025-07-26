@@ -1,28 +1,17 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import InfiniteScrollContainer from "@components/InfiniteScrollContainer";
-import { useInfiniteQuery, useQuery,useMutation } from "@tanstack/react-query";
+import React from "react";
+import {  useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import OrderCard from "@components/products/orderCard";
 import { formatPrice } from "@lib/utils";
-import { toast } from 'sonner';
-import { useRouter } from 'next/navigation';
 import LoadingOrder from "@components/ui/loading/loadingOrder";
-import PaymentPanel from "@components/paymentPanel";
 import Link from 'next/link';
 import ImageCom from '@components/ui/Image';
 import Accordion from "@components/ui/Accordion";
-import { FaUserPlus } from "react-icons/fa";
-import { IoPencil,IoClose } from "react-icons/io5";
-import { FaMessage } from "react-icons/fa6";
-import moment from "moment";
-import { PiHeartFill } from "react-icons/pi";
-import { FaUserGroup } from "react-icons/fa6";
-import { FaCreditCard ,FaArrowUp  } from "react-icons/fa";
+import {IoClose } from "react-icons/io5";
+import { FaCreditCard   } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
 import { FaTruckFast } from "react-icons/fa6";
-import { FaHouseChimneyUser } from "react-icons/fa6";
 import { FaHandshakeSimple } from "react-icons/fa6";
 import { FaForwardStep } from "react-icons/fa6";
 
@@ -32,7 +21,7 @@ export default function page() {
     data,
     // fetchNextPage,
     // hasNextPage,
-    isFetching,
+    // isFetching,
     // isFetchingNextPage,
     status,
   } = useQuery({
@@ -97,7 +86,6 @@ export default function page() {
     },
   };
 
-  console.log(data);
 
   // const totalPrice = data?.orders?.reduce((sum, order) => {
   //   const quantity = order?.quantity || 1;
@@ -179,7 +167,6 @@ return(
                    <ImageCom 
                     className={'object-cover  rounded-xl w-full'}
                     alt={item?.product?.name} 
-                   //  src={product?.images[0].startsWith('https://') ?  `${product?.images[0]}` :`${process.env.NEXT_PUBLIC_BASE_URL}${product?.images[0]}`}
                     src={item?.product?.images[0]}
                     size={'h-36 md:h-40'} />
                    </div>

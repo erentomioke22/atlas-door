@@ -5,10 +5,7 @@ import { useState,useEffect } from "react";
 import TextArea from "@components/ui/TextArea";
 import Dropdown from "@components/ui/dropdown";
 import { toast } from "sonner";
-import {
-  useSubmitPostMutation,
-  // useSavePostMutation,
-} from "@components/posts/mutations";
+import {useSubmitPostMutation} from "@components/posts/mutations";
 import LoadingIcon from "@components/ui/loading/LoadingIcon";
 import { postValidation } from "@lib/validation";
 import { useForm, Controller } from "react-hook-form";
@@ -18,15 +15,8 @@ import { useMemo } from "react";
 import { Doc as YDoc } from "yjs";
 import usePreventNavigation from "@hook/usePreventNavigation";
 import { useSession } from "next-auth/react";
-// import { savePostValidation } from "@lib/validation";
 import { useUploadThing } from "@lib/uploadthing";
-import NotFound from "@app/(main)/not-found";
-import {
-  useInfiniteQuery,
-  useMutation,
-  useQueryClient,
-  useQuery,
-} from "@tanstack/react-query";
+import { notFound } from "next/navigation";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import EmblaCarousel from "@components/ui/carousel/carousel";
@@ -34,12 +24,12 @@ import { FaImage } from "react-icons/fa6";
 import { FaCheck,FaQuestion } from "react-icons/fa";
 import ImageCom from "@components/ui/Image";
 import Offcanvas from "@components/ui/offcanvas";
-import { FaCaretRight } from "react-icons/fa6";
 import Darkmode from "@components/ui/darkmode";
 import { IoClose } from "react-icons/io5";
 import Button from "@components/ui/button";
-// import ImageInput from "@components/ui/imageInput";
 import { useDebounce } from "use-debounce";
+import Accordion from "@components/ui/Accordion";
+
 
 const CreatePostRoot = () => {
   const { data: session } = useSession();
@@ -59,32 +49,16 @@ const CreatePostRoot = () => {
   const [question, setQuestion] = useState("");
   const [faqs, setFaqs] = useState([]);
   const ydoc = useMemo(() => new YDoc(), []);
-  const blobUrlToUploadedUrlMap = [];
   const mutation = useSubmitPostMutation();
-  
-  // const saveMutation = useSavePostMutation();
   usePreventNavigation(preventNavigation);
 
-  // const [selectedImage, setSelectedImage] = useState();
-  // const[rmThumbnailFile,setRmThumbnailFile]=useState([])
-  // const [selectedInputImage, setSelectedInputImage] = useState();
-  // const [editIndex, setEditIndex] = useState(null);
-  // const [provider, setProvider] = useState(null)
-  // const [imageUrl, setImageUrl] = useState();
-  // const [collabToken, setCollabToken] = useState()
-  // const searchParams = useSearchParams()
-  // const hasCollab = parseInt(searchParams?.get('noCollab') ) !== 1 && collabToken !== null
-  // const uploadMutation = useUploadMutation();
-  // console.log(thumnailIndex)
-  // console.log(files)
-  // console.log(blobUrlToUploadedUrlMap)
 
-  if (!session) {
-    NotFound();
+  
+  if (session?.user.role !== "admin") {
+    notFound()
   }
 
 
-  console.log(files);
 
   const {
     register,
@@ -99,24 +73,23 @@ const CreatePostRoot = () => {
     defaultValues: {
       title: "",
       desc: "",
-      image: "",
+      images: [],
       content: "",
       tags: [],
-      files:[],
       faqs: [],
-      // contentImages: [],
       scheduledPublish: null,
-      // teamId:''
+      // files:[],
+      // contentImages: [],
     },
     resolver: yupResolver(postValidation),
-    // resolver: yupResolver(save ? savePostValidation : postValidation),
   });
-
+  
+  
+  
   const { startUpload: postUpload, isUploading: postIsUploading } =
     useUploadThing("post", {
       onClientUploadComplete: (data) => {
         toast.success("uploaded successfully!");
-        console.log(data);
       },
       onUploadError: () => {
         throw new Error("error occurred while uploading");
@@ -125,10 +98,18 @@ const CreatePostRoot = () => {
         console.log("upload has begun for", file);
       },
     });
+    // if (filesData.length >= 1) {
+    //   const uploadedData = await postUpload(filesData);
+    //   uploadedData.forEach((data, index) => {
+    //     const { url } = files[index];
+    //     const uploadedUrl = data.url;
+    //     blobUrlToUploadedUrlMap.push({ blobUrl: url, uploadedUrl });
+    //   });
+    //   setValue("files", uploadedData.map(item => item.url));
+    // }
 
   const onSubmit = async (values) => {
     try {
-      console.log(values);
       setPreventNavigation(true);
 
       const filesData = files.map(({ file }) => {
@@ -139,35 +120,59 @@ const CreatePostRoot = () => {
             `post_${crypto.randomUUID()}.${extension}.webp`
           );
         }
-      });
+        return null;
+      }).filter(Boolean);
+
+
+console.log(filesData)
+
       if (filesData.length >= 1) {
         const uploadedData = await postUpload(filesData);
-        uploadedData.forEach((data, index) => {
-          const { url } = files[index];
-          const uploadedUrl = data.url;
-          blobUrlToUploadedUrlMap.push({ blobUrl: url, uploadedUrl });
+        const newBlobUrlMap = files.map((file, index) => {
+          if (file.file) {
+            return {
+              blobUrl: file.url,
+              url: uploadedData.shift()?.url, 
+            };
+          } else {
+            return {
+              blobUrl: file.url,
+              url: file.url,
+            };
+          }
         });
-        console.log(uploadedData.map(item => item.url))
-        setValue("files", uploadedData.map(item => item.url));
-
-      }
-
-      // console.log(blobUrlToUploadedUrlMap);
-
-      // Handle thumbnail URL
-      if (thumnailIndex && !thumnailIndex.startsWith("blob:")) {
-        setValue("image", thumnailIndex);
-      } else {
-        const uploadedThumbnail = blobUrlToUploadedUrlMap.find(
-          (item) => item.blobUrl === thumnailIndex
-        );
-        if (uploadedThumbnail) {
-          setValue("image", uploadedThumbnail.uploadedUrl);
+        setFiles(newBlobUrlMap);
+        
+        if (thumnailIndex) {
+          const allImages = newBlobUrlMap.map((item) => item.url);
+          const thumbnailIndex = files.findIndex(
+            (file) => file.url === thumnailIndex
+          );
+          if (thumbnailIndex !== -1) {
+            const thumbnailUrl = allImages[thumbnailIndex];
+            allImages.splice(thumbnailIndex, 1);
+            setValue("images", [thumbnailUrl, ...allImages]);
+          } else {
+            setValue("images", allImages);
+          }
         }
-        updateEditorContentWithUploadedUrls();
+        updateEditorContentWithUploadedUrls(newBlobUrlMap);
+    }else{
+      if (thumnailIndex) {
+        const allImages = files.map((item) => item.url);
+        const thumbnailIndex = files.findIndex(
+          (file) => file.url === thumnailIndex
+        );
+        if (thumbnailIndex !== -1) {
+          const thumbnailUrl = allImages[thumbnailIndex];
+          allImages.splice(thumbnailIndex, 1);
+          setValue("images", [thumbnailUrl, ...allImages]);
+        } else {
+          setValue("images", allImages);
+        }
       }
+    }
 
-      console.log(values);
       mutation.mutate(values, {
         onSuccess: () => {
           localStorage.removeItem('postDraft');
@@ -180,98 +185,32 @@ const CreatePostRoot = () => {
       });
     } catch (err) {
       toast.error(err.message || "An error occurred");
-      console.log(err.message);
+      // console.log(err.message);
     }
   };
 
-  // const onSaveDraft = async (values) => {
-  //   try {
-  //     setPreventNavigation(true);
-  //     const filesData = files.map(({ file }) => {
-  //       if (file && typeof file !== "string") {
-  //         const extension = file.name.split(".").pop();
-  //         return new File(
-  //           [file],
-  //           `post_${crypto.randomUUID()}.${extension}.webp`
-  //         );
-  //       }
-  //     });
-  //     if (filesData.length >= 1) {
-  //       const uploadedData = await postUpload(filesData);
-  //       uploadedData.forEach((data, index) => {
-  //         const { url } = files[index];
-  //         const uploadedUrl = data.url;
-  //         blobUrlToUploadedUrlMap.push({ blobUrl: url, uploadedUrl });
-  //       });
-  //       setValue("files", uploadedData.map(item => item.url));
-  //     }
-
-  //     // const uploadPostPromises = files.map(({ file, url }) => {
-  //     //           if (file && typeof file !== "string") {
-  //     //             const extension = file.name.split(".").pop();
-  //     //             const formData = new File(
-  //     //               [file],
-  //     //               `post_${crypto.randomUUID()}.${extension}.webp`
-  //     //             );
-  //     //             return postUpload([formData]).then((uploadedData) => {
-  //     //               if (uploadedData.length > 0) {
-  //     //                 const uploadedUrl = uploadedData[0].url;
-  //     //                 blobUrlToUploadedUrlMap.push({ blobUrl: url, uploadedUrl });
-  //     //                 return uploadedUrl;
-  //     //               }
-  //     //             });
-  //     //           }
-  //     //         });
-
-  //     //         const uploadedImages = await Promise.all(uploadPostPromises);
-
-  //     if (thumnailIndex && !thumnailIndex.startsWith("blob:")) {
-  //       setValue("image", thumnailIndex);
-  //     } else {
-  //       const uploadedThumbnail = blobUrlToUploadedUrlMap.find(
-  //         (item) => item.blobUrl === thumnailIndex
-  //       );
-  //       if (uploadedThumbnail) {
-  //         setValue("image", uploadedThumbnail.uploadedUrl);
-  //       }
-  //       updateEditorContentWithUploadedUrls();
-  //     }
-
-  //     console.log(values);
-  //     saveMutation.mutate(values, {
-  //       onSuccess: () => {
-  //         localStorage.removeItem('postDraft');
-  //         setPreventNavigation(false);
-  //         reset();
-  //         setDropTag([]);
-  //         setFiles([]);
-  //         router.back();
-  //       },
-  //     });
-  //   } catch (err) {
-  //     toast.error(err.message || "An error occurred");
-  //     console.log(err.message);
-  //   }
-  // };
-
-  function updateEditorContentWithUploadedUrls() {
+  
+  function updateEditorContentWithUploadedUrls(newBlobUrlMap) {
+    if (!editorContent) return;
     const editorContents = editorContent.getHTML();
     let updatedContent = editorContents;
-
-    blobUrlToUploadedUrlMap.forEach(({ blobUrl, uploadedUrl }) => {
+  newBlobUrlMap.forEach(({blobUrl,url}) => {
       updatedContent = updatedContent.replace(
         new RegExp(blobUrl, "g"),
-        uploadedUrl
+        url
       );
     });
 
     editorContent.commands.setContent(updatedContent);
-    console.log(updatedContent);
     setValue("content", updatedContent);
   }
 
+
+
+
   const handleAddTag = (newTag) => {
-    if (newTag && !dropTag.includes(newTag) && dropTag.length < 4) {
+    // if (newTag && !dropTag.includes(newTag) && dropTag.length < 4) {
+    if (newTag && !dropTag.includes(newTag)) {
       const addTags = [...dropTag, newTag].filter((tag) => tag);
       setDropTag(addTags);
       setValue("tags", addTags, { shouldValidate: true });
@@ -289,13 +228,13 @@ const CreatePostRoot = () => {
 
     if (existTag) {
       const updateTag = dropTag.filter((tag) => tag !== name.name);
-      // console.log(updateTag);
       setDropTag(updateTag);
       setValue("tags", updateTag, { shouldValidate: true });
-    } else if (dropTag.length < 4) {
+    } 
+    // else if (dropTag.length < 4) {
       setDropTag([...dropTag, name.name]);
       setValue("tags", [...dropTag, name.name], { shouldValidate: true });
-    }
+    // }
   }
 
   const handleInputKeyPress = (e) => {
@@ -340,7 +279,6 @@ const CreatePostRoot = () => {
     setEditIndex(index);
   };
 
-  // console.log(files)
 
   const tags = [
     {
@@ -428,7 +366,6 @@ const CreatePostRoot = () => {
       const lastDraftId = localStorage.getItem('lastDraftId');
       const postDraftString = localStorage.getItem('postDraft');
       const postDraft = JSON.parse(postDraftString);
-      console.log(lastDraftId,postDraft)
       setValue("title", postDraft?.title );
       setValue("desc", postDraft?.desc );
       setValue("content", postDraft?.content );
@@ -451,7 +388,6 @@ const CreatePostRoot = () => {
                 btnStyle={
                   "bg-black text-white  border-black dark:border-white dark:bg-white dark:text-black rounded-full border-2 text-[10px] md:text-sm px-3  py-1  md:text-sm duration-300  disabled:cursor-not-allowed   "
                 }
-                // className={"right-0  z-50 h-fit w-72 px-3 bg-white border border-lbtn  dark:border-dbtn dark:bg-black"}
                 position={"top-0 right-0"}
                 size={
                   "h-screen max-w-full w-80 border-l-2 border-l-lcard dark:border-l-dcard"
@@ -477,21 +413,14 @@ const CreatePostRoot = () => {
                 <div className="space-y-2">
                   <div className="space-y-2">
                     <p className="text-sm">Thumbnail preview</p>
-                    {/* <ImageInput selectedImage={selectedImage}  setSelectedImage={setSelectedImage} selectedInputImage={selectedInputImage}  setSelectedInputImage={setSelectedInputImage} setValue={setValue} rmThumbnailFile={rmThumbnailFile} setRmThumbnailFile={setRmThumbnailFile}/> */}
-                    {/* <div
-                                         className={`text-red  text-[10px] md:text-sm transition-opacity duration-300  ${
-                                           errors?.image?.message ? "opacity-100" : "opacity-0"
-                                         }`}
-                                       >
-                                         {errors?.image?.message}
-                                       </div> */}
-                    {contentImages?.length > 0 ? (
+
+                    {files?.length > 0 ? (
                       <EmblaCarousel 
                       options={{ loop: false, direction: "rtl" }}
                       dot={true}
                       autoScroll={false}
                       >
-                        {contentImages?.map((url, index) => (
+                        {files?.map(({url}, index) => (
                           <div
                             className="transform translate-x-0 translate-y-0 translate-z-0  flex-none basis-[100%] h-44 min-w-0 pl-4 "
                             onClick={() => {
@@ -538,6 +467,15 @@ const CreatePostRoot = () => {
                         </div>
                       </div>
                     )}
+
+                                        {/* <ImageInput selectedImage={selectedImage}  setSelectedImage={setSelectedImage} selectedInputImage={selectedInputImage}  setSelectedInputImage={setSelectedInputImage} setValue={setValue} rmThumbnailFile={rmThumbnailFile} setRmThumbnailFile={setRmThumbnailFile}/> */}
+                    <div
+                       className={`text-red  text-[10px] md:text-sm transition-opacity duration-300  ${
+                         errors?.image?.message ? "opacity-100" : "opacity-0"
+                       }`}
+                     >
+                       {errors?.image?.message}
+                   </div>
                   </div>
                   <p className="text-sm">Title , Tags & desc </p>
                   <div>
@@ -588,19 +526,19 @@ const CreatePostRoot = () => {
                               >
                                 <span className="text-lfont">#</span>
                                 {dropTag}{" "}
-                                {/* <span  ><IoClose className="pt-1"/></span> */}
                               </li>
                             ))}
                             <li className="my-auto w-fit">
                               <input
                                 type="text"
                                 placeholder={
-                                  dropTag.length < 4
-                                    ? "Add up to 4 tags for post..."
-                                    : `You can only enter max. of ${4} tags`
+                                  // dropTag.length < 4
+                                    // ? 
+                                    "Add up to 4 tags for post..."
+                                    // : `You can only enter max. of ${4} tags`
                                 }
                                 onKeyDown={handleInputKeyPress}
-                                disabled={dropTag.length === 4}
+                                // disabled={dropTag.length === 4}
                                 className="bg-transparent ring-0 outline-none w-fit text-wrap disabled:cursor-not-allowed px-1 text-sm"
                               />
                             </li>
@@ -647,7 +585,7 @@ const CreatePostRoot = () => {
                     </div>
                   </div>
 
-
+ 
 
                   {/* <div className="space-y-2">
   <p className="text-sm">Schedule Publication</p>
@@ -729,27 +667,18 @@ const CreatePostRoot = () => {
         <div className="w-full md:w-2/3 mx-auto  space-y-4 ">
         {session && (
             <div className="flex gap-2">
-              {/* <div className="relative h-9 w-9">
-                <ImageCom
-                  src={session?.user.image}
-                  className="h-9 w-9 rounded-lg"
-                  size={"h-9 w-9"}
-                  alt="user Avatar"
-                />
-              </div> */}
+
                         {session?.user?.image === null ?
                   <div className="h-9 w-9 rounded-lg bg-gradient-to-tr from-redorange to-yellow"></div>
                   :
+                  <div className="relative h-9 w-9">
                   <ImageCom
                   className="rounded-lg h-9 w-9 "
                   size={"h-9 w-9"}
-                  src={
-                    session.user?.image === null
-                      ? `${process.env.NEXT_PUBLIC_BASE_URL}/images/logo/user-avatar-people-icon-solid-style-icon-design-element-icon-template-background-free-vector.jpg`
-                      : `${process.env.NEXT_PUBLIC_BASE_URL}${session.user.image}`
-                  }
+                  src={session.user.image}
                   alt={`${session.user?.name} avatar`}
                 /> 
+                </div>
                   }
               <div className="flex flex-col ">
                 <p className=" text-black dark:text-white text-sm">

@@ -129,22 +129,3 @@ const Drawer = ({
 
 export default Drawer;
 
-      {/* <div
-        className={`bg-white dark:bg-black ring-1 ring-lcard dark:ring-dcard  max-md:fixed max-md:bottom-0 max-md:left-0 max-md:p-4 max-md:transform max-md:space-y-7 max-md:offcanvas 
-          ${isOpen  ? `max-md:translate-y-0  md:opacity-100 md:scale-100 md:visible` : `max-md:translate-y-full md:opacity-0 md:scale-95 md:invisible md:pointer-events-none`}  ${className} 
-           max-md:bg-black max-md:transition-transform max-md:duration-500 max-md:overflow-auto  max-md:z-[70] md:transition-all md:duration-150 md:ease-in-out md:transform
-           md:absolute md:mt-1 md:rounded-3xl md:max-w-[calc(100vw-20px)]   md:shadow-sm md:py-5  md:z-50
-           ${isUp ? 'md:bottom-full ' : ''}
-           `}
-      >
-        {children}
-      </div>
-
-
-
-        <div
-          className={` max-md:inset-0  max-md:transition-opcaity max-md:duration-500 max-md:ease-in-out  max-md:z-[60]   ${
-          isOpen ? "max-md:fixed max-md:backdrop-blur-sm max-md:overflow-hidden max-md:overscroll-none" : " max-md:invisible max-md:backdrop-blur-0"
-        } `}
-          onClick={() => setIsOpen(false)}
-       /> */}

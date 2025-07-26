@@ -60,7 +60,6 @@ export function useSubmitPostMutation() {
       toast.success("Post created");
     },
     onError(error) {
-      // console.error(error);
       toast.error("Failed to post. Please try again.");
     },
   });
@@ -95,7 +94,6 @@ export function useEditPostMutation() {
     },
 
     onError(error) {
-      // console.error(error);
       toast.error("Failed to edit post. Please try again.");
     },
   });
@@ -126,7 +124,6 @@ export function useDeletePostMutation() {
       }
     },
     onError(error) {
-      // console.error(error);
       toast.error("Failed to delete post. Please try again.");
     },
   });
@@ -146,7 +143,6 @@ export function useUploadMutation() {
     // }
   );
   
-    // console.log(response)
     return response.data;
   };
 

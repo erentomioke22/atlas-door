@@ -5,18 +5,17 @@ export const getVerificationTokenByEmail = async (email)=>{
       const verificationToken = await prisma.verificationToken.findFirst({where:{email}})
       return verificationToken;
     }catch(error){
-      // console.log(error);
+      console.error(error);
     }
 }
 
 
 export const getVerificationTokenByToken = async (token)=>{
     try{
-      // console.log(token)
       const newVerificationToken = await prisma.verificationToken.findFirst({where:{token:token}});
       return newVerificationToken;
     }catch(error){
-      // console.log(error);
+      console.error(error);
     }
 }
 
@@ -24,11 +23,10 @@ export const getVerificationTokenByToken = async (token)=>{
 
 export const deleteVerificationTokenById = async (verificationId)=>{
     try{
-      // console.log(verificationId)
       const deleteVerificationToken = await prisma.verificationToken.delete({where:{id:verificationId}});
       return deleteVerificationToken;
     }catch(error){
-      // console.log(error);
+      console.error(error);
     }
 }
 

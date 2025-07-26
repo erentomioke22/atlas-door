@@ -76,7 +76,6 @@ export const ImageMenu = ({
   );
   const onAltChange = useCallback(
     (value) => {
-      // console.log('Updating alt to:', value);
       editor.chain().focus(undefined, { scrollIntoView: false }).setImageBlockAlt(value).run();
     },
     [editor]

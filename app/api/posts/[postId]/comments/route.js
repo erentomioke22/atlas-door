@@ -8,24 +8,7 @@ import { LikeType } from "@prisma/client";
 
 
 
-// export async function GET(req,{params:{postId}}) {
-//   try {
-//     const session = await auth();
 
-//     const comments = await prisma.comment.findMany({
-//       where: {postId,parent:null},
-//       include: getCommentDataInclude(session?.user?.id),
-//       orderBy: { createdAt:"desc" },
-//     });
-
-
-
-//     return Response.json(comments);
-//   } catch (error) {
-//     console.error(error);
-//     return Response.json({ error: "Internal server error" }, { status: 500 });
-//   }
-// }
 
 export async function GET(req,{params}) {
   try {
@@ -105,7 +88,6 @@ export async function GET(req,{params}) {
 
     return Response.json(data);
   } catch (error) {
-    console.error(error);
     return Response.json({ error: "Internal server error" }, { status: 500 });
   }
 }

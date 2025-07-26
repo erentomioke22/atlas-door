@@ -19,11 +19,9 @@ moment.loadPersian({ usePersianDigits: true })
 
 
 const OrderCard = ({order}) => {
-//  console.log(post)
  
   const {data:session}=useSession();
   const [link,setLink]=useState(`/products/${order?.product.name}`)
-console.log(order,order?.userId)
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(link);

@@ -30,11 +30,11 @@ useEffect(()=>{
 
 
   const {
-    data: posts,
+    data,
     status,
     isFetching,
   } = useQuery({
-    queryKey: ["post search", deferredQuery],
+    queryKey: ["data-search", deferredQuery],
     enabled: deferredQuery.length >= 1,
     queryFn: async () => {
       const response = await axios.get(
@@ -43,12 +43,10 @@ useEffect(()=>{
       return response.data;
     },
   });
-  // console.log(posts);
 
   function handleSubmit(e) {
     e.preventDefault();
     const form = e.target.value;
-    // console.log(form);
   }
 
   return (
@@ -60,12 +58,12 @@ useEffect(()=>{
         "bg-lcard dark:bg-dcard dark:text-white text-lg p-2  rounded-lg text-black"
       }
     >
+      <div className="space-y-5 px-2">
       <div>
-  <h1 className={" text-xl "}>
+          <h1 className={" text-xl "}>
             جستجو
           </h1>
       </div>
-      <div className="space-y-5 px-2">
      <form onSubmit={handleSubmit} className="bg-white dark:bg-black border-lbtn  rounded-lg space-x-1 ">
          {/* <span className="text-lfont max-md:text-sm  my-auto ml-2">
            <BiSearchAlt />
@@ -81,13 +79,13 @@ useEffect(()=>{
          />
      </form>
 
-     {status === "success" && !posts?.length  && (
+     {status === "success" && !data?.posts?.length && !data?.products?.length && (
        <p className="text-center text-sm text-lfont">
          هیچ پستی با این نام هنوز وجود ندارد
        </p>
      )}
 
-     {searchValue?.length <= 0 && !posts?.length && (
+     {searchValue?.length <= 0 && !data?.posts?.length && !data?.products?.length && (
        <p className="text-center text-sm text-lfont">
         اسم مطلب یا محصولی که دنبالش هستید رو بنویسید
        </p>
@@ -106,22 +104,45 @@ useEffect(()=>{
                <LoadingSearch key={index}/>
              )
              )
-         : posts?.map((post) => (
-             <Link href={`${process.env.NEXT_PUBLIC_BASE_URL}/posts/${post?.link}`} key={post?.id}>
+         : 
+         <>
+         
+         {data?.posts?.map((post) => (
+             <Link href={`/posts/${post?.link}`} key={post?.id}>
                 <div className="p-2 w-full mx-auto ">
                           <div className=' flex gap-2'>
                             <div className="relative w-[40px] h-[40px]">
-                              <ImageCom src={post?.images[0].startsWith('https://')?  `${post?.images[0]}` : `${process.env.NEXT_PUBLIC_BASE_URL}${post?.images[0]}`} className="rounded-lg bg-lbtn dark:bg-dbtn  h-10 w-10" alt={'thumnail'} />
+                              <ImageCom src={post?.images[0]} className="rounded-lg bg-lbtn dark:bg-dbtn  h-10 w-10" alt={'thumnail'} />
                             </div>
                               
                               <div className="flex-1 space-y-1">
-                                <p className="text-lfont text-sm">{post?.user.displayName}</p>      
+                                <p className="text-lfont text-sm">{post?.user.displayName} . <span className="text-[10px] text-red">مقاله</span></p>      
                                 <p className="text-sm line-clamp-1 hover:underline underline-offset-2 decoration-2 duration-100">{post?.title}</p>           
                               </div>
                           </div>
                      </div>
              </Link>
            ))}
+
+         {data?.products?.map((product) => (
+             <Link href={`/products/${product?.name}`} key={product?.id}>
+                <div className="p-2 w-full mx-auto ">
+                          <div className=' flex gap-2'>
+                            <div className="relative w-[40px] h-[40px]">
+                              <ImageCom src={product?.images[0]} className="rounded-lg bg-lbtn dark:bg-dbtn  h-10 w-10" alt={'thumnail'} />
+                            </div>
+                              
+                              <div className="flex-1 space-y-1">
+                                <p className="text-lfont text-sm">{product?.seller.displayName} . <span className="text-[10px] text-red">محصول</span></p>      
+                                <p className="text-sm line-clamp-1 hover:underline underline-offset-2 decoration-2 duration-100">{product?.name}</p>           
+                              </div>
+                          </div>
+                     </div>
+             </Link>
+           ))}
+         </>
+         
+          }
           </div>
       </div>
   </DropDrawer>

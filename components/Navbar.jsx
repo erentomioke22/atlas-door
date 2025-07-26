@@ -16,7 +16,7 @@ import Offcanvas from "./ui/offcanvas";
 import Banner from "./ui/Banner";
 import Profile from "./profile";
 import Notifications from "./notifications";
-import Sign from "./authenticate-root/sign";
+import Sign from "./authenticate/sign";
 
 const Navbar = () => {
   const { data: session } = useSession();
@@ -27,7 +27,6 @@ const Navbar = () => {
   const [close, setClose] = useState(false);
   const[isOpen,setIsOpen]=useState(false)
   
-  console.log(url,path,session);
   useEffect(() => {
     setIsOnline(window.navigator.onLine);
     const handleOnlineStatus = () => {
@@ -53,23 +52,23 @@ const Navbar = () => {
   const items = [
     { id: "1", 
       name: "درب اتوماتیک",
-      href:'/automatic-door',
+      href:'/posts/درب-های-اتوماتیک_lxi5fhspu7',
     },
     { id: "2", 
-      name: "کرکره برقی",
-      href:'/roller-shutter',
+      name: "شیشه سکوریت",
+      href:'/posts/شیشه-سکوریت-چیست؟-مزایا،-کاربردها-و-تفاوت-با-شیشه-معمولی_b2qh02hbuv',
     },
     { id: "3", 
-      name: "شیشه بالکنی",
-      href:'/balcony-glass',
+      name: "شیشه لمینت",
+      href:'/posts/شیشه-لمینت:-انواع،-مزایا،-معایب-و-کاربردها-در-ساختمان-و-خودرو-|-راهنمای-جامع_jucfrkg1a7',
     },
     { id: "4", 
-      name: "شیشه سکوریت",
-      href:'/tempered-glass',
+      name: "جام بالکن",
+      href:'/posts/شیشه-های-بالکنی-و-شیشه-های-ایمنی-برای-پرتگاه-ها:-راهنمای-جامع_4unfbbxaua',
     },
     { id: "5", 
       name: "پارتیشن",
-      href:'/partition-glass',
+      href:'/posts/پارتیشن-شیشه‌ای:-راهنمای-کامل-نصب،-مزایا،-معایب-و-انواع-|-قیمت-و-طراحی_aqscgthk3m',
     },
     { id: "6", 
       name: "مقاله ها",
@@ -79,6 +78,10 @@ const Navbar = () => {
       name: "فروشگاه",
       href:'/products',
     },
+    // { id: "2", 
+    //   name: "کرکره برقی",
+    //   href:'/roller-shutter',
+    // },
     // { id: "11", 
     //   name: "آیینه",
     //   href:'/mirror',
@@ -181,14 +184,14 @@ const Navbar = () => {
 
 
                  </Offcanvas>
-                    {session?.user?.role === 'admin' &&   
+                    {/* {session?.user?.role === 'admin' &&   
                                   <>
                                     <div>
                                   <Profile session={session} />
 
                                     </div>
                                   </>
-                    }
+                    } */}
 
             {!session ? (
                 <div className="my-auto">
@@ -227,7 +230,7 @@ const Navbar = () => {
                       <Link 
                       key={item.id}
                       href={item.href}
-                      className={`  duration-300 ${path === item.href ? 'text-black dark:text-white':'text-lfont hover:text-black dark:hover:text-white'}`}
+                      className={`  duration-300 ${decodeURIComponent(path) === item.href ? 'text-black dark:text-white':'text-lfont hover:text-black dark:hover:text-white'}`}
                       // onClick={()=>menu === item.name ? setMenu('') :setMenu(item.name)}
                       >
                         {item.name}

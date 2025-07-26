@@ -19,7 +19,6 @@ moment.loadPersian({ usePersianDigits: true })
 
 
 const PostCard = ({post,draft}) => {
-//  console.log(post)
  
   const {data:session}=useSession();
   const [link,setLink]=useState(draft ? `/edit-post/${post.link}` :`/posts/${post.link}`)
@@ -45,7 +44,7 @@ const formattedDate = createdAt.isValid() ? createdAt.fromNow(): 'تاریخ ن�
                     {post.user.image === null ?
                   <div className="h-9 w-9 rounded-lg bg-gradient-to-tr from-redorange to-yellow"></div>
                   :
-                      <ImageCom src={`${process.env.NEXT_PUBLIC_BASE_URL}${post.user.image}`} className='  rounded-lg' alt={`${post?.user?.name} avatar`}/>
+                      <ImageCom src={post.user.image} className='  rounded-lg' alt={`${post?.user?.name} avatar`}/>
                   }
                     </div>
                    <div className='flex flex-col truncate'>
@@ -55,7 +54,7 @@ const formattedDate = createdAt.isValid() ? createdAt.fromNow(): 'تاریخ ن�
                   </div>
                   <div className='my-auto'>
                     {session?.user.role === 'admin' ? 
-                   <Link href={`/edit-post/${post.link}`}
+                   <Link href={`/admin/edit-post/${post.link}`}
                    className='text-[10px]  text-lfont' >
                        Edit Post
                    </Link>
@@ -74,7 +73,8 @@ const formattedDate = createdAt.isValid() ? createdAt.fromNow(): 'تاریخ ن�
               <ImageCom 
                className={'object-cover  rounded-3xl w-full'}
                alt={post?.title} 
-               src={post?.images[0].startsWith('https://') ?  `${post?.images[0]}` :`${process.env.NEXT_PUBLIC_BASE_URL}${post.images[0]}`}
+               src={post?.images[0]}
+              //  src={post?.images[0].startsWith('https://') ?  `${post?.images[0]}` :`${process.env.NEXT_PUBLIC_BASE_URL}${post.images[0]}`}
                size={'h-36 md:h-40'} />
               </div>
                }

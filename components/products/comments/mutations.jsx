@@ -13,30 +13,6 @@ export function useSubmitCommentMutation(productId, category) {
       const queryKey = ["comments-product", productId, category];
       await queryClient.cancelQueries({ queryKey });
 
-      // If it's a reply (has parentId), update the parent comment's replies array
-      // if (comment.parentId) {
-      //   queryClient.setQueryData(queryKey, (oldData) => {
-      //     if (!oldData?.pages?.length) return oldData;
-
-      //     return {
-      //       ...oldData,
-      //       pages: oldData.pages.map((page) => ({
-      //         ...page,
-      //         comments: page.comments.map((c) => {
-      //           // If this is the parent comment, add the new reply to its replies array
-      //           if (c.id === comment.parentId) {
-      //             return {
-      //               ...c,
-      //               replies: [comment, ...(c.replies || [])],
-      //             };
-      //           }
-      //           return c;
-      //         }),
-      //       })),
-      //     };
-      //   });
-      // } else {
-        // It's a top-level comment, add it to the beginning of the list
         queryClient.setQueryData(queryKey, (oldData) => {
           const firstPage = oldData?.pages[0];
           if (firstPage) {
@@ -72,29 +48,12 @@ export function useSubmitCommentMutation(productId, category) {
 
 export function useEditCommentMutation(productId, category) {
   const queryClient = useQueryClient();
-  console.log(productId, category)
 
   const mutation = useMutation({
     mutationFn: editComment,
     onSuccess: async (comment) => {
       const queryKey = ["comments-product", productId, category];
       await queryClient.cancelQueries({ queryKey });
-      // queryClient.setQueryData(queryKey, (oldData) => {
-      //   if (!oldData?.pages?.length) return oldData;
-
-      //   return {
-      //     ...oldData,
-      //     pages: oldData.pages.map((page) => ({
-      //       ...page,
-      //       comments: page.comments.map((c) =>
-      //         c.id === comment.id ? comment : c
-      //       ),
-      //     })), 
-      //   };
-      // });
-
-      // queryClient.invalidateQueries({queryKey,});
-
 
 
       queryClient.setQueryData(queryKey, (oldData) => {
@@ -141,7 +100,6 @@ export function useEditCommentMutation(productId, category) {
 
 export function useDeleteCommentMutation(productId, category) {
   const queryClient = useQueryClient();
-console.log(productId, category)
   const mutation = useMutation({
     mutationFn: deleteComment,
     onSuccess: async (deletedComment) => {
@@ -149,7 +107,6 @@ console.log(productId, category)
       await queryClient.cancelQueries({ queryKey });
 
       queryClient.setQueryData(queryKey, (oldData) => {
-        console.log(oldData)
         if (!oldData) return oldData;
         return {
           ...oldData,

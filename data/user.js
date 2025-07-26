@@ -13,10 +13,9 @@ export const updateUserByEmail = async (userId,userName,userImage,userTags,userB
           comunity:userComunity
         }})
 
-        // console.log("newUser",newUser)
         
     }catch(error){
-      // console.log(error);
+      console.error(error);
     }
 }
 
@@ -35,10 +34,9 @@ export const updateUserByAccount = async (providerAccountId,provider,userName,em
         }
        })
 
-        // console.log("newUser",newUser)
         
     }catch(error){
-      // console.log(error);
+      console.error(error);
     }
 }
 

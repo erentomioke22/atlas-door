@@ -10,6 +10,5 @@ export default function useTagInfo(userId,initialState) {
     initialData: initialState,
     staleTime: Infinity,
   });
-  // console.log(query,userId,initialState)
   return query;
 }

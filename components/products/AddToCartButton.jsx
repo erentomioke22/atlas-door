@@ -13,7 +13,6 @@ export default function AddToCartButton({productId,initialState,name,className,s
   const queryKey = ["cart-info", productId,colorId];
   const debounceTimer = useRef(null);
   const isUpdating = useRef(false);
-console.log(stocks,initialState,quantity,inputValue)
 
   
 
@@ -88,7 +87,6 @@ const { data,isLoading } = useQuery({
   initialData: initialState,
   staleTime: 0,
 });
-console.log(data)
 
 
 

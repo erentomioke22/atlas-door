@@ -111,7 +111,7 @@ const EmblaCarousel = ({children,options,slides,buttons=false,autoScroll=true,do
             </div>}
           {autoScroll &&
           <button 
-          className="bg-black text-white  dark:bg-white dark:text-black  rounded-full px-3 py-1  text-lg" 
+          className="bg-black text-white  dark:bg-white dark:text-black  rounded-full px-3 py-1  text-lg flex justify-start" 
           onClick={toggleAutoplay} type="button">
           {isPlaying ? <BsFillPauseFill/> : <BsFillPlayFill/>}
         </button>

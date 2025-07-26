@@ -25,15 +25,30 @@ export async function GET(req) {
       const data = await response.json();
 
       if (data.data.code === 100) {
-        // Update order status
-        await prisma.order.update({
-          where: { id: orderId },
-          data: {
-            status: 'PAID',
-            paymentId: data.data.ref_id,
-            paymentDate: new Date(),
-          },
-        });
+        
+        // const [successBuy] = await prisma.$transaction([
+          await prisma.order.update({
+            where: { id: orderId },
+            data: {
+              status: 'PAID',
+              paymentId: data.data.ref_id,
+              paymentDate: new Date(),
+            },
+          });
+        //   ...( product?.sellerId !== userId
+        //     ? [
+        //         prisma.notification.create({
+        //           data: {
+        //             issuerId: product?.sellerId,
+        //             recipientId: userId,
+        //             productId: product?.id,
+        //             type: "PAID",
+        //           },
+        //         }),
+        //       ]
+        //     : []),
+        // ]);
+
 
         return NextResponse.redirect(`${process.env.NEXT_PUBLIC_BASE_URL}/payment/success`);
       }

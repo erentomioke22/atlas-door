@@ -7,7 +7,6 @@ import PageLoading from "@components/ui/loading/pageLoading";
 import {  toast } from 'sonner'
 import { useQuery,useQueryClient } from "@tanstack/react-query";
 import Conneccted from "@components/posts/Connected";
-// import MoreByUser from "@components/posts/MoreByUser";
 import moment from "moment";
 import ProgressBar from "@components/ui/progressbar";
 import { IoShareOutline } from "react-icons/io5";
@@ -15,9 +14,10 @@ import {usePathname } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 // import BookmarkButton from "@components/posts/bookMarkButton";
 // import LikeButton from "@components/posts/likeButton";
+// import MoreByUser from "@components/posts/MoreByUser";
 import ImageCom from "@components/ui/Image";
 import { useRouter } from "next/navigation";
-import { FaArrowLeftLong } from "react-icons/fa6";
+import { FaArrowLeftLong,FaPhone } from "react-icons/fa6";
 import Link from "next/link";
 import { FaEraser } from "react-icons/fa6";
 import TableOfContents from "@components/posts/TocPost";
@@ -30,7 +30,7 @@ const PostPage = ({title}) => {
   const contentRef = useRef(null);
   const [progress, setProgress] = useState(0);
   const pathName = usePathname();
-  const currentUrl = `http://localhost:3000/${pathName}`;
+  const currentUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/${pathName}`;
   const router = useRouter()
   const queryClient = useQueryClient();
 const {data: post,isFetching,status,error}=useQuery({
@@ -41,7 +41,6 @@ const {data: post,isFetching,status,error}=useQuery({
     }
   });
 
-console.log(post)
 
   if (status === "success" && post?.length <= 0 ) {
     return (
@@ -68,15 +67,6 @@ console.log(post)
   }
 
 
-  // useEffect(() => {
-  //   if (status === "success" && post?.id) {
-  //     axios.post(`/api/posts/${post.id}/view`)
-  //       .then(response => console.log(response.data)
-  //       )
-  //       .catch(error => console.error(error)
-  //       );
-  //   }
-  // }, [status, post]);
 
 
   useEffect(() => {
@@ -94,7 +84,7 @@ console.log(post)
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(currentUrl);
-    toast.success("SHARE LINK COPIED")
+    toast.success("لینک اشتراک گذاری ک‍پی شد")
   };
 
   return (
@@ -117,11 +107,11 @@ console.log(post)
                <div className=" space-y-5 md:mt-7">
                 <div className="space-y-3">
                    <p className="text-xl md:text-4xl w-full break-words text-black dark:text-white">{post.title}</p>   
-                    <div className="flex  space-x-2">
-                           <span className="flex space-x-2">
+                    <div className="flex  gap-2">
+                           <span className="flex gap-2 flex-wrap">
                                {post?.tags?.map((tag) => {
                                  return (
-                                   <p key={tag.name} className="text-[10px] md:text-[13px] text-lfont ">
+                                   <p key={tag.name} className="text-[10px] md:text-[13px] text-lfont text-nowrap">
                                      <span className="text-black dark:text-white">#</span> {tag.name}
                                    </p>
                                  );
@@ -181,6 +171,11 @@ console.log(post)
             />
         </div> */}
 
+            <button className="bg-lcard dark:bg-dcard rounded-full p-2 text-sm sm:text-lg">
+              <a href="tel:02155589837" onClick={()=>{toast.success('شماره کپی شد');navigator.clipboard.writeText('02155589837')}} >
+                <FaPhone/>
+              </a>
+                </button>
          <div>
             <button className="bg-lcard dark:bg-dcard rounded-full p-2 text-sm sm:text-lg" onClick={copyToClipboard}><IoShareOutline/></button>
          </div>
@@ -224,32 +219,32 @@ console.log(post)
 
 
 {post?.faqs?.length >= 1 && 
-      //  <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-5 mx-auto  my-20"> 
                        <div className="space-y-5"> 
-         <div className="flex flex-col justify-center items-center space-y-5">
-                 <div className="text-center">
-                   <p className="text-4xl md:text-[60px] leading-normal">سوالات متداول</p>
-                   <p className="text-sm md:text-md  text-lfont">از سوالات شما همیشه استقبال میشود;سوالات شما جرقه گفتگوهایی را میدهند که منجر به نوآوری میشود</p>
-                 </div>
-               </div>
+                       <div>
+                        <h1 className="text-lg sm:text-xl text-lfont"><span className="text-2xl sm:text-4xl text-black dark:text-white uppercase">سوالات</span> متداول</h1>
+                         <p className="text-sm md:text-md  text-lfont">از سوالات شما همیشه استقبال میشود;سوالات شما جرقه گفتگوهایی را میدهند که منجر به نوآوری میشود</p>
+                       </div>
              {post?.faqs?.map((faq,index)=>(
-                     <Accordion menuStyle={"p-4 text-lfont text-sm bg-lcard dark:bg-dcard rounded-xl"} btnStyle={"text-lg sm:text-xl lg:text-2xl border-b-2 border-b-lcard dark:border-b-dcard"} title={faq.question} key={index}> <p>{faq.answer}</p> </Accordion>
+                     <Accordion menuStyle={"p-4 text-lfont text-sm bg-lcard dark:bg-dcard rounded-xl"} btnStyle={"text-lg sm:text-xl lg:text-2xl "} title={faq.question} key={index}> <p>{faq.answer}</p> </Accordion>
                  ))}
              </div>  
        
 
-      //  </div>
         }
 
           {/* <div className="px-5 sm:px-10 mx-auto  space-y-10 ">
             <h1 className="text-lg sm:text-xl text-lfont"><span className="text-2xl sm:text-4xl text-black dark:text-white uppercase">{post?.user.displayName}</span> More And Top Posts</h1>
            <MoreByUser postTitle={title} writerId={post?.userId}/> 
-          </div>
+          </div>*/}
 
-          <div className="px-5 sm:px-10 mx-auto  space-y-10 ">
-            <h1 className="text-lg sm:text-xl text-lfont"><span className="text-2xl sm:text-4xl text-black dark:text-white uppercase">Connected</span>  And Top Posts</h1>
-            <Conneccted postTitle={title} postId={post?.id}/>
-          </div> */}
+<div className="   space-y-10 ">
+            <div>
+          <h1 className="text-lg sm:text-xl text-lfont"><span className="text-2xl sm:text-4xl text-black dark:text-white uppercase">مقاله های</span>    محبوب و مرتبط</h1>
+          <p className=" text-md text-lfont">با دیدن مطالب ما میتوانید با خدمات و محصولات ما آشنا شوید و نحوه کارکرد و نوع استفاده از اونهارو یاد بگیرید</p>
+            </div>
+
+            <Conneccted postTitle={post?.title} postId={post?.id}/>
+          </div>
 
           </div>
             )}

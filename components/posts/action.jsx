@@ -3,15 +3,15 @@
 import { prisma } from "@utils/database";
 import { getPostDataInclude } from "@/lib/types";
 import { auth } from "@auth";
-// import { utapi } from "@server/uploadthing";
+import { utapi } from "@server/uploadthing";
 
 export async function submitPost(values) {
-
-  
   try{
+
+
+
   const session = await auth()
   if (!session) throw new Error("Unauthorized");
-  // console.log(values)
 
 
   let sanitizedTitle = values.title.replace(/\s+/g, '-').toLowerCase();
@@ -35,8 +35,8 @@ export async function submitPost(values) {
       title: values.title,
       link:sanitizedTitle,
       desc:values.desc,
-      images: [values.image],
-      contentImages:values.files,
+      images: values.images,
+      // contentImages:values.files,
       content: values.content,
       userId: session.user.id,
       tags: {
@@ -81,8 +81,6 @@ if(!newPost)throw new Error("Failed to create the post");
   
 }
 catch(err){
-  // console.error(err)
-  // console.log(err)
   throw new Error (err)
 }
 
@@ -95,17 +93,25 @@ catch(err){
 
 export async function editPost(values) {
   try{
+
     const session = await auth();
     if (!session) throw new Error("Unauthorized");
   
    const faqs = values.faqs?.filter(faq => faq !== undefined && faq.question && faq.answer) || [];
   //  const tocs = values.tocs?.filter(toc => toc !== undefined && toc.textContent) || [];
    const tags = values.tags?.filter(tag => tag !== undefined) || [];
-    // console.log(values);
-    // console.log(faqs);
-    // console.log(tocs);
-    // console.log(tags);
     
+
+   if(values.rmFiles.length > 0){
+    try{
+      await utapi.deleteFiles(values.rmFiles);
+    }
+    catch(err){
+      console.error(err)
+      throw new Error('field to delete archive image')
+    }
+  }
+
     const existingTags = await prisma.tag.findMany({
       where: {
         name: {
@@ -120,10 +126,10 @@ export async function editPost(values) {
       data: {
         title: values.title,
         desc: values.desc,
-        images: [values.image],
-        contentImages:values.files,
+        images: values.images,
+        // contentImages:values.files,
         content: values.content,
-        items: values.items,
+        // items: values.items,
         userId: session?.user.id,
         tags: {
           set:[],
@@ -194,16 +200,15 @@ export async function deletePost(values) {
   
   if (post.userId !== session?.user?.id) throw new Error("Unauthorized");
   
-  // console.log(values.removeKey)
-  // if(values.removeKey.length > 0){
-  //   try{
-  //     await utapi.deleteFiles(values.removeKey);
-  //   }
-  //   catch(err){
-  //     console.error(err)
-  //     throw new Error('field to delete archive image')
-  //   }
-  // }
+  if(values.removeKey.length > 0){
+    try{
+      await utapi.deleteFiles(values.removeKey);
+    }
+    catch(err){
+      console.error(err)
+      throw new Error('field to delete archive image')
+    }
+  }
   
   const deletedPost = await prisma.post.delete({
     where: { id },
@@ -216,7 +221,6 @@ export async function deletePost(values) {
   catch(error){
     throw new Error(error)
   }
-  // console.log(values)
 }
 
 

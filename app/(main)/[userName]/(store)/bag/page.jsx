@@ -1,13 +1,10 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import InfiniteScrollContainer from "@components/InfiniteScrollContainer";
-import { useInfiniteQuery, useQuery,useMutation } from "@tanstack/react-query";
+import React from "react";
+import {useQuery} from "@tanstack/react-query";
 import axios from "axios";
 import OrderCard from "@components/products/orderCard";
 import { formatPrice } from "@lib/utils";
-import { toast } from 'sonner';
-import { useRouter } from 'next/navigation';
 import LoadingOrder from "@components/ui/loading/loadingOrder";
 import PaymentPanel from "@components/paymentPanel";
 
@@ -20,7 +17,7 @@ export default function page() {
     data,
     // fetchNextPage,
     // hasNextPage,
-    isFetching,
+    // isFetching,
     // isFetchingNextPage,
     status,
   } = useQuery({
@@ -36,14 +33,11 @@ export default function page() {
 
 
   
-  // ... existing code ...
 
 
 
 
-  // const orders = data?.pages.flatMap((page) => page.orders) || [];
 
-  console.log(data?.orders);
 
   const totalPrice = data?.orders?.reduce((sum, order) => {
     const quantity = order?.quantity || 1;

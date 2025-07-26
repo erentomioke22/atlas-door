@@ -1,6 +1,6 @@
 import React from 'react';
-import List from "@components/ui/list";
 import Head from 'next/head';
+import PostList from './postlist';
 
 export const metadata = {
   metadataBase: new URL(`${process.env.NEXT_PUBLIC_BASE_URL}/posts`),
@@ -42,7 +42,7 @@ const AllPosts = () => {
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       </Head>
       <div>
-        <List />
+        <PostList />
       </div>
     </>
   );

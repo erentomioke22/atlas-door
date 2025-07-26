@@ -60,7 +60,6 @@ export const NewItemMenu = ({ editor, getPos }) => {
     useUploadThing("post", {
       onClientUploadComplete: (data) => {
         toast.success("uploaded successfully!");
-        // console.log(data)
         // return data[0].url
         if (data[0].url) {
           editor
@@ -87,7 +86,6 @@ export const NewItemMenu = ({ editor, getPos }) => {
 
     uploadMutation.mutate(formData, {
       onSuccess: (data) => {
-        // console.log('File uploaded:', data.imageUrl);
         toast.success("File uploaded");
         if (data.imageUrl) {
           editor
@@ -165,7 +163,6 @@ export const NewItemMenu = ({ editor, getPos }) => {
 
   const setImageByUrl = (imageUrl) => {
     if (imageUrl) {
-      // console.log(imageUrl)
       const schema = yup.object().shape({
         image: imageUrlValidation.fields.image,
       });
@@ -184,7 +181,6 @@ export const NewItemMenu = ({ editor, getPos }) => {
 
   function handleImageChange(file) {
     if (file) {
-      // console.log(file)
       const imageUrl = URL.createObjectURL(file);
       const schema = yup.object().shape({
         image: imageFileValidation.fields.image,
@@ -293,7 +289,7 @@ export const NewItemMenu = ({ editor, getPos }) => {
                 {uploadMutation.isPending ? (
                   <LoadingIcon
                     color={
-                      "text-white dark:text-black dark:fill-white fill-black mx-auto"
+                      "bg-white dark:bg-black"
                     }
                   />
                 ) : (
@@ -316,7 +312,7 @@ export const NewItemMenu = ({ editor, getPos }) => {
                 {postIsUploading ? (
                   <LoadingIcon
                     color={
-                      "text-white dark:text-black dark:fill-white fill-black mx-auto"
+                      "bg-white dark:bg-black"
                     }
                   />
                 ) : (

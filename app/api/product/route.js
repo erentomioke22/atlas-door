@@ -104,7 +104,6 @@ export async function GET(req) {
       products: products.slice(0, pageSize) ?? [],
       nextCursor,
     };
-// console.log(data)
     return Response.json(data);
   } catch (error) {
     console.error(error);

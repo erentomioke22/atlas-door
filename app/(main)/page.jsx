@@ -11,52 +11,59 @@ import axios from "axios";
 import { useQuery} from "@tanstack/react-query";
 import { toast } from "sonner";
 import ImageCom from "@components/ui/Image";
+import ProductCard from "@components/products/productCard";
+import { LuShieldCheck,LuHammer,LuTimer,LuBadgeDollarSign } from "react-icons/lu";
+
 
 
 function Home() {
   const [item,setItem] = useState("new-post")
 
   const {
-    data:posts,
+    data,
     status,
   } = useQuery({
-    queryKey: ["home-post"],
+    queryKey: ["home-data"],
     queryFn: async () => {const response = await axios.get(`/api/posts/home?category=${item}`);
       return response.data;
     },
   });
 
 
-  // console.log(posts)
 
 
 const projects=[
   {
     name:'درب اتوماتیک',
-    url:'/automatic-door',
+    url:'/posts/درب-های-اتوماتیک_lxi5fhspu7',
     image:'/images/automatic-door/slide/thumnail.jpg'
   },
+  {
+    name:'شیشه سکوریت',
+    url:'/posts/شیشه-سکوریت-چیست؟-مزایا،-کاربردها-و-تفاوت-با-شیشه-معمولی_b2qh02hbuv',
+    image:'/images/tempered-glass/1732009538394.jpg'
+  },
+  {
+    name:'شیشه لمینت',
+    url:'/posts/شیشه-لمینت:-انواع،-مزایا،-معایب-و-کاربردها-در-ساختمان-و-خودرو-|-راهنمای-جامع_jucfrkg1a7',
+    image:'/images/tempered-glass/1732009538394.jpg'
+  },
+  {
+    name:'پارتیشن شیشه ای',
+    url:'/posts/پارتیشن-شیشه‌ای:-راهنمای-کامل-نصب،-مزایا،-معایب-و-انواع-|-قیمت-و-طراحی_aqscgthk3m',
+    image:'/images/partition/media_20241118_121418_2590378291697560303.jpg'
+  },
+  {
+    name:'جام بالکن',
+    url:'/posts/شیشه-های-بالکنی-و-شیشه-های-ایمنی-برای-پرتگاه-ها:-راهنمای-جامع_4unfbbxaua',
+    image:'/images/balcony/media_20241118_121418_6280590525011645464.jpg'
+  },
+  
   // {
   //   name:'کرکره برقی',
   //   url:'/roller-shutter',
   //   image:'/images/roller-shutter/blade/thumnail.jpg'
   // },
-  {
-    name:'شیشه سکوریت',
-    url:'/tempered-glass',
-    image:'/images/tempered-glass/1732009538394.jpg'
-  },
-  {
-    name:'پارتیشن شیشه ای',
-    url:'/partition-glass',
-    image:'/images/partition/media_20241118_121418_2590378291697560303.jpg'
-  },
-  {
-    name:'شیشه بالکنی',
-    url:'/balcony-glass',
-    image:'/images/balcony/media_20241118_121418_6280590525011645464.jpg'
-  },
-
   // {
   //   name:'انواع آیینه',
   //   url:'/mirror',
@@ -80,13 +87,13 @@ const projects=[
 ]
 
   return (
-    <>
+    <div className="mt-20  md:mt-10 px-5 md:w-3/4 xl mx-auto space-y-20">
 
 
-      <div className="mx-auto ">
-        <div className=" px-5 pt-16  sm:px-16 md:pt-24 lg:flex lg:gap-x-20 lg:px-24 lg:pt-0">
+      {/* <div className="mx-auto "> */}
+        {/* <div className=" px-5 pt-16  sm:px-16 md:pt-24 lg:flex lg:gap-x-20 lg:px-24 lg:pt-0"> */}
 
-          <div className="mt-10 text-center mx-auto lg:w-2/3 space-y-5">
+          <div className=" text-center mx-auto  space-y-5">
             <h1 className="leading-normal text-balance text-4xl md:text-[60px] font-semibold tracking-tight ">
             تمرکز ما بر <span className="bg-gradient-to-tr text-clip from-blue to-darkgreen text-transparent bg-clip-text">کیفیت و عملکرد</span>   هربار تجربه ای زیبا را تضمین میکند
             </h1>
@@ -96,26 +103,29 @@ const projects=[
             <h3 className=" text-pretty text-md text-lfont">
              قدرت محصولات با کیفیت مارا که برای عملکرد زیبا در طول زمان طراحی شده اند ; تجربه کنید
             </h3>
+
             <div className=" flex justify-center  gap-3">
-              <a href="tel:02155589837" onClick={()=>{toast.success('شماره کپی شد');navigator.clipboard.writeText('02155589837')}} className="bg-black w-20 md:w-28 text-center py-2 text-sm text-white dark:bg-white dark:text-black rounded-full">
+              <a href="tel:02155589837" onClick={()=>{toast.success('شماره کپی شد');navigator.clipboard.writeText('02155589837')}} className="bg-black px-10 text-center py-2  text-white dark:bg-white dark:text-black rounded-full">
                 تماس
               </a>
-              <Link href="/posts" className="bg-transparent w-20 md:w-28 text-center py-2 text-sm text-black  dark:text-white border-2 border-black dark:border-white rounded-full">
+              <Link href="/posts" className="bg-lcard dark:bg-dcard rounded-lg py-2 px-5">
                 مقاله ها
               </Link>
             </div>
+
           </div>
-        </div>
-      </div>
+      {/* </div> */}
 
 
-    <div className="bg-lcard my-16 py-16 dark:bg-dcard">
       <div className="space-y-10 ">
-        <div className=" w-full md:w-1/2  px-5">
-          <h1 className="text-4xl md:text-[60px] leading-normal"><span className="bg-gradient-to-tr text-clip from-blue to-darkgreen text-transparent bg-clip-text">خدمات و محصولات</span> ما برای خدمت به شما مشتریان عزیز</h1>
-          <p className=" text-md text-lfont">تمامی خدمات توسط ما با بهترین قیمت  در کمترین زمان ارايه میشود</p>
+        <div className="text-center">
+          <h1 className="leading-normal text-balance text-4xl md:text-[60px] font-semibold tracking-tight"><span className="bg-gradient-to-tr text-clip from-blue to-darkgreen text-transparent bg-clip-text">خدمات و محصولات</span> ما برای خدمت به شما مشتریان عزیز</h1>
+          {/* <p className=" text-md text-lfont">تمامی خدمات توسط ما با بهترین قیمت  در کمترین زمان ارايه میشود</p> */}
         </div>
-        <EmblaCarousel options={{loop:true,dragFree: true,direction:'rtl'}}  >
+
+        <EmblaCarousel options={{loop:true,dragFree: true,direction:'rtl'}}                 
+               dot={false}
+               autoScroll={false}>
           {projects.map((project)=>(
         <div className="transform translate-x-0 translate-y-0 translate-z-0  flex-none basis-[75%] md:basis-[45%] lg:basis-[30%] min-w-0 pl-4" 
          key={project.url}>
@@ -139,7 +149,6 @@ const projects=[
         </EmblaCarousel>
 
       </div>
-    </div>
 
     {/* <div className="w-full  flex justify-center overflow-hidden">
         <div className="absolute w-full max-w-lg mt-24 ">
@@ -149,71 +158,57 @@ const projects=[
         </div>
       </div> */}
 
-    <div className="my-20 space-y-10 relative px-5">
-      <div className="w-full md:w-1/2 mx-auto">
-        <p className="text-4xl md:text-[60px] text-center leading-normal  underline">هر چیزی که برای انجام پروژه هایتان نیاز دارید</p>
+    <div className=" space-y-10 relative px-5">
+      <div className="text-center">
+        <h1 className="text-4xl md:text-[60px]  leading-normal text-balance  font-semibold tracking-tight">هر چیزی که برای انجام <span className="bg-gradient-to-tr text-clip from-blue to-darkgreen text-transparent bg-clip-text">پروژه</span> هایتان نیاز دارید</h1>
       </div>
 
 
-    <div >
-      <div className="mx-auto max-w-2xl px-6 lg:max-w-7xl lg:px-8">
-        <div className="mt-10 grid gap-4 sm:mt-16 lg:grid-cols-3 lg:grid-rows-2">
+        <div className=" grid gap-4  lg:grid-cols-3 lg:grid-rows-2">
           
 
-            <div className="relative lg:row-span-2 flex h-full flex-col ">
-              <div className="px-8 py-5 text-white flex flex-col h-60 justify-between bg-redorange rounded-xl">
-                <p className=" mt-2 text-lg font-medium tracking-tight text-gray-950 ">
-                  قیمت 
+              <div className="px-8  py-5    lg:row-span-2 space-y-3 hover:bg-lcard dark:hover:bg-dcard duration-200 rounded-xl">
+                <LuBadgeDollarSign className="text-4xl"/>
+                <p className=" text-2xl  ">
+                 قیمت              
                 </p>
-                <p className="text-2xl">
-                  سعی ما بر مشتری مداری باعث میشود قیمت های ما بسیار رقابتی باشند
+                <p className=" text-lfont">
+                خريد محصولات و دريافت خدمات با رقابتي ترين قيمت بازار
+                </p>
+              </div>
+              
+              <div className="px-8  py-5    lg:row-span-2 space-y-3  hover:bg-lcard dark:hover:bg-dcard duration-200 rounded-xl">
+              <LuHammer className="text-4xl"/>
+                <p className=" mt-2 text-2xl  ">
+                عملکرد
+                </p>
+                <p className=" text-lfont">
+                عملکرد بالا در مدت زمان طولاني را با محصولات ما تجربه کنید
                 </p>
               </div>
 
-            </div>
-
-
-            <div className="relative flex h-full flex-col overflow-hidden rounded-[calc(theme(borderRadius.lg)+1px)] max-lg:rounded-t-[calc(2rem+1px)]">
-              <div className="px-8  py-5  justify-between flex flex-col h-60">
-                <p className="bg-gradient-to-tr text-clip from-blue to-darkgreen text-transparent bg-clip-text mt-2 text-lg font-medium tracking-tight text-gray-950 ">
-                   عملکرد
+              <div className="px-8  py-5    lg:row-span-2 space-y-3 hover:bg-lcard dark:hover:bg-dcard duration-200 rounded-xl">
+              <LuShieldCheck className="text-4xl"/>
+                <p className=" mt-2 text-2xl  ">
+                  امنیت            
                 </p>
-                <p className="text-2xl">
-                  عملکرد بالا در مدت زمان طولاني را با محصولات ما تجربه کنید
+                <p className=" text-lfont">
+                امنیت را در خرید محصولات و خدمات ما تجربه کنید
                 </p>
               </div>
-            </div>
 
-
-
-
-            <div className=" bg-purple text-white relative flex h-full flex-col  rounded-[calc(theme(borderRadius.lg)+1px)]">
-              <div className="px-8 py-5  flex flex-col  justify-between h-60">
-                <p className=" mt-2 text-lg font-medium tracking-tight text-gray-950 ">
-                  امنیت 
-                </p>
-                <p className="text-2xl">
-                  امنیت را در خرید محصولات و خدمات ما تجربه کنید
-                </p>
-              </div>
-            </div>
-
-
-            <div className="relative flex h-full flex-col  lg:row-span-2">
-              <div className="px-8  py-5  rounded-2xl text-white bg-black dark:bg-white dark:text-black h-60 flex flex-col justify-between">
-                <p className=" mt-2 text-lg font-medium tracking-tight text-gray-950 ">
+              <div className="px-8  py-5    lg:row-span-2 space-y-3 hover:bg-lcard dark:hover:bg-dcard duration-200 rounded-xl">
+              <LuTimer className="text-4xl"/>
+                <p className=" mt-2 text-2xl  ">
                   زمان
                 </p>
-                <p className="text-2xl">
+                <p className=" text-lfont">
                   تمامی خدمات ما در کمترین زمان ممکن به مشتری ارائه میشوند
                 </p>
               </div>
 
-            </div>
 
         </div>
-      </div>
-    </div>
   
 
 
@@ -223,14 +218,18 @@ const projects=[
     <AboutUs/>
 
 
-   <div className="space-y-10 my-20 px-5 md:px-20 ">
+   <div className="space-y-10  ">
      <div>
-        <div className="text-center space-y-3">
-          <p className="text-4xl md:text-[60px] leading-normal ">مقاله های های آموزشی ما</p>
-          <p className=" text-md text-lfont">با دیدن مطالب ما میتوانید با خدمات و محصولات ما آشنا شوید و نحوه کارکرد و نوع استفاده از اونهارو یاد بگیرید</p>
+        <div className="flex justify-between">
+          <p className="text-2xl  ">مقاله ها</p>
+          {/* <p className=" text-md text-lfont">با دیدن مطالب ما میتوانید با خدمات و محصولات ما آشنا شوید و نحوه کارکرد و نوع استفاده از اونهارو یاد بگیرید</p> */}
+            <div >
+               <Link className=" bg-black py-2 px-3 rounded-full dark:bg-white text-white dark:text-black text-center" href={'/posts'}>
+                  تمام مقاله ها 
+               </Link>
+            </div>
         </div>
      </div>
-
 
      {status === "error" && 
           <p className="text-center text-lfont underline">
@@ -238,31 +237,81 @@ const projects=[
           </p>
       }
 
-      {status === "success" && !posts?.length  && 
+      {status === "success" && !data?.posts?.length  && 
         <p className="text-center text-lfont underline">
            هنوز پستی در اینجا قرار داده نشده
        </p>
       }
-        <div className="max-sm:space-y-5 sm:flex sm:flex-wrap justify-center gap-3 max-sm:px-3  ">
-          {status === "pending" && 
-                  Array(10)
-                    .fill({})
-                    .map((_,index) => {
-                      return <LoadingPage key={index}/>;
-                })
-          }
 
-          {posts?.map((post) => (
-            <div key={post?.id}>
-              <PostCard post={post} />
-            </div>
-          ))}
+     <EmblaCarousel options={{loop:false,dragFree: true,direction:'rtl'}}                 
+               dot={false}
+               autoScroll={false}>
+            {status === "pending" && 
+                    Array(10)
+                      .fill({})
+                      .map((_,index) => {
+                        return <div className="transform translate-x-0 translate-y-0 translate-z-0  flex-none basis-[75%] md:basis-[45%] lg:basis-[30%] min-w-0 pl-4"><LoadingPage key={index}/></div>;
+                  })
+            }
+          {data?.posts?.map((post)=>(
+        <div className="transform translate-x-0 translate-y-0 translate-z-0  flex-none basis-[75%] sm:basis-auto  min-w-0 pl-4 sm:pr-2 my-2" 
+         key={post.id}>
+               <PostCard post={post} />
          </div>
-            <div className="flex justify-center">
-               <Link className="w-60 bg-black py-2 rounded-full dark:bg-white text-white dark:text-black text-center" href={'/posts'}>
-               مشاهده تمام مقاله ها 
+          ))}
+          
+         
+     </EmblaCarousel>
+
+
+     
+   </div>
+  
+   <div className="space-y-10  ">
+     <div>
+        <div className="flex justify-between">
+          <p className="text-2xl  ">محصولات</p>
+          {/* <p className=" text-md text-lfont">با دیدن مطالب ما میتوانید با خدمات و محصولات ما آشنا شوید و نحوه کارکرد و نوع استفاده از اونهارو یاد بگیرید</p> */}
+            <div >
+               <Link className=" bg-black py-2 px-3 rounded-full dark:bg-white text-white dark:text-black text-center" href={'/products'}>
+                  تمام محصولات  
                </Link>
             </div>
+        </div>
+     </div>
+
+     {status === "error" && 
+          <p className="text-center text-lfont underline">
+            مشکلی در دریافت اطلاعات پیش آمده لطفا صفحه را یکبار رفرش کنید
+          </p>
+      }
+
+      {status === "success" && !data?.products?.length  && 
+        <p className="text-center text-lfont underline">
+           هنوز محصولی در اینجا قرار داده نشده
+       </p>
+      }
+
+     <EmblaCarousel options={{loop:false,dragFree: true,direction:'rtl'}}                 
+               dot={false}
+               autoScroll={false}>
+            {status === "pending" && 
+                    Array(10)
+                      .fill({})
+                      .map((_,index) => {
+                        return <div className="transform translate-x-0 translate-y-0 translate-z-0  flex-none basis-[75%] md:basis-[45%] lg:basis-[30%] min-w-0 pl-4"><LoadingPage key={index}/></div>;
+                  })
+            }
+          {data?.products?.map((product)=>(
+        <div className="transform translate-x-0 translate-y-0 translate-z-0  flex-none basis-[75%] md:basis-[45%] lg:basis-[30%] min-w-0 pl-4 my-2" 
+         key={product.id}>
+               <ProductCard product={product} />
+         </div>
+          ))}
+          
+         
+        </EmblaCarousel>
+
 
      
    </div>
@@ -272,7 +321,7 @@ const projects=[
 
 
 
-    </>
+    </div>
   );
 }
 

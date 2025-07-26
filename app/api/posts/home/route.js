@@ -1,5 +1,5 @@
 import { prisma } from "@utils/database";
-import { getPostDataInclude } from "@/lib/types";
+import { getPostDataInclude,getProductDataInclude } from "@/lib/types";
 import { auth } from "@/auth";
 export const dynamic = 'force-dynamic';
 
@@ -110,6 +110,97 @@ export async function GET(req) {
     }
 
 
+    let products;
+    switch (category) {
+      case 'following':
+         products = await prisma.product.findMany({
+          // where: {
+          //   user: {
+          //     followers: {
+          //       some: {
+          //         followerId: userId,
+          //       },
+          //     },
+          //   },
+          //   userId: {
+          //     notIn: blockedIds ?? []
+          //   },
+          //   save:false
+          // },
+          orderBy: { createdAt: "desc" },
+          take: pageSize + 1,
+          cursor: cursor ? { id: cursor } : undefined,
+          include: getProductDataInclude(userId),
+        });
+        break;
+      case 'popular':
+          products = await prisma.product.findMany({
+          //  where: {
+          //    userId: {
+          //      notIn: blockedIds ?? []
+          //    },
+          //    save:false
+          //  },
+           include: getProductDataInclude(userId),
+           orderBy: [
+             {likes: {_count:"desc"} },
+             {views: {_count:"desc"} }, 
+             {createdAt: "desc" },
+           ],
+           take: 6,
+          //  take: pageSize + 1,
+          //  cursor: cursor ? { id: cursor } : undefined,
+         });
+        break;
+      case 'new-post':
+          products = await prisma.product.findMany({
+          //  where: {
+          //    userId: {
+          //      notIn: blockedIds ?? []
+          //    },
+          //    save:false
+          //  },
+           include: getProductDataInclude(userId),
+           orderBy: {createdAt: "desc"},
+           take: 6,
+          //  take: pageSize + 1,
+          //  cursor: cursor ? { id: cursor } : undefined,
+         });
+        break;
+      case 'for-you':
+          products = await prisma.product.findMany({
+          //  where: {
+          //    userId: {
+          //      notIn: blockedIds ?? []
+          //    },
+          //    save: false,
+          //    tags: {
+          //      some: {
+          //        id: {
+          //          in: followedTagIds,
+          //        },
+          //      },
+          //    },
+          //  },
+           include: getProductDataInclude(userId),
+           orderBy: { createdAt: "desc" },
+           take: 6,
+          //  take: pageSize + 1,
+          //  cursor: cursor ? { id: cursor } : undefined,
+         });
+        break;
+      default:
+        products = await prisma.product.findMany({
+           include: getProductDataInclude(userId),
+           orderBy: { createdAt: "desc" },
+           take: 6,
+
+          //  take: pageSize + 1,
+          //  cursor: cursor ? { id: cursor } : undefined,
+        });
+    }
+
+
 
     // const nextCursor = posts.length > pageSize ? posts[pageSize].id : null;
 
@@ -118,9 +209,8 @@ export async function GET(req) {
     //   nextCursor,
     // };
     // return Response.json(data);
-    return Response.json(posts);
+    return Response.json({posts,products});
   } catch (error) {
-    console.error(error);
     return Response.json({ error: "Internal server error" }, { status: 500 });
   }
 }

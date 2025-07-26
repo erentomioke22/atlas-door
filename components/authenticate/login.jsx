@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { signIn } from "next-auth/react";
+import RecoveryPass from "./recoveryPass";
 import { toast } from "sonner";
 import { loginValidation } from "@lib/validation";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import LoadingIcon from "@components/ui/loading/loadingIcon";
+import LoadingIcon from "@components/ui/loading/LoadingIcon";
 import Input from "@components/ui/input";
+import { useMutation } from "@tanstack/react-query";
 
 const Login = ({ show, setShow }) => {
   const [showpass, setShowPsss] = useState(false);
@@ -21,39 +23,64 @@ const Login = ({ show, setShow }) => {
     resolver: yupResolver(loginValidation),
   });
 
-  const onSubmit = async (values) => {
-    try {
+
+  const mutation = useMutation({
+    mutationFn: async (data) => {
       const response = await signIn("credentials", {
         redirect: false,
-        email: values.email,
-        password: values.password,
+        email: data.email,
+        password: data.password,
         callbackUrl: "/",
       });
+      return response;
+    },
+    onSuccess: (data) => {
+      if (data.message) {
+        toast.success("با موفقیت وارد شدید");
+        reset();
+      } else if (data.error) {
+        if (data.error === "Configuration") {
+          toast.error("ایمیل یا گذرواژه صحیح نمیباشد");
+        }
+        if (data.error === "AccessDenied") {
+          toast.error("لطفا ایمیلتان را تایید کنید");
+        }
+        if (data.error === null) {
+          toast.success("با موفقیت وارد شدید");
+        }
+      }
+    },
+    onError: (error) => {
+      // error can be axios error or something else
+      console.log(error)
+      
+      let message = "خطایی رخ داد. لطفا دوباره تلاش کنید.";
+      if (error?.response?.data?.error) {
+        message = error.response.data.error;
+      } else if (typeof error === "string") {
+        message = error;
+      } else if (error?.message) {
+        message = error.message;
+      }
+      toast.error(message);
+    },
+  });
 
-      // console.log(response);
-      if (response.error === "Configuration") {
-        toast.error("email or password incorrect");
-      }
-      if (response.error === "AccessDenied") {
-        toast.error("please confirm your email address");
-      }
-      if (response.error === null) {
-        toast.success("successfully Login");
-      }
-    } catch (error) {
-      // console.log(error);
-    }
+  const onSubmit = (values) => {
+    mutation.mutate(values);
   };
+
+
 
   const formValues = [
     {
-      title: "ایمیل",
+      title: "ايميل",
       name: "email",
       type: "email",
       error: errors.email?.message,
     },
     {
-      title: "پسورد",
+      title: "رمز",
       name: "password",
       type: showpass ? "text" : "password",
       error: errors.password?.message,
@@ -62,65 +89,62 @@ const Login = ({ show, setShow }) => {
 
   return (
     <>
-      {/* {show === "recovery" ? (
+      {show === "recovery" ? (
         <RecoveryPass setShow={setShow} />
       ) : (
-        <> */}
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className=" space-y-4  mx-auto">
-          {formValues.map((value) => {
-            return (
-              <div key={value.name}>
-                <Input
-                  placeholder={value.title}
-                  name={value.name}
-                  type={value.type}
-                  error={value.error}
-                  {...register(value.name)}
-                />
+        <>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <div className=" space-y-4  mx-auto">
+              {formValues.map((value) => {
+                return (
+                  <div key={value.name}>
+                    <Input
+                      placeholder={value.title}
+                      title={value.title}
+                      name={value.name}
+                      type={value.type}
+                      error={value.error}
+                      {...register(value.name)}
+                    />
 
-                {value.name === "password" && (
-                  <div className="flex space-x-5 justify-end mt-2">
-                    {/* <button
-                          className="text-sm text-purple underline"
-                          onClick={() => {
-                            setShow("recovery");
-                          }}
+                    {value.name === "password" && (
+                      <div className="flex gap-5 justify-between mt-2">
+                        <button
+                          className="text-sm text-lfont underline decoration-2 decoration-neutral-900"
+                          // onClick={() => {
+                          //   setShow("recovery");
+                          // }}
                         >
-                          FORGOT PASSWORD?
-                        </button> */}
-                    <button
-                      className="bg-black rounded-full text-lcard dark:bg-white dark:text-black   px-3 py-1 "
-                      onClick={() => setShowPsss(!showpass)}
-                      type={"button"}
-                    >
-                      {showpass ? <FaRegEye /> : <FaRegEyeSlash />}
-                    </button>
+                          گذرواژه رو فراموش كردم؟
+                        </button>
+                        <button
+                          className="bg-lcard dark:bg-dcard rounded-lg p-2 border-lbtn dark:border-dbtn border-2 "
+                          onClick={() => setShowPsss(!showpass)}
+                          type={"button"}
+                        >
+                          {showpass ? <FaRegEye /> : <FaRegEyeSlash />}
+                        </button>
+                      </div>
+                    )}
                   </div>
-                )}
-              </div>
-            );
-          })}
-        </div>
+                );
+              })}
+            </div>
 
-        <button
-          className="bg-black my-3 rounded-lg text-lcard dark:bg-white dark:text-black w-full py-2 mx-auto disabled:brightness-90 disabled:cursor-not-allowed text-center flex justify-center"
-          disabled={isSubmitting}
-          type="submit"
-        >
-          {isSubmitting ? (
-            <LoadingIcon
-              color={
-                "text-black dark:text-white dark:fill-black fill-white mx-auto"
-              }
-            />
-          ) : (
-            "LOGIN"
-          )}
-        </button>
-      </form>
-      {/* </>
-      )} */}
+            <button
+              className="bg-black my-3 rounded-lg text-lcard dark:bg-white dark:text-black w-full py-2 mx-auto disabled:brightness-90 disabled:cursor-not-allowed text-center flex justify-center"
+              disabled={mutation.isPending}
+              type="submit"
+            >
+              {mutation.isPending ? (
+                <LoadingIcon color={"bg-white dark:bg-black "}/>
+              ) : (
+                "ورود"
+              )}
+            </button>
+          </form>
+        </>
+      )}
     </>
   );
 };

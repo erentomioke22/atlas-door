@@ -14,7 +14,6 @@ export default function BagBar() {
   const router = useRouter();
   const patthName = path.split('/')
   const lastPath = patthName[patthName.length - 1]
-  console.log(lastPath)
   return (
   <div>
     <div className="flex justify-between text-lg">
@@ -47,10 +46,6 @@ export default function BagBar() {
                 <span> تمام سفارشات</span> 
               </Link>
               }
-
-              {/* <Link className={`duration-300  ${lastPath === "/setting/block-user" ? "bg-black dark:bg-white text-white dark:border-white dark:text-black rounded-full border-2 border-black px-2 py-1  "  : "bg-transparent border-2 border-black dark:border-white dark:text-white rounded-full  px-2 py-1"  }`} href={"/setting/block-user"}>
-                <span>Block User</span> 
-              </Link> */}
           </div>
     
 </div>

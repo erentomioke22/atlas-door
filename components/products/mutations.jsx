@@ -60,7 +60,7 @@ export function useSubmitProductMutation() {
       toast.success("Product created");
     },
     onError(error) {
-      // console.error(error);
+      console.error(error);
       toast.error("Failed to product. Please try again.");
     },
   });
@@ -95,7 +95,7 @@ export function useEditProductMutation() {
     },
 
     onError(error) {
-      // console.error(error);
+      console.error(error);
       toast.error("Failed to edit product. Please try again.");
     },
   });
@@ -126,7 +126,7 @@ export function useDeleteProductMutation() {
       }
     },
     onError(error) {
-      // console.error(error);
+      console.error(error);
       toast.error("Failed to delete product. Please try again.");
     },
   });
@@ -146,7 +146,6 @@ export function useUploadMutation() {
     // }
   );
   
-    // console.log(response)
     return response.data;
   };
 

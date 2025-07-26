@@ -6,7 +6,6 @@ import {
   useMutation,
   useQueryClient,
 } from "@tanstack/react-query";
-import LoadingIcon from "@components/ui/loading/loadingIcon";
 import { useEffect } from "react";
 import Notification from "./notification";
 import axios from "axios";
@@ -15,9 +14,7 @@ import LoadingNotifications from "./ui/loading/loadingNotifications";
 import Dropdown from "./ui/dropdown";
 import DropDrawer from "./ui/dropdrawer";
 
-
 function Notifications() {
-  const [onClose, setOnClose] = useState(true);
   const queryClient = useQueryClient();
   const queryKey = ["notifications"];
 
@@ -40,7 +37,6 @@ function Notifications() {
     initialPageParam: null,
     getNextPageParam: (lastPage) => lastPage.nextCursor,
   });
-  // console.log(data);
 
   const { mutate } = useMutation({
     mutationFn: () => axios.patch("/api/notifications/mark-as-read"),
@@ -50,7 +46,7 @@ function Notifications() {
       });
     },
     onError(error) {
-      console.error("Failed to mark notifications as read");
+      console.error("Failed to mark notifications as read", error);
     },
   });
 
@@ -59,13 +55,13 @@ function Notifications() {
     onSuccess: async () => {
       await queryClient.cancelQueries({ queryKey });
       await queryClient.invalidateQueries({ queryKey });
-      toast.success("Notifications Deleted");
+      toast.success("پیام ها با موفقیت حذف شدند");
     },
     onError(error, variables, context) {
       if (error.response?.data?.error) {
         toast.error(error.response.data.error);
       } else {
-        toast.error("Failed to create team. Please try again.");
+        toast.error("مشکلی در برقراری ارتباط وجود دارد");
       }
     },
   });
@@ -92,53 +88,64 @@ function Notifications() {
       // position={"top-0 right-0"} size={"h-screen w-full sm:w-2/3 md:w-1/2 lg:w-1/3 xl:w-1/4"} openTransition={"translate-x-0"} closeTransition={"translate-x-full"} onClose={onClose}
     >
       <div className="flex justify-between mb-5">
-        {status === "success" && notifications.length > 0 && (
-          <button
-            onClick={() => {
-              deleteMutate.mutate();
-            }}
-            className="  text-sm disabled:cursor-not-allowed"
-            disabled={deleteMutate.isPending}
-          >
-            حذف همه
-          </button>
-        )}
-        <h1 className={" text-xl "}>پيام ها</h1>
-      </div>
+          <h1 className={" text-xl "}>
+            پيام ها
+          </h1>
 
-      {status === "pending" && (
-        <div className=" w-full px-3 space-y-3">
-          {Array(7)
-            .fill({})
-            .map((_, index) => {
-              return <LoadingNotifications key={index} />;
-            })}
+          {status === "success" && notifications.length > 0 && (
+        <button
+          onClick={() => {
+            deleteMutate.mutate();
+          }}
+          className="  text-sm disabled:cursor-not-allowed bg-lcard dark:bg-dcard disabled:bg-lbtn dark:disabled:bg-dbtn px-2 py-2 rounded-lg"
+          disabled={deleteMutate.isPending}
+        >
+          حذف همه 
+        </button>
+      )}
         </div>
-      )}
 
-      {status === "success" && !notifications.length && !hasNextPage && (
-        <p className="text-center text-sm text-lfont">
-          هنوز پيامی ندارید
-        </p>
-      )}
 
-      {status === "error" && (
-        <p className="text-center text-sm text-lfont">
-          مشکلی در برقراری ارتباط پیش آمده
-        </p>
-      )}
       <InfiniteScrollContainer
         onBottomReached={() => hasNextPage && !isFetching && fetchNextPage()}
-      >
-        <div className=" divide-y-2 divide-lcard dark:divide-dcard">
-          {notifications.map((notification) => (
-            <Notification key={notification.id} notification={notification} />
-          ))}
-        </div>
-        {isFetchingNextPage && (
-          <LoadingIcon color={"text-black fill-white mx-auto"} />
+        >
+        <div   className=" divide-y-2 divide-lcard dark:divide-dcard">
+        {status === "pending" && (
+          <div className=" w-full space-y-5">
+            {Array(5)
+              .fill({})
+              .map((_,index) => {
+                return <LoadingNotifications key={index}/>;
+              })}
+          </div>
         )}
+  
+        {status === "success" && (!notifications.length || notifications.error) && !hasNextPage && (
+          <p className="text-center text-sm text-lfont">
+             پيام جديدی نداريد .
+          </p>
+        )}
+  
+        {status === "error" && (
+          <p className="text-center text-sm text-lfont">
+            مشكلی در برقراری ارتباط وجود دارد
+          </p>
+        )}
+        {notifications.map((notification) => (
+          <Notification key={notification.id} notification={notification} />
+        ))}
+        
+        {isFetchingNextPage && (
+                    Array(3)
+                      .fill({})
+                      .map((_,index) => {
+                        return <LoadingNotifications key={index}/>;
+                      })
+        )}
+        </div>
+
       </InfiniteScrollContainer>
+
     </DropDrawer>
   );
 }

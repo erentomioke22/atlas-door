@@ -125,7 +125,7 @@ const Report = ({ type }) => {
             {mutate.isPending ? (
               <LoadingIcon
                 color={
-                  "text-black dark:text-white dark:fill-black fill-white mx-auto"
+                  "bg-white dark:bg-black"
                 }
               />
             ) : (

@@ -6,13 +6,10 @@ import Comments from "@components/products/comments/comments";
 import PageLoading from "@components/ui/loading/pageLoading";
 import { toast } from "sonner";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-// import Conneccted from "@components/posts/Connected";
-// import MoreByUser from "@components/posts/MoreByUser";
-import moment from "moment";
-import ProgressBar from "@components/ui/progressbar";
 import { IoShareOutline } from "react-icons/io5";
 import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
+// import Conneccted from "@components/posts/Connected";
 // import BookmarkButton from "@components/posts/bookMarkButton";
 // import LikeButton from "@components/posts/likeButton";
 import ImageCom from "@components/ui/Image";
@@ -63,7 +60,6 @@ const PostPage = ({ name }) => {
     }
   }, [product, currentColor]);
 
-  console.log(product, currentColor, currentPrice);
 
   if (status === "success" && product.length <= 0 ) {
     return (
@@ -81,15 +77,6 @@ const PostPage = ({ name }) => {
     );
   }
 
-  //   useEffect(() => {
-  //     if (status === "success" && product?.id) {
-  //       axios.post(`/api/products/${product.id}/view`)
-  //         .then(response => console.log(response.data)
-  //         )
-  //         .catch(error => console.error(error)
-  //         );
-  //     }
-  //   }, [status, product]);
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(currentUrl);
@@ -97,7 +84,7 @@ const PostPage = ({ name }) => {
   };
 
   return (
-      <div className="px-5 w-full sm:w-4/5 lg:w-4/6 xl:w-3/5 mx-auto space-y-10 md:space-y-20">
+      <div className="px-5 w-full sm:w-4/5 lg:w-4/6 xl:w-3/5 mx-auto space-y-10 md:space-y-20 mt-16">
         {status === "pending" ? (
           <PageLoading />
         ) : (
@@ -211,13 +198,31 @@ const PostPage = ({ name }) => {
               </div>
             </div>
 
+           <div className="flex flex-wrap justify-between gap-2">
+             <p>قيمت</p>
+             <p >  {currentPrice} تومان</p>
+           </div>
+
+           <div className="flex flex-wrap justify-between gap-2">
+               <p>موجودي</p>
+               <span className="   rounded p-1 ">{formatNumber(currentStocks)}</span>
+           </div>
+
             <div className="flex flex-wrap gap-2 justify-between">
               <div className="flex my-auto gap-2">
+              
+
+                <button className="bg-lcard dark:bg-dcard rounded-full text-sm px-4 py-2 ">
+              <a href="tel:02155589837" onClick={()=>{toast.success('شماره کپی شد');navigator.clipboard.writeText('02155589837')}} >
+                تماس
+              </a>
+                </button>
+
                 <button className="bg-lcard dark:bg-dcard rounded-xl text-sm px-3 py-2 ">
                   خريد
                 </button>
 
-                <AddToCartButton
+                {/* <AddToCartButton
                   // className={"text-sm w-full flex justify-between   rounded-lg p-2  duration-300"}
                   productId={product?.id}
                   price={product?.price}
@@ -241,19 +246,10 @@ const PostPage = ({ name }) => {
                     product?.colors?.find((color) => color.id === currentColor)
                       ?.stocks || 0
                   }
-                />
+                /> */}
               </div>
           <div>
             
-          <div className=" text-sm bg-lcard dark:bg-dcard  rounded-md px-3 py-1 gap-1 flex flex-col my-auto">
-          <div >
-            <p > قیمت - {currentPrice} تومان</p>
-          </div>
-          <div className="my-auto flex justify-between">
-       <p >موجودي</p>
-      <span className="  dark:bg-dcard rounded p-1 ">{formatNumber(currentStocks)}</span>
-          </div>
-      </div>
           </div>
 
             </div>
@@ -287,12 +283,9 @@ const PostPage = ({ name }) => {
               dangerouslySetInnerHTML={{ __html: product.content }}
             />
 
-            {/* <div className="px-5 sm:px-10 mx-auto  space-y-10 ">
-            <h1 className="text-lg sm:text-xl text-lfont"><span className="text-2xl sm:text-4xl text-black dark:text-white uppercase">{post?.user.displayName}</span> More And Top Posts</h1>
-           <MoreByUser postTitle={title} writerId={post?.userId}/> 
-          </div>
 
-          <div className="px-5 sm:px-10 mx-auto  space-y-10 ">
+
+          {/*<div className="px-5 sm:px-10 mx-auto  space-y-10 ">
             <h1 className="text-lg sm:text-xl text-lfont"><span className="text-2xl sm:text-4xl text-black dark:text-white uppercase">Connected</span>  And Top Posts</h1>
             <Conneccted postTitle={title} postId={post?.id}/>
           </div> */}

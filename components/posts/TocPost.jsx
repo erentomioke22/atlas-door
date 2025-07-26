@@ -191,6 +191,7 @@ const TableOfContents = ({ content, postId }) => {
   const [headings, setHeadings] = useState([]);
   const [activeId, setActiveId] = useState('');
   const [isOpen, setIsOpen] = useState(false);
+  const [onClose, setOnClose] = useState(false);
 
   // Ensure headings have unique IDs
   useEffect(() => {
@@ -260,15 +261,16 @@ const TableOfContents = ({ content, postId }) => {
         openTransition={"max-md:translate-y-0 md:translate-x-0"}
         closeTransition={"max-md:translate-y-full md:translate-x-full"}
         isOpen={isOpen}
+        onClose={onClose}
         setIsOpen={setIsOpen}
         disabled={false}
       >
-        <div className="py-2 max-h-80 md:max-h-128 overflow-y-scroll ">
+        <div className="py-2 ">
           <div className="flex justify-between">
             <h1 className="text-xl">فهرست مطالب</h1>
             <button
               className={"text-lg bg-lcard dark:bg-dcard px-2 py-1 rounded-full border-2 text-lfont"}
-              onClick={() => setIsOpen(false)}
+              onClick={() => setOnClose(!onClose)}
               type="button"
             >
               <IoClose />

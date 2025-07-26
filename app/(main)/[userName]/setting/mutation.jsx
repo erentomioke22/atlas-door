@@ -49,11 +49,11 @@ export function useUpdateProfileMutation() {
         },
       );
 
-      toast.success("Profile updated");
+      toast.success("اطلاعات شما با موفقیت تغییر کرد");
     },
     onError(error) {
-      if (error.message) { toast.error(error.message); }
-      else{toast.error("Failed to create Team. Please try again.")}
+      if (error.message && typeof error.message === "string") { toast.error(error.message); }
+      else{toast.error("مشکلی در برقراری ارتباط وجود دارد")}
     },
   });
 
@@ -76,11 +76,11 @@ export function useDeleteUserMutation() {
       await queryClient.cancelQueries(queryFilter);
 
       router.refresh();
-      toast.success("user deleted successfully");
+      toast.success("کاربر با موفقیت حذف شد");
     },
     onError(error) {
-      if (error.message) { toast.error(error.message); }
-      else{toast.error("Failed to create Team. Please try again.")}
+      if (error.message && typeof error.message === "string") { toast.error(error.message); }
+      else{toast.error("مشکلی در برقراری ارتباط وجود دارد")}
     },
   });
 
@@ -101,11 +101,11 @@ export function useDeleteAccountMutation() {
 
       await queryClient.invalidateQueries(["account-info"]);
       router.refresh();
-      toast.success("delete account successfuly");
+      toast.success("حساب با موفیت حذف شد");
     },
     onError(error) {
-      if (error.message) { toast.error(error.message); }
-      else{toast.error("Failed to create Team. Please try again.")}
+      if (error.message && typeof error.message === "string") { toast.error(error.message); }
+      else{toast.error("مشکلی در برقراری ارتباط وجود دارد")}
     },
   });
 
@@ -121,11 +121,11 @@ export function useDeleteSessionMutation() {
   const mutation = useMutation({
     mutationFn: deleteSession,  
     onSuccess: async () => {
-      toast.success("delete session successfully");
+      toast.success("دسترسی با موفیت حذف شد");
     },
     onError(error) {
-      if (error.message) { toast.error(error.message); }
-      else{toast.error("Failed to create Team. Please try again.")}
+      if (error.message && typeof error.message === "string") { toast.error(error.message); }
+      else{toast.error("مشکلی در برقراری ارتباط وجود دارد")}
     },
   });
 

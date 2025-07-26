@@ -29,8 +29,6 @@ export const useBlockEditor = ({
   // const [content, setContent] = useState(initialContent);
   // const [debouncedContent] = useDebounce(content, 2000);
 
-  // console.log(prevNewFiles)
-  // console.log(tempRemovedFiles)
   const editor = useEditor(
     {
       immediatelyRender: false,
@@ -110,16 +108,17 @@ export const useBlockEditor = ({
       onUpdate: ({ editor }) => {
         onChange(editor.getHTML());
         setEditorContent(editor);
-
         const html = editor.getHTML();
         const tempDiv = document.createElement("div");
         tempDiv.innerHTML = html;
-
+        
         const firstParagraph = tempDiv.querySelector("p")?.innerText || "";
         setValue("desc", firstParagraph);
+        
 
         const imgTags = tempDiv.getElementsByTagName("img");
         const newFiles = Array.from(imgTags).map((img) => img.src);
+        console.log(newFiles)
         setContentImage(newFiles);
         const remainingFiles = files.filter((file) =>
           newFiles.includes(file.url)
@@ -130,7 +129,7 @@ export const useBlockEditor = ({
         setTempRemovedFiles((prev) => [
           ...prev,
           ...removedFiles.filter(
-            (removedFile) => !prev.includes(removedFile.url)
+            (removedFile) => !prev.includes(removedFile.url) 
           ),
         ]);
         const restoredFiles = tempRemovedFiles.filter((tempRemovedFile) =>
@@ -160,9 +159,6 @@ export const useBlockEditor = ({
         // setFiles([...remainingFiles, ...restoredFiles]);
         // setPrevNewFiles(newFiles);
 
-        // console.log(removedFiles)
-        // console.log('New Files:', newFiles);
-        // console.log('Deleted Files:', deletedFiles, removedFiles);
       },
     },
 
@@ -176,6 +172,7 @@ export const useBlockEditor = ({
   useEffect(() => {
     if (editor && initialContent !== editor.getHTML()) {
       editor.commands.setContent(initialContent);
+      setEditorContent(editor);
       const html = editor.getHTML();
       const tempDiv = document.createElement("div");
       tempDiv.innerHTML = html;
@@ -205,8 +202,6 @@ export const useBlockEditor = ({
   //     saveToServer(debouncedContent);
   //   }
   // }, [debouncedContent]);
-  // console.log(editor.getHTML())
-  // console.log(editor.getJSON())
 
   return { editor };
 };

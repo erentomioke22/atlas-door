@@ -17,9 +17,7 @@ import LoadingIcon from "@components/ui/loading/LoadingIcon";
 import BlockEditor from "@components/BlockEditor/BlockEditor";
 import { useMemo } from "react";
 import { Doc as YDoc } from "yjs";
-import { useSearchParams } from "next/navigation";
 import Accordion from "@components/ui/Accordion";
-import ImageInput from "@components/ui/imageInput";
 import EditPostLoading from "@components/ui/loading/editPostLoading";
 import usePreventNavigation from "@hook/usePreventNavigation";
 import NotFound from "@app/(main)/not-found";
@@ -39,21 +37,19 @@ import {
 } from "@lib/validation";
 import { formatPrice } from "@lib/utils";
 import { IoPencil } from "react-icons/io5";
+import { notFound } from "next/navigation";
+
 
 const EditProduct = ({ name }) => {
   const { data: session } = useSession();
-  const [dropTag, setDropTag] = useState([]);
   const router = useRouter();
   const mutation = useEditProductMutation();
   const deleteMutation = useDeleteProductMutation();
   const [files, setFiles] = useState([]);
-  const [deletedPostFiles, setDeletedPostFiles] = useState([]);
   const [deletedFiles, setDeletedFiles] = useState([]);
   const [onClose, setOnClose] = useState(false);
   const ydoc = useMemo(() => new YDoc(), []);
   const [preventNavigation, setPreventNavigation] = useState(false);
-  const blobUrlToUploadedUrlMap = [];
-  const [editorContent, setEditorContent] = useState();
   const [contentImages, setContentImages] = useState();
   const [thumnailIndex, setThumnailIndex] = useState();
   const [cancel, setCancel] = useState(false);
@@ -72,54 +68,42 @@ const EditProduct = ({ name }) => {
   const [colorStocks, setColorStocks] = useState('');
   const [fileError, setFileError] = useState("");
   const [selectedInputImage, setSelectedInputImage] = useState();
-  const [selectedImage, setSelectedImage] = useState();
-  const [selectedImageUrl, setSelectedImageUrl] = useState();
   const fileInputRef = useRef(null);
-  const [editingColorIndex, setEditingColorIndex] = useState(null);
-  // const [items, setItems] = useState([])
-  // const [rmThumbnailFile, setRmThumbnailFile] = useState([]);
-  // const [imageUrl, setImageUrl] = useState();
-  // const [selectedImage, setSelectedImage] = useState();
-  // const [selectedInputImage, setSelectedInputImage] = useState();
-  // const [thumnail, setThumnail] = useState()
-  // const [provider, setProvider] = useState(null);
-  // const [collabToken, setCollabToken] = useState();
-  // const hasCollab =parseInt(searchParams?.get("noCollab")) !== 1 && collabToken !== null;
-  // const searchParams = useSearchParams();
-  // const blobUrlToUploadedUrlMap = new Map();
-  // const [content, setContent] = useState();
-  // const [imageInput, setImageInput] = useState();
-  // const [modal, setModal] = useState(false);
-  // const [ThumbnailFile, setThumbnailFile] = useState([]);
 
-  // const ArchiveMutation = useCreateArchiveMutation();
-  // console.log(items)
+
+
+
+  if (session?.user.role !== "admin") {
+    notFound()
+  }
+
+
+
 
   usePreventNavigation(preventNavigation);
 
-  console.log(colors)
-  console.log(productPictures,productThumnail,thumnailIndex,deletedFiles)
-  // console.log(faqs);
-  // console.log(deletedPostFiles);
-  // console.log(deletedFiles);
-  // console.log(dropTag);
 
 
 
 
 
   const predefinedColors = [
-    { name: 'Red', hexCode: '#FF0000' },
-    { name: 'Blue', hexCode: '#0000FF' },
-    { name: 'Green', hexCode: '#00FF00' },
-    { name: 'Yellow', hexCode: '#FFFF00' },
-    { name: 'Black', hexCode: '#000000' },
-    { name: 'White', hexCode: '#FFFFFF' },
-    { name: 'Purple', hexCode: '#800080' },
-    { name: 'Orange', hexCode: '#FFA500' },
-    { name: 'Pink', hexCode: '#FFC0CB' },
-    { name: 'Brown', hexCode: '#A52A2A' },
-    { name: 'Gray', hexCode: '#808080' },
+    { name: 'قرمز', hexCode: '#FF0000' },
+    { name: 'آبی', hexCode: '#0000FF' },
+    { name: 'سبز', hexCode: '#00FF00' },
+    { name: 'زرد', hexCode: '#FFFF00' },
+    { name: 'مشکی', hexCode: '#000000' },
+    { name: 'سفید', hexCode: '#FFFFFF' },
+    { name: 'بنفش', hexCode: '#800080' },
+    { name: 'نارنجی', hexCode: '#FFA500' },
+    { name: 'صورتی', hexCode: '#FFC0CB' },
+    { name: 'قهوه ای', hexCode: '#A52A2A' },
+    { name: 'خاکستری', hexCode: '#808080' },
+    { name: 'نقره ای', hexCode: '#C0C0C0' },
+    { name: 'طلایی', hexCode: '#FFD700' },
+    { name: 'خاکی', hexCode: '##F0E68C' },
+    { name: 'شکلاتی', hexCode: '##D2691E' },
+    { name: 'برنز', hexCode: '###ff5733' },
     { name: 'Custom', hexCode: '#000000' }
   ];
 
@@ -134,12 +118,10 @@ const EditProduct = ({ name }) => {
     queryKey: ["edit-product", name],
     queryFn: async () => {
       const response = await axios.get(`/api/product/edit-product/${name}`);
-      console.log(response);
       return response.data;
     },
   });
 
-  console.log(product);
 
   if (status === "success" && product?.error) {
     return (
@@ -198,11 +180,6 @@ const EditProduct = ({ name }) => {
       setColors(product?.colors);
       setFaqs(product?.faqs);
       setProductPictures(product?.images);
-      // setImageUrl(post?.images[0]);
-      // setSelectedImage(post?.images[0]);
-      // setDeletedPostFiles((prevFiles) => [...prevFiles, post?.images[0]]);
-      // setContent(post?.content);
-      // setDeletedPostFiles([...deletedPostFiles, post?.images[0]]);
     }
   }, [
     product,
@@ -210,13 +187,11 @@ const EditProduct = ({ name }) => {
     //  deletedPostFiles
   ]);
 
-  // console.log(getValues('tocs'))
 
   const { startUpload: postUpload, isUploading: productIsUploading } =
     useUploadThing("post", {
       onClientUploadComplete: (data) => {
         toast.success("uploaded successfully!");
-        console.log(data);
         // return data[0].url;
       },
       onUploadError: () => {
@@ -231,7 +206,6 @@ const EditProduct = ({ name }) => {
 
   const onSubmit = async (values) => {
     try {
-     console.log(values)
       const removeKey = deletedFiles.map((deletedFile) => {
         if (typeof deletedFile === "string") {
           return deletedFile.split("/").pop();
@@ -255,35 +229,26 @@ const EditProduct = ({ name }) => {
         })
         .filter(Boolean);
 
-console.log(filesData)
 
       if (filesData.length >= 1) {
         const uploadedData = await postUpload(filesData);
-        // const uploadedUrls = uploadedData.map(item => item.url);
-
-        // Create a map of uploaded URLs
         const newBlobUrlMap = productPictures.map((picture, index) => {
           if (picture.file) {
-            // For files that were uploaded
             return {
               blobUrl: picture.url,
-              url: uploadedData.shift()?.url, // Take the first uploaded URL for each file
+              url: uploadedData.shift()?.url, 
             };
           } else {
-            // For URLs that were already provided
             return {
               blobUrl: picture || picture.url,
-              url: picture || picture.url, // Keep the original URL
+              url: picture || picture.url, 
             };
           }
         });
 
         setProductPictures(newBlobUrlMap);
-        console.log(newBlobUrlMap)
         if (productThumnail) {
-          console.log(productThumnail)
           const allImages = newBlobUrlMap.map((item) => item.url);
-          console.log(allImages)
           const thumbnailIndex = productPictures.findIndex(
             (picture) => picture.url === productThumnail
           );
@@ -298,23 +263,15 @@ console.log(filesData)
         }
       }
       else{
-        console.log(productPictures)
         if (productThumnail) {
-          console.log(productThumnail)
           const allImages = productPictures.map((item) => item || item.url);
-          console.log(allImages)
           const thumbnailIndex = productPictures.findIndex(
             (picture) => picture === productThumnail || picture.url === productThumnail
           );
-          console.log(thumnailIndex)
           if (thumbnailIndex !== -1) {
-            // Move thumbnail to the front
             const thumbnailUrl = allImages[thumbnailIndex];
-            console.log(thumbnailUrl)
             const remainingImages = allImages.filter((_, index) => index !== thumbnailIndex);
-            console.log(remainingImages)
             const currentImages = [thumbnailUrl, ...remainingImages];
-            console.log(currentImages)
             setValue("images", currentImages);
           } else {
             setValue("images", allImages);
@@ -324,20 +281,17 @@ console.log(filesData)
 
 
 
-       console.log(values)
-       const finalValues = getValues();
-       console.log("Submitting form with values:", finalValues);
 
       mutation.mutate(values, {
         onSuccess: () => {
-          // reset();
-          // setFaqs([]);
-          // setColors([]);
-          // setProductPictures([]);
-          // setProductThumnail(null);
-          // setDeletedFiles([]);
-          // setFiles([])
-          // router.back();
+          reset();
+          setFaqs([]);
+          setColors([]);
+          setProductPictures([]);
+          setProductThumnail(null);
+          setDeletedFiles([]);
+          setFiles([])
+          router.back();
         },
       });
     } catch (err) {
@@ -379,11 +333,9 @@ console.log(filesData)
     setEditIndex(index);
   };
 
-  // console.log(files)
 
   function handleAddImage(file) {
     if (file) {
-      console.log(file);
       const schema = yup.object().shape({
         image: imageFileValidation.fields.image,
       });
@@ -392,7 +344,6 @@ console.log(filesData)
         .then(() => {
           setFileError("");
           const url = URL.createObjectURL(file);
-          console.log(url);
           if (productPictures.length === 0) {
             setProductThumnail(url);
             setProductPictures((prevFiles) => {
@@ -414,7 +365,6 @@ console.log(filesData)
 
   const setImageByUrl = (url) => {
     if (url) {
-      // console.log(imageUrl)
       const schema = yup.object().shape({
         image: imageUrlValidation.fields.image,
       });
@@ -437,7 +387,6 @@ console.log(filesData)
         })
         .catch((err) => {
           setFileError(err.errors[0]);
-          setSelectedImage(null);
         });
     }
   };
@@ -446,18 +395,13 @@ console.log(filesData)
 
   const handleRemoveImage = (indexToRemove, urlToRemove) => {
     setDeletedFiles(prev => [...prev, urlToRemove]);
-    // setValue('rmFiles', prev => [...prev, urlToRemove]);
-    
     if (urlToRemove === productThumnail) {
-      // Get the remaining images after removal
       const remainingImages = productPictures.filter((_, index) => index !== indexToRemove);
       setValue("images",remainingImages)
       
       if (remainingImages.length > 0) {
-        // Try to get the next image first, if not available, get the previous one
         const nextImage = productPictures[indexToRemove + 1] || productPictures[indexToRemove - 1];
         if (nextImage) {
-          // Handle both string and object cases
           const nextImageUrl = typeof nextImage === 'string' ? nextImage : nextImage.url;
           setProductThumnail(nextImageUrl);
         }
@@ -500,7 +444,6 @@ console.log(filesData)
 
   const handleEditColor = (index) => {
     const color = colors[index];
-    console.log(color)
     setColorName(color.name);
     setColorHex(color.hexCode);
     setColorPrice(color.price);
@@ -537,7 +480,6 @@ console.log(filesData)
                       }
                       return null;
                     });
-                    console.log(removeKey);
                     let id = product?.id;
                     deleteMutation.mutate(
                       { id, removeKey },
@@ -569,7 +511,6 @@ console.log(filesData)
                   btnStyle={
                     "bg-black text-white  border-black dark:border-white dark:bg-white dark:text-black rounded-full border-2 text-[10px] md:text-sm px-3  py-1  md:text-sm duration-300  disabled:cursor-not-allowed   "
                   }
-                  // className={"right-0  z-50 h-fit w-72 px-3 bg-white border border-lbtn  dark:border-dbtn dark:bg-black"}
                   position={"top-0 right-0"}
                   size={
                     "h-screen max-w-full w-80 border-l-2 border-l-lcard dark:border-l-dcard"
@@ -817,9 +758,7 @@ console.log(filesData)
                   <div className="h-8 w-8 rounded-lg bg-gradient-to-tr from-redorange to-yellow"></div>
                   :
                   <ImageCom
-                  src={
-                    product?.seller?.image && product?.seller?.image 
-                  }
+                  src={ product?.seller?.image }
                   className="h-9 w-9 rounded-lg"
                   alt=""
                   />

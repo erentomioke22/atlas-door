@@ -9,15 +9,13 @@ import { toast } from 'sonner';
 const ImageInput = ({setValue,selectedImage, setSelectedImage,selectedInputImage, setSelectedInputImage,rmThumbnailFile,setRmThumbnailFile}) => {
 
 
-    // const [selectedImage, setSelectedImage] = useState();
-    // const [selectedInputImage, setSelectedInputImage] = useState();
+
     const uploadMutation = useUploadMutation();
     const fileInputRef = useRef(null); 
      const [fileError, setFileError] = useState('');
 
      const setImageByUrl = ((imageUrl) => {
       if (imageUrl) { 
-        // console.log(imageUrl)
        const schema = yup.object().shape({ 
         image: imageUrlValidation.fields.image, 
       }); 
@@ -40,7 +38,6 @@ const ImageInput = ({setValue,selectedImage, setSelectedImage,selectedInputImage
     
         uploadMutation.mutate(formData, {
           onSuccess: (data) => {
-            // console.log('File uploaded:', data.imageUrl);
             toast.success('File uploaded');
             if (data.imageUrl) {
               setValue('image',data.imageUrl)
@@ -49,7 +46,6 @@ const ImageInput = ({setValue,selectedImage, setSelectedImage,selectedInputImage
             }
           },
           onError: (error) => {
-            // console.error('Upload failed:', error.message);
             toast.error('Failed to upload file. Please try again.');
           },
         });
@@ -57,7 +53,6 @@ const ImageInput = ({setValue,selectedImage, setSelectedImage,selectedInputImage
 
      function handleImageChange(file) { 
       if (file) { 
-        // console.log(file)
         const imageUrl = URL.createObjectURL(file);
         // const extension = file.name.split(".").pop();
         // const formData = new File([file], `thumnail_${crypto.randomUUID()}.${extension}.webp`)
@@ -77,7 +72,6 @@ const ImageInput = ({setValue,selectedImage, setSelectedImage,selectedInputImage
         });  
       } 
     }
-// console.log(selectedImage)
   return (
     <>
     <input

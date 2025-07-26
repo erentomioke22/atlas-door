@@ -6,6 +6,7 @@ function formatDateISO(date) {
 
 export default async function sitemap() {
   const posts = await prisma.post.findMany();
+  const products = await prisma.product.findMany();
   const tags = await prisma.tag.findMany();
 
   const postEntries = posts.map(({ link, updatedAt, images, contentImages }) => ({
@@ -21,6 +22,16 @@ export default async function sitemap() {
             //       fa: `${process.env.NEXT_PUBLIC_BASE_URL}/posts/${link}`,
             //     },
             //   },
+  }));
+
+  const productEntries = products.map(({ name, updatedAt, images }) => ({
+    url: `${process.env.NEXT_PUBLIC_BASE_URL}/products/${name}`,
+    lastModified: formatDateISO(updatedAt),
+    changeFrequency: 'yearly',
+    priority:0.8,
+    images: [
+      ...images.map(image => `${process.env.NEXT_PUBLIC_BASE_URL}/${image}`),
+    ],
   }));
 
   // const tagEntries = tags.map(({createdAt,name}) => ({
@@ -47,5 +58,6 @@ export default async function sitemap() {
     },
     ...routeEntries,
     ...postEntries,
+    ...productEntries,
   ];
 }

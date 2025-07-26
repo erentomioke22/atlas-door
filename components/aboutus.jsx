@@ -6,8 +6,7 @@ import Image from 'next/image';
 
 const AboutUs = () => {
   return (
-    <>
-      <div className="bg-lcard dark:bg-dcard w-full md:w-2/3 md:rounded-xl mx-auto px-5 py-20 space-y-5 gap-5">
+      <div className=" mx-auto   space-y-5 ">
 
         <div className='space-y-7 text-center'>
           <h1 className="text-4xl font-semibold tracking-tight sm:text-7xl">درباره ی ما</h1>
@@ -29,13 +28,7 @@ const AboutUs = () => {
           </div>
         </div>
 
-        {/* <div className="flex flex-wrap space-x-5 text-sm md:text-lg justify-end text-start">
-           <p>021 2121 256</p>
-           <p>0912 375 8621</p>
-           <p>0990 119 6140</p>
-         </div> */}
       </div>
-    </>
   );
 }
 

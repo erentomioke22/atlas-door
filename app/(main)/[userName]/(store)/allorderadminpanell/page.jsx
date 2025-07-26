@@ -1,28 +1,19 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import InfiniteScrollContainer from "@components/InfiniteScrollContainer";
-import { useInfiniteQuery, useQuery,useMutation,useQueryClient } from "@tanstack/react-query";
+import React, { useEffect } from "react";
+import {  useQuery,useMutation,useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import OrderCard from "@components/products/orderCard";
 import { formatPrice } from "@lib/utils";
 import { toast } from 'sonner';
-import { notFound, useRouter } from 'next/navigation';
+import { notFound } from 'next/navigation';
 import LoadingOrder from "@components/ui/loading/loadingOrder";
-import PaymentPanel from "@components/paymentPanel";
 import Link from 'next/link';
 import ImageCom from '@components/ui/Image';
 import Accordion from "@components/ui/Accordion";
-import { FaUserPlus } from "react-icons/fa";
-import { IoPencil,IoClose } from "react-icons/io5";
-import { FaMessage } from "react-icons/fa6";
-import moment from "moment";
-import { PiHeartFill } from "react-icons/pi";
-import { FaUserGroup } from "react-icons/fa6";
-import { FaCreditCard ,FaArrowUp  } from "react-icons/fa";
+import {IoClose } from "react-icons/io5";
+import { FaCreditCard } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
 import { FaTruckFast } from "react-icons/fa6";
-import { FaHouseChimneyUser } from "react-icons/fa6";
 import { FaHandshakeSimple } from "react-icons/fa6";
 import { FaForwardStep } from "react-icons/fa6";
 import { useSession } from 'next-auth/react';
@@ -32,10 +23,9 @@ export default function page() {
   const { data: session } = useSession();
 
 
-console.log(session)
   
   useEffect(() => {    
-    if (session?.user?.role && session?.user?.role === "admin") {
+    if (session?.user?.role === "admin") {
       notFound();
     }
   }, [session]);
@@ -44,7 +34,7 @@ console.log(session)
     data,
     // fetchNextPage,
     // hasNextPage,
-    isFetching,
+    // isFetching,
     // isFetchingNextPage,
     status,
   } = useQuery({
@@ -69,13 +59,10 @@ console.log(session)
       return response.data;
     },
     onMutate: async ({ orderId, status }) => {
-      // Cancel any outgoing refetches
       await queryClient.cancelQueries(["product-feed", "admin"]);
   
-      // Snapshot the previous value
       const previousOrders = queryClient.getQueryData(["product-feed", "admin"]);
   
-      // Optimistically update to the new value
       queryClient.setQueryData(["product-feed", "admin"], (old) => ({
         ...old,
         orders: old.orders.map((order) =>
@@ -85,16 +72,13 @@ console.log(session)
         ),
       }));
   
-      // Return a context object with the snapshotted value
       return { previousOrders };
     },
     onError: (err, newOrder, context) => {
-      // If the mutation fails, use the context returned from onMutate to roll back
       queryClient.setQueryData(["product-feed", "admin"], context.previousOrders);
       toast.error(err.response?.data?.error || 'Failed to update order status');
     },
     onSettled: () => {
-      // Always refetch after error or success to ensure cache is in sync
       queryClient.invalidateQueries(["product-feed", "admin"]);
     },
   });
@@ -148,7 +132,6 @@ console.log(session)
     },
   };
 
-  console.log(data);
 
   // const totalPrice = data?.orders?.reduce((sum, order) => {
   //   const quantity = order?.quantity || 1;

@@ -5,18 +5,17 @@ import { useState, useRef } from "react";
 import TextArea from "@components/ui/TextArea";
 import Dropdown from "@components/ui/dropdown";
 import { toast } from "sonner";
-import { useSubmitProductMutation } from "../../components/products/mutations";
+import { useSubmitProductMutation } from "@components/products/mutations";
 import LoadingIcon from "@components/ui/loading/loadingIcon";
-import { useForm, useFieldArray, Controller } from 'react-hook-form'
+import { useForm, Controller } from 'react-hook-form'
 import { yupResolver } from "@hookform/resolvers/yup";
 import BlockEditor from "@components/BlockEditor/BlockEditor";
 import { useMemo } from "react";
 import { Doc as YDoc } from "yjs";
 import { useSession } from "next-auth/react";
-import NotFound from "@app/(main)/not-found";
 import { useRouter } from "next/navigation";
 import EmblaCarousel from "@components/ui/carousel/carousel";
-import { FaImage, FaPlus, FaCheck, FaQuestion } from "react-icons/fa6";
+import {FaPlus, FaCheck, FaQuestion } from "react-icons/fa6";
 import Accordion from "@components/ui/Accordion";
 import ImageCom from "@components/ui/Image";
 import Offcanvas from "@components/ui/offcanvas";
@@ -29,11 +28,11 @@ import {
   imageUrlValidation,
 } from "@lib/validation";
 import { useUploadThing } from "@lib/uploadthing";
-import { FaPalette } from "react-icons/fa6"; // Add this import
+import { FaPalette } from "react-icons/fa6"; 
 import { formatPrice } from "@lib/utils";
 import { IoPencil } from "react-icons/io5";
 import Darkmode from "@components/ui/darkmode";
-
+import { notFound } from "next/navigation";
 
 
 const CreateProduct = () => {
@@ -58,37 +57,39 @@ const CreateProduct = () => {
   const [colorStocks, setColorStocks] = useState('');
   const ydoc = useMemo(() => new YDoc(), []);
   const mutation = useSubmitProductMutation();
-  const baseUrl = `${process.env.NEXT_PUBLIC_BASE_URL}`;
   const [fileError, setFileError] = useState("");
   const [selectedInputImage, setSelectedInputImage] = useState();
-  const [selectedImage, setSelectedImage] = useState();
-  const [selectedImageUrl, setSelectedImageUrl] = useState();
   const [files, setFiles] = useState([]);
-  const [blobUrlToUploadedUrlMap, setBlobUrlToUploadedUrlMap] = useState([]);
   const fileInputRef = useRef(null);
-  const [editingColorIndex, setEditingColorIndex] = useState(null);
 
-  console.log(colors,editColorIndex)
-  // const [editorContent, setEditorContent] = useState();
-  // const[files,setFiles]=useState([])
-  // const [deletedFiles, setDeletedFiles] = useState([]);
-  // const [deletedPostFiles, setDeletedPostFiles] = useState([]);
 
-  console.log(productPictures);
+
+  if (session?.user.role !== "admin") {
+    notFound()
+  }
+
+
+
+
 
 
   const predefinedColors = [
-    { name: 'Red', hexCode: '#FF0000' },
-    { name: 'Blue', hexCode: '#0000FF' },
-    { name: 'Green', hexCode: '#00FF00' },
-    { name: 'Yellow', hexCode: '#FFFF00' },
-    { name: 'Black', hexCode: '#000000' },
-    { name: 'White', hexCode: '#FFFFFF' },
-    { name: 'Purple', hexCode: '#800080' },
-    { name: 'Orange', hexCode: '#FFA500' },
-    { name: 'Pink', hexCode: '#FFC0CB' },
-    { name: 'Brown', hexCode: '#A52A2A' },
-    { name: 'Gray', hexCode: '#808080' },
+    { name: 'قرمز', hexCode: '#FF0000' },
+    { name: 'آبی', hexCode: '#0000FF' },
+    { name: 'سبز', hexCode: '#00FF00' },
+    { name: 'زرد', hexCode: '#FFFF00' },
+    { name: 'مشکی', hexCode: '#000000' },
+    { name: 'سفید', hexCode: '#FFFFFF' },
+    { name: 'بنفش', hexCode: '#800080' },
+    { name: 'نارنجی', hexCode: '#FFA500' },
+    { name: 'صورتی', hexCode: '#FFC0CB' },
+    { name: 'قهوه ای', hexCode: '#A52A2A' },
+    { name: 'خاکستری', hexCode: '#808080' },
+    { name: 'نقره ای', hexCode: '#C0C0C0' },
+    { name: 'طلایی', hexCode: '#FFD700' },
+    { name: 'خاکی', hexCode: '##F0E68C' },
+    { name: 'شکلاتی', hexCode: '##D2691E' },
+    { name: 'برنز', hexCode: '###ff5733' },
     { name: 'Custom', hexCode: '#000000' }
   ];
 
@@ -107,22 +108,13 @@ const CreateProduct = () => {
       images: [],
       content: "",
       faqs: [],
+      // colors: []
       // price: "",
       // discount: "",
       // stocks: "",
-      // colors: [{
-      //   name: '',
-      //   hexCode: '#000000',
-      //   price: 0,
-      //   imageUrl: ''
-      // }]
     },
     resolver: yupResolver(productValidation),
   });
-
-  // if (!session) {
-  //   return NotFound();
-  // }
 
 
 
@@ -132,7 +124,6 @@ const CreateProduct = () => {
     useUploadThing("post", {
       onClientUploadComplete: (data) => {
         toast.success("uploaded successfully!");
-        console.log(data);
       },
       onUploadError: () => {
         throw new Error("error occurred while uploading");
@@ -144,7 +135,7 @@ const CreateProduct = () => {
 
   const onSubmit = async (values) => {
     try {
-      // console.log(values)
+      values.colors = colors;
       const filesData = productPictures
         .map(({ file }) => {
           if (file && typeof file !== "string") {
@@ -158,46 +149,6 @@ const CreateProduct = () => {
         })
         .filter(Boolean);
 
-      // if (filesData.length >= 1) {
-      //   const uploadedData = await postUpload(filesData);
-      //   uploadedData.forEach((data, index) => {
-      //     const { url } = files[index];
-      //     const uploadedUrl = data.url;
-      //     blobUrlToUploadedUrlMap.push({ blobUrl: url, uploadedUrl });
-      //   });
-      //   console.log(uploadedData.map(item => item.url))
-
-      //   if (productThumnail && !productThumnail.startsWith("blob:")) {
-      //     setValue("images", );
-      //     setValue("images", [productThumnail,uploadedData.map(item => item.url)]);
-      //   } else {
-      //     const uploadedThumbnail = blobUrlToUploadedUrlMap.find(
-      //       (item) => item.blobUrl === productThumnail
-      //     );
-      //     if (uploadedThumbnail) {
-      //       setValue("images", [uploadedThumbnail.uploadedUrl,uploadedData.map(item => item.url)]);
-      //     }
-      //   }
-      // }
-
-      // if (filesData.length >= 1) {
-      //   const uploadedData = await postUpload(filesData);
-      //   const uploadedUrls = uploadedData.map(item => item.url);
-
-      //   // Create a map of uploaded URLs
-      //   const newBlobUrlMap = productPictures.map((picture, index) => ({
-      //     blobUrl: picture.url,
-      //     uploadedUrl: uploadedData[index]?.url
-      //   })).filter(item => item.uploadedUrl); // Filter out any undefined uploads
-
-      //   setBlobUrlToUploadedUrlMap(newBlobUrlMap);
-
-      //   if (productThumnail) {
-      //     const imageUrl = productPictures.filter(picture => !picture.file && picture.url !== productThumnail).map(picture=> picture.url)
-      //     console.log(imageUrl)
-      //     const thumbnailUrl = productPictures.find(picture => picture.url === productThumnail).url || newBlobUrlMap.find(item => item.blobUrl === productThumnail)?.uploadedUrl;
-      //     setValue("images", thumbnailUrl ? [thumbnailUrl, ...uploadedUrls.filter(url => url !== thumbnailUrl),...imageUrl] : uploadedUrls);
-      //   }
 
       if (filesData.length >= 1) {
         const uploadedData = await postUpload(filesData);
@@ -239,7 +190,6 @@ const CreateProduct = () => {
         }
       }
 
-       console.log(values)
       mutation.mutate(values, {
         onSuccess: () => {
           reset();
@@ -287,11 +237,9 @@ const CreateProduct = () => {
     setEditIndex(index);
   };
 
-  // console.log(files)
 
   function handleAddImage(file) {
     if (file) {
-      console.log(file);
       const schema = yup.object().shape({
         image: imageFileValidation.fields.image,
       });
@@ -300,7 +248,6 @@ const CreateProduct = () => {
         .then(() => {
           setFileError("");
           const url = URL.createObjectURL(file);
-          console.log(url);
           if (productPictures.length === 0) {
             setProductThumnail(url);
             setProductPictures((prevFiles) => {
@@ -319,11 +266,9 @@ const CreateProduct = () => {
         });
     }
   }
-  console.log(productPictures);
 
   const setImageByUrl = (url) => {
     if (url) {
-      // console.log(imageUrl)
       const schema = yup.object().shape({
         image: imageUrlValidation.fields.image,
       });
@@ -346,7 +291,6 @@ const CreateProduct = () => {
         })
         .catch((err) => {
           setFileError(err.errors[0]);
-          setSelectedImage(null);
         });
     }
   };
@@ -368,27 +312,41 @@ const CreateProduct = () => {
 
 
 
-
   const handleAddColor = () => {
+    if (!colorName || !colorHex || !colorPrice || colorDiscount === '' || !colorStocks) {
+      toast.error("Please fill all color fields");
+      return;
+    }
+  
+    const newColor = {
+      name: colorName,
+      hexCode: colorHex,
+      price: parseFloat(colorPrice),
+      discount: parseFloat(colorDiscount),
+      stocks: parseInt(colorStocks),
+    };
+  
     if (editColorIndex !== null) {
-      const updatedColor = colors.map((color, index) =>
-        index === editColorIndex ? { name:colorName, hexCode:colorHex,price:colorPrice,discount:colorDiscount,stocks:colorStocks } : color
+      const updatedColors = colors.map((color, index) =>
+        index === editColorIndex ? newColor : color
       );
-      setColors(updatedColor);
-      setValue("colors", updatedColor, { shouldValidate: true });
+      setColors(updatedColors);
+      setValue("colors", updatedColors, { shouldValidate: true });
       setEditColorIndex(null);
     } else {
-      setColors([...colors, { name:colorName, hexCode:colorHex,price:colorPrice,discount:colorDiscount,stocks:colorStocks}]);
-      setValue("colors", [...colors, { name:colorName, hexCode:colorHex,price:colorPrice,discount:colorDiscount,stocks:colorStocks}], {
-        shouldValidate: true,
-      });
+      const updatedColors = [...colors, newColor];
+      setColors(updatedColors);
+      setValue("colors", updatedColors, { shouldValidate: true });
     }
-    setColorHex("");
+  
     setColorName("");
+    setColorHex("");
     setColorPrice("");
     setColorDiscount("");
     setColorStocks("");
   };
+
+
 
   const handleRemoveColor = (index) => {
     const removeColor = colors.filter((_, i) => i !== index);
@@ -399,7 +357,6 @@ const CreateProduct = () => {
 
   const handleEditColor = (index) => {
     const color = colors[index];
-    console.log(color)
     setColorName(color.name);
     setColorHex(color.hexCode);
     setColorPrice(color.price);
@@ -417,7 +374,7 @@ const CreateProduct = () => {
           <div className="flex justify-between  w-full sticky top-0 bg-white dark:bg-black z-[10] py-2 px-2 sm:px-5">
             <div className="">
               <Offcanvas
-                title={"CRAETE POST"}
+                title={"Create Product"}
                 btnStyle={
                   "bg-black text-white  border-black dark:border-white dark:bg-white dark:text-black rounded-full border-2 text-[10px] md:text-sm px-3  py-1  md:text-sm duration-300  disabled:cursor-not-allowed   "
                 }
@@ -597,12 +554,20 @@ const CreateProduct = () => {
                               </div>
                         ))} */}
                     </EmblaCarousel>
+
+                    <div
+            className={`text-red mt-2 text-[10px] md:text-sm transition-opacity duration-300  ${
+              errors?.images?.message ? "opacity-100" : "opacity-0"
+            }`}
+          >
+            {errors?.images?.message}
+          </div>
                   </div>
 
                   <p className="text-sm">name , Tags & desc </p>
                   <div>
                     <TextArea
-                      placeholder={"Write Your Post name ..."}
+                      placeholder={"Write Your Product name ..."}
                       name={"name"}
                       type={"text"}
                       ref={register}
@@ -618,7 +583,7 @@ const CreateProduct = () => {
 
                   <div>
                     <TextArea
-                      placeholder={"Write Your Post Description ..."}
+                      placeholder={"Write Your Product Description ..."}
                       name={"desc"}
                       type={"text"}
                       label={false}
@@ -642,7 +607,7 @@ const CreateProduct = () => {
                       {postIsUploading || mutation.isPending ? (
                         <LoadingIcon
                           color={
-                            "text-black dark:text-white dark:fill-black fill-white mx-auto"
+                            "bg-white dark:bg-black"
                           }
                         />
                       ) : (
@@ -703,11 +668,7 @@ const CreateProduct = () => {
                   <ImageCom
                     className="rounded-xl h-10 w-10 "
                     size={"h-10 w-10"}
-                    src={
-                      session.user?.image === null
-                        ? `${process.env.NEXT_PUBLIC_BASE_URL}/images/logo/user-avatar-people-icon-solid-style-icon-design-element-icon-template-background-free-vector.jpg`
-                        : `${process.env.NEXT_PUBLIC_BASE_URL}${session.user.image}`
-                    }
+                    src={session.user.image}
                     alt={`${session.user?.name} avatar`}
                   />
                 )}
@@ -751,13 +712,7 @@ const CreateProduct = () => {
             {errors?.content?.message}
           </div>
 
-          <div
-            className={`text-red mt-2 text-[10px] md:text-sm transition-opacity duration-300  ${
-              errors?.content?.message ? "opacity-100" : "opacity-0"
-            }`}
-          >
-            {errors?.content?.message}
-          </div>
+
 
 
 
@@ -894,7 +849,13 @@ const CreateProduct = () => {
           </Dropdown>
           
 
-
+          <div
+  className={`text-red mt-2 text-[10px] md:text-sm transition-opacity duration-300  ${
+    errors?.colors?.message ? "opacity-100" : "opacity-0"
+  }`}
+>
+  {errors?.colors?.message}
+</div>
 
 
 

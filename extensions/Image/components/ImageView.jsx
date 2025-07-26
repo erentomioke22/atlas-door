@@ -9,7 +9,6 @@ import { useState } from 'react';
 export const ImageView = (props) => {
   const [loading, setLoading] = useState(true);
 
-// console.log(loading)
   const { editor, getPos, node, updateAttributes } = props;
   const imageWrapperRef = useRef(null);
   const { src,alt,caption,width } = node.attrs;
@@ -24,7 +23,6 @@ export const ImageView = (props) => {
     const pos = getPos();
     editor.commands.setNodeSelection(pos); 
     editor.chain().focus(pos).run(); 
-    // console.log(pos)
   }, [getPos, editor.commands]);
 
 

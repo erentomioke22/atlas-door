@@ -8,7 +8,6 @@ export async function GET(req, { params }) {
     const session = await auth();
     if (!session) return Response.json({ error: "unauthorized" }, { status: 401 });
     const { type } = await params;
-    // console.log(type);
     if (type === "admin" && session?.user.role !== "admin") return Response.json({ error: "unauthorized" }, { status: 401 });
 
     let orders;
@@ -103,7 +102,6 @@ export async function GET(req, { params }) {
     //     where:{userId:session?.user.id}
     // })
 
-    // console.log(orders)
 
     return Response.json({ orders });
   } catch (error) {

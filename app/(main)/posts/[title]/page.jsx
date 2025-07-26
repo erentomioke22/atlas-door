@@ -8,7 +8,6 @@ import Head from 'next/head';
 
 const getPost = cache(async (title, loggedInUserId) => {
   try {
-    // console.log('title 10101',title)
     const decodedTitle = decodeURIComponent(title);
     const post = await prisma.post.findFirst({
       where:{link:decodedTitle},
@@ -116,7 +115,7 @@ export default async function Page({ params }) {
       <Head>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       </Head>
-      <div>
+      <div className='mt-16'>
         <PostPage title={title} />
       </div>
     </>
@@ -124,22 +123,6 @@ export default async function Page({ params }) {
 }
 
 
-
-    {/* <Head>
-    <title>{post?.title} - {post?.desc.slice(0, 50)}...</title>
-    <meta name="description" content={post?.desc} />
-    <meta name="keywords" content={post?.tags.map(tag => tag.name).join(', ')} />
-    <meta property="og:title" content={`${post?.title} - ${post?.desc?.slice(0, 50)}...`} />
-    <meta property="og:description" content={post?.desc} />
-    <meta property="og:type" content="website" />
-    <meta property="og:locale" content="en_US" />
-    <meta property="og:url" content={`https://www.atlasdoor.ir/posts/${post?.title}`} />
-    <meta property="og:site_name" content="Atlas Door" />
-    <meta property="og:image" content={`https://www.atlasdoor.ir/${post?.images[0]}`} />
-    {post?.contentImages.map((contentImage, index) => (
-      <meta key={index} property="og:image" content={`https://www.atlasdoor.ir/${contentImage}`} />
-    ))}
-  </Head> */}
 
 
 

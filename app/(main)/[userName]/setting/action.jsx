@@ -4,51 +4,51 @@ import { auth } from "@auth";
 import { prisma } from "@utils/database";
 import { getUserDataSelect } from "@/lib/types";
 import { utapi } from "@server/uploadthing";
-
+// import {updateUserProfileSchema,} from "@/lib/validation";
+import { hash } from "bcryptjs";
+import { compare } from "bcryptjs";
 
 
 export async function updateUserProfile(values) {
-  // const validatedValues = updateUserProfileSchema.parse(values);
-
+  try{
   const  session  = await auth();
 
-  if (!session) throw new Error("Unauthorized");
-// console.log(values,values.removedAvatar)
-// if(values.password){
-//   const hashedPassword = await hash(values.password, 12);
-//   const user = await prisma.user.findUnique({
-//     where:{id:session?.user.id}
-//   })
-//    if(!user){
-//      throw new Error("user not found")
-//    }
-//   const comparePassword = await compare(values.lastPassword,user.password)
+  if (!session) throw new Error("لطفا وارد حساب خود شوید");
 
-//   if(!comparePassword){
-//      throw new Error("current password is not true")
-//   }
+if(values.values.password){
+  const hashedPassword = await hash(values.values.password, 12);
+  const user = await prisma.user.findUnique({
+    where:{id:session?.user.id}
+  })
+   if(!user){
+     throw new Error("هیچ کاربری یافت نشد")
+   }
+  const comparePassword = await compare(values.values.lastPassword,user.password)
 
-//   const updatedUser = await prisma.user.update({
-//     where:{id:session?.user.id},
-//       data:{
-//         password:hashedPassword,
-//       }
-//     });
-
-//     return updatedUser;
-// }
-
-  if (values.removedAvatar !== null) {
-    try {
-     const deletedFiles = await utapi.deleteFiles([values.removedAvatar]);
-    //  console.log(values.removedAvatar,deletedFiles)
-    } catch (err) {
-      console.error(err);
-      throw new Error('Failed to delete archive image');
-    }
+  if(!comparePassword){
+     throw new Error("گذرواژه فعلی اشتباه است")
   }
 
+  const updatedUser = await prisma.user.update({
+    where:{id:session?.user.id},
+      data:{
+        password:hashedPassword,
+      }
+    });
 
+    return updatedUser;
+}else{
+  // if (values.removedAvatar !== null) {
+  //   try {
+  //    const deletedFiles = await utapi.deleteFiles([values.removedAvatar]);
+  //   //  console.log(values.removedAvatar,deletedFiles)
+  //   } catch (err) {
+  //     console.error(err);
+  //     throw new Error('Failed to delete archive image');
+  //   }
+  // }
+  
+  
     const updatedUser = await prisma.user.update({
       where: { id: session?.user.id },
       data: values.values,
@@ -56,6 +56,12 @@ export async function updateUserProfile(values) {
     });
    
     return updatedUser;
+}
+
+}catch(error){
+  throw new Error(error)
+}
+
 
 }
 
@@ -78,7 +84,6 @@ export async function deleteUser() {
       where: { id: session?.user.id },
     });
 
-    // console.log(currentUser)
     if (currentUser.image.length > 0) {
       try {
         await utapi.deleteFiles(currentUser.image);

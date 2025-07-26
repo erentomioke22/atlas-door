@@ -38,7 +38,6 @@ const AvatarInput = ({avatar,setValue,selectedImage, setSelectedImage,selectedIn
 
      function handleImageChange(file) { 
       if (file) { 
-        // console.log(file)
         setRemovedAvatar(avatar.split("/").pop())
         const imageUrl = URL.createObjectURL(file);
         const extension = file.name.split(".").pop();

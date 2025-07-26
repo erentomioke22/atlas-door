@@ -26,7 +26,6 @@ const PaymentPanel = ({status}) => {
     
     const paymentMutation = useMutation({
         mutationFn: async (values) => {
-          console.log(values)
           const response = await axios.post('/api/payment',values);
           return response.data;
         },
@@ -73,7 +72,6 @@ const PaymentPanel = ({status}) => {
           //   toast.error("لطفا شناسه پرداخت را وارد کنید");
           //   return;
           // }
-          console.log(values)
            paymentMutation.mutate(values);
         } catch (err) {
           toast.error(err.message || "An error occurred");

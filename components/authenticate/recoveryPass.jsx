@@ -54,7 +54,6 @@ const RecoveryPass = ({ setShow }) => {
           "http://localhost:3000/api/auth/forgotpass",
           values
         );
-        console.log(response);
         if (response.data.message) {
           toast.success(response.data.message);
           setIsTimerRunning(true);
@@ -62,7 +61,7 @@ const RecoveryPass = ({ setShow }) => {
           toast.error(response.data.error);
         }
       } catch (error) {
-        // console.log("Error:", error);
+        console.log("Error:", error);
       }
     });
   };

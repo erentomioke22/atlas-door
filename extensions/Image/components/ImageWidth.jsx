@@ -15,7 +15,6 @@ export const ImageWidth = memo(({ onChange, value }) => {
       onChange(nextValue)
       setCurrentValue(nextValue)
       // const nextValue = parseInt(e.target.value)
-      // console.log(nextValue)
     },
     [onChange],
   )

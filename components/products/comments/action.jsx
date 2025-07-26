@@ -5,16 +5,10 @@ import { prisma } from "@utils/database";
 import { getCommentDataInclude} from "@/lib/types";
 
 
-export async function submitComment({product,content,userId,parentId}) {
+export async function submitComment({product,content,userId,parentId,userReplyId}) {
   try{
-    // console.log(product,content,userId,parentId)
-    // product: { connect: { id: product.id } },
-    // user: { connect: { id: userId } },
-    // name:session?.user.name || '',
-    // email:session?.user.email,
     const session = auth()
     if (!session) throw new Error("Unauthorized");
-    
     const [newComment] = await prisma.$transaction([
       prisma.comment.create({
         data: {
@@ -25,14 +19,26 @@ export async function submitComment({product,content,userId,parentId}) {
         },
         include: getCommentDataInclude(userId),
       }),
-      ...(product?.sellerId?.id !== userId
+      ...(!parentId && product?.sellerId === userId
         ? [
             prisma.notification.create({
               data: {
                 issuerId: userId,
-                recipientId: product?.sellerId?.id,
+                recipientId: product?.sellerId,
                 productId: product?.id,
                 type: "COMMENT",
+              },
+            }),
+          ]
+        : []),
+      ...(parentId && userReplyId && userReplyId === userId
+        ? [
+            prisma.notification.create({
+              data: {
+                issuerId: userId,
+                recipientId: userReplyId,
+                productId: product?.id,
+                type: "REPLY",
               },
             }),
           ]
@@ -51,8 +57,7 @@ export async function editComment({product,content,userId,commentId}) {
     const session = auth()
     if (!session) throw new Error("Unauthorized");
   
-    const [newComment] = await prisma.$transaction([
-      prisma.comment.update({
+  const editedComment = prisma.comment.update({
         where:{id:commentId},
         data: {
           content,
@@ -60,22 +65,9 @@ export async function editComment({product,content,userId,commentId}) {
           userId,
         },
         include: getCommentDataInclude(userId),
-      }),
-      ...(product?.sellerId?.id !== userId
-        ? [
-            prisma.notification.create({
-              data: {
-                issuerId: userId,
-                recipientId: product?.sellerId?.id,
-                postId: product?.id,
-                type: "COMMENT",
-              },
-            }),
-          ]
-        : []),
-    ]);
+      })
   
-    return newComment;
+    return editedComment;
   }
   catch(error){
     throw new Error(error)
@@ -90,12 +82,10 @@ try{
 
   if (!comment) throw new Error("Comment not found");
 
-;
 
-  const deletedComment = await prisma.comment.delete({
+   const deletedComment = prisma.comment.delete({
     where: { id },
-    // include: getCommentDataInclude(session?.user.id),
-  });
+  })
 
   return deletedComment;
 }catch(error){

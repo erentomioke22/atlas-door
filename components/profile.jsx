@@ -14,12 +14,12 @@ const Profile = ({ session }) => {
   return (
     <DropDrawer
       title={
-        <div className="relative h-8 w-8">
+        <div className="relative h-9 w-9">
           {session?.user?.image === null ?
-                  <div className="h-8 w-8 rounded-lg bg-gradient-to-tr from-redorange to-yellow"></div>
+                  <div className="h-9 w-9 rounded-xl bg-gradient-to-tr from-redorange to-yellow"></div>
                   :
                   <ImageCom
-                  className="rounded-lg h-8 w-8 "
+                  className="rounded-xl h-9 w-9 "
                   size={"h-8 w-8"}
                   src={
                     session.user?.image === null
@@ -37,7 +37,7 @@ const Profile = ({ session }) => {
       disabled={!session}
     >
       <div
-        className=" flex justify-around  p-3   mx-3  rounded-2xl  gap-3 truncate duration-300"
+        className=" flex  max-sm:mt-5  p-3   mx-3  rounded-2xl  gap-2 truncate duration-300"
       >
         <div className="relative h-10 w-10">
         {session?.user?.image === null ?
@@ -55,7 +55,7 @@ const Profile = ({ session }) => {
                 /> 
                   }
         </div>
-        <div className="text-start truncate max-w-36">
+        <div className="t truncate max-w-36">
           <p className="text-sm  text-black dark:text-white truncate">{session?.user?.displayName}</p>
           <p className="text-sm  text-lfont truncate">{session?.user?.email}</p>
         </div>
@@ -73,7 +73,7 @@ const Profile = ({ session }) => {
         onClick={() => {
           setClose(!close);
         }}
-        className={" flex justify-between py-2 w-full  px-3  rounded-lg  hover:bg-lcard dark:hover:bg-dcard hover:text-black dark:hover:text-white text-lfont duration-500"} >
+        className={"flex justify-between py-2 w-full  px-3 text-lg sm:text-sm  rounded-lg  hover:bg-lcard dark:hover:bg-dcard sm:hover:text-black sm:dark:hover:text-white sm:text-lfont duration-500"} >
      <span>ساخت بلاگ</span>
       </Link>
 
@@ -82,7 +82,7 @@ const Profile = ({ session }) => {
         onClick={() => {
           setClose(!close);
         }}
-        className={" flex justify-between py-2 w-full  px-3  rounded-lg  hover:bg-lcard dark:hover:bg-dcard hover:text-black dark:hover:text-white text-lfont duration-500"} >
+        className={" flex justify-between py-2 w-full  px-3 text-lg sm:text-sm  rounded-lg  hover:bg-lcard dark:hover:bg-dcard sm:hover:text-black sm:dark:hover:text-white sm:text-lfont duration-500"} >
      <span>ساخت محصول</span>
       </Link>
           </>
@@ -91,11 +91,13 @@ const Profile = ({ session }) => {
  
 
       <Link 
-        href={`/${session?.user.name}/orders`}   
+        // href={`/${session?.user.name}/orders`}  
+        href={`/`}  
+        disabled={true} 
         onClick={() => {
           setClose(!close);
         }}
-        className={" flex justify-between py-2 w-full  px-3  rounded-lg  hover:bg-lcard dark:hover:bg-dcard hover:text-black dark:hover:text-white text-lfont duration-500"} >
+        className={"flex justify-between py-2 w-full  px-3 text-lg sm:text-sm  rounded-lg  hover:bg-lcard dark:hover:bg-dcard sm:hover:text-black sm:dark:hover:text-white sm:text-lfont duration-500"} >
      <span>سفارش هاي من</span>
       </Link>
         
@@ -108,7 +110,7 @@ const Profile = ({ session }) => {
             setClose(!close);
           }}
           href={`/${session?.user.name}/setting`}
-          className={"flex justify-between py-2 w-full  px-3  rounded-lg  hover:bg-lcard dark:hover:bg-dcard sm:hover:text-black sm:dark:hover:text-white sm:text-lfont duration-500"}           >
+          className={"flex justify-between py-2 w-full  px-3 text-lg sm:text-sm  rounded-lg  hover:bg-lcard dark:hover:bg-dcard sm:hover:text-black sm:dark:hover:text-white sm:text-lfont duration-500"}           >
             <span>تنظيمات</span>
         </Link>
 
@@ -117,7 +119,7 @@ const Profile = ({ session }) => {
           onClick={() => {
             signOut();
           }}
-          className={"flex justify-between py-2 w-full  px-3  rounded-lg  hover:bg-lcard dark:hover:bg-dcard  text-orange duration-500"}           >
+          className={"flex justify-between py-2 w-full  px-3 text-lg sm:text-sm   rounded-lg  hover:bg-lcard dark:hover:bg-dcard  text-orange duration-500"}           >
           <span >خروج از حساب</span>
         </button>
         

@@ -8,7 +8,6 @@ export async function GET (req){
  try{
     const session = auth()
    const postTitle = req.nextUrl.searchParams.get('postTitle')
-   // console.log(postTitle)
    const currentPost = await prisma.post.findFirst({
     where:{link:postTitle},
     include: getPostDataInclude(session?.user?.id),

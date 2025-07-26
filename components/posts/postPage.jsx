@@ -23,7 +23,6 @@ const PostPage = ({params}) => {
   const {data:session}=useSession();
   const contentRef = useRef(null);
 
-// console.log(params)
 const {data: post,status,}=useQuery({
     queryKey: ["post", params.title],
     queryFn: async()=>{const response = await axios.get(`/api/posts?postTitle=${params.title}`);
@@ -41,7 +40,6 @@ const {data: post,status,}=useQuery({
   };
 
 
-// console.log(post)
 
   if (status === "success" && (post?.error || post?.lenght >= 1) ) {
     return NotFound();
@@ -61,9 +59,6 @@ const {data: post,status,}=useQuery({
        const topPos = commentElement.getBoundingClientRect().top + window.scrollY - 120; 
        window.scrollTo({ top: topPos, behavior: 'smooth' }); 
       } };
-// console.log(post?.content)
-// console.log(post)
-// console.log(status)
    const createdAt = moment(post?.createdAt, 'YYYY-MM-DDTHH:mm:ss.SSSZ').locale('fa') 
 const formattedDate = createdAt.isValid() ? createdAt.fromNow(): 'تاریخ نامعتبر'
   return (

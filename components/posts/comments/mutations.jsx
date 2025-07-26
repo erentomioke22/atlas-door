@@ -13,30 +13,6 @@ export function useSubmitCommentMutation(postId, category) {
       const queryKey = ["comments", postId, category];
       await queryClient.cancelQueries({ queryKey });
 
-      // If it's a reply (has parentId), update the parent comment's replies array
-      // if (comment.parentId) {
-      //   queryClient.setQueryData(queryKey, (oldData) => {
-      //     if (!oldData?.pages?.length) return oldData;
-
-      //     return {
-      //       ...oldData,
-      //       pages: oldData.pages.map((page) => ({
-      //         ...page,
-      //         comments: page.comments.map((c) => {
-      //           // If this is the parent comment, add the new reply to its replies array
-      //           if (c.id === comment.parentId) {
-      //             return {
-      //               ...c,
-      //               replies: [comment, ...(c.replies || [])],
-      //             };
-      //           }
-      //           return c;
-      //         }),
-      //       })),
-      //     };
-      //   });
-      // } else {
-        // It's a top-level comment, add it to the beginning of the list
         queryClient.setQueryData(queryKey, (oldData) => {
           const firstPage = oldData?.pages[0];
           if (firstPage) {
@@ -72,30 +48,12 @@ export function useSubmitCommentMutation(postId, category) {
 
 export function useEditCommentMutation(postId, category) {
   const queryClient = useQueryClient();
-  console.log(postId, category)
 
   const mutation = useMutation({
     mutationFn: editComment,
     onSuccess: async (comment) => {
       const queryKey = ["comments", postId, category];
       await queryClient.cancelQueries({ queryKey });
-      // queryClient.setQueryData(queryKey, (oldData) => {
-      //   if (!oldData?.pages?.length) return oldData;
-
-      //   return {
-      //     ...oldData,
-      //     pages: oldData.pages.map((page) => ({
-      //       ...page,
-      //       comments: page.comments.map((c) =>
-      //         c.id === comment.id ? comment : c
-      //       ),
-      //     })), 
-      //   };
-      // });
-
-      // queryClient.invalidateQueries({queryKey,});
-
-
 
       queryClient.setQueryData(queryKey, (oldData) => {
         if (!oldData?.pages?.length) return oldData;
@@ -141,7 +99,6 @@ export function useEditCommentMutation(postId, category) {
 
 export function useDeleteCommentMutation(postId, category) {
   const queryClient = useQueryClient();
-console.log(postId, category)
   const mutation = useMutation({
     mutationFn: deleteComment,
     onSuccess: async (deletedComment) => {
@@ -149,7 +106,6 @@ console.log(postId, category)
       await queryClient.cancelQueries({ queryKey });
 
       queryClient.setQueryData(queryKey, (oldData) => {
-        console.log(oldData)
         if (!oldData) return oldData;
         return {
           ...oldData,
@@ -161,18 +117,6 @@ console.log(postId, category)
       });
 
 
-      // queryClient.setQueryData(queryKey, (oldData) => {
-      //   if (!oldData) return oldData;
-    
-      //   const newPages = oldData.pages.map((page) => ({
-      //     ...page,
-      //     comments: page.comments.filter((c) => c.id !== deletedComment.id),
-      //   }));
-      //   return {
-      //     ...oldData,
-      //     pages: newPages,
-      //   };
-      // });
       
       toast.success("بارخورد با موفقيت حذف شد");
     },
@@ -187,15 +131,6 @@ console.log(postId, category)
 }
 
 
-
-// function removeCommentAndReplies(comments, commentId) {
-//   return comments
-//     .filter(comment => comment.id !== commentId)
-//     .map(comment => ({
-//       ...comment,
-//       replies: comment.replies ? removeCommentAndReplies(comment.replies, commentId) : [],
-//     }));
-// }
 
 function removeCommentAndDescendants(comments, commentId) {
   // Find all direct children

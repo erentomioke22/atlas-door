@@ -6,6 +6,10 @@ export async function GET(req) {
   try {
     const session = await auth();
     const postTitle = req.nextUrl.searchParams.get("postTitle") || "";
+    // const postId = req.nextUrl.searchParams.get("postId") || "";
+    // const postTags = req.nextUrl.searchParams.get("postTags") || [];
+
+
     const postId = req.nextUrl.searchParams.get("postId") || "";
     // Fetch the current post to get its tags
     const currentPost = await prisma.post.findUnique({
@@ -16,7 +20,7 @@ export async function GET(req) {
     });
 
     if (!currentPost) {
-      return new Response(JSON.stringify({ error: "Post not found" }), { status: 404 });
+      return new Response(JSON.stringify({ error: "هیچ مقاله ای یافت نشد" }), { status: 404 });
     }
 
     // Extract tag IDs from the current post
@@ -25,7 +29,6 @@ export async function GET(req) {
     // Fetch similar posts based on title or tags, excluding the current post
     const posts = await prisma.post.findMany({
       where: {
-        save: false,
         AND: [
           {
             NOT: {
@@ -60,15 +63,10 @@ export async function GET(req) {
       ],
       take: 6,
     });
-    // console.log(postTitle)
-    // console.log(postId)
-    // console.log(posts)
-    // console.log(currentPost,postId,postTitle,posts)
 
         return Response.json(posts);
-    // return new Response(JSON.stringify(posts));
   } catch (error) {
-    // console.error(error);
+    console.log(error)
     return new Response(JSON.stringify({ error: "Internal server error" }), { status: 500 });
   }
 }

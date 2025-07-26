@@ -20,7 +20,6 @@ moment.loadPersian({ usePersianDigits: true })
 
 
 const ProductCard = ({product,draft}) => {
-//  console.log(post)
  
   const {data:session}=useSession();
   const [link,setLink]=useState(draft ? `/edit-product/${post.name}` :`/products/${product.name}`)
@@ -38,7 +37,7 @@ const formattedDate = createdAt.isValid() ? createdAt.fromNow(): 'تاریخ ن�
 
   return (
 
-    <div className="  bg-lcard dark:bg-dcard  dark:hover:ring-dbtn sm:w-64  hover:ring-2 hover:ring-lbtn  hover:shadow-lg duration-500   max-sm:w-full  rounded-3xl py-2 space-y-1 px-3  ">
+    <div className="  bg-lcard dark:bg-dcard  dark:hover:ring-dbtn sm:w-64  hover:ring-2 hover:ring-lbtn   duration-500   max-sm:w-full  rounded-3xl py-2 space-y-1 px-3  ">
               <div className='flex justify-between'>
 
                   {/* <div className='my-auto'>
@@ -116,7 +115,11 @@ const formattedDate = createdAt.isValid() ? createdAt.fromNow(): 'تاریخ ن�
                       }
                    </div>
          </div>
-
+         <button className="bg-lbtn dark:bg-dbtn rounded-lg text-sm w-full py-2 ">
+              <a href="tel:02155589837" onClick={()=>{toast.success('شماره کپی شد');navigator.clipboard.writeText('02155589837')}} >
+                تماس
+              </a>
+                </button>
           </div>
   )
 }

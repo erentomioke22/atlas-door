@@ -41,8 +41,6 @@ export const useBlockEditor = ({
   // const [prevNewFiles, setPrevNewFiles] = useState([]);
   // const [tempRemovedFiles, setTempRemovedFiles] = useState([]);
 
-  // console.log(prevNewFiles)
-  // console.log(tempRemovedFiles)
   const editor = useEditor(
     {
       immediatelyRender: true,
@@ -125,14 +123,10 @@ export const useBlockEditor = ({
     //   const imgTags = tempDiv.getElementsByTagName('img');
     //   const newFiles = Array.from(imgTags).map(img =>img.src);
     //   const removedFiles = files.filter((file) => !newFiles.includes(file.url));
-    //   console.log(removedFiles)
     //   const remainingFiles = files.filter(file =>newFiles.includes(file.url)); 
     //   // const removedFiles = prevNewFiles.filter(prevNewFile =>!newFiles.includes(prevNewFile));
     //   setDeletedFiles((prev) => [...prev, ...removedFiles.filter(removedFiles =>!prev.includes(removedFiles))].filter(deletedFile=> !newFiles.includes(deletedFile)));
     //   setFiles(remainingFiles); 
-    //   console.log(newFiles)
-    //   console.log(remainingFiles)
-    //   console.log('Deleted Files:', deletedFiles, removedFiles);
     // },
     onUpdate: ({ editor }) => {
       onChange(editor.getHTML());
@@ -166,9 +160,6 @@ export const useBlockEditor = ({
       // setFiles([...remainingFiles, ...restoredFiles]);
       // setPrevNewFiles(newFiles);
 
-      // console.log(removedFiles)
-      // console.log('New Files:', newFiles);
-      // console.log('Deleted Files:', deletedFiles, removedFiles);
     },
     },
     
@@ -196,8 +187,6 @@ useEffect(() => {
 
 
 
-// console.log(editor.getHTML())
-// console.log(editor.getJSON())
 
 
   // const users = useEditorState({

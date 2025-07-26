@@ -8,7 +8,6 @@ export async function GET (req){
  try{
     const session = auth()
    const productName = req.nextUrl.searchParams.get('productName')
-   // console.log(postTitle)
    const currentProduct = await prisma.product.findFirst({
     where:{name:productName},
     include: getProductDataInclude(session?.user?.id),
@@ -17,6 +16,7 @@ export async function GET (req){
    return NextResponse.json(currentProduct)
  }
  catch(error){
+   console.log(error)
     return NextResponse.json({error})
  }
 }

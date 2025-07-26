@@ -82,7 +82,6 @@ export async function POST(req) {
 
     const data = await req.formData();
     const file = data.get('file');
-    // console.log(file);
     if (!file) {
       return NextResponse.json({ status: 400, error: 'File not exist' });
     }

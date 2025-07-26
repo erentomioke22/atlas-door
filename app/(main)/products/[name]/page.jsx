@@ -1,14 +1,12 @@
 
 import ProductPage from './productPage';
 import { cache } from 'react';
-import NotFound from '@app/(main)/not-found';
 import { prisma } from '@utils/database';
 import { getProductDataInclude } from '@lib/types';
 // import Head from 'next/head';
 
 const getPost = cache(async (name, loggedInUserId) => {
   try {
-    // console.log('title 10101',title)
     const decodedTitle = decodeURIComponent(name);
     const product = await prisma.product.findFirst({
       where:{name:decodedTitle},
@@ -93,7 +91,6 @@ export async function generateMetadata({ params }) {
 
 const page = async({params}) => {
   const  {name}  = await params;
-console.log(name)
   return (
       <ProductPage name={name}/>
   )

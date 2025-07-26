@@ -9,7 +9,6 @@ const imageLoader = ({ src, width, quality }) => {
 
 const ImageCom = ({ src, alt, width, height,className,size }) => {
   const [loading, setLoading] = useState(true);
-// console.log(src, alt, width, height,className,loading)
   return (
     <>
     <Image

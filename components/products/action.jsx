@@ -9,13 +9,20 @@ export async function submitProduct(values) {
   try {
     const session = await auth();
     if (!session) throw new Error("Unauthorized");
-    console.log(values);
 
     const faqs =
       values.faqs?.filter(
         (faq) => faq !== undefined && faq.question && faq.answer
       ) || [];
 
+
+      const existProduct = await prisma.product.findMany({
+        where:{
+          name:values.name
+        }
+      })
+
+      if(existProduct) throw new Error ("محصولی با این نام وجود دارد")
     // const colors =
     //   values.colors?.filter(
     //     (color) => color !== undefined && color.name && color.hexCode && color.price && color.discount && color.stocks
@@ -52,8 +59,7 @@ export async function submitProduct(values) {
 
     return newProduct;
   } catch (err) {
-    // console.error(err)
-    // console.log(err)
+    console.error(err)
     throw new Error(err);
   }
 }
@@ -62,7 +68,6 @@ export async function editProduct(values) {
   try {
     const session = await auth();
     if (!session) throw new Error("Unauthorized");
-    console.log(values)
     const faqs =
       values.faqs?.filter(
         (faq) => faq !== undefined && faq.question && faq.answer
@@ -71,7 +76,6 @@ export async function editProduct(values) {
       if(values.rmFiles.length > 0){
         try{
          const deletedImages = await utapi.deleteFiles(values.rmFiles);
-         console.log(deletedImages)
         }
         catch(err){
           console.error(err)
@@ -115,7 +119,6 @@ export async function editProduct(values) {
 
 export async function deleteProduct(values) {
   try{
-    console.log(values)
     const id = values.id;
   
     const session = await auth();
@@ -129,7 +132,6 @@ export async function deleteProduct(values) {
   
     if (product.sellerId !== session?.user?.id) throw new Error("Unauthorized");
   
-    // console.log(values.removeKey)
     if(values.removeKey.length > 0){
       try{
         await utapi.deleteFiles(values.removeKey);

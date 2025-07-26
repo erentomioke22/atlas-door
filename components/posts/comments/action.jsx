@@ -5,7 +5,7 @@ import { prisma } from "@utils/database";
 import { getCommentDataInclude} from "@/lib/types";
 
 
-export async function submitComment({post,content,userId,parentId}) {
+export async function submitComment({post,content,userId,parentId,userReplyId}) {
   try{
     const session = auth()
     if (!session) throw new Error("Unauthorized");
@@ -17,7 +17,6 @@ export async function submitComment({post,content,userId,parentId}) {
           postId: post?.id,
           userId,
           parentId,
-          
         },
         include: getCommentDataInclude(userId),
       }),
@@ -33,6 +32,18 @@ export async function submitComment({post,content,userId,parentId}) {
             }),
           ]
         : []),
+        ...(parentId && userReplyId && userReplyId !== userId
+          ? [
+              prisma.notification.create({
+                data: {
+                  issuerId: userId,
+                  recipientId: userReplyId,
+                  postId: post?.id,
+                  type: "REPLY",
+                },
+              }),
+            ]
+          : []),
     ]);
   
     return newComment;
@@ -47,8 +58,7 @@ export async function editComment({post,content,userId,commentId}) {
     const session = auth()
     if (!session) throw new Error("Unauthorized");
   
-    const [newComment] = await prisma.$transaction([
-      prisma.comment.update({
+     const editedComment =  prisma.comment.update({
         where:{id:commentId},
         data: {
           content,
@@ -56,22 +66,10 @@ export async function editComment({post,content,userId,commentId}) {
           userId,
         },
         include: getCommentDataInclude(userId),
-      }),
-      ...(post?.user?.id !== userId
-        ? [
-            prisma.notification.create({
-              data: {
-                issuerId: userId,
-                recipientId: post?.user?.id,
-                postId: post?.id,
-                type: "COMMENT",
-              },
-            }),
-          ]
-        : []),
-    ]);
+      })
+     
   
-    return newComment;
+    return editedComment;
   }
   catch(error){
     throw new Error(error)
@@ -86,7 +84,6 @@ try{
 
   if (!comment) throw new Error("Comment not found");
 
-;
 
   const deletedComment = await prisma.comment.delete({
     where: { id },

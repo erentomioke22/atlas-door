@@ -94,6 +94,7 @@ export const NewItemMenu = ({ editor, getPos, setFiles, files, setValue }) => {
           const updatedFiles = [...prevFiles, { file, url }];
           return updatedFiles;
         });
+        setSelectedImage(null);
       }
     },
     [
@@ -103,11 +104,27 @@ export const NewItemMenu = ({ editor, getPos, setFiles, files, setValue }) => {
     ]
   );
 
-  const onUploadUrl = useCallback(
-    (imageUrl) => {
+  const onUploadUrl = useCallback((imageUrl) => {
       if (imageUrl) {
         setFileError("");
-        editor.chain().setFigure({ src: imageUrl }).focus().run();
+        const schema = yup.object().shape({
+          image: imageUrlValidation.fields.image,
+        });
+        schema
+        .validate({ image: imageUrl })
+        .then(() => {
+          setFileError("");
+          editor.chain().setFigure({ src: imageUrl }).focus().run();
+          setFiles((prevFiles) => {
+            const updatedFiles = [...prevFiles, { url:imageUrl}];
+            return updatedFiles;
+          });
+          setSelectedImageUrl(null);
+          })
+          .catch((err) => {
+            setFileError(err.errors[0]);
+            // setSelectedImage(null);  
+          });
       }
     },
     [
@@ -115,24 +132,7 @@ export const NewItemMenu = ({ editor, getPos, setFiles, files, setValue }) => {
     ]
   );
 
-  const setImageByUrl = (imageUrl) => {
-    if (imageUrl) {
-      // console.log(imageUrl)
-      const schema = yup.object().shape({
-        image: imageUrlValidation.fields.image,
-      });
-      schema
-        .validate({ image: imageUrl })
-        .then(() => {
-          setFileError("");
-          setSelectedImageUrl(imageUrl);
-        })
-        .catch((err) => {
-          setFileError(err.errors[0]);
-          setSelectedImage(null);
-        });
-    }
-  };
+
 
   function handleImageChange(file) {
     if (file) {
@@ -240,8 +240,6 @@ export const NewItemMenu = ({ editor, getPos, setFiles, files, setValue }) => {
                   selectedImageUrl
                     ? onUploadUrl(selectedImageUrl)
                     : onUpload(selectedFile);
-                  setSelectedImage(null);
-                  setSelectedImageUrl(null);
                   setOpen(!open);
                 }}
                 className="text-black border-2 rounded-lg px-3 py-1 w-full text-center text-sm dark:border-white etxt-black dark:text-white disabled:cursor-not-allowed"
@@ -260,9 +258,10 @@ export const NewItemMenu = ({ editor, getPos, setFiles, files, setValue }) => {
                   setSelectedImageUrl(null);
                 }}
                 className="text-black border-2 rounded-lg px-3 py-1 w-full text-center text-sm dark:border-white etxt-black dark:text-white disabled:cursor-not-allowed"
-              >
+                >
                 Change Image
               </button>
+                {fileError && <p className="text-red">{fileError}</p>}
             </div>
           ) : (
             <div className="space-y-3">
@@ -293,16 +292,21 @@ export const NewItemMenu = ({ editor, getPos, setFiles, files, setValue }) => {
                 className="bg-black text-white w-full py-2 px-3 dark:bg-white dark:text-black rounded-lg "
                 type="button"
                 onClick={() => {
-                  setImageByUrl(selectedInputImage);
+                  setSelectedImageUrl(selectedInputImage);
                   setSelectedInputImage("");
                 }}
               >
                 Add Image by Url
               </button>
-              {fileError && <p className="text-red">{fileError}</p>}
             </div>
           )}
         </Dropdown>
+
+
+
+
+
+
         {GROUPS.map((group, groupIn) =>
           group.commands.map((command, commandIndex) => (
             <div key={command.iconName}>

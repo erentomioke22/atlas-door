@@ -27,7 +27,8 @@ const CommentInput = ({
   category,
   setCommentId,
   setReplyInfo,
-setMessage
+  replyInfo,
+  setMessage
 }) => {
   const { data: session } = useSession();
   const addMutation = useSubmitCommentMutation(post?.id,category);
@@ -56,7 +57,6 @@ setMessage
   }, [content]);
 
   const onSubmit = async (values) => {
-    console.log(values);
     
     if (content) {
       // If edit is true, we're editing a comment
@@ -85,6 +85,7 @@ setMessage
           content: values.content,
           userId: values.userId,
           parentId: commentId, // For replies, use the commentId as parentId
+          userReplyId : replyInfo?.user.id
         },
         {
           onSuccess: () => {
@@ -142,14 +143,14 @@ setMessage
           >
             {content ? (
               editMutation.isPending ? (
-                <LoadingIcon color={"bg-white dark:bg-black my-1"}/>
+                <LoadingIcon color={"bg-white dark:bg-black "}/>
               ) : (
                 <FaCheck/>
               )
             ) 
             : 
             addMutation.isPending ? (
-              <LoadingIcon color={"bg-white dark:bg-black my-1"}/>
+              <LoadingIcon color={"bg-white dark:bg-black"}/>
             ) : (
               <FaCaretLeft/>
             )}

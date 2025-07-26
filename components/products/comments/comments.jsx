@@ -49,30 +49,9 @@ const Comments = ({product}) => {
 
   const comments = data?.pages.flatMap((page) => page.comments) || [];
 
-  // if (status === "error") {
-  //   return (
-  //     <p className="text-center text-destructive">
-  //       An error occurred while loading posts.
-  //     </p>
-  //   );
-  // }
 
 
-console.log(data)
-// const scrollToComment = (id) => { 
-//   const commentElement = document.getElementById(id);
-//   console.log('Scrolling to:', commentElement); // Debug
-//   if (commentElement) {
-//     commentElement.scrollIntoView({ behavior: "smooth", block: "center" });
-//     commentElement.classList.add('highlight-comment');
-//     setTimeout(() => {
-//       commentElement.classList.remove('highlight-comment');
-//     }, 10000);
-//   }
-// };
 
-
-// In your scrollToComment function
 const scrollToComment = (id) => { 
   const commentElement = document.getElementById(id);
   if (commentElement) {
@@ -84,17 +63,6 @@ const scrollToComment = (id) => {
     }, 3000);
   }
 };
-
-// const scrollToComment = (id) => { 
-//   const offcanvas = document.querySelector('.offcanvas'); 
-//   const commentElement = offcanvas.querySelector(`.comment[id='${id}']`);
-  
-//   if (commentElement) { 
-//      const topPos = commentElement.offsetTop + 1200; 
-//      offcanvas.scrollTo({ top: topPos, behavior: 'smooth' }); 
-//   } 
-//   console.log(`Scrolling to comment with ID: ${id}`);
-// };
 
   return (
     <Offcanvas       
@@ -245,7 +213,7 @@ const scrollToComment = (id) => {
           />
       </div>
         }
-  <CommentInput product={product}  header={"write comment"} btnStyle={"w-full"}  category={item} placeHolder={"COMMENT"}  content={message}  commentId={commentId} setCommentId={setCommentId} setMessage={setMessage} setReplyInfo={setReplyInfo}/>
+  <CommentInput product={product}  header={"write comment"} btnStyle={"w-full"}  category={item} placeHolder={"COMMENT"}  content={message}  commentId={commentId} setCommentId={setCommentId} setMessage={setMessage} setReplyInfo={setReplyInfo} replyInfo={replyInfo}/>
     </div>
   </div>
  </div>

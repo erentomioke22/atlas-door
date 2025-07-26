@@ -18,7 +18,6 @@ export async function POST(req) {
 
     sanitizedUsername += `_${randomString}`;
 
-    // console.log(sanitizedUsername);
 
 
     const existEmail = await prisma.user.findUnique({
@@ -40,19 +39,19 @@ export async function POST(req) {
     if(existEmail && !existEmail.emailVerified && existEmail.accounts.length <= 0){
       const verificationToken = await generateVerificationToken(email);
       await sendVerificationEmail(email,verificationToken.token)
-      return NextResponse.json({ message: "EMAIL VERIFICATION WAS RESEND" });
+      return NextResponse.json({ message: "ایمیل تاییدیه برای شما ارسال شد" });
     }
 
     if(existName){
-        return NextResponse.json({error: "this UserName exist",});
+        return NextResponse.json({error: "این نام کاربری قبلا ثبت نام کرده است",});
     }
     if(existEmail){
-        return NextResponse.json({error: "this Email exist",});
+        return NextResponse.json({error: "این ایمیل قبلا ثبت نام کرده است",});
     }
 
 
     if (!password) {
-      return NextResponse.json({ error: "Password is required",});
+      return NextResponse.json({ error: "گذرواژه نباید خالی باشد",});
     }
 
     const hashedPassword = await hash(password, 12);
@@ -68,9 +67,8 @@ export async function POST(req) {
     const verificationToken = await generateVerificationToken(email);
     await sendVerificationEmail(email,verificationToken.token)
 
-    return NextResponse.json({ message: "EMAIL VERIFICATION WAS SEND", user: newUser });
+    return NextResponse.json({ message: "ایمیل تاییدیه برای شما ارسال شد", user: newUser });
   } catch (error) {
-    // console.log(error)
     return NextResponse.json({ error: error });
   }
 }
