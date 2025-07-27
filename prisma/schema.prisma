@@ -21,7 +21,6 @@ model User {
   displayName           String?
   status                String         @default("active")
   createdAt             DateTime       @default(now())
-  Archives              Archive[]
   cart                  CartItem[]
   orders                Order[]
   products              Product[]
@@ -88,14 +87,7 @@ model Tag {
   @@map("tags")
 }
 
-model Archive {
-  id        String    @id @default(cuid())
-  url       String
-  userId    String
-  createdAt DateTime  @default(now())
-  expiresAt DateTime?
-  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-}
+
 
 model Post {
   id                  String         @id @default(cuid())
@@ -104,7 +96,6 @@ model Post {
   link                String
   content             String
   images              String[]
-  contentImages       String[]
   status              String         @default("DRAFT")
   discussions         Boolean        @default(false)
   isHot               Boolean        @default(false)

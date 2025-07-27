@@ -2,7 +2,7 @@
 
 import React,{useState} from "react";
 import PostCard from "@components/posts/postCard";
-import LoadingPage from "@components/ui/loading/loadingCard";
+import LoadingCard from "@components/ui/loading/loadingCard";
 import Link from "next/link";
 import EmblaCarousel from "@components/ui/carousel/carousel";
 import { FaCaretRight } from "react-icons/fa6";
@@ -250,7 +250,7 @@ const projects=[
                     Array(10)
                       .fill({})
                       .map((_,index) => {
-                        return <div className="transform translate-x-0 translate-y-0 translate-z-0  flex-none basis-[75%] md:basis-[45%] lg:basis-[30%] min-w-0 pl-4"><LoadingPage key={index}/></div>;
+                        return <div className="transform translate-x-0 translate-y-0 translate-z-0  flex-none basis-[75%] md:basis-[45%] lg:basis-[30%] min-w-0 pl-4"><LoadingCard key={index}/></div>;
                   })
             }
           {data?.posts?.map((post)=>(
@@ -299,11 +299,11 @@ const projects=[
                     Array(10)
                       .fill({})
                       .map((_,index) => {
-                        return <div className="transform translate-x-0 translate-y-0 translate-z-0  flex-none basis-[75%] md:basis-[45%] lg:basis-[30%] min-w-0 pl-4"><LoadingPage key={index}/></div>;
+                        return <div className="transform translate-x-0 translate-y-0 translate-z-0  flex-none basis-[75%] md:basis-[45%] lg:basis-[30%] min-w-0 pl-4"><LoadingCard key={index}/></div>;
                   })
             }
           {data?.products?.map((product)=>(
-        <div className="transform translate-x-0 translate-y-0 translate-z-0  flex-none basis-[75%] md:basis-[45%] lg:basis-[30%] min-w-0 pl-4 my-2" 
+        <div className="transform translate-x-0 translate-y-0 translate-z-0  flex-none basis-[75%] sm:basis-auto  min-w-0 pl-4 sm:pr-2 my-2" 
          key={product.id}>
                <ProductCard product={product} />
          </div>

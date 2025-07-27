@@ -98,15 +98,7 @@ const CreatePostRoot = () => {
         console.log("upload has begun for", file);
       },
     });
-    // if (filesData.length >= 1) {
-    //   const uploadedData = await postUpload(filesData);
-    //   uploadedData.forEach((data, index) => {
-    //     const { url } = files[index];
-    //     const uploadedUrl = data.url;
-    //     blobUrlToUploadedUrlMap.push({ blobUrl: url, uploadedUrl });
-    //   });
-    //   setValue("files", uploadedData.map(item => item.url));
-    // }
+
 
   const onSubmit = async (values) => {
     try {
@@ -124,7 +116,6 @@ const CreatePostRoot = () => {
       }).filter(Boolean);
 
 
-console.log(filesData)
 
       if (filesData.length >= 1) {
         const uploadedData = await postUpload(filesData);
@@ -347,9 +338,20 @@ console.log(filesData)
   const content = watch("content");
   const title = watch("title");
 
-  const [debouncedContent] = useDebounce(content,5000)
-  const [debouncedTitle] = useDebounce(title,5000)
+  const [debouncedContent] = useDebounce(content,3500)
+  const [debouncedTitle] = useDebounce(title,3500)
 
+
+  const stripImagesFromContent = (html) => {
+    if (!html) return '';
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = html;
+    console.log(tempDiv)
+    // Remove all image elements
+    const images = tempDiv.querySelectorAll('figure');
+    images.forEach(img => img.remove());
+    return tempDiv.innerHTML;
+  };
 
   useEffect(() => {
     if (!debouncedContent && !debouncedTitle) {
@@ -357,7 +359,15 @@ console.log(filesData)
     }
     if(debouncedContent.length >= 5 || debouncedTitle.length >= 5 ){
       const formValues = getValues();
-      localStorage.setItem('postDraft', JSON.stringify(formValues));
+      const cleanedContent = stripImagesFromContent(formValues.content);
+
+      localStorage.setItem(
+        "postDraft",
+        JSON.stringify({
+          ...formValues,
+          content: cleanedContent,
+        })
+      );
     }
   }, [debouncedContent,debouncedTitle]);
 
@@ -369,6 +379,8 @@ console.log(filesData)
       setValue("title", postDraft?.title );
       setValue("desc", postDraft?.desc );
       setValue("content", postDraft?.content );
+      // setValue("tags", postDraft?.tags );
+      // setValue("faqs", postDraft?.faqs );
       if (lastDraftId) {
         // Redirect to the same page with the draft ID
         // const newParams = new URLSearchParams(searchParams.toString());
@@ -484,13 +496,13 @@ console.log(filesData)
                       name={"title"}
                       type={"text"}
                       ref={register}
+                      {...register("title")}
                       // watch={watch('title')}
                       label={false}
                       className={
                         "resize-none  bg-lcard dark:bg-dcard rounded-lg placeholder:text-[#000000a4] dark:placeholder:text-lfont text-lg  p-2 focus:ring-2 focus:ring-black dark:focus:ring-white outline-none duration-200"
                       }
                       error={errors?.title?.message}
-                      {...register("title")}
                     />
                   </div>
 
@@ -694,18 +706,15 @@ console.log(filesData)
           <div>
           <textarea
             placeholder={"Write Your Post Title ..."}
-            name={"title"}
-            type={"text"}
-            {...register("title")}
+            name="title"
+            type="text"
             className={
               "resize-none  bg-transparent   text-2xl  focus:ring-none focus:outline-none ring-0 w-full  border-0 placeholder-black dark:placeholder-white px-2.5"
             }
-            error={errors?.title?.message}
+            onChange={(e)=>{setValue('title',e.target.value)}}
+            value={getValues('title')}
           />
 
-            <div className={`text-red mt-2 text-[10px] md:text-sm transition-opacity duration-300 ${errors?.title?.message ? "opacity-100" : "opacity-0"}`}>
-              {errors?.title?.message}
-            </div>
         </div>
 
           <Controller

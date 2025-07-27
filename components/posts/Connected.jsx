@@ -1,7 +1,7 @@
 "use client";
 
 import PostCard from "@components/posts/postCard";
-import LoadingPage from "@components/ui/loading/loadingCard";
+import LoadingCard from "@components/ui/loading/loadingCard";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import EmblaCarousel from "@components/ui/carousel/carousel";
@@ -51,11 +51,11 @@ function Conneccted({postTitle,postId}) {
                     Array(10)
                       .fill({})
                       .map((_,index) => {
-                        return <div className="transform translate-x-0 translate-y-0 translate-z-0  flex-none basis-[75%] md:basis-[45%] lg:basis-[30%] min-w-0 pl-4"><LoadingPage key={index}/></div>;
+                        return <div className="transform translate-x-0 translate-y-0 translate-z-0  flex-none basis-[75%] md:basis-[45%] lg:basis-[30%] min-w-0 pl-4"><LoadingCard key={index}/></div>;
                   })
             }
           {posts?.map((post)=>(
-        <div className="transform translate-x-0 translate-y-0 translate-z-0  flex-none basis-[75%] md:basis-[45%] lg:basis-[30%] min-w-0 pl-4 my-2" 
+        <div className="transform translate-x-0 translate-y-0 translate-z-0  flex-none basis-[75%] sm:basis-auto  min-w-0 pl-4 sm:pr-2 my-2" 
          key={post.id}>
                <PostCard post={post} />
          </div>

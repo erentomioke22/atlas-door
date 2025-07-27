@@ -593,13 +593,13 @@ const EditPostRoot = ({ title }) => {
                         name={"title"}
                         type={"text"}
                         ref={register}
+                        {...register("title")}
                         // watch={watch('title')}
                         label={false}
                         className={
                           "resize-none  bg-lcard dark:bg-dcard rounded-lg placeholder:text-[#000000a4] dark:placeholder:text-lfont text-lg  p-2 focus:ring-2 focus:ring-black dark:focus:ring-white outline-none duration-200"
                         }
                         error={errors?.title?.message}
-                        {...register("title")}
                       />
                     </div>
 
@@ -774,20 +774,18 @@ const EditPostRoot = ({ title }) => {
 
 
 <div>
-          <textarea
+<textarea
             placeholder={"Write Your Post Title ..."}
-            name={"title"}
-            type={"text"}
-            {...register("title")}
+            name="title"
+            type="text"
             className={
               "resize-none  bg-transparent   text-2xl  focus:ring-none focus:outline-none ring-0 w-full  border-0 placeholder-black dark:placeholder-white px-2.5"
             }
-            error={errors?.title?.message}
+            onChange={(e)=>{setValue('title',e.target.value)}}
+            value={getValues('title')}
           />
 
-            <div className={`text-red mt-2 text-[10px] md:text-sm transition-opacity duration-300 ${errors?.title?.message ? "opacity-100" : "opacity-0"}`}>
-              {errors?.title?.message}
-            </div>
+
         </div>
 
               <Controller
