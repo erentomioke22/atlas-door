@@ -39,6 +39,7 @@ export async function POST(req) {
 
     return NextResponse.json({ message: "ایمیل تایید شد"});
   } catch (error) {
+    console.error(error)
     return NextResponse.json({ error: error, status: 400 });
   }
 }

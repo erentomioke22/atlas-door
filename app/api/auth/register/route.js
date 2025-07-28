@@ -69,6 +69,7 @@ export async function POST(req) {
 
     return NextResponse.json({ message: "ایمیل تاییدیه برای شما ارسال شد", user: newUser });
   } catch (error) {
+    console.error(error)
     return NextResponse.json({ error: error });
   }
 }

@@ -18,7 +18,7 @@ const ImageCom = ({ src, alt, width, height,className,size }) => {
         fill
         priority 
         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-        className={`${className} transition-opacity duration-500 ${loading ? ' opacity-0' : ' opacity-100'} `}
+        className={`${className} transition-opacity duration-500 select-none pointer-events-none ${loading ? ' opacity-0' : ' opacity-100'} `}
         loader={imageLoader}
         // width={width}
         // height={height}

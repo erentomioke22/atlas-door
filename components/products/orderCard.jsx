@@ -33,7 +33,7 @@ const OrderCard = ({order}) => {
 
   return (
 
-    <div className="  w-full   p-3 space-y-1   mx-auto flex flex-wrap justify-between gap-2">
+    <div className="  w-full   p-3 space-y-1   mx-auto flex flex-wrap justify-between gap-2  select-none">
 
            
              <div className='flex gap-2'>

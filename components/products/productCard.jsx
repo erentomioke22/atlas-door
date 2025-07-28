@@ -37,7 +37,7 @@ const formattedDate = createdAt.isValid() ? createdAt.fromNow(): 'تاریخ ن�
 
   return (
 
-    <div className="  bg-lcard dark:bg-dcard  dark:hover:ring-dbtn sm:w-64  hover:ring-2 hover:ring-lbtn   duration-500   max-sm:w-full  rounded-3xl py-2 space-y-1 px-3  ">
+    <div className="  bg-lcard dark:bg-dcard  dark:hover:ring-dbtn sm:w-64  hover:ring-2 hover:ring-lbtn   duration-500   max-sm:w-full  rounded-3xl py-2 space-y-1 px-3   select-none">
               <div className='flex justify-between'>
 
                   {/* <div className='my-auto'>

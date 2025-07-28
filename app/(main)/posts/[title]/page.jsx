@@ -44,7 +44,7 @@ export async function generateMetadata({ params }) {
   try{
     const post = await getPost(params.title);
     if (!post) { return {}; }
-  const contentImages = post?.contentImages?.map((contentImage)=>(
+  const contentImages = post?.images?.map((contentImage)=>(
     {
       url: `https://www.atlasdoor.ir/${contentImage}`,
       width: 800,
@@ -103,7 +103,7 @@ export default async function Page({ params }) {
       "@type": "Person",
       "name": post?.user?.displayName,
     },
-    "image": post?.contentImages.map((img) => `${process.env.NEXT_PUBLIC_BASE_URL}/${img}`),
+    "image": post?.images.map((img) => `${process.env.NEXT_PUBLIC_BASE_URL}/${img}`),
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": `${process.env.NEXT_PUBLIC_BASE_URL}/posts/${post?.title}`,

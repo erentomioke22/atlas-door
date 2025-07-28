@@ -9,13 +9,13 @@ export default async function sitemap() {
   const products = await prisma.product.findMany();
   const tags = await prisma.tag.findMany();
 
-  const postEntries = posts.map(({ link, updatedAt, images, contentImages }) => ({
+  const postEntries = posts.map(({ link, updatedAt, images }) => ({
     url: `${process.env.NEXT_PUBLIC_BASE_URL}/posts/${link}`,
     lastModified: formatDateISO(updatedAt),
     changeFrequency: 'yearly',
     priority:0.8,
     images: [
-      ...contentImages.map(contentImage => `${process.env.NEXT_PUBLIC_BASE_URL}/${contentImage}`),
+      ...images.map(image => `${process.env.NEXT_PUBLIC_BASE_URL}/${image}`),
     ],
                 // alternates: {
             //     languages: {

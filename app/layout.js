@@ -71,7 +71,7 @@ const RootLayout = ({ children }) => {
       </Head>
       <body className="font-Rubik font-bold bg-[#ffffff] text-[#1f2937] dark:bg-[#1d232a] dark:text-white">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          <NextTopLoader showSpinner={false} color='#13ce66' />
+          <NextTopLoader showSpinner={false} color='#d2d4d7' />
           <ReactQueryProvider>
             <AuthProvider>
               {children}

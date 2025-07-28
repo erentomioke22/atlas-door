@@ -5,7 +5,7 @@ import { prisma } from '@utils/database';
 import { getProductDataInclude } from '@lib/types';
 // import Head from 'next/head';
 
-const getPost = cache(async (name, loggedInUserId) => {
+const getProduct = cache(async (name, loggedInUserId) => {
   try {
     const decodedTitle = decodeURIComponent(name);
     const product = await prisma.product.findFirst({
@@ -42,16 +42,16 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }) {
   try{
     const  {name}  = await params;
-    const product = await getPost(name);
+    const product = await getProduct(name);
     if (!product) { return {}; }
-  // const contentImages = post?.contentImages?.map((contentImage)=>(
-  //   {
-  //     url: `https://www.atlasdoor.ir/${contentImage}`,
-  //     width: 800,
-  //     height: 600,
-  //     alt: post?.title,
-  //   }
-  // ))
+  const contentImages = product?.images?.map((image)=>(
+    {
+      url: `https://www.atlasdoor.ir/${image}`,
+      width: 800,
+      height: 600,
+      alt: product?.title,
+    }
+  ))
 
     return {
       metadataBase: new URL(`${process.env.NEXT_PUBLIC_BASE_URL}/${product.name}`),
@@ -77,7 +77,7 @@ export async function generateMetadata({ params }) {
             height: 600,
             alt: product?.name,
           },
-          // ...contentImages
+          ...contentImages
         ],
       },
     };

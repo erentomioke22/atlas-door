@@ -95,7 +95,7 @@ const CreatePostRoot = () => {
         throw new Error("error occurred while uploading");
       },
       onUploadBegin: ({ file }) => {
-        console.log("upload has begun for", file);
+        // console.log("upload has begun for", file);
       },
     });
 
@@ -346,8 +346,6 @@ const CreatePostRoot = () => {
     if (!html) return '';
     const tempDiv = document.createElement('div');
     tempDiv.innerHTML = html;
-    console.log(tempDiv)
-    // Remove all image elements
     const images = tempDiv.querySelectorAll('figure');
     images.forEach(img => img.remove());
     return tempDiv.innerHTML;

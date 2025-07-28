@@ -223,7 +223,7 @@ const PostList = () => {
        </p>
       }
       <div className="my-10">
-        <div className={`px-5 max-sm:space-y-5 sm:flex sm:flex-wrap justify-center gap-3 sm:gap-5 my-10 `}>
+        <div className='px-5 max-sm:space-y-5 sm:flex sm:flex-wrap justify-center gap-3 sm:gap-5 my-10 '>
           {status === "pending" ? (
             <>
               {Array(postPerPage)

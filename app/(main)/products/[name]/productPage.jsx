@@ -263,7 +263,7 @@ const PostPage = ({ name }) => {
               autoScroll={false}
               length={product?.images?.length > 1}
             >
-              {product?.images?.map((image, index) => (
+              {product?.images?.map((image,index) => (
                 <div
                   className="transform translate-x-0 translate-y-0 translate-z-0  flex-none basis-[100%] h-52 md:h-128 min-w-0 pl-4 "
                   key={index}

@@ -198,7 +198,7 @@ const EditProduct = ({ name }) => {
         throw new Error("error occurred while uploading");
       },
       onUploadBegin: ({ file }) => {
-        console.log("upload has begun for", file);
+        // console.log("upload has begun for", file);
       },
     });
 

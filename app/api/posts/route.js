@@ -16,6 +16,7 @@ export async function GET (req){
    return NextResponse.json(currentPost)
  }
  catch(error){
+   console.error(error)
     return NextResponse.json({error},{status:500})
  }
 }

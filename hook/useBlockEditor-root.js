@@ -118,7 +118,6 @@ export const useBlockEditor = ({
 
         const imgTags = tempDiv.getElementsByTagName("img");
         const newFiles = Array.from(imgTags).map((img) => img.src);
-        console.log(newFiles)
         setContentImage(newFiles);
         const remainingFiles = files.filter((file) =>
           newFiles.includes(file.url)

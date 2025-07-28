@@ -167,8 +167,8 @@ const projects=[
         <div className=" grid gap-4  lg:grid-cols-3 lg:grid-rows-2">
           
 
-              <div className="px-8  py-5    lg:row-span-2 space-y-3 hover:bg-lcard dark:hover:bg-dcard duration-200 rounded-xl">
-                <LuBadgeDollarSign className="text-4xl"/>
+              <div className="px-8  py-5    lg:row-span-2 space-y-3 hover:bg-lcard dark:hover:bg-dcard duration-200 rounded-xl max-lg:text-center">
+                <LuBadgeDollarSign className="text-4xl max-lg:mx-auto"/>
                 <p className=" text-2xl  ">
                  قیمت              
                 </p>
@@ -177,8 +177,8 @@ const projects=[
                 </p>
               </div>
               
-              <div className="px-8  py-5    lg:row-span-2 space-y-3  hover:bg-lcard dark:hover:bg-dcard duration-200 rounded-xl">
-              <LuHammer className="text-4xl"/>
+              <div className="px-8  py-5    lg:row-span-2 space-y-3  hover:bg-lcard dark:hover:bg-dcard duration-200 rounded-xl  max-lg:text-center">
+              <LuHammer className="text-4xl max-lg:mx-auto"/>
                 <p className=" mt-2 text-2xl  ">
                 عملکرد
                 </p>
@@ -187,8 +187,8 @@ const projects=[
                 </p>
               </div>
 
-              <div className="px-8  py-5    lg:row-span-2 space-y-3 hover:bg-lcard dark:hover:bg-dcard duration-200 rounded-xl">
-              <LuShieldCheck className="text-4xl"/>
+              <div className="px-8  py-5    lg:row-span-2 space-y-3 hover:bg-lcard dark:hover:bg-dcard duration-200 rounded-xl  max-lg:text-center">
+              <LuShieldCheck className="text-4xl max-lg:mx-auto"/>
                 <p className=" mt-2 text-2xl  ">
                   امنیت            
                 </p>
@@ -197,8 +197,8 @@ const projects=[
                 </p>
               </div>
 
-              <div className="px-8  py-5    lg:row-span-2 space-y-3 hover:bg-lcard dark:hover:bg-dcard duration-200 rounded-xl">
-              <LuTimer className="text-4xl"/>
+              <div className="px-8  py-5    lg:row-span-2 space-y-3 hover:bg-lcard dark:hover:bg-dcard duration-200 rounded-xl  max-lg:text-center">
+              <LuTimer className="text-4xl max-lg:mx-auto"/>
                 <p className=" mt-2 text-2xl  ">
                   زمان
                 </p>
