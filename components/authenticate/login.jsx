@@ -80,7 +80,7 @@ const Login = ({ show, setShow }) => {
       error: errors.email?.message,
     },
     {
-      title: "رمز",
+      title: "گذرواژه",
       name: "password",
       type: showpass ? "text" : "password",
       error: errors.password?.message,
