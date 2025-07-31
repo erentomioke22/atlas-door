@@ -1,5 +1,3 @@
-"use client";
-
 import React, { useEffect } from "react";
 import { useState } from "react";
 import LoadingPage from "@components/ui/loading/loadingCard";
