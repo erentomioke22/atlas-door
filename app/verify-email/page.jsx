@@ -1,6 +1,7 @@
 import Head from 'next/head';
 import VerifyPage from './verify';
 import { Suspense } from "react";
+import LoadingIcon from '@components/ui/loading/LoadingIcon';
 
 export const metadata = {
   metadataBase: new URL(`${process.env.NEXT_PUBLIC_BASE_URL}/verify-email`),
@@ -27,7 +28,7 @@ const Page = () => {
         <meta name="twitter:card" content="summary_large_image" />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       </Head>
-      <Suspense fallback={<div>در حال بارگذاری...</div>}>
+      <Suspense fallback={<LoadingIcon color={"bg-white dark:bg-black "}/>}>
        <VerifyPage />
       </Suspense>
     </div>

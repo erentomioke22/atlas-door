@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import PostList from './postlist';
 import { Suspense } from 'react';
-
+import LoadingIcon from '@components/ui/loading/LoadingIcon';
 export const metadata = {
   metadataBase: new URL(`${process.env.NEXT_PUBLIC_BASE_URL}/posts`),
   title: "مقاله ها- آموزش و آشنایی با تمامی خدمات و محصولات اطلس در",
@@ -29,7 +29,7 @@ const AllPosts = () => {
     "name": "مقاله ها- آموزش و آشنایی با تمامی خدمات و محصولات اطلس در",
     "description": "آموزش و آشنایی با انوع محصولات ما اعم از درب های اتوماتیک کرکره های برقی شیشه سکوریت جام بالکن ها و انواع پارتیشن ها",
     "url": `${process.env.NEXT_PUBLIC_BASE_URL}/posts`,
-    "image": [`${process.env.NEXT_PUBLIC_BASE_URL}/your-default-image.jpg`], // Update with your default image
+    "image": [`${process.env.NEXT_PUBLIC_BASE_URL}/your-default-image.jpg`],
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": `${process.env.NEXT_PUBLIC_BASE_URL}/posts`
@@ -42,7 +42,7 @@ const AllPosts = () => {
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       </Head>
       <div>
-      <Suspense fallback={<div>در حال بارگذاری...</div>}>
+      <Suspense fallback={<LoadingIcon color={"bg-white dark:bg-black "}/>}>
         <PostList />
       </Suspense>
       </div>

@@ -1,7 +1,7 @@
 import { prisma } from "@utils/database";
 import { getPostDataInclude,getProductDataInclude } from "@/lib/types";
 import { auth } from "@/auth";
-export const dynamic = 'force-dynamic';
+// export const dynamic = 'force-dynamic';
 
 export async function GET(req) {
   try {
