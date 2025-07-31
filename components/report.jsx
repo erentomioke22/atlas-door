@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { toast } from "sonner";
-import LoadingIcon from "@components/ui/loading/loadingIcon";
+import LoadingIcon from "./ui/loading/LoadingIcon";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { reportValidation } from "@lib/validation";

@@ -6,7 +6,7 @@ import { useSession } from 'next-auth/react';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import TextArea from "@components/ui/TextArea";
-import LoadingIcon from "@components/ui/loading/loadingIcon";
+import LoadingIcon from "./ui/loading/LoadingIcon";
 import { useForm, useFieldArray, Controller } from 'react-hook-form'
 import { yupResolver } from "@hookform/resolvers/yup";
 import ImageCom from "@components/ui/Image";

@@ -6,7 +6,7 @@ import TextArea from "@components/ui/TextArea";
 import Dropdown from "@components/ui/dropdown";
 import { toast } from "sonner";
 import { useSubmitProductMutation } from "@components/products/mutations";
-import LoadingIcon from "@components/ui/loading/loadingIcon";
+import LoadingIcon from "@components/ui/loading/LoadingIcon";
 import { useForm, Controller } from 'react-hook-form'
 import { yupResolver } from "@hookform/resolvers/yup";
 import BlockEditor from "@components/BlockEditor/BlockEditor";

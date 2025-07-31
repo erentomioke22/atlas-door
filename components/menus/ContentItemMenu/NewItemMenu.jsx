@@ -13,7 +13,7 @@ import { imageFileValidation } from "@lib/validation";
 import { imageUrlValidation } from "@lib/validation";
 import { useUploadMutation } from "@components/posts/mutations";
 import { toast } from "sonner";
-import LoadingIcon from "@components/ui/loading/loadingIcon";
+import LoadingIcon from "@components/ui/loading/LoadingIcon";
 import { useUploadThing } from "@lib/uploadthing";
 import Input from "@components/ui/input";
 
