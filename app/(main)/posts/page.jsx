@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import PostList from './postlist';
+import { Suspense } from 'react';
 
 export const metadata = {
   metadataBase: new URL(`${process.env.NEXT_PUBLIC_BASE_URL}/posts`),
@@ -41,7 +42,9 @@ const AllPosts = () => {
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       </Head>
       <div>
+      <Suspense fallback={<div>در حال بارگذاری...</div>}>
         <PostList />
+      </Suspense>
       </div>
     </>
   );

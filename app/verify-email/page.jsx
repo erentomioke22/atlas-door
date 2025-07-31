@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import VerifyPage from './verify';
+import { Suspense } from "react";
 
 export const metadata = {
   metadataBase: new URL(`${process.env.NEXT_PUBLIC_BASE_URL}/verify-email`),
@@ -26,7 +27,9 @@ const Page = () => {
         <meta name="twitter:card" content="summary_large_image" />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       </Head>
-      <VerifyPage />
+      <Suspense fallback={<div>در حال بارگذاری...</div>}>
+       <VerifyPage />
+      </Suspense>
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import ProductList from './productlist';
-
+import { Suspense } from 'react';
 export const metadata = {
   metadataBase: new URL(`${process.env.NEXT_PUBLIC_BASE_URL}/products`),
   name: " محصولات - فروش محصولات مرتبط بانصب شیشه سکوریت و درب های اتوماتیک",
@@ -41,7 +41,9 @@ const AllProducts = () => {
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       </Head>
       <div>
+      <Suspense fallback={<div>در حال بارگذاری...</div>}>
         <ProductList />
+      </Suspense>
       </div>
     </>
   );
