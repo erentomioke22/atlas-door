@@ -69,7 +69,7 @@ const formattedDate = createdAt.isValid() ? createdAt.fromNow(): 'تاریخ ن�
                     <div className='flex gap-2 backdrop-blur-sm p-2 rounded-lg  bg-white/20'>
                     {product?.colors.map((color)=>{
                        return(
-                         <div style={{backgroundColor:color.hexCode}} className=' rounded-full p-2'></div>
+                         <div style={{backgroundColor:color.hexCode}} key={color?.id} className=' rounded-full p-2'></div>
                        )
                     })}
 

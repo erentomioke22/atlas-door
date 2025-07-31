@@ -160,8 +160,8 @@ export default function page() {
           {status === "pending" &&
             Array(3)
               .fill({})
-              .map(() => {
-                return <LoadingOrder />;
+              .map((_,index) => {
+                return <LoadingOrder key={index}/>;
               })}
 
 {data?.orders.map((order) =>{

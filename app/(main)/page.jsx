@@ -250,7 +250,7 @@ const projects=[
                     Array(10)
                       .fill({})
                       .map((_,index) => {
-                        return <div className="transform translate-x-0 translate-y-0 translate-z-0  flex-none basis-[75%] md:basis-[45%] lg:basis-[30%] min-w-0 pl-4"><LoadingCard key={index}/></div>;
+                        return <div className="transform translate-x-0 translate-y-0 translate-z-0  flex-none basis-[75%] md:basis-[45%] lg:basis-[30%] min-w-0 pl-4" key={index}><LoadingCard /></div>;
                   })
             }
           {data?.posts?.map((post)=>(
@@ -299,7 +299,7 @@ const projects=[
                     Array(10)
                       .fill({})
                       .map((_,index) => {
-                        return <div className="transform translate-x-0 translate-y-0 translate-z-0  flex-none basis-[75%] md:basis-[45%] lg:basis-[30%] min-w-0 pl-4"><LoadingCard key={index}/></div>;
+                        return <div className="transform translate-x-0 translate-y-0 translate-z-0  flex-none basis-[75%] md:basis-[45%] lg:basis-[30%] min-w-0 pl-4" key={index}><LoadingCard /></div>;
                   })
             }
           {data?.products?.map((product)=>(
