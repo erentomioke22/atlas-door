@@ -179,7 +179,7 @@ const {data: post,isFetching,status,error}=useQuery({
          <div>
             <button className="bg-lcard dark:bg-dcard rounded-full p-2 text-sm sm:text-lg" onClick={copyToClipboard}><IoShareOutline/></button>
          </div>
-          {session?.user.id === post.userId &&
+          {session?.user.id === post?.userId &&
            <Link className={"bg-lcard dark:bg-dcard rounded-full p-2 text-sm sm:text-lg"} href={`/admin/edit-post/${post?.link}`}>
              <FaEraser/>
            </Link>
@@ -214,7 +214,7 @@ const {data: post,isFetching,status,error}=useQuery({
             <div
             id="post-content" ref={contentRef}
               className="content break-words w-full  normal-case leading-relaxed md:text-lg max-md:text-sm  "
-              dangerouslySetInnerHTML={{ __html: post.content }}
+              dangerouslySetInnerHTML={{ __html: post?.content }}
             />
 
 

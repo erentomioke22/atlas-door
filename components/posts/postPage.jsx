@@ -41,7 +41,7 @@ const {data: post,status,}=useQuery({
 
 
 
-  if (status === "success" && (post?.error || post?.lenght >= 1) ) {
+  if (status === "success" && (post?.error || post?.length >= 1) ) {
     return NotFound();
   }
 
