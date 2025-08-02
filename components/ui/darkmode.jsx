@@ -13,7 +13,7 @@ const Darkmode = ({name}) => {
 
   return (
     <Button
-      className={name ? "flex justify-between py-2 px-3 text-lg sm:text-sm" : "text-sm p-1 md:p-[6px]  rounded-lg"}
+      className={name ? "flex justify-between py-2 px-3 text-lg sm:text-sm" : "text-lg p-[5px] sm:p-[6px]  rounded-lg"}
       variant={name ? 'darkMode' : 'home'}
       onClick={() => {
         setTheme(theme === "light" ? "dark" : theme === "dark" ? "system" :theme === "system" ? "light" : "system");

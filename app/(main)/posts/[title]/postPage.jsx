@@ -5,7 +5,7 @@ import axios from "axios";
 import Comments from "@components/posts/comments/comments"
 import PageLoading from "@components/ui/loading/pageLoading";
 import {  toast } from 'sonner'
-import { useQuery,useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import Conneccted from "@components/posts/Connected";
 import moment from "moment";
 import ProgressBar from "@components/ui/progressbar";
@@ -26,13 +26,12 @@ import Accordion from "@components/ui/Accordion";
 
 const PostPage = ({title}) => {
 
-  const {data:session,update}=useSession()
+  const {data:session}=useSession()
   const contentRef = useRef(null);
   const [progress, setProgress] = useState(0);
   const pathName = usePathname();
   const currentUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/${pathName}`;
   const router = useRouter()
-  const queryClient = useQueryClient();
 const {data: post,isFetching,status,error}=useQuery({
     queryKey: ["post", title],
     queryFn: async()=>{
@@ -40,32 +39,6 @@ const {data: post,isFetching,status,error}=useQuery({
      return response.data
     }
   });
-
-
-  if (status === "success" && post?.length <= 0 ) {
-    return (
-      <p className="text-center text-muted-foreground">
-        No posts found. Start following people to see their posts here.
-      </p>
-    );
-  }
-
-  if (error) {
-    return (
-      <p className="text-center text-destructive">
-        An error occurred while loading posts.!!!
-      </p>
-    );
-  }
-  
-  if (status === "error" || post?.error) {
-    return (
-      <p className="text-center text-destructive">
-        An error occurred while loading posts.
-      </p>
-    );
-  }
-
 
 
 
@@ -86,6 +59,25 @@ const {data: post,isFetching,status,error}=useQuery({
     navigator.clipboard.writeText(currentUrl);
     toast.success("لینک اشتراک گذاری ک‍پی شد")
   };
+
+
+  if (status === "success" && post?.length <= 0) {
+    return (
+      <p className="text-center text-destructive h-52 flex flex-col justify-center items-center">
+        هیچ مقاله ای یافت نشد
+      </p>
+    );
+  }
+
+
+  
+  if (status === "error" || post?.error || error) {
+    return (
+      <p className="text-center text-destructive h-52 flex flex-col justify-center items-center">
+        مشکلی در برقراری ارتباط وجود دارد
+      </p>
+    );
+  }
 
   return (
         <>
@@ -126,7 +118,7 @@ const {data: post,isFetching,status,error}=useQuery({
                <div className='flex justify-between'>
               
                 <div
-               className=' flex gap-1 sm:gap-2  w-fit p-1 text-[10px] hover:bg-lcard dark:hover:bg-dcard   duration-300 cursor-pointer rounded-lg truncate'>
+               className=' flex gap-1 sm:gap-2  w-fit p-1 text-[10px]   duration-300 rounded-lg truncate'>
                <div className='relative w-8 h-8'>
                {post?.user.image === null ?
                   <div className="h-9 w-9 rounded-lg bg-gradient-to-tr from-redorange to-yellow"></div>

@@ -83,14 +83,13 @@ const scrollToComment = (id) => {
     
 
     {status === "error"  
-    // || data?.error 
+    || data?.error 
     ?
     <p className="text-center  text-sm text-lfont">
       مشكلي در برقراري ارتباط وجود دارد
     </p>
     :
  <div>
-  {!product.discussions && 
       <div className="my-10 space-y-5 ">
         {status === "pending" ? (
             Array(8)
@@ -148,7 +147,13 @@ const scrollToComment = (id) => {
       </InfiniteScrollContainer>
             )}
       </div>
-  }
+
+{session 
+  ? 
+  product?.discussions 
+  ?
+  <p className="text-center underline underline-offset-2 decoration-2">قسمت بازخورد توسط نویسنده فیر فعال شده است</p>
+  :
   <div className="sticky -bottom-5 left-0 right-0 bg-white dark:bg-black py-5">
     {commentId && 
     <div className="flex justify-between gap-3">
@@ -169,11 +174,7 @@ const scrollToComment = (id) => {
     <div className="relative w-9 h-9 overflow-hidden flex-shrink-0 my-auto">
       <ImageCom
       className="rounded-lg object-cover absolute inset-0"
-      src={
-        replyInfo?.user?.image
-        ? replyInfo?.user?.image
-        : "https://static.vecteezy.com/system/resources/previews/006/801/624/non_2x/user-avatar-people-icon-solid-style-icon-design-element-icon-template-background-free-vector.jpg"
-      }
+      src={replyInfo?.user?.image}
       alt={replyInfo?.user?.displayName}
       />
     </div>
@@ -204,18 +205,17 @@ const scrollToComment = (id) => {
     <div className="relative h-10 w-10">
        <ImageCom
           className="rounded-xl h-10 w-10"
-          src={
-            session.user?.image === null
-            ? "https://static.vecteezy.com/system/resources/previews/006/801/624/non_2x/user-avatar-people-icon-solid-style-icon-design-element-icon-template-background-free-vector.jpg"
-            : session.user.image
-          }
-          alt={session.user?.displayName}
+          src={session?.user.image}
+          alt={session?.user?.displayName}
           />
       </div>
         }
   <CommentInput product={product}  header={"write comment"} btnStyle={"w-full"}  category={item} placeHolder={"COMMENT"}  content={message}  commentId={commentId} setCommentId={setCommentId} setMessage={setMessage} setReplyInfo={setReplyInfo} replyInfo={replyInfo}/>
     </div>
   </div>
+  :
+  <button onClick={()=>setClose(!close)} className="text-center underline underline-offset-2 decoration-2"> لطفا برای ارسال بازخورد وارد حساب کاربری خود شوید</button>
+  }
  </div>
     }
     </Offcanvas>

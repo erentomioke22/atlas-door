@@ -5,7 +5,7 @@ import axios from "axios";
 import Comments from "@components/products/comments/comments";
 import PageLoading from "@components/ui/loading/pageLoading";
 import { toast } from "sonner";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { IoShareOutline } from "react-icons/io5";
 import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
@@ -28,15 +28,15 @@ const PostPage = ({ name }) => {
   const [minPrice, setMinPrice] = useState(null);
   const [maxPrice, setMaxPrice] = useState(null);
   const [currentColorName, setCurrentColorName] = useState("");
-  const { data: session, update } = useSession();
+  const { data: session } = useSession();
   const pathName = usePathname();
   const currentUrl = `http://localhost:3000/${pathName}`;
   const router = useRouter();
-  const queryClient = useQueryClient();
   const {
     data: product,
     isFetching,
     status,
+    error
   } = useQuery({
     queryKey: ["product", name],
     queryFn: async () => {
@@ -60,28 +60,28 @@ const PostPage = ({ name }) => {
     }
   }, [product, currentColor]);
 
-
-  if (status === "success" && product.length <= 0 ) {
-    return (
-      <p className="text-center text-muted-foreground">
-         .هيچ محصولي يافت نشد
-      </p>
-    );
-  }
-
-  if (status === "error" || product?.error) {
-    return (
-      <p className="text-center text-destructive">
-        مشكلي در برقراري ارتباط وجود دارد
-      </p>
-    );
-  }
-
-
   const copyToClipboard = () => {
     navigator.clipboard.writeText(currentUrl);
     toast.success("SHARE LINK COPIED");
   };
+
+  if (status === "success" &&  post?.length <= 0) {
+    return (
+      <p className="text-center text-destructive h-52 flex flex-col justify-center items-center">
+       هيچ محصولي يافت نشد
+      </p>
+    );
+  }
+
+  if (status === "error" || post?.error || error) {
+    return (
+      <p className="text-center text-destructive h-52 flex flex-col justify-center items-center">
+        مشکلی در برقراری ارتباط وجود دارد
+      </p>
+    );
+  }
+
+
 
   return (
       <div className="px-5 w-full sm:w-4/5 lg:w-4/6 xl:w-3/5 mx-auto space-y-10 md:space-y-20 mt-16">

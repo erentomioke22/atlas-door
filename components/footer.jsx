@@ -12,7 +12,7 @@ const Footer = () => {
 <footer className="relative  text-lfont pt-16 ">
   <div className='flex max-md:flex-col md:justify-between  px-5 max-md:space-y-5 md:space-x-5 my-10 md:px-36'>
     <div className=''>
-    <Link href="/" className="font-blanka hover:text-purple duration-500 text-xl">
+    <Link href="/" className="font-blanka hover:text-black dark:hover:text-white duration-500 text-xl">
     <h1>
 		  ATLAS DOOR
     </h1>

@@ -195,7 +195,7 @@ const Navbar = () => {
 
             {!session ? (
                 <div className="my-auto">
-                  <Sign session={session}/>
+                  <Sign session={session} title={<div className="h-9 w-9 rounded-xl bg-gradient-to-tr from-blue to-darkgreen cursor-pointer"></div>}/>
                 </div>
               ) : (
                 <>

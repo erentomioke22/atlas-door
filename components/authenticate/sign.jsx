@@ -26,7 +26,7 @@ const Sign = ({ title,commentStyle,session }) => {
 
   return (
     <Offcanvas       
-    title={<div className="h-9 w-9 rounded-xl bg-gradient-to-tr from-blue to-darkgreen cursor-pointer"></div>}
+    title={title}
     position={"top-0 right-0"} size={"h-screen max-w-full w-96 border-l-2 border-l-lcard dark:border-l-dcard"} openTransition={"translate-x-0"} closeTransition={"translate-x-full"} onClose={close}>
     
     <div className=" flex justify-between">

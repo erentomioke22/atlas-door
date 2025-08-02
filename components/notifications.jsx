@@ -120,7 +120,7 @@ function Notifications() {
           </div>
         )}
   
-        {status === "success" && (!notifications.length || notifications.error) && !hasNextPage && (
+        {status === "success" && !notifications.length && !hasNextPage && (
           <p className="text-center text-sm text-lfont">
              پيام جديدی نداريد .
           </p>

@@ -2,6 +2,8 @@ import Head from 'next/head';
 import PostList from './postlist';
 import { Suspense } from 'react';
 import LoadingIcon from '@components/ui/loading/LoadingIcon';
+
+
 export const metadata = {
   metadataBase: new URL(`${process.env.NEXT_PUBLIC_BASE_URL}/posts`),
   title: "مقاله ها- آموزش و آشنایی با تمامی خدمات و محصولات اطلس در",
