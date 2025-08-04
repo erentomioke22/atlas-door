@@ -8,13 +8,11 @@ import { getProductDataInclude } from '@lib/types';
 const getProduct = cache(async (name, loggedInUserId) => {
   try {
     const decodedTitle = decodeURIComponent(name);
-    const product = await prisma.product.findFirst({
+    return await prisma.product.findFirst({
       where:{name:decodedTitle},
       include: getProductDataInclude(loggedInUserId),
   }) 
 
-  
-    return product;
   } catch (error) {
     console.error('Error fetching product:', error);
     return null; 
@@ -39,37 +37,41 @@ export async function generateStaticParams() {
   }
 }
 
+
 export async function generateMetadata({ params }) {
   try{
     const  {name}  = await params;
     const product = await getProduct(name);
-    if (!product) { return {}; }
+    if (!product) return {
+      title: 'محصول یافت نشد',
+      description: 'صفحه مورد نظر وجود ندارد',
+      robots: { index: false, follow: false }
+    };
   const contentImages = product?.images?.map((image)=>(
     {
-      url: `https://www.atlasdoor.ir/${image}`,
+      url: `${process.env.NEXT_PUBLIC_BASE_URL}/${image}`,
       width: 800,
       height: 600,
-      alt: product?.title,
+      alt: product.name,
     }
   ))
 
     return {
       metadataBase: new URL(`${process.env.NEXT_PUBLIC_BASE_URL}/${product.name}`),
-      title: `${product?.name} - ${product?.desc?.slice(0, 50)}...`,
-      description: `${product?.desc}`,
-      // keywords: `${product?.tags?.map((tag) => `${tag.name}`)}`,
-      twitter: {
-        card: 'summary_large_image',
-        title: `${product.name}`,
-        description: `${product?.desc}`,
+      title: `${product?.name} - ${product?.desc?.slice(0, 50)}... | Atlas Door`,
+      description: product?.desc,
+      alternates: {
+        canonical: `${process.env.NEXT_PUBLIC_BASE_URL}/products/${product.name}`
       },
+      // keywords: `${product?.tags?.map((tag) => `${tag.name}`)}`,
       openGraph: {
-        title: `${product?.name} - ${product?.desc?.slice(0, 50)}...`,
-        description: `${product?.desc}`,
-        type: 'website',
-        locale: 'en_US',
-        url: `${process.env.NEXT_PUBLIC_BASE_URL}/products/${product?.name}`,
-        siteName: 'trader comunity',
+        title: product.name,
+        description: product.desc,
+        type: 'product',
+        publishedTime: product.createdAt.toISOString(),
+        modifiedTime: product.updatedAt.toISOString(),
+        url: `${process.env.NEXT_PUBLIC_BASE_URL}/products/${product.name}`,
+        siteName: 'Atlas Door',
         images: [
           {
             url: `${process.env.NEXT_PUBLIC_BASE_URL}/${product?.images[0]}`,
@@ -80,6 +82,16 @@ export async function generateMetadata({ params }) {
           ...contentImages
         ],
       },
+      twitter: {
+        card: 'summary_large_image',
+        title: product.name,
+        description: product.desc,
+        images: images[0]?.url,
+      },
+      robots: {
+        index: true,
+        follow: true,
+      }
     };
 
   }
@@ -90,12 +102,77 @@ export async function generateMetadata({ params }) {
 }
 
 const page = async({params}) => {
+  const product = await getProduct(params.name);
+
   const  {name}  = await params;
+  // if (!product) return notFound();
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": product.name,
+    "description": product.desc,
+    "brand": {
+      "@type": "Brand",
+      "name": "Atlas Door"
+    },
+    "sku": product.id,
+    "offers": {
+      "@type": "Offer",
+      "url": `${process.env.NEXT_PUBLIC_BASE_URL}/products/${product.name}`,
+      "priceCurrency": "IRR",
+      "price": product.price,
+      "availability": "https://schema.org/InStock",
+      "seller": {
+        "@type": "Organization",
+        "name": "Atlas Door"
+      }
+    },
+    "image": product.images.map(img => ({
+      "@type": "ImageObject",
+      "url": `${process.env.NEXT_PUBLIC_BASE_URL}/${img}`,
+      "width": 800,
+      "height": 600
+    })),
+    "aggregateRating": product?.rating ? {
+      "@type": "AggregateRating",
+      "ratingValue": product?.rating,
+      "reviewCount": product?.reviewsCount
+    } : undefined
+  };
+
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "محصولات",
+        "item": `${process.env.NEXT_PUBLIC_BASE_URL}/products`
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": product.name,
+        "item": `${process.env.NEXT_PUBLIC_BASE_URL}/products/${product.name}`
+      }
+    ]
+  };
   return (
+    <>
+          <Head>
+        <script type="application/ld+json">
+          {JSON.stringify(jsonLd)}
+        </script>
+        <script type="application/ld+json">
+          {JSON.stringify(breadcrumbJsonLd)}
+        </script>
+      </Head>
       <ProductPage name={name}/>
+    </>
   )
 }
 
-export default page;
-
+export default page; 
 

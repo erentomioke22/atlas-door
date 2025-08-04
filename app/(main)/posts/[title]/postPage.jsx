@@ -95,7 +95,7 @@ const {data: post,isFetching,status,error}=useQuery({
                                 بازگشت
                                 <FaArrowLeftLong className="my-auto text-lg"/>
                          </button>
-
+            <header>
                <div className=" space-y-5 md:mt-7">
                 <div className="space-y-3">
                    <p className="text-xl md:text-4xl w-full break-words text-black dark:text-white">{post.title}</p>   
@@ -137,11 +137,6 @@ const {data: post,isFetching,status,error}=useQuery({
                   </p>
                </div>
                 </div>
-
-
-
-
-
 
              <div className="flex gap-2 sm:gap-3   my-auto">
         
@@ -202,6 +197,7 @@ const {data: post,isFetching,status,error}=useQuery({
 
              </div>
                </div>
+            </header>
        
             <div
             id="post-content" ref={contentRef}

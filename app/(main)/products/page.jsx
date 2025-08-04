@@ -6,32 +6,74 @@ import LoadingIcon from '@components/ui/loading/LoadingIcon';
 
 export const metadata = {
   metadataBase: new URL(`${process.env.NEXT_PUBLIC_BASE_URL}/products`),
-  name: " محصولات - فروش محصولات مرتبط بانصب شیشه سکوریت و درب های اتوماتیک",
-  description: "فروش محصولات مرتبط با نصب شیشه سکوریت و لمینت و درب های اتوماتیک",
-  keywords: "درب‌های اتوماتیک, فروش درب‌های اتوماتیک, نصب درب‌های اتوماتیک, تعمیر درب‌های اتوماتیک, درب‌های خودکار, درب‌های حفاظتی, درب‌های امنیتی, درب برای منازل, درب برای کسب‌وکارها, قیمت درب‌های اتوماتیک, خدمات پس از فروش درب‌های اتوماتیک, وجام بالکن ها , آموزش شیشه سکوریت,آموزش در ب های اتوماتیک,آموزش انواع جام بالکن ها,آموزش کرکره برقی,اموزش شیشه یو پی وی سی,مشاوره درب‌های اتوماتیک, کرکره برقی",
-  twitter: {
-    card: 'summary_large_image'
+  title: "محصولات - فروش لوازم و یراق های شیشه سکوریت و درب های اتوماتیک | اطلس در",
+  description: "فروش تخصصی لوازم و ابزار و یراق های شیشه سکوریت، لمینت و درب های اتوماتیک با بهترین کیفیت و قیمت",
+  keywords: [
+    "درب اتوماتیک",
+    "شیشه سکوریت",
+    "کرکره برقی",
+    "جام بالکن",
+    "پارتیشن شیشه ای",
+    "نصب درب اتوماتیک",
+    "فروش شیشه سکوریت",
+    "قیمت درب اتوماتیک",
+    "فروش لوازم درب اتوماتیک",
+    "خرید لوازم درب اتوماتیک",
+    "فروش یراق آلات",
+    "فروش براق",
+    "خرید یرق",
+    "خرید یرق شیشه سکوریت",
+  ],
+  alternates: {
+    canonical: `${process.env.NEXT_PUBLIC_BASE_URL}/products`
   },
   openGraph: {
-    title: "مقاله ها- آموزش و آشنایی با تمامی خدمات و محصولات اطلس در",
-    description: "آموزش و آشنایی با انوع محصولات ما اعم از درب های اتوماتیک کرکره های برقی شیشه سکوریت جام بالکن ها و انواع پارتیشن ها",
-    keywords: "درب‌های اتوماتیک, فروش درب‌های اتوماتیک, نصب درب‌های اتوماتیک, تعمیر درب‌های اتوماتیک, درب‌های خودکار, درب‌های حفاظتی, درب‌های امنیتی, درب برای منازل, درب برای کسب‌وکارها, قیمت درب‌های اتوماتیک, خدمات پس از فروش درب‌های اتوماتیک, وجام بالکن ها , آموزش شیشه سکوریت,آموزش در ب های اتوماتیک,آموزش انواع جام بالکن ها,آموزش کرکره برقی,اموزش شیشه یو پی وی سی,مشاوره درب‌های اتوماتیک, کرکره برقی",
-    type: "website",
-    locale: "fa_IR",
+    title: "محصولات - فروش لوازم و یراق های شیشه سکوریت و درب های اتوماتیک | اطلس در",
+    description: "فروش تخصصی لوازم و ابزار و یراق های شیشه سکوریت، لمینت و درب های اتوماتیک با بهترین کیفیت و قیمت",
     url: `${process.env.NEXT_PUBLIC_BASE_URL}/products`,
-    siteName: "Atlas Door"
+    siteName: "Atlas Door",
+    locale: "fa_IR",
+    type: "website",
+    // images: [
+    //   {
+    //     url: `${baseUrl}/images/og-products.jpg`,
+    //     width: 1200,
+    //     height: 630,
+    //     alt: "محصولات اطلس در"
+    //   }
+    // ]
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "محصولات - فروش شیشه سکوریت و درب های اتوماتیک | اطلس در",
+    description: "فروش تخصصی شیشه سکوریت، لمینت و درب های اتوماتیک با بهترین کیفیت و قیمت",
+    // images: [`${baseUrl}/images/og-products.jpg`]
+  },
+  robots: {
+    index: true,
+    follow: true,
+    nocache: false,
+    googleBot: {
+      index: true,
+      follow: true,
+      noimageindex: false
+    }
   }
 }
+
+
+
+
 
 const AllProducts = () => {
   
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    "name": " محصولات - فروش محصولات مرتبط بانصب شیشه سکوریت و درب های اتوماتیک",
-    "description": "فروش محصولات مرتبط با نصب شیشه سکوریت و لمینت و درب های اتوماتیک",
+    "name": "محصولات - فروش شیشه سکوریت و درب های اتوماتیک | اطلس در",
+    "description": "فروش تخصصی لوازم و ابزار و یراق های شیشه سکوریت، لمینت و درب های اتوماتیک با بهترین کیفیت و قیمت",
     "url": `${process.env.NEXT_PUBLIC_BASE_URL}/products`,
-    "image": [`${process.env.NEXT_PUBLIC_BASE_URL}/your-default-image.jpg`], // Update with your default image
+    // "image": [`${process.env.NEXT_PUBLIC_BASE_URL}/your-default-image.jpg`], 
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": `${process.env.NEXT_PUBLIC_BASE_URL}/products`
@@ -41,7 +83,9 @@ const AllProducts = () => {
   return (
     <>
       <Head>
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+        <script type="application/ld+json">
+          {JSON.stringify(jsonLd)}
+        </script>
       </Head>
       <div>
       <Suspense fallback={<LoadingIcon color={"bg-white dark:bg-black "}/>}>
