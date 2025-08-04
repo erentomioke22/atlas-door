@@ -2,7 +2,6 @@ import Head from 'next/head';
 import VerifyPage from './verify';
 import { Suspense } from "react";
 import LoadingIcon from '@components/ui/loading/LoadingIcon';
-import Head from 'next/head';
 
 export const metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || 'https://www.atlasdoor.ir'),

@@ -3,7 +3,7 @@ import ProductPage from './productPage';
 import { cache } from 'react';
 import { prisma } from '@utils/database';
 import { getProductDataInclude } from '@lib/types';
-// import Head from 'next/head';
+import Head from 'next/head';
 
 const getProduct = cache(async (name, loggedInUserId) => {
   try {
