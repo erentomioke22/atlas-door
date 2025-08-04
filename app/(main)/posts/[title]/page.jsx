@@ -61,7 +61,7 @@ export async function generateMetadata({ params }) {
       alt: post?.title,
     }
   ))
-
+console.log(contentImages)
     return {
       metadataBase: new URL(`${process.env.NEXT_PUBLIC_BASE_URL}/${post.title}`),
       title: `${post?.title} - ${post?.desc?.slice(0, 50)}... | Atlas Door`,
@@ -95,7 +95,7 @@ export async function generateMetadata({ params }) {
         card: 'summary_large_image',
         title: post.title,
         description: post.desc,
-        images: images[0].url,
+        images: contentImages[0].url,
       },
       robots: {
         index: true,
