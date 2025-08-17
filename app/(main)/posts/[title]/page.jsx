@@ -61,7 +61,6 @@ export async function generateMetadata({ params }) {
       alt: post?.title,
     }
   ))
-console.log(contentImages)
     return {
       metadataBase: new URL(`${process.env.NEXT_PUBLIC_BASE_URL}/${post.title}`),
       title: `${post?.title} - ${post?.desc?.slice(0, 50)}... | Atlas Door`,

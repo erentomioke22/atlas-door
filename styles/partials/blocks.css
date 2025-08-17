@@ -46,7 +46,89 @@
   }
  
 
+  [data-type='details'] {
+    @apply flex gap-1 my-6 mx-auto p-2 bg-lcard dark:bg-dcard rounded-xl space-x-2;
+    transition: all 0.3s ease-in-out; 
+  
+    summary {
+      @apply font-bold block;
+      list-style: none; 
+      &::-webkit-details-marker {
+        display: none; 
+      }
+      transition: all 0.3s ease-in-out; 
+    }
+  
 
+  
+     > button {
+      @apply bg-transparent border-none cursor-pointer flex items-center justify-center rounded text-xs h-5 w-5;
+      transition: transform 0.2s ease-in-out; 
+  
+      &:hover {
+        @apply dark:bg-dbtn bg-lbtn;
+      }
+  
+      &::before {
+        content: '\25B6';
+        transition: transform 0.2s ease-in-out; 
+      }
+    } 
+
+
+    &.is-open > button::before {
+      @apply rotate-90;
+    }
+  
+    > div {
+      @apply flex flex-col gap-4 w-full;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-in-out, padding 0.3s ease-in-out; 
+    }
+  
+    &.is-open > div {
+      max-height: 1000px; 
+      padding-top: 0.5rem; 
+      padding-bottom: 0.5rem; 
+    }
+  }
+  
+  details {
+    @apply gap-5 p-3 bg-lcard dark:bg-dcard rounded-xl space-x-5 cursor-pointer duration-500 ease-in-out text-lg sm:text-xl select-none;
+    
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  
+    &[open] {
+      @apply shadow-md; 
+    }
+  
+    > div {
+      @apply flex flex-col py-4 text-lfont  text-sm w-full;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+  
+    summary {
+      transition: all 0.5s ease-in-out;
+      @apply font-bold block;
+      list-style: none;
+      &::-webkit-details-marker {
+        display: none;
+      }
+    }
+
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 
 }
 
