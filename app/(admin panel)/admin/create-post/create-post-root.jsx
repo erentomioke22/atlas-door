@@ -18,17 +18,15 @@ import { useSession } from "next-auth/react";
 import { useUploadThing } from "@lib/uploadthing";
 import { notFound } from "next/navigation";
 import { useRouter } from "next/navigation";
-import axios from "axios";
 import EmblaCarousel from "@components/ui/carousel/carousel";
 import { FaImage } from "react-icons/fa6";
-import { FaCheck,FaQuestion } from "react-icons/fa";
+import { FaCheck } from "react-icons/fa";
 import ImageCom from "@components/ui/Image";
 import Offcanvas from "@components/ui/offcanvas";
 import Darkmode from "@components/ui/darkmode";
 import { IoClose } from "react-icons/io5";
 import Button from "@components/ui/button";
 import { useDebounce } from "use-debounce";
-import Accordion from "@components/ui/Accordion";
 
 
 const CreatePostRoot = () => {
@@ -44,10 +42,6 @@ const CreatePostRoot = () => {
   const [thumnailIndex, setThumnailIndex] = useState(0);
   const [contentImages, setContentImage] = useState();
   const [cancel, setCancel] = useState(false);
-  const [editIndex, setEditIndex] = useState(null);
-  const [answer, setAnswer] = useState("");
-  const [question, setQuestion] = useState("");
-  const [faqs, setFaqs] = useState([]);
   const ydoc = useMemo(() => new YDoc(), []);
   const mutation = useSubmitPostMutation();
   usePreventNavigation(preventNavigation);
@@ -76,7 +70,6 @@ const CreatePostRoot = () => {
       images: [],
       content: "",
       tags: [],
-      faqs: [],
       scheduledPublish: null,
       // files:[],
       // contentImages: [],
@@ -239,36 +232,7 @@ const CreatePostRoot = () => {
 
 
 
-  const handleAddFaq = () => {
-    if (editIndex !== null) {
-      const updatedFaqs = faqs.map((faq, index) =>
-        index === editIndex ? { question, answer } : faq
-      );
-      setFaqs(updatedFaqs);
-      setValue("faqs", updatedFaqs, { shouldValidate: true });
-      setEditIndex(null);
-    } else {
-      setFaqs([...faqs, { question, answer }]);
-      setValue("faqs", [...faqs, { question, answer }], {
-        shouldValidate: true,
-      });
-    }
-    setAnswer("");
-    setQuestion("");
-  };
 
-  const handleRemoveFaq = (index) => {
-    const removeFaq = faqs.filter((_, i) => i !== index);
-    setFaqs(removeFaq);
-    setValue("faqs", removeFaq);
-  };
-
-  const handleEditFaq = (index) => {
-    const faq = faqs[index];
-    setQuestion(faq.question);
-    setAnswer(faq.answer);
-    setEditIndex(index);
-  };
 
 
   const tags = [
@@ -378,7 +342,6 @@ const CreatePostRoot = () => {
       setValue("desc", postDraft?.desc );
       setValue("content", postDraft?.content );
       // setValue("tags", postDraft?.tags );
-      // setValue("faqs", postDraft?.faqs );
       if (lastDraftId) {
         // Redirect to the same page with the draft ID
         // const newParams = new URLSearchParams(searchParams.toString());
@@ -749,66 +712,10 @@ const CreatePostRoot = () => {
           >
             {errors?.content?.message}
           </div>
-<Dropdown
-            className={
-              "right-0 bg-white px-2 dark:bg-black border border-lbtn  dark:border-dbtn"
-            }
-            title={<FaQuestion />}
-            btnStyle={
-              "bg-black text-white dark:bg-white dark:text-black rounded-full px-3 py-2"
-            }
-          >
-            <div className="flex flex-col space-y-1">
-              <input
-                type="text"
-                className="resize-none block bg-lcard dark:bg-dcard px-2 py-2 rounded-lg focus:outline-none  w-full focus:ring-2 focus:ring-black dark:ring-white   duration-200 "
-                placeholder="question"
-                value={question}
-                onChange={(e) => {
-                  setQuestion(e.target.value);
-                }}
-              />
-              <textarea
-                type="text"
-                className="resize-none block bg-lcard dark:bg-dcard px-2 py-2 rounded-lg focus:outline-none  w-full focus:ring-2 focus:ring-black dark:ring-white   duration-200 "
-                placeholder="answer"
-                value={answer}
-                onChange={(e) => {
-                  setAnswer(e.target.value);
-                }}
-              />
-              <button
-                type="button"
-                className="bg-black text-white rounded-lg w-full py-2 px-3 text-sm dark:bg-white dark:text-black"
-                onClick={handleAddFaq}
-              >
-                {editIndex !== null ? "Update FAQ" : "Add FAQ"}
-              </button>
-            </div>
-          </Dropdown>
+
 
         </div>
 
-        <div>
-        {faqs?.map((faq, index) => (
-          <div key={index} className="flex space-x-2">
-            <Accordion menuStyle={"p-4 text-lfont text-sm"} btnStyle={"text-lg sm:text-xl lg:text-2xl"} title={faq.question}>
-              {" "}
-              <p>{faq.answer}</p>{" "}
-            </Accordion>
-            <button className="text-red" onClick={() => handleRemoveFaq(index)}>
-              delete
-            </button>
-            <button
-              className="text-yellow"
-              onClick={() => handleEditFaq(index)}
-            >
-              {" "}
-              Edit{" "}
-            </button>
-          </div>
-        ))}
-      </div>
       </form>
       <div className="fixed bottom-10 right-10">
         <div>

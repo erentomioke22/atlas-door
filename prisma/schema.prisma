@@ -103,7 +103,6 @@ model Post {
   createdAt           DateTime       @default(now())
   expiresAt           DateTime?
   updatedAt           DateTime       @updatedAt
-  faqs                Faq[]
   comments            Comment[]
   linkedNotifications Notification[]
   user                User           @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -112,47 +111,9 @@ model Post {
   @@map("posts")
 }
 
-model Faq {
-  id        String   @id @default(cuid())
-  question  String
-  answer    String
-  postId    String?
-  productId String?
-  post      Post?    @relation(fields: [postId], references: [id], onDelete: Cascade)
-  product   Product? @relation(fields: [productId], references: [id], onDelete: Cascade)
-}
 
-model Advertise {
-  id        String    @id @default(cuid())
-  title     String
-  link      String
-  content   String
-  tags      String    @default("Ad")
-  images    String[]
-  isHot     Boolean   @default(false)
-  published Boolean   @default(false)
-  createdAt DateTime  @default(now())
-  expiresAt DateTime?
-  updatedAt DateTime  @updatedAt
 
-  @@map("advertises")
-}
 
-model Banner {
-  id        String    @id @default(cuid())
-  title     String
-  link      String
-  content   String
-  tags      String    @default("Ad")
-  images    String[]
-  isHot     Boolean   @default(false)
-  published Boolean   @default(false)
-  createdAt DateTime  @default(now())
-  expiresAt DateTime?
-  updatedAt DateTime  @updatedAt
-
-  @@map("banners")
-}
 
 model Product {
   id                  String         @id @default(cuid())
@@ -167,7 +128,6 @@ model Product {
   updatedAt           DateTime       @updatedAt
   cartItems           CartItem[]
   colors              Color[]
-  faqs                Faq[]
   orderItems          OrderItem[]
   seller              User           @relation(fields: [sellerId], references: [id])
   comments            Comment[]

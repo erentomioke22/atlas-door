@@ -17,13 +17,12 @@ import LoadingIcon from "@components/ui/loading/LoadingIcon";
 import BlockEditor from "@components/BlockEditor/BlockEditor";
 import { useMemo } from "react";
 import { Doc as YDoc } from "yjs";
-import Accordion from "@components/ui/Accordion";
 import EditPostLoading from "@components/ui/loading/editPostLoading";
 import usePreventNavigation from "@hook/usePreventNavigation";
 import NotFound from "@app/(main)/not-found";
 import { useUploadThing } from "@lib/uploadthing";
 import EmblaCarousel from "@components/ui/carousel/carousel";
-import { FaImage, FaPlus, FaCheck, FaQuestion,FaPalette} from "react-icons/fa6";
+import {FaPlus, FaCheck,FaPalette} from "react-icons/fa6";
 import ImageCom from "@components/ui/Image";
 import Offcanvas from "@components/ui/offcanvas";
 import Button from "@components/ui/button";
@@ -55,11 +54,7 @@ const EditProduct = ({ name }) => {
   const [cancel, setCancel] = useState(false);
   const [productThumnail, setProductThumnail] = useState(0);
   const [productPictures, setProductPictures] = useState([]);
-  const [editIndex, setEditIndex] = useState(null);
   const [editColorIndex, setEditColorIndex] = useState(null);
-  const [answer, setAnswer] = useState("");
-  const [question, setQuestion] = useState("");
-  const [faqs, setFaqs] = useState([]);
   const [colors, setColors] = useState([]);
   const [colorName, setColorName] = useState('');
   const [colorHex, setColorHex] = useState('');
@@ -157,13 +152,9 @@ const EditProduct = ({ name }) => {
       name: "",
       desc: "",
       images: [],
-      faqs: [],
       rmFiles: [],
       colors: [],
       content: "",
-      // faqs:[],
-      // tocs:[]
-      // contentImages: [],
     },
     resolver: yupResolver(productValidation),
   });
@@ -178,7 +169,6 @@ const EditProduct = ({ name }) => {
       setValue("colors", product?.colors);
       setProductThumnail(product?.images[0]);
       setColors(product?.colors);
-      setFaqs(product?.faqs);
       setProductPictures(product?.images);
     }
   }, [
@@ -285,7 +275,6 @@ const EditProduct = ({ name }) => {
       mutation.mutate(values, {
         onSuccess: () => {
           reset();
-          setFaqs([]);
           setColors([]);
           setProductPictures([]);
           setProductThumnail(null);
@@ -302,36 +291,7 @@ const EditProduct = ({ name }) => {
 
 
 
-  const handleAddFaq = () => {
-    if (editIndex !== null) {
-      const updatedFaqs = faqs.map((faq, index) =>
-        index === editIndex ? { question, answer } : faq
-      );
-      setFaqs(updatedFaqs);
-      setValue("faqs", updatedFaqs, { shouldValidate: true });
-      setEditIndex(null);
-    } else {
-      setFaqs([...faqs, { question, answer }]);
-      setValue("faqs", [...faqs, { question, answer }], {
-        shouldValidate: true,
-      });
-    }
-    setAnswer("");
-    setQuestion("");
-  };
 
-  const handleRemoveFaq = (index) => {
-    const removeFaq = faqs.filter((_, i) => i !== index);
-    setFaqs(removeFaq);
-    setValue("faqs", removeFaq);
-  };
-
-  const handleEditFaq = (index) => {
-    const faq = faqs[index];
-    setQuestion(faq.question);
-    setAnswer(faq.answer);
-    setEditIndex(index);
-  };
 
 
   function handleAddImage(file) {
@@ -809,44 +769,6 @@ const EditProduct = ({ name }) => {
               </div>
 
 
-              <Dropdown
-            className={
-              "right-0 bg-white px-2 dark:bg-black border border-lbtn  dark:border-dbtn"
-            }
-            title={<FaQuestion />}
-            btnStyle={
-              "bg-black text-white dark:bg-white dark:text-black rounded-full px-3 py-2"
-            }
-          >
-            <div className="flex flex-col space-y-1">
-              <input
-                type="text"
-                className="resize-none block bg-lcard dark:bg-dcard px-2 py-2 rounded-lg focus:outline-none  w-full focus:ring-2 focus:ring-black dark:ring-white   duration-200 "
-                placeholder="question"
-                value={question}
-                onChange={(e) => {
-                  setQuestion(e.target.value);
-                }}
-              />
-              <textarea
-                type="text"
-                className="resize-none block bg-lcard dark:bg-dcard px-2 py-2 rounded-lg focus:outline-none  w-full focus:ring-2 focus:ring-black dark:ring-white   duration-200 "
-                placeholder="answer"
-                value={answer}
-                onChange={(e) => {
-                  setAnswer(e.target.value);
-                }}
-              />
-              <button
-                type="button"
-                className="bg-black text-white rounded-lg w-full py-2 px-3 text-sm dark:bg-white dark:text-black"
-                onClick={handleAddFaq}
-              >
-                {editIndex !== null ? "Update FAQ" : "Add FAQ"}
-              </button>
-            </div>
-          </Dropdown>
-
           <Dropdown
             className={
               "right-0 bg-white px-2 dark:bg-black border border-lbtn  dark:border-dbtn"
@@ -949,27 +871,6 @@ const EditProduct = ({ name }) => {
       </form>
 
 
-
-
-      <div>
-        {faqs?.map((faq, index) => (
-          <div key={index} className="flex space-x-2">
-            <Accordion menuStyle={"p-4 text-lfont text-sm"} btnStyle={"text-lg sm:text-xl lg:text-2xl"} title={faq.question}>
-              {" "}
-              <p>{faq.answer}</p>{" "}
-            </Accordion>
-            <button className="text-red" onClick={() => handleRemoveFaq(index)}>
-              <IoClose/>
-            </button>
-            <button
-              className="text-yellow"
-              onClick={() => handleEditFaq(index)}
-            >
-               <IoPencil/>
-            </button>
-          </div>
-        ))}
-      </div>
 
       <div className="w-2/3 flex flex-wrap gap-2 mx-auto items-center my-5">
         {colors?.map((color, index) => (

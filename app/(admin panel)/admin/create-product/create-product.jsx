@@ -15,8 +15,7 @@ import { Doc as YDoc } from "yjs";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import EmblaCarousel from "@components/ui/carousel/carousel";
-import {FaPlus, FaCheck, FaQuestion } from "react-icons/fa6";
-import Accordion from "@components/ui/Accordion";
+import {FaPlus, FaCheck } from "react-icons/fa6";
 import ImageCom from "@components/ui/Image";
 import Offcanvas from "@components/ui/offcanvas";
 import { IoClose } from "react-icons/io5";
@@ -44,11 +43,7 @@ const CreateProduct = () => {
   const [contentImages, setContentImages] = useState([]);
   const [productPictures, setProductPictures] = useState([]);
   const [cancel, setCancel] = useState(false);
-  const [editIndex, setEditIndex] = useState(null);
   const [editColorIndex, setEditColorIndex] = useState(null);
-  const [answer, setAnswer] = useState("");
-  const [question, setQuestion] = useState("");
-  const [faqs, setFaqs] = useState([]);
   const [colors, setColors] = useState([]);
   const [colorName, setColorName] = useState('');
   const [colorHex, setColorHex] = useState('');
@@ -107,11 +102,7 @@ const CreateProduct = () => {
       desc: "",
       images: [],
       content: "",
-      faqs: [],
-      // colors: []
-      // price: "",
-      // discount: "",
-      // stocks: "",
+      colors: [],
     },
     resolver: yupResolver(productValidation),
   });
@@ -206,36 +197,6 @@ const CreateProduct = () => {
     }
   };
 
-  const handleAddFaq = () => {
-    if (editIndex !== null) {
-      const updatedFaqs = faqs.map((faq, index) =>
-        index === editIndex ? { question, answer } : faq
-      );
-      setFaqs(updatedFaqs);
-      setValue("faqs", updatedFaqs, { shouldValidate: true });
-      setEditIndex(null);
-    } else {
-      setFaqs([...faqs, { question, answer }]);
-      setValue("faqs", [...faqs, { question, answer }], {
-        shouldValidate: true,
-      });
-    }
-    setAnswer("");
-    setQuestion("");
-  };
-
-  const handleRemoveFaq = (index) => {
-    const removeFaq = faqs.filter((_, i) => i !== index);
-    setFaqs(removeFaq);
-    setValue("faqs", removeFaq);
-  };
-
-  const handleEditFaq = (index) => {
-    const faq = faqs[index];
-    setQuestion(faq.question);
-    setAnswer(faq.answer);
-    setEditIndex(index);
-  };
 
 
   function handleAddImage(file) {
@@ -720,44 +681,6 @@ const CreateProduct = () => {
             className={
               "right-0 bg-white px-2 dark:bg-black border border-lbtn  dark:border-dbtn"
             }
-            title={<FaQuestion />}
-            btnStyle={
-              "bg-black text-white dark:bg-white dark:text-black rounded-full px-3 py-2"
-            }
-          >
-            <div className="flex flex-col space-y-1">
-              <input
-                type="text"
-                className="resize-none block bg-lcard dark:bg-dcard px-2 py-2 rounded-lg focus:outline-none  w-full focus:ring-2 focus:ring-black dark:ring-white   duration-200 "
-                placeholder="question"
-                value={question}
-                onChange={(e) => {
-                  setQuestion(e.target.value);
-                }}
-              />
-              <textarea
-                type="text"
-                className="resize-none block bg-lcard dark:bg-dcard px-2 py-2 rounded-lg focus:outline-none  w-full focus:ring-2 focus:ring-black dark:ring-white   duration-200 "
-                placeholder="answer"
-                value={answer}
-                onChange={(e) => {
-                  setAnswer(e.target.value);
-                }}
-              />
-              <button
-                type="button"
-                className="bg-black text-white rounded-lg w-full py-2 px-3 text-sm dark:bg-white dark:text-black"
-                onClick={handleAddFaq}
-              >
-                {editIndex !== null ? "Update FAQ" : "Add FAQ"}
-              </button>
-            </div>
-          </Dropdown>
-
-          <Dropdown
-            className={
-              "right-0 bg-white px-2 dark:bg-black border border-lbtn  dark:border-dbtn"
-            }
             title={<FaPalette />}
             btnStyle={
               "bg-black text-white dark:bg-white dark:text-black rounded-full px-3 py-2"
@@ -865,29 +788,6 @@ const CreateProduct = () => {
 
 
 
-
-
-
-      <div>
-        {faqs?.map((faq, index) => (
-          <div key={index} className="flex space-x-2">
-            <Accordion title={faq.question}>
-              {" "}
-              <p>{faq.answer}</p>{" "}
-            </Accordion>
-            <button className="text-red" onClick={() => handleRemoveFaq(index)}>
-              <IoClose/>
-            </button>
-            <button
-              className="text-yellow"
-              onClick={() => handleEditFaq(index)}
-            >
-               <IoPencil/>
-            </button>
-          </div>
-        ))}
-      </div>
-
       <div className="w-2/3 flex flex-wrap gap-2 mx-auto items-center my-5">
         {colors?.map((color, index) => (
           <div key={index} className=" bg-lcard dark:bg-dcard p-2 rounded-xl">
@@ -938,5 +838,3 @@ const CreateProduct = () => {
 };
 
 export default CreateProduct;
-// ... existing imports and code ...
-

@@ -20,7 +20,6 @@ import { useMemo } from "react";
 import { Doc as YDoc } from "yjs";
 import EditPostLoading from "@components/ui/loading/editPostLoading";
 import usePreventNavigation from "@hook/usePreventNavigation";
-import { FaQuestion } from "react-icons/fa";
 import { useUploadThing } from "@lib/uploadthing";
 import EmblaCarousel from "@components/ui/carousel/carousel";
 import { FaImage } from "react-icons/fa6";
@@ -29,7 +28,6 @@ import ImageCom from "@components/ui/Image";
 import Offcanvas from "@components/ui/offcanvas";
 import Button from "@components/ui/button";
 import Darkmode from "@components/ui/darkmode";
-import Accordion from "@components/ui/Accordion";
 import { notFound } from "next/navigation";
 
 
@@ -49,10 +47,6 @@ const EditPostRoot = ({ title }) => {
   const [contentImages, setContentImage] = useState();
   const [thumnailIndex, setThumnailIndex] = useState();
   const [cancel, setCancel] = useState(false);
-  const [editIndex, setEditIndex] = useState(null);
-  const [answer, setAnswer] = useState("");
-  const [question, setQuestion] = useState("");
-  const [faqs, setFaqs] = useState([]);
   const [items, setItems] = useState([]);
 
 
@@ -126,10 +120,6 @@ const EditPostRoot = ({ title }) => {
       rmFiles: [],
       content: "",
       tags: [],
-      faqs: [],
-      // files: [],
-      // tocs:[]
-      // contentImages: [],
     },
     resolver: yupResolver(postValidation),
   });
@@ -142,8 +132,6 @@ const EditPostRoot = ({ title }) => {
       setValue("content", post?.content);
       setValue("images", post?.images);
       setValue("tags",post?.tags.map((tag) => tag.name));
-      setValue("faqs", post?.faqs);
-      setFaqs(post?.faqs);
       setThumnailIndex(post?.images[0]);
       setFiles(post.images.map((image)=>({url:image})))
       setDropTag(post?.tags.map((tag) => tag.name));
@@ -319,38 +307,6 @@ const EditPostRoot = ({ title }) => {
   };
 
 
-
-
-  const handleAddFaq = () => {
-    if (editIndex !== null) {
-      const updatedFaqs = faqs.map((faq, index) =>
-        index === editIndex ? { question, answer } : faq
-      );
-      setFaqs(updatedFaqs);
-      setValue("faqs", updatedFaqs, { shouldValidate: true });
-      setEditIndex(null);
-    } else {
-      setFaqs([...faqs, { question, answer }]);
-      setValue("faqs", [...faqs, { question, answer }], {
-        shouldValidate: true,
-      });
-    }
-    setAnswer("");
-    setQuestion("");
-  };
-
-  const handleRemoveFaq = (index) => {
-    const removeFaq = faqs.filter((_, i) => i !== index);
-    setFaqs(removeFaq);
-    setValue("faqs", removeFaq);
-  };
-
-  const handleEditFaq = (index) => {
-    const faq = faqs[index];
-    setQuestion(faq.question);
-    setAnswer(faq.answer);
-    setEditIndex(index);
-  };
 
   const tags = [
     {
@@ -827,66 +783,9 @@ const EditPostRoot = ({ title }) => {
                 {errors?.content?.message}
               </div>
 
-              <Dropdown
-                className={
-                  "right-0 bg-white px-2 dark:bg-black border border-lbtn  dark:border-dbtn"
-                }
-                title={<FaQuestion />}
-                btnStyle={
-                  "bg-black text-white dark:bg-white dark:text-black rounded-full px-3 py-2"
-                }
-              >
-                <div className="flex flex-col space-y-1">
-                  <input
-                    type="text"
-                    className="resize-none block bg-lcard dark:bg-dcard px-2 py-2 rounded-lg focus:outline-none  w-full focus:ring-2 focus:ring-black dark:ring-white   duration-200 "
-                    placeholder="question"
-                    value={question}
-                    onChange={(e) => {
-                      setQuestion(e.target.value);
-                    }}
-                  />
-                  <textarea
-                    type="text"
-                    className="resize-none block bg-lcard dark:bg-dcard px-2 py-2 rounded-lg focus:outline-none  w-full focus:ring-2 focus:ring-black dark:ring-white   duration-200 "
-                    placeholder="answer"
-                    value={answer}
-                    onChange={(e) => {
-                      setAnswer(e.target.value);
-                    }}
-                  />
-                  <button
-                    type="button"
-                    className="bg-black text-white rounded-lg w-full py-2 px-3 text-sm dark:bg-white dark:text-black"
-                    onClick={handleAddFaq}
-                  >
-                    {editIndex !== null ? "Update FAQ" : "Add FAQ"}
-                  </button>
-                </div>
-              </Dropdown>
             </div>
         )}
       </form>
-      <div>
-        {faqs?.map((faq, index) => (
-          <div key={index} className="flex space-x-2">
-            <Accordion menuStyle={"p-4 text-lfont text-sm"} btnStyle={"text-lg sm:text-xl lg:text-2xl"} title={faq.question}>
-              {" "}
-              <p>{faq.answer}</p>{" "}
-            </Accordion>
-            <button className="text-red" type="button" onClick={() => handleRemoveFaq(index)}>
-              delete
-            </button>
-            <button
-              className="text-yellow" type="button"
-              onClick={() => handleEditFaq(index)}
-            >
-              {" "}
-              Edit{" "}
-            </button>
-          </div>
-        ))}
-      </div>
 
       <div className="fixed bottom-10 right-10">
         <div>

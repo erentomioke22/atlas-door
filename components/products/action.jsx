@@ -10,10 +10,7 @@ export async function submitProduct(values) {
     const session = await auth();
     if (!session) throw new Error("Unauthorized");
 
-    const faqs =
-      values.faqs?.filter(
-        (faq) => faq !== undefined && faq.question && faq.answer
-      ) || [];
+
 
 
       const existProduct = await prisma.product.findMany({
@@ -35,12 +32,6 @@ export async function submitProduct(values) {
         content: values.content,
         images: values.images,
         sellerId: session?.user.id,
-        faqs: {
-          create: faqs.map((faq) => ({
-            question: faq.question,
-            answer: faq.answer,
-          })),
-        },
         colors: {
           create: values.colors.map((color) => ({
             status: "EXISTENT",
@@ -68,10 +59,6 @@ export async function editProduct(values) {
   try {
     const session = await auth();
     if (!session) throw new Error("Unauthorized");
-    const faqs =
-      values.faqs?.filter(
-        (faq) => faq !== undefined && faq.question && faq.answer
-      ) || [];
       
       if(values.rmFiles.length > 0){
         try{
@@ -89,13 +76,6 @@ export async function editProduct(values) {
         desc: values.desc,
         content: values.content,
         images: values.images,
-        faqs: {
-          deleteMany:{},
-          create: faqs.map((faq) => ({
-            question: faq.question,
-            answer: faq.answer,
-          })),
-        },
         colors: {
           deleteMany:{},
           create:values.colors.map((color) => ({

@@ -18,8 +18,8 @@ export async function submitPost(values) {
   const randomString = Math.random().toString(36).substring(2, 12);
   sanitizedTitle += `_${randomString}`;
  
-  const faqs = values.faqs?.filter(faq => faq !== undefined && faq.question && faq.answer) || [];
-  // const tocs = values.tocs?.filter(toc => toc !== undefined && toc.textContent) || [];
+
+
   const tags = values.tags?.filter(tag => tag !== undefined) || [];
 
   const existingTags = await prisma.tag.findMany({
@@ -36,7 +36,6 @@ export async function submitPost(values) {
       link:sanitizedTitle,
       desc:values.desc,
       images: values.images,
-      // contentImages:values.files,
       content: values.content,
       userId: session.user.id,
       tags: {
@@ -45,28 +44,12 @@ export async function submitPost(values) {
           .filter((tagName) => !existingTags.some((tag) => tag.name === tagName))
           .map((tagName) => ({ name: tagName})), 
       },
-      faqs: { 
-        create:faqs.map((faq) => ({ 
-          question: faq.question, 
-          answer: faq.answer, 
-        })), 
-    },
     status: values.scheduledPublish && new Date(values.scheduledPublish) > new Date() 
     ? "SCHEDULED" 
     : "PUBLISHED",
-  // If there's a scheduled publish date, set it as expiresAt (which we'll use as publishAt)
   ...(values.scheduledPublish && new Date(values.scheduledPublish) > new Date() && {
     expiresAt: new Date(values.scheduledPublish)
   }),
-    //   tocs: { 
-    //     create:tocs.map((toc) => ({ 
-    //       link: toc.id, 
-    //       itemIndex: toc.itemIndex, 
-    //       level: toc.level, 
-    //       originalLevel: toc.originalLevel, 
-    //       textContent: toc.textContent, 
-    //     })), 
-    // },
     },
     include: getPostDataInclude(session?.user?.id),
   })
@@ -97,8 +80,6 @@ export async function editPost(values) {
     const session = await auth();
     if (!session) throw new Error("Unauthorized");
   
-   const faqs = values.faqs?.filter(faq => faq !== undefined && faq.question && faq.answer) || [];
-  //  const tocs = values.tocs?.filter(toc => toc !== undefined && toc.textContent) || [];
    const tags = values.tags?.filter(tag => tag !== undefined) || [];
     
 
@@ -127,9 +108,7 @@ export async function editPost(values) {
         title: values.title,
         desc: values.desc,
         images: values.images,
-        // contentImages:values.files,
         content: values.content,
-        // items: values.items,
         userId: session?.user.id,
         tags: {
           set:[],
@@ -138,41 +117,6 @@ export async function editPost(values) {
             .filter(tagName => !existingTags.some(tag => tag.name === tagName))
             .map(tagName => ({ name: tagName })), 
         },
-        faqs: {
-          deleteMany:{},
-          create: faqs.map(faq => ({ 
-            id: faq.id,
-            question: faq.question, 
-            answer: faq.answer, 
-          })),
-          // update: values.faqs.map(faq => ({
-          //   where: { id: faq.id },
-          //   data: {
-          //     question: faq.question,
-          //     answer: faq.answer,
-          //   },
-          // })),
-        },
-        // tocs: {
-        //   deleteMany:{},
-        //   create:tocs.map(toc => ({
-        //     link:toc.id, 
-        //     itemIndex: toc.itemIndex, 
-        //     level: toc.level, 
-        //     originalLevel: toc.originalLevel, 
-        //     textContent: toc.textContent, 
-        //   })),
-        //   // update: values.tocs.map(toc => ({
-        //   //   where: { id: toc.id },
-        //   //   data: {
-        //   //     link: toc.link,
-        //   //     itemIndex: toc.itemIndex,
-        //   //     level: toc.level,
-        //   //     originalLevel: toc.originalLevel,
-        //   //     textContent: toc.textContent,
-        //   //   },
-        //   // })),
-        // },
       },
       include: getPostDataInclude(session?.user?.id),
     });
