@@ -206,19 +206,7 @@ const {data: post,isFetching,status,error}=useQuery({
             />
 
 
-{post?.faqs?.length >= 1 && 
-                       <div className="space-y-5"> 
-                       <div>
-                        <h1 className="text-lg sm:text-xl text-lfont"><span className="text-2xl sm:text-4xl text-black dark:text-white uppercase">سوالات</span> متداول</h1>
-                         <p className="text-sm md:text-md  text-lfont">از سوالات شما همیشه استقبال میشود;سوالات شما جرقه گفتگوهایی را میدهند که منجر به نوآوری میشود</p>
-                       </div>
-             {post?.faqs?.map((faq,index)=>(
-                     <Accordion menuStyle={"p-4 text-lfont text-sm bg-lcard dark:bg-dcard rounded-xl"} btnStyle={"text-lg sm:text-xl lg:text-2xl "} title={faq.question} key={index}> <p>{faq.answer}</p> </Accordion>
-                 ))}
-             </div>  
-       
 
-        }
 
           {/* <div className="px-5 sm:px-10 mx-auto  space-y-10 ">
             <h1 className="text-lg sm:text-xl text-lfont"><span className="text-2xl sm:text-4xl text-black dark:text-white uppercase">{post?.user.displayName}</span> More And Top Posts</h1>

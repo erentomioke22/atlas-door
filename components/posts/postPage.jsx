@@ -174,23 +174,7 @@ const formattedDate = createdAt.isValid() ? createdAt.fromNow(): 'تاریخ ن�
        </div>
      
 
-       {post?.faqs?.length >= 1 && 
-       <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-5 mx-auto  my-20"> 
-                       <div className="space-y-5"> 
-             {post?.faqs?.map((faq,index)=>(
-                     <Accordion menuStyle={"p-4 text-lfont text-sm"} btnStyle={"text-lg sm:text-xl lg:text-2xl"} title={faq.question} key={index}> <p>{faq.answer}</p> </Accordion>
-                 ))}
-             </div>  
-       
-         <div className="flex flex-col justify-center items-center space-y-5">
-                 <div className="text-center">
-                   <p className="text-4xl md:text-[60px] leading-normal">سوالات متداول</p>
-                   <p className="text-sm md:text-md  text-lfont">از سوالات شما همیشه استقبال میشود;سوالات شما جرقه گفتگوهایی را میدهند که منجر به نوآوری میشود</p>
-                 </div>
-               </div>
 
-       </div>
-       }
        
        <div className="comment w-full sm:w-4/5 lg:w-1/2 mx-auto  my-20 ">
        <h1 className="text-4xl md:text-[60px] text-center leading-normal my-5">ارسال بازخورد</h1>

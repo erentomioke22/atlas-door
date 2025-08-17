@@ -184,7 +184,6 @@ const CreateProduct = () => {
       mutation.mutate(values, {
         onSuccess: () => {
           reset();
-          setFaqs([]);
           setColors([]);
           setProductPictures([]);
           // router.back();
