@@ -213,7 +213,7 @@ const PostPage = ({ name }) => {
               
 
                 <button className="bg-lcard dark:bg-dcard rounded-full text-sm px-4 py-2 ">
-              <a href="tel:02155589837" onClick={()=>{toast.success('شماره کپی شد');navigator.clipboard.writeText('02155589837')}} >
+              <a href="tel:09901196140" onClick={()=>{toast.success('شماره کپی شد');navigator.clipboard.writeText('09901196140')}} >
                 تماس
               </a>
                 </button>

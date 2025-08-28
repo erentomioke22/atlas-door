@@ -105,7 +105,7 @@ const projects=[
             </h3>
 
             <div className=" flex justify-center  gap-3">
-              <a href="tel:02155589837" onClick={()=>{toast.success('شماره کپی شد');navigator.clipboard.writeText('02155589837')}} className="bg-black px-10 text-center py-2  text-white dark:bg-white dark:text-black rounded-full">
+              <a href="tel:09901196140" onClick={()=>{toast.success('شماره کپی شد');navigator.clipboard.writeText('09901196140')}} className="bg-black px-10 text-center py-2  text-white dark:bg-white dark:text-black rounded-full">
                 تماس
               </a>
               <Link href="/posts" className="bg-lcard dark:bg-dcard rounded-lg py-2 px-5">

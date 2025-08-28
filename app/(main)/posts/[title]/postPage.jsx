@@ -159,7 +159,7 @@ const {data: post,isFetching,status,error}=useQuery({
         </div> */}
 
             <button className="bg-lcard dark:bg-dcard rounded-full p-2 text-sm sm:text-lg">
-              <a href="tel:02155589837" onClick={()=>{toast.success('شماره کپی شد');navigator.clipboard.writeText('02155589837')}} >
+              <a href="tel:09901196140" onClick={()=>{toast.success('شماره کپی شد');navigator.clipboard.writeText('09901196140')}} >
                 <FaPhone/>
               </a>
                 </button>

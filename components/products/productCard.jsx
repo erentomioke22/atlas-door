@@ -116,7 +116,7 @@ const formattedDate = createdAt.isValid() ? createdAt.fromNow(): 'تاریخ ن�
                    </div>
          </div>
          <button className="bg-lbtn dark:bg-dbtn rounded-lg text-sm w-full py-2 ">
-              <a href="tel:02155589837" onClick={()=>{toast.success('شماره کپی شد');navigator.clipboard.writeText('02155589837')}} >
+              <a href="tel:09901196140" onClick={()=>{toast.success('شماره کپی شد');navigator.clipboard.writeText('09901196140')}} >
                 تماس
               </a>
                 </button>
