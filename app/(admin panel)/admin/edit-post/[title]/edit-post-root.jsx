@@ -51,7 +51,7 @@ const EditPostRoot = ({ title }) => {
 
 
 
-  if (session?.user.role !== "admin") {
+  if (!session || session?.user.role !== "admin") {
     notFound()
   }
 

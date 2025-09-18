@@ -68,7 +68,7 @@ const EditProduct = ({ name }) => {
 
 
 
-  if (session?.user.role !== "admin") {
+  if (!session || session?.user.role !== "admin") {
     notFound()
   }
 
@@ -377,16 +377,47 @@ const EditProduct = ({ name }) => {
   const handleAddColor = () => {
     if (editColorIndex !== null) {
       const updatedColor = colors.map((color, index) =>
-        index === editColorIndex ? { name:colorName, hexCode:colorHex,price:colorPrice,discount:colorDiscount,stocks:colorStocks } : color
+        index === editColorIndex
+          ? {
+              ...color, // preserve id/status
+              name: colorName,
+              hexCode: colorHex,
+              price: colorPrice,
+              discount: colorDiscount,
+              stocks: colorStocks,
+            }
+          : color
       );
       setColors(updatedColor);
       setValue("colors", updatedColor, { shouldValidate: true });
       setEditColorIndex(null);
     } else {
-      setColors([...colors, { name:colorName, hexCode:colorHex,price:colorPrice,discount:colorDiscount,stocks:colorStocks}]);
-      setValue("colors", [...colors, { name:colorName, hexCode:colorHex,price:colorPrice,discount:colorDiscount,stocks:colorStocks}], {
-        shouldValidate: true,
-      });
+      setColors([
+        ...colors,
+        {
+          name: colorName,
+          hexCode: colorHex,
+          price: colorPrice,
+          discount: colorDiscount,
+          stocks: colorStocks,
+        },
+      ]);
+      setValue(
+        "colors",
+        [
+          ...colors,
+          {
+            name: colorName,
+            hexCode: colorHex,
+            price: colorPrice,
+            discount: colorDiscount,
+            stocks: colorStocks,
+          },
+        ],
+        {
+          shouldValidate: true,
+        }
+      );
     }
     setColorHex("");
     setColorName("");

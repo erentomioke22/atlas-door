@@ -4,12 +4,12 @@ import { cache } from 'react';
 import { prisma } from '@utils/database';
 import { getPostDataInclude } from '@lib/types';
 import Head from 'next/head';
-// import { notFound } from 'next/navigation';
+import { notFound } from 'next/navigation';
 
 
 const getPost = cache(async (title, loggedInUserId) => {
   try {
-    const decodedTitle = decodeURIComponent(title);
+    const decodedTitle = decodeURIComponent(title); 
     return await prisma.post.findFirst({
       where:{link:decodedTitle,status: 'PUBLISHED'},
       include: getPostDataInclude(loggedInUserId),
@@ -42,8 +42,6 @@ export async function generateStaticParams() {
 
 
 
-
-
 export async function generateMetadata({ params }) {
   try{
     const post = await getPost(params.title);
@@ -53,47 +51,39 @@ export async function generateMetadata({ params }) {
       robots: { index: false, follow: false }
     };
 
-  const contentImages = post?.images?.map((contentImage)=>(
-    {
-      url: `${process.env.NEXT_PUBLIC_BASE_URL}/${contentImage}`,
-      width: 1200,
-      height: 630,
-      alt: post?.title,
-    }
-  ))
+  const contentImages =(post?.images ?? []).map((image) => ({
+    url: image?.startsWith('http') ? image : `${process.env.NEXT_PUBLIC_BASE_URL}/${image}`,
+    width: 800,
+    height: 600,
+    alt: post?.title,
+  }));
     return {
-      metadataBase: new URL(`${process.env.NEXT_PUBLIC_BASE_URL}/${post.title}`),
+      metadataBase: new URL(`${process.env.NEXT_PUBLIC_BASE_URL}/${post?.title}`),
       title: `${post?.title} - ${post?.desc?.slice(0, 50)}... | Atlas Door`,
       description: `${post?.desc}`,
-      keywords: post.tags.map(tag => tag.name).join(', '),
+      keywords: post?.tags.map(tag => tag.name).join(', '),
       alternates: {
-        canonical: `${process.env.NEXT_PUBLIC_BASE_URL}/posts/${post.link}`
+        canonical: `${process.env.NEXT_PUBLIC_BASE_URL}/posts/${post?.link}`
       },
       openGraph: {
         title: post?.title,
         description: post?.desc,
         type: 'article',
-        publishedTime: post.createdAt.toISOString(),
-        modifiedTime: post.updatedAt.toISOString(),
-        authors: [post.user.displayName],
-        tags: post.tags.map(tag => tag.name),
-        url: `${process.env.NEXT_PUBLIC_BASE_URL}/posts/${post.link}`,
+        publishedTime: post?.createdAt.toISOString(),
+        modifiedTime: post?.updatedAt.toISOString(),
+        authors: [post?.user.displayName],
+        tags: post?.tags.map(tag => tag.name),
+        url: `${process.env.NEXT_PUBLIC_BASE_URL}/posts/${post?.link}`,
         locale: 'fa_IR',
         siteName: 'Atlas Door',
         images: [
-          {
-            url: `${process.env.NEXT_PUBLIC_BASE_URL}/${post?.images[0]}`,
-            width: 800,
-            height: 600,
-            alt: post?.title,
-          },
           ...contentImages
         ],
       },
       twitter: {
         card: 'summary_large_image',
-        title: post.title,
-        description: post.desc,
+        title: post?.title,
+        description: post?.desc,
         images: contentImages[0].url,
       },
       robots: {
@@ -111,7 +101,7 @@ export async function generateMetadata({ params }) {
 
 export default async function Page({ params }) {
   const post = await getPost(params.title);
-  // if (!post) return notFound();
+  if (!post) return notFound();
 
   const  {title}  = await params;
   
@@ -120,11 +110,11 @@ export default async function Page({ params }) {
     "@type": "BlogPosting",
     "headline": post?.title,
     "description": post?.desc,
-    "datePublished": post.createdAt.toISOString(),
-    "dateModified": post.updatedAt.toISOString(),
+    "datePublished": post?.createdAt.toISOString(),
+    "dateModified": post?.updatedAt.toISOString(),
     "author": {
       "@type": "Person",
-      "name": post.user.displayName,
+      "name": post?.user.displayName,
       // "url": `${process.env.NEXT_PUBLIC_BASE_URL}/authors/${post.user.id}`
     },
     "publisher": {
@@ -137,18 +127,18 @@ export default async function Page({ params }) {
         "height": 60
       }
     },
-    "image": post.images.map(img => ({
+    "image": post?.images.map(img => ({
       "@type": "ImageObject",
-      "url": `${process.env.NEXT_PUBLIC_BASE_URL}/${img}`,
+      "url": img?.startsWith('http') ? `${img}` : `${process.env.NEXT_PUBLIC_BASE_URL}/${img}`,
       "width": 1200,
       "height": 630
     })),
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": `${process.env.NEXT_PUBLIC_BASE_URL}/posts/${post.link}`
+      "@id": `${process.env.NEXT_PUBLIC_BASE_URL}/posts/${post?.link}`
     },
-    "keywords": post.tags.map(tag => tag.name).join(', '),
-    "articleBody": post.content
+    "keywords": post?.tags.map(tag => tag.name).join(', '),
+    "articleBody": post?.content
   };
 
   const breadcrumbJsonLd = {

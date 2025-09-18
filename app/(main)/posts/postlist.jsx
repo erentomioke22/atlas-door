@@ -144,7 +144,7 @@ const PostList = () => {
 
                      <button
                          className={"text-sm px-3  py-1    flex"}
-                         onClick={() => router.back()}
+                         onClick={() => router.push('/')}
                          type="button"
                                >
                                 بازگشت

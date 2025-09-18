@@ -1,11 +1,10 @@
 "use client";
 
-import React, { useEffect } from "react";
-import {  useQuery,useMutation,useQueryClient } from "@tanstack/react-query";
+import React, { useEffect, useState, useMemo } from "react";
+import {useMutation,useQueryClient, useInfiniteQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { formatPrice } from "@lib/utils";
 import { toast } from 'sonner';
-import { notFound } from 'next/navigation';
 import LoadingOrder from "@components/ui/loading/loadingOrder";
 import Link from 'next/link';
 import ImageCom from '@components/ui/Image';
@@ -17,36 +16,57 @@ import { FaTruckFast } from "react-icons/fa6";
 import { FaHandshakeSimple } from "react-icons/fa6";
 import { FaForwardStep } from "react-icons/fa6";
 import { useSession } from 'next-auth/react';
+import Input from "@components/ui/input";
+import useDebounce from "@hook/useDebounce";
+import InfiniteScrollContainer from "@components/InfiniteScrollContainer";
+import Dropdown from "@components/ui/dropdown";
+import LoadingIcon from "@components/ui/loading/LoadingIcon";
+import { usePathname, useParams, notFound } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 
 export default function page() {
-  const { data: session } = useSession();
 
-
+  const [search, setSearch] = useState("");
+  const debouncedSearch = useDebounce(search, 400);
+  const [dropdownCloseTick, setDropdownCloseTick] = useState(0);
+  const { data: session ,status:sessionStatus } = useSession();
+    const path = usePathname();
+    const router = useRouter();
+    const { userName } = useParams();
   
-  useEffect(() => {    
-    if (session?.user?.role === "admin") {
-      notFound();
+ 
+    if(sessionStatus !== "loading" && !session || session?.user?.role !== "admin"){
+      notFound()
     }
-  }, [session]);
+  
+    if (sessionStatus === "authenticated" && session && userName && session.user.name !== userName) {
+      return null;
+    }
+
 
   const {
     data,
-    // fetchNextPage,
-    // hasNextPage,
-    // isFetching,
-    // isFetchingNextPage,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+    isFetchingNextPage,
     status,
-  } = useQuery({
-    queryKey: ["product-feed", "admin"],
+    error
+  } = useInfiniteQuery({
+    queryKey: ["product-feed", "admin", debouncedSearch],
     queryFn: async ({ pageParam }) => {
-      const response = await axios.get("/api/product/admin");
-      return response.data;
+      const response = await axios.get("/api/product/admin", {
+        params: {
+          ...(pageParam ? { cursor: pageParam } : {}),
+          ...(debouncedSearch ? { q: debouncedSearch } : {}),
+        },
+      });
+      return response.data; 
     },
-    // initialPageParam: null,
-    // getNextPageParam: (lastPage) => lastPage.nextCursor,
+    initialPageParam: null,
+    getNextPageParam: (lastPage) => lastPage.nextCursor ?? null,
   });
-  
   
   const queryClient = useQueryClient();
 
@@ -60,30 +80,99 @@ export default function page() {
     },
     onMutate: async ({ orderId, status }) => {
       await queryClient.cancelQueries(["product-feed", "admin"]);
-  
-      const previousOrders = queryClient.getQueryData(["product-feed", "admin"]);
-  
-      queryClient.setQueryData(["product-feed", "admin"], (old) => ({
-        ...old,
-        orders: old.orders.map((order) =>
-          order.id === orderId
-            ? { ...order, status }
-            : order
-        ),
-      }));
-  
-      return { previousOrders };
+
+      const previous = queryClient.getQueryData(["product-feed", "admin", debouncedSearch]);
+
+      queryClient.setQueryData(["product-feed", "admin", debouncedSearch], (old) => {
+        if (!old) return old;
+        return {
+          ...old,
+          pages: old.pages.map((page) => ({
+            ...page,
+            orders: page.orders.map((order) =>
+              order.id === orderId ? { ...order, status } : order
+            ),
+          })),
+        };
+      });
+
+      return { previous };
     },
-    onError: (err, newOrder, context) => {
-      queryClient.setQueryData(["product-feed", "admin"], context.previousOrders);
-      toast.error(err.response?.data?.error || 'Failed to update order status');
+    onError: (err, _newOrder, context) => {
+      if (context?.previous) {
+        queryClient.setQueryData(["product-feed", "admin", debouncedSearch], context.previous);
+      }
+      toast.error(err?.response?.data?.error || 'Failed to update order status');
     },
     onSettled: () => {
-      queryClient.invalidateQueries(["product-feed", "admin"]);
+      queryClient.invalidateQueries(["product-feed", "admin", debouncedSearch]);
     },
   });
   
-  
+  const orders = useMemo(
+    () => data?.pages?.flatMap((p) => p.orders) ?? [],
+    [data]
+  );
+
+
+
+  const deleteOrder = useMutation({
+    mutationFn: async ({ orderId }) => {
+      const res = await axios.delete(`/api/product/order/${orderId}`);
+      return res.data;
+    },
+    onMutate: async ({ orderId }) => {
+      await queryClient.cancelQueries({ queryKey: ["product-feed"] });
+      const snapshot = queryClient.getQueriesData({ queryKey: ["product-feed"] });
+
+      // Remove from admin infinite lists
+      queryClient.setQueriesData({ queryKey: ["product-feed", "admin"] }, (old) => {
+        if (!old) return old;
+        return {
+          ...old,
+          pages: old.pages.map((page) => ({
+            ...page,
+            orders: page.orders.filter((o) => o.id !== orderId),
+          })),
+        };
+      });
+
+      // Remove from user lists if present
+      queryClient.setQueryData(["product-feed", "orders"], (old) => {
+        if (!old?.orders) return old;
+        return { ...old, orders: old.orders.filter((o) => o.id !== orderId) };
+      });
+      queryClient.setQueryData(["product-feed", "delivered"], (old) => {
+        if (!old?.orders) return old;
+        return { ...old, orders: old.orders.filter((o) => o.id !== orderId) };
+      });
+
+      return { snapshot };
+    },
+    onError: (_err, _vars, ctx) => {
+      if (ctx?.snapshot) {
+        for (const [key, data] of ctx.snapshot) {
+          queryClient.setQueryData(key, data);
+        }
+      }
+      toast.error('حذف سفارش ناموفق بود');
+    },
+    onSuccess: () => {
+      toast.success('سفارش حذف شد');
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["product-feed"] });
+    },
+  });
+
+
+  if (status === "error" || error) {
+    return (
+      <p className="text-center text-destructive h-52 flex flex-col justify-center items-center">
+        مشکلی در برقراری ارتباط وجود دارد
+      </p>
+    );
+  }
   
   const orderTypeMap = {
     PENDING: {
@@ -133,30 +222,24 @@ export default function page() {
   };
 
 
-  // const totalPrice = data?.orders?.reduce((sum, order) => {
-  //   const quantity = order?.quantity || 1;
-  //   return sum + (order.color?.price - (order.color?.price * order.color?.discount)/100* quantity);
-  // }, 0) || 0;
+
+
 
   return (
-    <div>
-      {status === "error" && (
-        <p className="text-center text-lfont ">
-          An error occurred while loading products.
-        </p>
-      )}
-
-      {status === "success" && data?.orders?.length < 1 &&  (
-        <p className="text-center text-lfont ">
-          No one has producted anything yet.
-        </p>
-      )}
-
-      {/* <InfiniteScrollContainer
-        className="space-y-5"
-        onBottomReached={() => hasNextPage && !isFetching && fetchNextPage()}
-      > */}
-        <div className="w-full px-5 sm:w-2/3 md:w-2/3 space-y-5 mx-auto pb-5  items-center mt-20 divide-y divide-lbtn dark:divide-dbtn py-2">
+    <InfiniteScrollContainer className={''} onBottomReached={() => hasNextPage && !isFetching && fetchNextPage()}>
+          <div className="pb-3 space-y-2 w-full md:w-2/3 lg:w-2/4">
+            <h1 className="text-2xl">جستجو</h1>
+            <Input
+              placeholder={"جستجو بر اساس شناسه سفارش"}
+              name={"orderCodeSearch"}
+              type={"text"}
+              label={false}
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className={"bg-lcard dark:bg-dcard rounded-lg text-sm p-2 outline-none"}
+            />
+          </div>
+    <div className="w-full  space-y-5 mx-auto pb-5  items-center mt-20  divide-y-2 divide-lcard dark:divide-dcard py-2">
           {status === "pending" &&
             Array(3)
               .fill({})
@@ -164,13 +247,38 @@ export default function page() {
                 return <LoadingOrder key={index}/>;
               })}
 
-{data?.orders.map((order) =>{
+
+{status === "success" && orders.length <= 0 && (
+      <p className="text-center text-destructive h-52 flex flex-col justify-center items-center">
+        هیچ سفارش در حال پردازشی یافت نشد !
+      </p>
+    )
+}
+
+{orders.map((order) =>{
   const { message, icon ,chart } = orderTypeMap[order.status];
 return(
                   <div className="  w-full   p-3 space-y-1   " key={order?.id}>
-                   
+                        <button
+       onClick={() => {
+         if (confirm("آیا از حذف این سفارش مطمئن هستید؟")) {
+           deleteOrder.mutate({ orderId: order.id });
+         }
+       }}
+       title="حذف سفارش"
+       className="px-3 py-1 text-redorange border-2 rounded-full bg-transparent text-sm "
+       disabled={deleteOrder.isPending}
+     >
+                              {deleteOrder.isPending ? (
+                          <LoadingIcon color={"bg-redorange"} />
+                        ) : (
+                          "حذف سفارش"
+                        )}
+     </button>
                     <div className="flex flex-wrap justify-between gap-2">
-                      <div>{order?.paymentId && order.paymentDate ? 
+                      <div>
+                        <div className="text-xs text-lfont">شناسه سفارش: {order?.orderCode}</div>
+                        {order?.paymentId && order.paymentDate ? 
                        <div className="flex gap-2 text-sm text-lightgreen">
                           <div className=" w-5 h-5 rounded-full"></div>
                           <FaCreditCard className="my-auto"/>
@@ -180,7 +288,7 @@ return(
                        : 
                        <div>
                             <div className="  py-2">
-                                {data?.orders.length > 0 && (
+                                {orders.length > 0 && (
                                     <div className="text-sm sm:text-lg ">
                                       <p>مجموع</p>
                                       <p>{formatPrice(order?.total)} تومان</p>
@@ -197,7 +305,7 @@ return(
 
                        <div className="flex flex-col gap-1 text-sm">
                         <div className="flex justify-between">
-                        <select
+                        {/* <select
                       value={order.status}
                       onChange={(e) => {
                         updateOrderStatus.mutate({
@@ -205,22 +313,57 @@ return(
                           status: e.target.value
                         });
                       }}
-                      className="bg-lcard dark:bg-dcard border border-lbtn dark:border-dbtn rounded-lg px-2 py-1"
+                      className="bg-lcard dark:bg-dcard border border-lbtn dark:border-dbtn rounded-lg px-2 py-1 duration-200"
                     >
                       {Object.keys(orderTypeMap).map((status) => (
-                        <option key={status} value={status}>
+                        <option key={status} value={status} className="bg-lcard p-1 rounded-lg">
                           {orderTypeMap[status].message.props.children}
                         </option>
                       ))}
-                    </select>
-                         <p>{message}</p>
-                         <span>{icon}</span>
+                    </select> */}
+                                            <Dropdown
+                          title={<div className="flex justify-between gap-1">
+                              <span>
+                                  {orderTypeMap[order.status].message}
+                                </span>
+                              <span  className="my-auto">
+                                  {orderTypeMap[order.status].icon}
+                                </span>
+                          </div>}
+                          btnStyle="bg-lcard dark:bg-dcard  rounded-lg text-right px-2 py-1 duration-200 w-36 text-black dark:text-white"
+                          className="min-w-48 px-2"
+                          close={dropdownCloseTick}
+                        >
+                          <div className="flex flex-col">
+                            {Object.keys(orderTypeMap).map((status) => (
+                              <button
+                                key={status}
+                                onClick={() => {
+                                  updateOrderStatus.mutate({
+                                    orderId: order.id,
+                                    status
+                                  });
+                                  setDropdownCloseTick((c) => c + 1);
+                                }}
+                                className="flex items-center justify-between w-full text-right px-3 py-2 hover:bg-lcard dark:hover:bg-dcard rounded-lg duration-200"
+                              >
+                                <span className="flex items-center gap-2">
+                                  {orderTypeMap[status].icon}
+                                  {orderTypeMap[status].message}
+                                </span>
+                              </button>
+                            ))}
+                          </div>
+                        </Dropdown>
+                         {/* <p>{message}</p>
+                         <span>{icon}</span> */}
                         </div>
                          <div>{chart}</div>
+                         {/* <p className="text-[10px]">{order.orderCode}</p> */}
                        </div>
 
                     </div>
-                  <div className="divide-y divide-lbtn dark:divide-dbtn gap-2">
+                  <div className="divide-y divide-dashed divide-lbtn dark:divide-dbtn gap-2">
                    {order?.items.map((item)=>(
                     <div key={item.id} >
                   <div className='flex gap-2 py-3'>
@@ -262,14 +405,13 @@ return(
                    )}
                   </div>
      
-
-      <Accordion menuStyle={"p-4  text-sm bg-lcard mt-2 rounded-xl"} btnStyle={" bg-lcard rounded-xl"} title="مشخصات دريافت كننده">
+      <Accordion menuStyle={"p-4  text-sm bg-lcard dark:bg-dcard mt-2 rounded-xl"} btnStyle={" bg-lcard dark:bg-dcard rounded-xl"} title="مشخصات دريافت كننده">
       <div className="flex flex-col space-y-2">
         <div className="flex justify-between truncate">
           <p>نام و نام خانوادگي</p>
           <p>{order?.recipient}</p> 
         </div>
-        <div className="flex justify-between truncate">
+        <div className="flex justify_between truncate">
           <p>شماره تماس</p>
           <p>{order?.phone}</p>
         </div>
@@ -282,14 +424,17 @@ return(
                </div>
           )})}
 
-
-
+          {isFetchingNextPage &&
+            Array(3)
+            .fill({})
+            .map((_,index) => {
+              return <LoadingOrder key={index}/>;
+            })}
     </div>
-
-        {/* {isFetchingNextPage && (
-          <LoadingIcon color={"bg-white dark:bg-black"} />
-        )}
-      </InfiniteScrollContainer> */}
-    </div>
+    </InfiniteScrollContainer>
   );
 }
+
+
+
+

@@ -6,6 +6,8 @@ import moment from "moment";
 import { PiHeartFill } from "react-icons/pi";
 import { FaUserGroup } from "react-icons/fa6";
 import ImageCom from "./ui/Image";
+import { IoBag } from "react-icons/io5";
+import { FaHandshakeSimple } from "react-icons/fa6";
 
 
 export default function Notification({ notification }) {
@@ -40,10 +42,10 @@ const notificationTypeMap = {
     PAID: {
       message: (
         <p>
-          پرداخت سفارش شما انجام شد
+          خرید شما با موفقیت ثبت شد
         </p>
       ),
-      icon: <IoPencil className="text-[14px] " />,
+      icon: <IoBag className="text-[14px] " />,
       href: `/posts/${notification.postId}`,
     },
     DELIVERED: {
@@ -52,7 +54,7 @@ const notificationTypeMap = {
           سفارش شما تحويل داده شد
         </p>
       ),
-      icon: <IoPencil className="text-[14px] " />,
+      icon: <FaHandshakeSimple className="text-[14px] " />,
       href: `/posts/${notification.postId}`,
     },
 

@@ -110,6 +110,7 @@ const Login = ({ show, setShow }) => {
                     {value.name === "password" && (
                       <div className="flex gap-5 justify-between mt-2">
                         <button
+                          type="button"
                           className="text-sm text-lfont underline decoration-2 decoration-neutral-900"
                           // onClick={() => {
                           //   setShow("recovery");

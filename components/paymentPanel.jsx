@@ -18,12 +18,14 @@ orderDirectValidation
 } from "@lib/validation";
 import { FaCreditCard ,FaArrowUp  } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
+import { useCart } from "@hook/useCart";
+
 
 const PaymentPanel = ({status}) => {
     const router = useRouter();
     const { data: session } = useSession();
     const [close, setClose] = useState(false);
-    
+    const { clearCart } = useCart();
     const paymentMutation = useMutation({
         mutationFn: async (values) => {
           const response = await axios.post('/api/payment',values);
@@ -31,13 +33,15 @@ const PaymentPanel = ({status}) => {
         },
         onSuccess: (data) => {
           if (data.success) {
-            window.location.href = data.paymentUrl;
+            // window.location.href = data.paymentUrl;
+            clearCart()
+            toast.success('.عملیات پردازش سفارش شما با موفقیت انجام شد . همکاران ما در اسرع وقت با شما تماس میگیرند');
           } else {
-            toast.error('Failed to initialize payment');
+            toast.error('مشکلی در فرایند پرداخت بوجود آمده است');
           }
         },
         onError: (error) => {
-          toast.error('Payment failed. Please try again.');
+          toast.error('عملیات پرداخت ناموفق بود . دوباره امتحان کنید');
         }
       });
 
@@ -57,7 +61,7 @@ const PaymentPanel = ({status}) => {
         defaultValues: {
           user: "",
           address: "",
-          rule:"gateway",
+          rule:"direct",
           phone: '',
           // paymentId:""
         },
@@ -74,7 +78,7 @@ const PaymentPanel = ({status}) => {
           // }
            paymentMutation.mutate(values);
         } catch (err) {
-          toast.error(err.message || "An error occurred");
+          toast.error(err.message || "مشکلی در انجام عملیات وجود دارد");
           // console.log(err.message)
         }
       };
@@ -83,7 +87,7 @@ const PaymentPanel = ({status}) => {
   return (
     <Offcanvas     
     title={"تکمیل سفارش"}
-    btnStyle={'bg-lcard dark:bg-dcard rounded-full p-2 text-sm sm:text-lg'}
+    btnStyle={'bg-black text-white dark:bg-white dark:text-black rounded-xl  p-2 text-sm sm:text-lg mx-auto w-full flex justify-center'}
     disabled={status === "pending"}
     position={"top-0 right-0"} size={"h-screen max-w-full w-96 border-l-2 border-l-lcard dark:border-l-dcard"} openTransition={"translate-x-0"} closeTransition={"translate-x-full"} onClose={close}>
     
@@ -158,24 +162,26 @@ const PaymentPanel = ({status}) => {
 
                 <p>نحوه پرداخت</p>
            <div className="grid grid-cols-2 gap-2">
-                <div key="gateway">
+                <div key="gateway" >
                 <input
                   className="hidden peer"
                   type="radio"
                   value="gateway"
                   {...register("rule")}
                   id="gateway"
-                  name="rule"
+                  name="rule" disabled={true}
                 />
                 <label
-                  className="flex flex-col py-2 px-3 text-center text-black dark:text-white border-2  cursor-pointer rounded-xl duration-300  peer-checked:bg-black peer-checked:text-white dark:peer-checked:bg-white dark:peer-checked:text-black"
-                  htmlFor="gateway"
+                  // className="flex flex-col py-2 px-3 text-center disabled:text-lfont disabled:bg-lcard disabled:dark:bg-dcard text-black dark:text-white border-2  cursor-pointer rounded-xl duration-300  peer-checked:bg-black peer-checked:text-white dark:peer-checked:bg-white dark:peer-checked:text-black"
+                  className="flex flex-col py-2 px-3 text-center text-lfont bg-lcard dark:bg-dcard  border-2  cursor-pointer rounded-xl duration-300"
+                  htmlFor="gateway" disabled={true}
                 >
 
                  <FaCreditCard className="mx-auto"/>
                   <p>درگاه پرداخت</p> 
                   <p className="text-[10px] ">پرداخت از طریق درگاه واسط </p>
-                  <p className="text-[10px] text-redorange">(پیشنهادی)</p>
+                  {/* <p className="text-[10px] text-redorange">(پیشنهادی)</p> */}
+                  <p className="text-[10px] text-redorange">(غیرفعال)</p>
                 </label>
 
               </div>
@@ -247,13 +253,9 @@ const PaymentPanel = ({status}) => {
           // onClick={()=>{paymentMutation.mutate()}}
           type="submit"
           disabled={paymentMutation.isPending || status === "pending"}
-          className={`px-6 py-2 rounded-lg transition-colors text-white dark:text-black w-full my-3 ${
-            paymentMutation.isPending || status === "pending"
-              ? 'bg-black/55 dark:bg-white/55 cursor-not-allowed'
-              : 'bg-black dark:bg-white'
-          }`}
+          className={`px-6 py-2 rounded-lg  text-white dark:text-black w-full my-3 bg-black dark:bg-white disabled:cursor-not-allowed`}
         >
-          {paymentMutation.isPending ? <LoadingIcon color={"bg-white dark:bg-black"}/> : 'پرداخت'}
+          {paymentMutation.isPending ? <LoadingIcon color={"bg-white dark:bg-black"}/> : 'انجام سفارش'}
         </button>
                   </div>
 

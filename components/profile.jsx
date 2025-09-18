@@ -90,7 +90,7 @@ const Profile = ({ session }) => {
 
  
 
-      <Link 
+      {/* <Link 
         // href={`/${session?.user.name}/orders`}  
         href={`/`}  
         disabled={true} 
@@ -99,7 +99,7 @@ const Profile = ({ session }) => {
         }}
         className={"flex justify-between py-2 w-full  px-3 text-lg sm:text-sm  rounded-lg  hover:bg-lcard dark:hover:bg-dcard sm:hover:text-black sm:dark:hover:text-white sm:text-lfont duration-500"} >
      <span>سفارش هاي من</span>
-      </Link>
+      </Link> */}
         
         <div>
             <Darkmode name={true}/>

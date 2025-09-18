@@ -13,6 +13,7 @@ function Conneccted({postTitle,postId}) {
     data:posts,
     isFetching,
     status,
+    error
   } = useQuery({
     queryKey: ["connected-Post",postTitle],
     queryFn: async () => {
@@ -32,13 +33,13 @@ function Conneccted({postTitle,postId}) {
 
 
 
-{status === "error" && 
+{status === "error" || posts?.error || error && 
           <p className="text-center text-lfont underline">
             مشکلی در دریافت اطلاعات پیش آمده لطفا صفحه را یکبار رفرش کنید
           </p>
       }
 
-      {status === "success" && !posts?.length  && 
+      {status === "success" && posts?.length <= 0  && 
         <p className="text-center text-lfont underline">
            هنوز پستی در اینجا قرار داده نشده
        </p>

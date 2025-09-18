@@ -5,7 +5,7 @@ import { useState } from "react";
 import Link from "next/link";
 import Darkmode from "./ui/darkmode";
 import { HiMenuAlt4 } from "react-icons/hi";
-import { IoClose } from "react-icons/io5";
+import { IoBag, IoClose } from "react-icons/io5";
 import Search from "@components/search";
 import Button from "./ui/button";
 import { usePathname } from "next/navigation";
@@ -17,6 +17,8 @@ import Banner from "./ui/Banner";
 import Profile from "./profile";
 import Notifications from "./notifications";
 import Sign from "./authenticate/sign";
+import { useCart } from '@/hook/useCart';
+import { IoPersonSharp } from "react-icons/io5";
 
 const Navbar = () => {
   const { data: session } = useSession();
@@ -26,7 +28,7 @@ const Navbar = () => {
   const [isOnline, setIsOnline] = useState(true);
   const [close, setClose] = useState(false);
   const[isOpen,setIsOpen]=useState(false)
-  
+  const { totalItems, hasHydrated, isOnline: cartIsOnline, pendingSyncCount } = useCart();
   useEffect(() => {
     setIsOnline(window.navigator.onLine);
     const handleOnlineStatus = () => {
@@ -195,7 +197,8 @@ const Navbar = () => {
 
             {!session ? (
                 <div className="my-auto">
-                  <Sign session={session} title={<div className="h-9 w-9 rounded-xl bg-gradient-to-tr from-blue to-darkgreen cursor-pointer"></div>}/>
+                  {/* "h-9 w-9 rounded-xl bg-gradient-to-tr from-blue to-darkgreen cursor-pointer"*/}
+                  <Sign session={session} title={<div className="bg-lcard dark:bg-dcard dark:text-white text-lg p-2  rounded-lg text-black"><IoPersonSharp/></div>}/>
                 </div>
               ) : (
                 <>
@@ -206,8 +209,35 @@ const Navbar = () => {
                 <div>
                   <Notifications/>
                 </div>
+
+               <Link href={`/${session?.user.name}/bag`}>
+                <div   className={`relative rounded-lg p-2 bg-lcard dark:bg-dcard text-black dark:text-white text-lg`} >       
+                  <IoBag className={hasHydrated && totalItems > 0 ? "text-redorange animate-wiggle" : ""} />
+ 
+            {hasHydrated && totalItems > 0 && (
+              <div class="px-1 bg-redorange min-w-4 min-h-4 rounded-full text-center text-white text-[10px] leading-[16px] absolute -top-2 end-5 text-nowrap">
+                  {totalItems}
+              </div>
+            )}
+
+              
+            {!cartIsOnline && pendingSyncCount > 0 && (
+              <div className="px-1 bg-redorange min-w-4 min-h-4 rounded-full text-center text-white text-[10px] leading-[16px] absolute -top-2 end-5 text-nowrap">
+              !
+              </div>
+              )}
+                </div>
+               </Link>
+
+
+
                 </>
               )}
+
+
+
+
+
 
             {!session && 
               <div>

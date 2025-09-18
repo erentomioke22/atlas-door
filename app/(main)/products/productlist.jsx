@@ -142,11 +142,11 @@ const ProductList = () => {
     <div className="px-7 md:w-3/4 xl mx-auto space-y-20">
 
           <div className="flex justify-between  mt-16">
-              <h1>فروشگاه</h1>
+              <h1 className="text-2xl">فروشگاه</h1>
 
                      <button
                          className={"text-sm px-3  py-1    flex"}
-                         onClick={() => router.back()}
+                         onClick={() => router.push('/')}
                          type="button"
                                >
                                 بازگشت

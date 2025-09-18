@@ -4,7 +4,7 @@ import { cache } from 'react';
 import { prisma } from '@utils/database';
 import { getProductDataInclude } from '@lib/types';
 import Head from 'next/head';
-
+import { notFound } from 'next/navigation';
 const getProduct = cache(async (name, loggedInUserId) => {
   try {
     const decodedTitle = decodeURIComponent(name);
@@ -37,7 +37,6 @@ export async function generateStaticParams() {
   }
 }
 
-
 export async function generateMetadata({ params }) {
   try{
     const  {name}  = await params;
@@ -47,14 +46,12 @@ export async function generateMetadata({ params }) {
       description: 'صفحه مورد نظر وجود ندارد',
       robots: { index: false, follow: false }
     };
-  const contentImages = product?.images?.map((image)=>(
-    {
-      url: `${process.env.NEXT_PUBLIC_BASE_URL}/${image}`,
+    const ogImages = (product?.images ?? []).map((image) => ({
+      url: image?.startsWith('http') ? image : `${process.env.NEXT_PUBLIC_BASE_URL}/${image}`,
       width: 800,
       height: 600,
-      alt: product.name,
-    }
-  ))
+      alt: product?.name,
+    }));
 
     return {
       metadataBase: new URL(`${process.env.NEXT_PUBLIC_BASE_URL}/${product.name}`),
@@ -65,28 +62,22 @@ export async function generateMetadata({ params }) {
       },
       // keywords: `${product?.tags?.map((tag) => `${tag.name}`)}`,
       openGraph: {
-        title: product.name,
-        description: product.desc,
-        type: 'product',
+        title: product?.name,
+        description: product?.desc,
+        type: 'article',
         publishedTime: product.createdAt.toISOString(),
         modifiedTime: product.updatedAt.toISOString(),
         url: `${process.env.NEXT_PUBLIC_BASE_URL}/products/${product.name}`,
         siteName: 'Atlas Door',
         images: [
-          {
-            url: `${process.env.NEXT_PUBLIC_BASE_URL}/${product?.images[0]}`,
-            width: 800,
-            height: 600,
-            alt: product?.name,
-          },
-          ...contentImages
+          ...ogImages
         ],
       },
       twitter: {
         card: 'summary_large_image',
         title: product.name,
         description: product.desc,
-        images: images[0]?.url,
+        images:ogImages[0]?.url,
       },
       robots: {
         index: true,
@@ -105,7 +96,7 @@ const page = async({params}) => {
   const product = await getProduct(params.name);
 
   const  {name}  = await params;
-  // if (!product) return notFound();
+  if (!product) return notFound();
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -130,7 +121,7 @@ const page = async({params}) => {
     },
     "image": product.images.map(img => ({
       "@type": "ImageObject",
-      "url": `${process.env.NEXT_PUBLIC_BASE_URL}/${img}`,
+      "url": img?.startsWith('http') ? `${img}` : `${process.env.NEXT_PUBLIC_BASE_URL}/${img}`,
       "width": 800,
       "height": 600
     })),
@@ -159,6 +150,7 @@ const page = async({params}) => {
       }
     ]
   };
+  
   return (
     <>
           <Head>

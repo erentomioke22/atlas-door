@@ -59,7 +59,7 @@ const CreateProduct = () => {
 
 
 
-  if (session?.user.role !== "admin") {
+  if (!session || session?.user.role !== "admin") {
     notFound()
   }
 
@@ -186,8 +186,8 @@ const CreateProduct = () => {
           reset();
           setColors([]);
           setProductPictures([]);
-          // router.back();
-          //  setFiles([])
+          router.back();
+          setFiles([])
         },
       });
     } catch (err) {

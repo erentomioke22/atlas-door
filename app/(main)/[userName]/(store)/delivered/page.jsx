@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React,{useEffect} from "react";
 import {  useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { formatPrice } from "@lib/utils";
@@ -14,9 +14,26 @@ import { FaLocationDot } from "react-icons/fa6";
 import { FaTruckFast } from "react-icons/fa6";
 import { FaHandshakeSimple } from "react-icons/fa6";
 import { FaForwardStep } from "react-icons/fa6";
+import { usePathname, useParams, notFound } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 export default function page() {
+      const path = usePathname();
+      const router = useRouter();
+      const { userName } = useParams();
+      const { data: session,status:sessionStatus } = useSession();
+    
+      useEffect(() => {
+        if(sessionStatus !== "authenticated") return;
+    
+    
+        if(session?.user?.name && userName && session.user.name !== userName){
+          router.replace(`/${session.user.name}/delivered`);
+        }
+      }, [session, userName, router]);
 
+      
   const {
     data,
     // fetchNextPage,
@@ -24,19 +41,37 @@ export default function page() {
     // isFetching,
     // isFetchingNextPage,
     status,
+    error
   } = useQuery({
     queryKey: ["product-feed", "delivered"],
     queryFn: async ({ pageParam }) => {
       const response = await axios.get("/api/product/delivered");
       return response.data;
     },
+    enabled:sessionStatus === "authenticated" && session?.user?.name === userName
     // initialPageParam: null,
     // getNextPageParam: (lastPage) => lastPage.nextCursor,
   });
   
   
   
+  if (status === "success" && data?.orders.length <= 0) {
+    return (
+      <p className="text-center text-destructive h-52 flex flex-col justify-center items-center">
+          تاکنون سفارشی تحویل نگرفته اید !
+      </p>
+    );
+  }
+
+
   
+  if (status === "error" || data?.error || error) {
+    return (
+      <p className="text-center text-destructive h-52 flex flex-col justify-center items-center">
+        مشکلی در برقراری ارتباط وجود دارد
+      </p>
+    );
+  }
   
   
   const orderTypeMap = {
@@ -87,30 +122,16 @@ export default function page() {
   };
 
 
-  // const totalPrice = data?.orders?.reduce((sum, order) => {
-  //   const quantity = order?.quantity || 1;
-  //   return sum + (order.color?.price - (order.color?.price * order.color?.discount)/100* quantity);
-  // }, 0) || 0;
+  if(sessionStatus !== "loading" && !session){
+    notFound()
+  }
+
+  if (sessionStatus === "authenticated" && session && userName && session.user.name !== userName) {
+    return null;
+  }
 
   return (
-    <div>
-      {status === "error" && (
-        <p className="text-center text-lfont ">
-          An error occurred while loading products.
-        </p>
-      )}
-
-      {status === "success" && !data?.orders.length &&  (
-        <p className="text-center text-lfont ">
-          No one has producted anything yet.
-        </p>
-      )}
-
-      {/* <InfiniteScrollContainer
-        className="space-y-5"
-        onBottomReached={() => hasNextPage && !isFetching && fetchNextPage()}
-      > */}
-        <div className="w-full px-5 sm:w-2/3 md:w-2/3 space-y-5 mx-auto pb-5  items-center mt-20 divide-y divide-lbtn dark:divide-dbtn py-2">
+    <div className="w-full   space-y-5 mx-auto pb-5  items-center mt-20 divide-y-2 divide-lcard dark:divide-dcard py-2">
           {status === "pending" &&
             Array(3)
               .fill({})
@@ -124,6 +145,9 @@ return(
                   <div className="  w-full   p-3 space-y-1   " key={order?.id}>
                    
                     <div className="flex flex-wrap justify-between gap-2">
+                      <div>
+                    <div className="text-xs text-lfont">شناسه سفارش: {order?.orderCode}</div>
+
                       <div>{order?.paymentId && order.paymentDate ? 
                        <div className="flex gap-2 text-sm text-lightgreen">
                           <div className=" w-5 h-5 rounded-full"></div>
@@ -131,8 +155,8 @@ return(
                           <p>پرداخت شده</p>
                         </div>
               
-                       : 
-                       <div>
+              : 
+              <div>
                             <div className="  py-2">
                                 {data?.orders.length > 0 && (
                                     <div className="text-sm sm:text-lg ">
@@ -148,17 +172,18 @@ return(
                         </div>
                        }
                        </div>
+                         </div>
 
                        <div className="flex flex-col gap-1 text-sm">
                         <div className="flex justify-between">
                          <p>{message}</p>
-                         <span>{icon}</span>
+                         <span className="my-auto">{icon}</span>
                         </div>
                          <div>{chart}</div>
                        </div>
 
                     </div>
-                  <div className="divide-y divide-lbtn dark:divide-dbtn gap-2">
+                  <div className="divide-y divide-dashed divide-lcard dark:divide-dcard gap-2">
                    {order?.items.map((item)=>(
                     <div key={item.id} >
                   <div className='flex gap-2 py-3'>
@@ -187,7 +212,7 @@ return(
                      <p className='text-sm'>  قیمت هر واحد {formatPrice(item?.color?.price)}</p>
                    </div> */}
                      <div>
-                           {item.price && <h1>{formatPrice(item?.price - (item?.price * item?.color.discount)/100* item?.quantity)} تومان</h1>}
+                           {item.price && <h1>{formatPrice(item?.price)} تومان</h1>}
                      </div>
                 </Link>
      
@@ -223,10 +248,5 @@ return(
 
     </div>
 
-        {/* {isFetchingNextPage && (
-          <LoadingIcon color={"bg-white dark:bg-black"} />
-        )}
-      </InfiniteScrollContainer> */}
-    </div>
   );
 }

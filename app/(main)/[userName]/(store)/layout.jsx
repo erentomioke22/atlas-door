@@ -27,9 +27,9 @@ export const metadata = {
 export default  function Layout({children}) {
   
   return (
-  <div className="  md:px-20 lg:px-52 xl:px-96 space-y-5 ">
+  <div className=" w-full sm:w-4/5 lg:w-4/6 xl:w-3/5 mx-auto my-10 space-y-10 px-5">
     <BagBar/>
-    <div className="py-5">
+    <div>
           {children}
     </div>
 </div>

@@ -1,70 +1,69 @@
 "use client";
 
-import PostCard from "@components/posts/postCard";
-import LoadingPage from "@components/ui/loading/loadingCard";
+import LoadingCard from "@components/ui/loading/loadingCard";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import EmblaCarousel from "@components/ui/carousel/carousel";
+import ProductCard from "./productCard";
 
 
-function Conneccted({postTitle,postId}) {
+function Conneccted({productTitle,productId}) {
 
 
   const {
-    data:posts,
+    data:products,
     isFetching,
     status,
+    error
   } = useQuery({
-    queryKey: ["connected-Post",postTitle],
+    queryKey: ["connected-Products",productTitle],
     queryFn: async () => {
       const response = await axios.get(
-        `/api/posts/connected?postTitle=${postTitle}&postId=${postId}`
+        `/api/product/connected?productTitle=${productTitle}&productId=${productId}`
       );
       return response.data;
     },
   });
 
-  // const posts = data?.pages.flatMap((page) => page.posts) || [];
 
 
   return (
     <div className="px-7 space-y-5">
 
-      <div>
-        <div className="text-center space-y-3">
-          <p className="text-4xl md:text-[60px] leading-normal ">مقاله  های مرتبط </p>
-          <p className=" text-md text-lfont">با دیدن مطالب ما میتوانید با خدمات و محصولات ما آشنا شوید و نحوه کارکرد و نوع استفاده از اونهارو یاد بگیرید</p>
-        </div>
-     </div>
 
 
-     {status === "error" && 
+
+{status === "error" || products?.error || error && 
           <p className="text-center text-lfont underline">
             مشکلی در دریافت اطلاعات پیش آمده لطفا صفحه را یکبار رفرش کنید
           </p>
       }
 
-      {status === "success" && posts?.length <= 0  && 
+      {status === "success" && products?.length <= 0  && 
         <p className="text-center text-lfont underline">
-           هنوز پستی در اینجا قرار داده نشده
+           هنوز محصولی در اینجا قرار داده نشده
        </p>
       }
 
-        <div className="w-full max-sm:space-y-5 sm:flex sm:flex-wrap gap-3 justify-center">
-          {status === "pending" && 
-                  Array(3)
-                    .fill({})
-                    .map((_,index) => {
-                      return <LoadingPage key={index}/>;
-                })
-          }
-          {posts?.map((post) => (
-            <div key={post?.id}>
-              <PostCard post={post} />
-            </div>
+     <EmblaCarousel options={{loop:false,dragFree: true,direction:'rtl'}}                 
+               dot={false}
+               autoScroll={false}>
+            {status === "pending" && 
+                    Array(10)
+                      .fill({})
+                      .map((_,index) => {
+                        return <div className="transform translate-x-0 translate-y-0 translate-z-0  flex-none basis-[75%] md:basis-[45%] lg:basis-[30%] min-w-0 pl-4" key={index}><LoadingCard /></div>;
+                  })
+            }
+          {products?.map((product)=>(
+        <div className="transform translate-x-0 translate-y-0 translate-z-0  flex-none basis-[75%] sm:basis-auto  min-w-0 pl-4 sm:pr-2 my-2" 
+         key={product.id}>
+               <ProductCard product={product} />
+         </div>
           ))}
-        </div>
-
-
+          
+         
+        </EmblaCarousel>
 
     </div>
   );

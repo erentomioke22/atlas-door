@@ -1,30 +1,3 @@
-// import nodemailer from 'nodemailer';
-
-// const domain = process.env.NEXT_PUBLIC_BASE_URL
-
-// export const sendVerificationEmail = async(email,token)=> {
-//     const confirmationLink = `${domain}/verify-email?token=${token}`
-//     let transporter = nodemailer.createTransport({
-//         service: 'gmail',
-//         auth: {
-//           user: 'atlastechnology1010@gmail.com', 
-//           pass: 'ckde qxoj cjnq auxm'
-//         }
-//       });
-    
-//     await transporter.sendMail({
-//       from:{
-//          address:'atlastechnology1010@gmail.com',
-//          name:'ATLAS TECH',
-//       },
-//       to:`${email}`,
-//       subject: 'verify your email',
-//       html:`<p>click <a href="${confirmationLink}">here</a> to verify your email</p>`,
-//     });
-
-// }
-
-
 import nodemailer from 'nodemailer';
 
 const domain = process.env.NEXT_PUBLIC_BASE_URL;
@@ -69,13 +42,13 @@ export const sendVerificationEmail = async (email, token) => {
             .logo {
                 font-size: 24px;
                 font-weight: bold;
-                color: #2563eb;
+                color: #13ce66;
                 margin-bottom: 10px;
             }
             .button {
                 display: inline-block;
                 padding: 12px 24px;
-                background-color: #2563eb;
+                background-color: #13ce66;
                 color: white !important;
                 text-decoration: none;
                 border-radius: 4px;
@@ -106,7 +79,7 @@ export const sendVerificationEmail = async (email, token) => {
             <p>اگر با ضربه روی کلید عملی انجام نشد دامنه را روی مرورگر اجرا کنید:</p>
             <p><a href="${confirmationLink}">${confirmationLink}</a></p>
             
-            <p>اگر شما اکانتی به این مام نساختید این ایمیل را نادیدیه یا حذف کنید</p>
+            <p>اگر شما اکانتی به این نام نساختید این ایمیل را نادیدیه یا حذف کنید</p>
             
             <div class="footer">
                 <p>© ${new Date().getFullYear()} ATLAS DOOR. All rights reserved.</p>

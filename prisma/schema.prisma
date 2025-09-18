@@ -178,7 +178,10 @@ model Order {
   updatedAt   DateTime    @updatedAt
   user        User        @relation(fields: [userId], references: [id])
   items       OrderItem[]
+  orderCode   String      @unique
 }
+
+
 
 model OrderItem {
   id        String  @id @default(cuid())

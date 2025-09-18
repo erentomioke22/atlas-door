@@ -17,13 +17,20 @@ import { useRouter } from "next/navigation";
 import { FaArrowLeftLong } from "react-icons/fa6";
 import Link from "next/link";
 import { FaEraser } from "react-icons/fa6";
-import AddToCartButton from "@components/products/AddToCartButton";
+// import AddToCartButton from "@components/products/AddToCartButton";
 import EmblaCarousel from "@components/ui/carousel/carousel";
 import { formatPrice,formatNumber } from "@lib/utils";
+import AddToCartButton from "@components/products/AddToCartButtonRoot";
+import Conneccted from "@components/products/Connected";
 
-const PostPage = ({ name }) => {
+
+
+
+const ProductPage = ({ name }) => {
   const [currentColor, setCurrentColor] = useState(null);
-  const [currentPrice, setCurrentPrice] = useState(null);
+  const [currentDiscount, setCurrentDiscount] = useState(null);
+  const [price, setPrice] = useState(null);
+  const [currentPriceDiscount, setCurrentPriceDiscount] = useState(null);
   const [currentStocks, setCurrentStocks] = useState(null);
   const [minPrice, setMinPrice] = useState(null);
   const [maxPrice, setMaxPrice] = useState(null);
@@ -51,8 +58,10 @@ const PostPage = ({ name }) => {
     if (product?.colors?.length > 0 && !currentColor) {
       setCurrentColor(product.colors[0].id);
       setCurrentColorName(product.colors[0].name);
-      setCurrentPrice(formatPrice(product.colors[0].price));
-      setCurrentStocks(formatPrice(product.colors[0].stocks));
+      setCurrentDiscount(product.colors[0].discount);
+      setPrice(formatPrice(product.colors[0].price));
+      setCurrentStocks(product.colors[0].stocks);
+      setCurrentPriceDiscount(formatPrice(product.colors[0].price - (product.colors[0].price * product.colors[0].discount / 100)));
 
       const prices = product.colors.map((color) => color.price);
       setMinPrice(formatPrice(Math.min(...prices)));
@@ -65,7 +74,7 @@ const PostPage = ({ name }) => {
     toast.success("SHARE LINK COPIED");
   };
 
-  if (status === "success" &&  post?.length <= 0) {
+  if (status === "success" &&  product?.length <= 0) {
     return (
       <p className="text-center text-destructive h-52 flex flex-col justify-center items-center">
        هيچ محصولي يافت نشد
@@ -73,7 +82,7 @@ const PostPage = ({ name }) => {
     );
   }
 
-  if (status === "error" || post?.error || error) {
+  if (status === "error" || product?.error || error) {
     return (
       <p className="text-center text-destructive h-52 flex flex-col justify-center items-center">
         مشکلی در برقراری ارتباط وجود دارد
@@ -84,14 +93,14 @@ const PostPage = ({ name }) => {
 
 
   return (
-      <div className="px-5 w-full sm:w-4/5 lg:w-4/6 xl:w-3/5 mx-auto space-y-10 md:space-y-20 mt-16">
+      <div className="px-5 w-full sm:w-4/5 lg:w-5/6 xl:w-4/6 mx-auto space-y-10 md:space-y-20 mt-16 ">
         {status === "pending" ? (
           <PageLoading />
         ) : (
           <div className="mx-auto w-full space-y-10">
             <button
               className={"text-sm px-3  py-1   flex"}
-              onClick={() => router.back()}
+              onClick={() => router.push('/')}
               type="button"
             >
               بازگشت
@@ -145,7 +154,7 @@ const PostPage = ({ name }) => {
             <div className=" space-y-5 md:mt-7">
               <div className="space-y-3">
               {minPrice !== maxPrice && (
-                 <p className=" text-lfont text-[10px] md:text-sm">از{minPrice} تا {maxPrice} تومان</p>
+                 <p className=" text-lfont text-[10px] md:text-sm">قیمت این محصول از {minPrice} تا {maxPrice} تومان میباشد.</p>
                  )}
                 <h1 className="text-xl md:text-4xl w-full break-words text-black dark:text-white">
                   {product.name}
@@ -154,10 +163,11 @@ const PostPage = ({ name }) => {
               </div>
             </div>
 
-
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+            <div className="space-y-10 md:space-y-12">
             <div className="flex justify-between gap-2">
               <div className="flex gap-3 flex-wrap">
-                {product?.colors.map((color) => {
+                {product?.colors?.filter(color=> color?.status === 'EXISTENT' && color?.stocks >= 1).map((color) => {
                   return (
                     <div key={color.name}>
                       <input
@@ -166,9 +176,11 @@ const PostPage = ({ name }) => {
                         value={color.id}
                         onClick={() => {
                           setCurrentColor(color.id);
-                          setCurrentPrice(formatPrice(color.price));
+                          setCurrentDiscount(color.discount);
+                          setPrice(formatPrice(color.price));
                           setCurrentColorName(color.name);
                           setCurrentStocks(color.stocks);
+                          setCurrentPriceDiscount(formatPrice(color.price - (color.price * color.discount / 100))); 
                         }}
                         checked={currentColor === color.id}
                         //   {...register("reason")}
@@ -199,33 +211,47 @@ const PostPage = ({ name }) => {
             </div>
 
            <div className="flex flex-wrap justify-between gap-2">
-             <p>قيمت</p>
-             <p >  {currentPrice} تومان</p>
+             <p className="my-auto">قيمت</p>
+             <div className="flex flex-col flex-wrap gap-2 text-sm">
+               <p className="my-auto ">  {currentPriceDiscount} تومان</p>
+             {currentDiscount > 0 && 
+             <div className="flex gap-1 text-end ">
+             <p className="line-through  decoration-2 my-auto  text-lfont" >  {price}</p>
+             <span className=" text-redorange text-sm ">
+               {currentDiscount}% تخفیف
+             </span>
+             </div>
+             }
+             </div>
            </div>
 
-           <div className="flex flex-wrap justify-between gap-2">
+           {/* <div className="flex flex-wrap justify-between gap-2">
                <p>موجودي</p>
                <span className="   rounded p-1 ">{formatNumber(currentStocks)}</span>
-           </div>
+           </div> */}
 
-            <div className="flex flex-wrap gap-2 justify-between">
-              <div className="flex my-auto gap-2">
+              <div className="flex flex-wrap justify-between my-auto gap-2">
               
-
-                <button className="bg-lcard dark:bg-dcard rounded-full text-sm px-4 py-2 ">
+             <div className="flex flex-col gap-2">
+              <div>
+                <button className="bg-lcard dark:bg-dcard rounded-xl text-sm px-10 py-2 border-2 border-lfont">
               <a href="tel:09901196140" onClick={()=>{toast.success('شماره کپی شد');navigator.clipboard.writeText('09901196140')}} >
                 تماس
               </a>
                 </button>
+              </div>
 
-                <button className="bg-lcard dark:bg-dcard rounded-xl text-sm px-3 py-2 ">
-                  خريد
-                </button>
+                {/* <button className="bg-lcard dark:bg-dcard rounded-xl text-sm px-3 py-2 ">
+                  خريد مستقیم
+                </button> */}
+             </div>
 
+
+            <div>
                 {/* <AddToCartButton
                   // className={"text-sm w-full flex justify-between   rounded-lg p-2  duration-300"}
                   productId={product?.id}
-                  price={product?.price}
+                  price={product?.price} 
                   colorId={currentColor}
                   name={name}
                   initialState={{
@@ -247,15 +273,22 @@ const PostPage = ({ name }) => {
                       ?.stocks || 0
                   }
                 /> */}
-              </div>
-          <div>
-            
-          </div>
 
+
+<AddToCartButton
+  session={session}
+  product={product}
+  colorId={currentColor}
+  stocks={product?.colors?.find((color) => color.id === currentColor)?.stocks || 0}
+/>
             </div>
 
+              </div>
+              {/* <p className="text-sm text-lfont underline">میتوانید برای اطلاع از جزئیات محصول و سفارش با ما تماس بگیرید.</p> */}
 
-           <div>
+            </div>
+            <div className="w-full ">
+
             <EmblaCarousel
               options={{ loop: false, direction: "rtl" }}
               dot={true}
@@ -265,7 +298,7 @@ const PostPage = ({ name }) => {
             >
               {product?.images?.map((image,index) => (
                 <div
-                  className="transform translate-x-0 translate-y-0 translate-z-0  flex-none basis-[100%] h-52 md:h-128 min-w-0 pl-4 "
+                  className="transform translate-x-0 translate-y-0 translate-z-0  flex-none basis-[100%] h-64 md:h-96  min-w-0 px-4 "
                   key={index}
                 >
                   <ImageCom
@@ -276,7 +309,10 @@ const PostPage = ({ name }) => {
                 </div>
               ))}
             </EmblaCarousel>
-           </div>
+            </div>
+          </div>
+
+            
 
             <div
               className="content break-words w-full  normal-case leading-relaxed md:text-lg max-md:text-sm  "
@@ -285,16 +321,20 @@ const PostPage = ({ name }) => {
 
 
 
-          {/*<div className="px-5 sm:px-10 mx-auto  space-y-10 ">
-            <h1 className="text-lg sm:text-xl text-lfont"><span className="text-2xl sm:text-4xl text-black dark:text-white uppercase">Connected</span>  And Top Posts</h1>
-            <Conneccted postTitle={title} postId={post?.id}/>
-          </div> */}
+<div className="   space-y-10 ">
+            <div>
+          <h1 className="text-lg sm:text-xl text-lfont"><span className="text-2xl sm:text-4xl text-black dark:text-white uppercase">محصولات</span>  پرفروش و مرتبط</h1>
+          {/* <p className=" text-md text-lfont"> با سایر محصولات ما آشنا شوید</p> */}
+            </div>
+
+            <Conneccted productTitle={product?.name} productId={product?.id}/>
+          </div>
           </div>
         )}
       </div>
   );
 };
 
-export default PostPage;
+export default ProductPage;
 
 

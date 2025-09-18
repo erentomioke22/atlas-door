@@ -18,8 +18,9 @@ export async function submitProduct(values) {
           name:values.name
         }
       })
-
-      if(existProduct) throw new Error ("محصولی با این نام وجود دارد")
+      if(existProduct.length > 0){
+        throw new Error( "محصولی با این نام وجود دارد")
+      }
     // const colors =
     //   values.colors?.filter(
     //     (color) => color !== undefined && color.name && color.hexCode && color.price && color.discount && color.stocks
@@ -46,7 +47,9 @@ export async function submitProduct(values) {
       include: getProductDataInclude(session?.user?.id),
     });
 
-    if (!newProduct) throw new Error("Failed to create the product");
+    if (!newProduct){
+      throw new Error( "Failed to create the product")
+    }
 
     return newProduct;
   } catch (err) {
@@ -69,33 +72,67 @@ export async function editProduct(values) {
           throw new Error('field to delete archive image')
         }
       }
-    const editedProduct = await prisma.product.update({
-      where: { id: values.productId },
-      data: {
-        name: values.name,
-        desc: values.desc,
-        content: values.content,
-        images: values.images,
-        colors: {
-          deleteMany:{},
-          create:values.colors.map((color) => ({
-            status: "EXISTENT",
-            name: color.name,
-            hexCode: color.hexCode,
-            price: parseFloat(color.price),
-            discount: parseFloat(color.discount),
-            stocks: parseInt(color.stocks),
-          })),
+      const editedProduct = await prisma.product.update({
+        where: { id: values.productId },
+        data: {
+          name: values.name,
+          desc: values.desc,
+          content: values.content,
+          images: values.images,
+          colors: {
+            update: (values.colors || [])
+              .filter((c) => c.id)
+              .map((c) => ({
+                where: { id: c.id },
+                data: {
+                  status: "EXISTENT",
+                  name: c.name,
+                  hexCode: c.hexCode,
+                  price: parseFloat(c.price),
+                  discount: parseFloat(c.discount || 0),
+                  stocks: parseInt(c.stocks || 0),
+                },
+              })),
+            create: (values.colors || [])
+              .filter((c) => !c.id)
+              .map((c) => ({
+                status: "EXISTENT",
+                name: c.name,
+                hexCode: c.hexCode,
+                price: parseFloat(c.price),
+                discount: parseFloat(c.discount || 0),
+                stocks: parseInt(c.stocks || 0),
+              })),
+            updateMany: [
+              {
+                where: {
+                  id: {
+                    notIn: (values.colors || [])
+                      .filter((c) => c.id)
+                      .map((c) => c.id),
+                  },
+                },
+                data: {
+                  status: "NON-EXISTENT",
+                  stocks: 0,
+                },
+              },
+            ],
+          },
         },
-      },
-      include: getProductDataInclude(session?.user?.id),
-    });
+        include: getProductDataInclude(session?.user?.id),
+      });
 
     return editedProduct;
   } catch (error) {
     throw new Error(error);
   }
 }
+
+
+
+
+
 
 export async function deleteProduct(values) {
   try{

@@ -36,9 +36,9 @@ export async function GET(req,{params}) {
 
     const  session  = await auth();
 
-    if (!session) {
-      return Response.json({ error: "Unauthorized" }, { status: 401 });
-    }
+    // if (!session) {
+    //   return Response.json({ error: "Unauthorized" }, { status: 401 });
+    // }
 
 
 

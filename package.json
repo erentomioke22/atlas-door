@@ -104,7 +104,8 @@
     "uuidv4": "^6.2.13",
     "y-prosemirror": "^1.2.11",
     "yjs": "^13.6.20",
-    "yup": "^1.4.0"
+    "yup": "^1.4.0",
+    "zustand": "^5.0.8"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",

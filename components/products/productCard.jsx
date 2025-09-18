@@ -37,7 +37,7 @@ const formattedDate = createdAt.isValid() ? createdAt.fromNow(): 'تاریخ ن�
 
   return (
 
-    <div className="  bg-lcard dark:bg-dcard  dark:hover:ring-dbtn sm:w-64  hover:ring-2 hover:ring-lbtn   duration-500   max-sm:w-full  rounded-3xl py-2 space-y-1 px-3   select-none">
+    <div className="   sm:w-64   border-2 border-lcard dark:border-dcard rounded-3xl shadow-sm duration-500   max-sm:w-full   py-2 space-y-2 px-3   select-none">
               <div className='flex justify-between'>
 
                   {/* <div className='my-auto'>
@@ -77,7 +77,7 @@ const formattedDate = createdAt.isValid() ? createdAt.fromNow(): 'تاریخ ن�
                   </div>
                   {product?.colors[0].discount > 0 && 
                  <div>
-                  <div className='text-white backdrop-blur-sm p-2 rounded-xl  bg-white/20 border border-dfont text-sm'>{product?.colors[0].discount}%</div>
+                  <div className='text-white backdrop-blur-sm p-1.5 rounded-lg  bg-redorange  text-[10px]'>{product?.colors[0].discount}%</div>
                  </div>
                   }
                 </div>
@@ -85,7 +85,7 @@ const formattedDate = createdAt.isValid() ? createdAt.fromNow(): 'تاریخ ن�
               </div>
                }
 
-                <h1 href={link} className='text-wrap line-clamp-3  hover:underline duration-150 decoration-2'>{product?.name}</h1>
+                <h1 className='text-wrap line-clamp-3 text-lfont hover:underline decoration-black dark:decoration-white duration-150 decoration-2'>{product?.name}</h1>
          </Link>
 
          <div className='flex justify-between'>
@@ -108,18 +108,18 @@ const formattedDate = createdAt.isValid() ? createdAt.fromNow(): 'تاریخ ن�
                    {/* <div className='my-auto'>
                      <button className='text-sm bg-black text-white dark:bg-white dark:text-black rounded-full px-3 py-2'>ADD TO CART</button>
                    </div> */}
-                   <div>
-                      <h2>{formatPrice(product?.colors[0].price - (product?.colors[0].price * product?.colors[0].discount)/100)}ت</h2>
+                   <div className=' gap-2'>
+                     <h2>{formatPrice(product?.colors[0].price - (product?.colors[0].price * product?.colors[0].discount)/100)} تومان</h2>
                       {product?.colors[0].discount > 0 &&
-                      <h4 className='line-through text-[10px] decoration-red  text-red/70'>{formatPrice(product?.colors[0].price)}ت</h4>
+                      <h3 className='line-through text-sm  decoration-2 my-auto text-lfont'>{formatPrice(product?.colors[0].price)}</h3>
                       }
                    </div>
          </div>
-         <button className="bg-lbtn dark:bg-dbtn rounded-lg text-sm w-full py-2 ">
+         {/* <button className="bg-lbtn dark:bg-dbtn rounded-lg text-sm w-full py-2 ">
               <a href="tel:09901196140" onClick={()=>{toast.success('شماره کپی شد');navigator.clipboard.writeText('09901196140')}} >
                 تماس
               </a>
-                </button>
+                </button> */}
           </div>
   )
 }

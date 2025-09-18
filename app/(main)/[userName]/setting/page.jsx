@@ -4,7 +4,6 @@ import React, { useState, useEffect } from "react";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import {  toast } from 'sonner'
 import LoadingIcon from "@components/ui/loading/LoadingIcon";
 import { useForm } from "react-hook-form";
 import { settingProfileValidation,settingPasswordValidation } from "@lib/validation";
@@ -13,28 +12,18 @@ import { useUpdateProfileMutation } from "./mutation";
 import { FaCaretLeft } from "react-icons/fa6";
 import { IoClose } from "react-icons/io5";
 import {useQueryClient,useQuery } from "@tanstack/react-query";
-import Dropdown from "@components/ui/dropdown";
-import AvatarInput from './avatarInput'
-import { useUploadThing } from "@lib/uploadthing";
-import ImageCom from "@components/ui/Image";
 import Offcanvas from "@components/ui/offcanvas";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname,useParams } from "next/navigation";
 import { FaArrowLeftLong } from "react-icons/fa6";
-import axios from "axios";
 import { useDeleteUserMutation } from "./mutation";
-import { useDeleteAccountMutation } from "./mutation";
-import { FcGoogle } from "react-icons/fc";
-import { BsTwitterX } from "react-icons/bs";
-import { FaGithub } from "react-icons/fa6";
-import { FaLinkedin } from "react-icons/fa6";
 import { useDeleteSessionMutation } from "./mutation";
 
 
 
 
 const Page = () => {
-  const { data: session, update } = useSession();
+  const { data: session,status:sessionStatus ,update } = useSession();
+
   const [showpass, setShowPsss] = useState(false);
   const [onClose,setOnClose]=useState(false);
   const mutation = useUpdateProfileMutation();
@@ -43,6 +32,7 @@ const Page = () => {
   const [selectedInputImage, setSelectedInputImage] = useState();
   const path = usePathname();
   const router = useRouter();
+  const { userName } = useParams();
   const deleteUserMutation = useDeleteUserMutation();
   const deleteSessionMutation = useDeleteSessionMutation();
   // const deleteAccountMutation = useDeleteAccountMutation();
@@ -90,6 +80,25 @@ const Page = () => {
       //  setValue("name", session?.user.name ?? "");
     }
   }, [session]);
+
+
+  
+  useEffect(() => {
+    if(sessionStatus === "loading") return;
+
+    if(!session){
+     notFound()
+   }
+    if (session && userName && session.user.name !== userName) {
+      router.replace(`/${session.user.name}/setting`);
+    }
+  }, [session, userName, router]);
+
+  if (session && userName && session.user.name !== userName) {
+    return null;
+  }
+
+
 
   // const {startUpload,isUploading} = useUploadThing("avatar", {
   //   onClientUploadComplete: (data) => {
@@ -273,7 +282,7 @@ const btnLists =[
       <h1 className="text-2xl">تنظيمات</h1>
                      <button
                          className={"text-sm px-3  py-1    flex"}
-                         onClick={() => router.back()}
+                         onClick={() => router.push('/')}
                          type="button"
                                >
                                 بازگشت

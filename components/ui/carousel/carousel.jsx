@@ -85,7 +85,7 @@ const EmblaCarousel = ({children,options,slides,buttons=false,autoScroll=true,do
   return (
     <section className="w-full mx-auto">
       <div className="overflow-hidden" ref={emblaRef}>
-        <div className="flex touch-pan-y touch-pinch-zoom -ml-4">
+        <div className="flex touch-pan-y touch-pinch-zoom ">
             {children}
         </div>
       </div>

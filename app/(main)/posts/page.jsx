@@ -86,7 +86,7 @@ const AllPosts = () => {
         <PostList />
       </Suspense>
       </div>
-    </>
+    </> 
   );
 }
 

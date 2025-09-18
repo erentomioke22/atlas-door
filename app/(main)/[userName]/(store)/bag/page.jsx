@@ -1,97 +1,114 @@
 "use client";
 
-import React from "react";
-import {useQuery} from "@tanstack/react-query";
-import axios from "axios";
+import React,{useEffect} from "react";
+import { useCart } from '@hook/useCart';
 import OrderCard from "@components/products/orderCard";
 import { formatPrice } from "@lib/utils";
 import LoadingOrder from "@components/ui/loading/loadingOrder";
 import PaymentPanel from "@components/paymentPanel";
-
-
-
+import { usePathname, useParams, notFound } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 export default function page() {
+  const { items, totalPrice, originalTotalPrice, totalDiscount, hasHydrated } = useCart();
+  const path = usePathname();
+  const router = useRouter();
+  const { userName } = useParams();
+  const { data: session,status } = useSession();
 
-  const {
-    data,
-    // fetchNextPage,
-    // hasNextPage,
-    // isFetching,
-    // isFetchingNextPage,
-    status,
-  } = useQuery({
-    queryKey: ["product-feed", "bag"],
-    queryFn: async ({ pageParam }) => {
-      const response = await axios.get("/api/product/bag");
-      return response.data;
-    },
-    // initialPageParam: null,
-    // getNextPageParam: (lastPage) => lastPage.nextCursor,
-  });
-  
+  useEffect(() => {
+    if(status === "loading") return;
 
+    if(!session){
+     notFound()
+   }
+    if(session && userName && session.user.name !== userName){
+      router.replace(`/${session.user.name}/bag`);
+    }
+  }, [session, userName, router]);
 
-  
-
+  if (session && userName && session.user.name !== userName) {
+    return null;
+  }
 
 
+  if (!hasHydrated) {
+    return (
+      <div className="w-full   space-y-5 mx-auto pb-5 items-center  divide-y-2 divide-lcard dark:divide-dcard py-2">
+        {Array(3)
+          .fill({})
+          .map((_, index) => {
+            return <LoadingOrder key={index} />;
+          })}
+      </div>
+    );
+  }
 
-
-
-  const totalPrice = data?.orders?.reduce((sum, order) => {
-    const quantity = order?.quantity || 1;
-    return sum + (order.color?.price - (order.color?.price * order.color?.discount)/100* quantity);
-  }, 0) || 0;
-
+  if(items.length === 0){
+    return(
+        <p className="text-center text-destructive h-52 flex flex-col justify-center items-center ">
+          سبد خرید شما خالی است !
+        </p>
+    )
+  }
   return (
     <div>
-      {status === "error" && (
-        <p className="text-center text-lfont ">
-          An error occurred while loading products.
-        </p>
-      )}
+      <div className="w-full   space-y-5 mx-auto pb-5 items-center  divide-y-2 divide-lcard dark:divide-dcard py-2">
+        <div>
+         <h1 className="text-3xl">سبد خريد</h1>
+        <div className="space-y-5  divide-y divide-lcard dark:divide-dcard">
+        {items.map((item) => (
+          <OrderCard 
+            item={item} 
+            key={`${item.productId}-${item.colorId}`} 
+          />
+        ))}
+        </div>
+        </div>
+        
 
-      {status === "success" && !data?.orders.length &&  (
-        <p className="text-center text-lfont ">
-          No one has producted anything yet.
-        </p>
-      )}
+        <div className="space-y-5  ">
+        <h1 className="text-3xl mt-5">خلاصه وضعيت</h1>
+        <div className="py-2 space-y-5">
 
-      {/* <InfiniteScrollContainer
-        className="space-y-5"
-        onBottomReached={() => hasNextPage && !isFetching && fetchNextPage()}
-      > */}
-        <div className="w-full px-5 sm:w-2/3 md:w-2/3 space-y-5 mx-auto pb-5  items-center mt-20 divide-y divide-lbtn dark:divide-dbtn py-2">
-          {status === "pending" &&
-            Array(3)
-              .fill({})
-              .map((_,index) => {
-                return <LoadingOrder key={index}/>;
-              })}
+        {originalTotalPrice > totalPrice && (
+              <div className="text-sm flex justify-between">
+                <p>قیمت اصلی</p>
+                <p className=" text-lfont line-through  decoration-2">{formatPrice(originalTotalPrice)} تومان</p>
+              </div>
+            )}
+            
+            {totalDiscount > 0 && (
+              <div className="text-sm flex justify-between ">
+                <p>تخفیف (سود شما) </p>
+                <p>{formatPrice(totalDiscount)} تومان -</p>
+              </div>
+            )}
 
-          {data?.orders.map((order) => (
-              <OrderCard order={order} key={order?.id} />
-          ))}
-    <div className="  py-2">
-      {data?.orders.length > 0 && (
-          <div className="text-sm sm:text-lg flex justify-between">
-            <p>مجموع</p>
-            <p>{formatPrice(totalPrice)}</p>
+            <div className="text-sm  flex justify-between">
+              <p>مجموع كل</p>
+              <p className="text-darkgreen">{formatPrice(totalPrice)} تومان </p>
+            </div>
+          
+            <div className="text-sm flex justify-between">
+              <p>ماليات</p>
+              <p>-</p>
+            </div>
+
+            <div className="text-sm  flex justify-between">
+              <p>هزينه تقریبی حمل و نقل</p>
+              <p>تماس بگيريد</p>
+            </div>
+
+          <div className="mx-auto">
+          {items.length >= 1 && (
+            <PaymentPanel status="success" />
+          )}
           </div>
-      )}
- {data?.orders.length >= 1 && status !== "pending" && 
-     <PaymentPanel status={status}/>
- }
+        </div>
+        </div>
       </div>
-
-
-    </div>
-
-        {/* {isFetchingNextPage && (
-          <LoadingIcon color={"bg-white dark:bg-black"} />
-        )}
-      </InfiniteScrollContainer> */}
     </div>
   );
 }

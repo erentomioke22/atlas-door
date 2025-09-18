@@ -3,7 +3,7 @@ import Link from 'next/link'
 
 export const metadata = {
  title:{
-  absolute:"NotFound"
+  absolute:"صفحه ای یافت نشد - 404"
  }
 }
 
@@ -14,7 +14,7 @@ const NotFound = () => {
     <div className="text-center">
       <p className="text-base font-semibold ">404</p>
       <h1 className="mt-4 text-3xl font-bold tracking-tight  sm:text-5xl">صفحه ای یافت نشد</h1>
-      <p className="mt-6 text-base leading-7 text-lfont">متاسفانه صفحه ای که شما دنلاش هستید یافت نشد</p>
+      <p className="mt-6 text-base leading-7 text-lfont">متاسفانه صفحه ای که شما دنبالش هستید یافت نشد</p>
       <div className="mt-10 flex items-center justify-center gap-x-6">
         <Link
           href="/"

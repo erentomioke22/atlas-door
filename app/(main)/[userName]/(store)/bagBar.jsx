@@ -14,13 +14,15 @@ export default function BagBar() {
   const router = useRouter();
   const patthName = path.split('/')
   const lastPath = patthName[patthName.length - 1]
+
+
   return (
   <div>
     <div className="flex justify-between text-lg">
-      <h3>سفارش ها</h3>
+      <h1 className="text-2xl">سفارشات</h1>
                      <button
                          className={"text-sm px-3  py-1    flex"}
-                         onClick={() => router.back()}
+                         onClick={() => router.push('/')}
                          type="button"
                                >
                                 بازگشت
@@ -34,7 +36,7 @@ export default function BagBar() {
 
    
               <Link className={`duration-300  ${lastPath === "orders" ? "bg-black dark:bg-white text-white dark:border-white dark:text-black rounded-full border-2 border-black px-2 py-1  "  : "bg-transparent border-2 border-black dark:border-white dark:text-white rounded-full  px-2 py-1" }`} href={`/${patthName[1]}/orders`}>
-                <span>سفارش داده شده</span> 
+                <span>سفارشات</span> 
               </Link>
 
 

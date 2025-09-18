@@ -14,7 +14,7 @@ export async function GET(req,{params}) {
   try {
     const {postId} =await params;
     const category = req.nextUrl.searchParams.get("category") || undefined;
-    const cursor = req.nextUrl.searchParams.get("cursor") || undefined;
+    const cursor = req.nextUrl.searchParams.get("cursor") || undefined; 
     const pageSize = 10;
 
     const  session  = await auth();

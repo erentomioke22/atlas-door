@@ -89,7 +89,7 @@ const {data: post,isFetching,status,error}=useQuery({
           <div className="mx-auto w-full space-y-10">
                      <button
                          className={"text-sm px-3  py-1  max-sm:mt-5 flex"}
-                         onClick={() => router.back()}
+                         onClick={() => router.push('/')}
                          type="button"
                                >
                                 بازگشت
