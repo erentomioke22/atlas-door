@@ -1,4 +1,3 @@
-// app/privacy-policy/page.js
 import Link from 'next/link';
 import ImageCom from "@components/ui/Image";
 

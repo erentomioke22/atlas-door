@@ -1,5 +1,4 @@
 // app/about-us/page.js
-import ImageCom from '@components/ui/Image';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FaTelegram } from "react-icons/fa";

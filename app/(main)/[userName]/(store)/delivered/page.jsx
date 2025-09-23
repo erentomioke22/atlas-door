@@ -3,7 +3,7 @@
 import React, { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { formatPriceFa,formatNumberFa } from "@lib/utils";
+import { formatPriceFa } from "@lib/utils";
 import LoadingOrder from "@components/ui/loading/loadingOrder";
 import Link from "next/link";
 import ImageCom from "@components/ui/Image";

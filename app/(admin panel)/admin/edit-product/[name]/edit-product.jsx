@@ -19,7 +19,6 @@ import { useMemo } from "react";
 import { Doc as YDoc } from "yjs";
 import EditPostLoading from "@components/ui/loading/editPostLoading";
 import usePreventNavigation from "@hook/usePreventNavigation";
-import NotFound from "@app/(main)/not-found";
 import { useUploadThing } from "@lib/uploadthing";
 import EmblaCarousel from "@components/ui/carousel/carousel";
 import { FaPlus, FaCheck, FaPalette } from "react-icons/fa6";
