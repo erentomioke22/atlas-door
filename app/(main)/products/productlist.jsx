@@ -139,7 +139,7 @@ const ProductList = () => {
 
 
   return (
-    <div className="px-7 md:w-3/4 xl mx-auto space-y-20">
+    <div className="px-7 container max-w-7xl  mx-auto space-y-20">
 
           <div className="flex justify-between  mt-16">
               <h1 className="text-2xl">فروشگاه</h1>
@@ -230,7 +230,7 @@ const ProductList = () => {
       }
       <div className="my-10">
         <div className={`px-5 max-sm:space-y-5 sm:flex sm:flex-wrap justify-center gap-3 sm:gap-5 my-10 `}>
-          {status === "pending" ? (
+          {status !== "pending" ? (
             <>
               {Array(postPerPage)
                 .fill({})

@@ -2,7 +2,6 @@ import React from 'react'
 
 const EditPostLoading = () => {
   return (
-    <div className=" w-full mx-auto  md:w-2/3 ">
     <div className="animate-pulse space-y-5 ">
       <div className='flex gap-1  max-w-52'>
         <div className='h-10 w-10 bg-lcard dark:bg-dcard rounded-xl'></div>
@@ -40,9 +39,6 @@ const EditPostLoading = () => {
 
 
     </div>
-
-
-  </div>
   )
 }
 

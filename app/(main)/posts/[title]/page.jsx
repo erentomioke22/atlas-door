@@ -57,6 +57,8 @@ export async function generateMetadata({ params }) {
     height: 600,
     alt: post?.title,
   }));
+
+
     return {
       metadataBase: new URL(`${process.env.NEXT_PUBLIC_BASE_URL}/${post?.title}`),
       title: `${post?.title} - ${post?.desc?.slice(0, 50)}... | Atlas Door`,

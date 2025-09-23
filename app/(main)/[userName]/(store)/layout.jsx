@@ -1,7 +1,6 @@
 import BagBar from "./bagBar";
 
 
-
 export const metadata = {
   metadataBase: new URL(`${process.env.NEXT_PUBLIC_BASE_URL}`),
   title : {
@@ -25,9 +24,9 @@ export const metadata = {
 }
 
 export default  function Layout({children}) {
-  
+
   return (
-  <div className=" w-full sm:w-4/5 lg:w-4/6 xl:w-3/5 mx-auto my-10 space-y-10 px-5">
+  <div className=" container max-w-2xl lg:max-w-4xl  mx-auto mt-20 space-y-10 px-5">
     <BagBar/>
     <div>
           {children}

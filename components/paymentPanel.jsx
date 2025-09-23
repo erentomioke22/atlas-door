@@ -69,6 +69,16 @@ const PaymentPanel = ({status}) => {
         resolver: yupResolver(orderGatewayValidation),
       });
 
+
+      useEffect(() => {
+        if (session) {
+          setValue("user", session?.user.displayName ?? "");
+          setValue("address", session?.user.address ?? "");
+          setValue("phone", session?.user.phone ?? "");
+        }
+      }, [session]);
+
+
     //  const ruleValue = watch("rule")
       const onSubmit = async (values) => {
         try {

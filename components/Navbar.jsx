@@ -80,6 +80,14 @@ const Navbar = () => {
       name: "فروشگاه",
       href:'/products',
     },
+    { id: "8", 
+      name: "درباره ما",
+      href:'/about-us',
+    },
+    // { id: "9", 
+    //   name: "لیست قیمت",
+    //   href:'/price-list',
+    // },
     // { id: "2", 
     //   name: "کرکره برقی",
     //   href:'/roller-shutter',
@@ -120,7 +128,7 @@ const Navbar = () => {
   ];
 
   return (
-      <header className={`  w-full  fixed top-0 z-50`}>
+      <header className={`  w-full   fixed top-0 z-50`}>
 
       <Banner />
 

@@ -5,9 +5,9 @@ import Footer from '@components/footer';
 export default async function Layout({children}) {
 
   return (
-  <div className="min-h-screen">
+  <div>
      <Navbar />
-         <div className="pt-28">
+         <div className="min-h-screen pt-28">
            {children}
          </div> 
      <Footer/>

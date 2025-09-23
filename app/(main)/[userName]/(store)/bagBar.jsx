@@ -18,7 +18,7 @@ export default function BagBar() {
 
   return (
   <div>
-    <div className="flex justify-between text-lg">
+    <div className="flex justify-between text-lg my-5">
       <h1 className="text-2xl">سفارشات</h1>
                      <button
                          className={"text-sm px-3  py-1    flex"}

@@ -352,12 +352,13 @@ const CreatePostRoot = () => {
   }, []);
 
   return (
-    <div className="mb-2 px-2 sm:px-5">
+    <div className="container max-w-5xl  xl:max-w-7xl min-h-screen mx-auto px-2 sm:px-5">
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-7">
-        {!cancel && (
-          <div className="flex justify-between  w-full sticky top-0 bg-white dark:bg-black z-[10] py-2 ">
+        <div className="flex justify-between  w-full sticky top-0 bg-white dark:bg-black z-[10] py-2 ">
+        {!cancel ? 
+        <>
               <Offcanvas
-                title={"CRAETE POST"}
+                title={"CREATE POST"}
                 btnStyle={
                   "bg-black text-white  border-black dark:border-white dark:bg-white dark:text-black rounded-full border-2 text-[10px] md:text-sm px-3  py-1  md:text-sm duration-300  disabled:cursor-not-allowed   "
                 }
@@ -610,34 +611,33 @@ const CreatePostRoot = () => {
                 cancel
               </Button>
             </div>
+        </>
+        :
+        <>
+          <Button
+            className={"text-[10px] md:text-sm px-3  py-1"}
+            variant={"delete"}
+            onClick={() => router.back()}
+            type="button"
+          >
+            Cancle and delete All data
+          </Button>
+          <Button
+            className={"px-3 py-1 text-[10px] md:text-sm"}
+            variant="close"
+            onClick={() => setCancel(false)}
+            type="button"
+          >
+            Continue
+          </Button>
+        
+        </>
+        }
+       </div>
 
 
-          </div>
-        )}
 
-        {cancel && (
-          <div className="flex justify-between  py-2 w-full sticky top-0 z-[10]">
-            <Button
-              className={"px-3 py-1 text-[10px] md:text-sm"}
-              variant="close"
-              onClick={() => setCancel(false)}
-              type="button"
-            >
-              Continue
-            </Button>
-
-            <Button
-              className={"text-[10px] md:text-sm px-3  py-1"}
-              variant={"delete"}
-              onClick={() => router.back()}
-              type="button"
-            >
-              Cancle and delete All data
-            </Button>
-          </div>
-        )}
-
-        <div className="w-full md:w-2/3 mx-auto  space-y-4 ">
+        <div className="  py-10 space-y-4 ">
         {session && (
             <div className="flex gap-2">
 

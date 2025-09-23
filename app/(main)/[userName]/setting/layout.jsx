@@ -76,7 +76,7 @@ export default  function Layout({children}) {
           {JSON.stringify(jsonLd)}
         </script>
       </Head>
-    <div className="py-5">
+    <div>
           {children}
     </div>
 </div>

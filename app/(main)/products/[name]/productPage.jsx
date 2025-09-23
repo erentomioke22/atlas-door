@@ -19,12 +19,9 @@ import Link from "next/link";
 import { FaEraser } from "react-icons/fa6";
 // import AddToCartButton from "@components/products/AddToCartButton";
 import EmblaCarousel from "@components/ui/carousel/carousel";
-import { formatPrice,formatNumber } from "@lib/utils";
+import { formatPriceFa, formatNumberFa } from "@lib/utils";
 import AddToCartButton from "@components/products/AddToCartButtonRoot";
 import Conneccted from "@components/products/Connected";
-
-
-
 
 const ProductPage = ({ name }) => {
   const [currentColor, setCurrentColor] = useState(null);
@@ -43,7 +40,7 @@ const ProductPage = ({ name }) => {
     data: product,
     isFetching,
     status,
-    error
+    error,
   } = useQuery({
     queryKey: ["product", name],
     queryFn: async () => {
@@ -59,25 +56,30 @@ const ProductPage = ({ name }) => {
       setCurrentColor(product.colors[0].id);
       setCurrentColorName(product.colors[0].name);
       setCurrentDiscount(product.colors[0].discount);
-      setPrice(formatPrice(product.colors[0].price));
+      setPrice(formatPriceFa(product.colors[0].price));
       setCurrentStocks(product.colors[0].stocks);
-      setCurrentPriceDiscount(formatPrice(product.colors[0].price - (product.colors[0].price * product.colors[0].discount / 100)));
+      setCurrentPriceDiscount(
+        formatPriceFa(
+          product.colors[0].price -
+            (product.colors[0].price * product.colors[0].discount) / 100
+        )
+      );
 
       const prices = product.colors.map((color) => color.price);
-      setMinPrice(formatPrice(Math.min(...prices)));
-      setMaxPrice(formatPrice(Math.max(...prices)));
+      setMinPrice(formatPriceFa(Math.min(...prices)));
+      setMaxPrice(formatPriceFa(Math.max(...prices)));
     }
   }, [product, currentColor]);
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(currentUrl);
-    toast.success("SHARE LINK COPIED");
+    toast.success("لینک اشتراک گذاری ک‍پی شد");
   };
 
-  if (status === "success" &&  product?.length <= 0) {
+  if (status === "success" && product?.length <= 0) {
     return (
       <p className="text-center text-destructive h-52 flex flex-col justify-center items-center">
-       هيچ محصولي يافت نشد
+        هيچ محصولي يافت نشد
       </p>
     );
   }
@@ -90,24 +92,22 @@ const ProductPage = ({ name }) => {
     );
   }
 
-
-
   return (
-      <div className="px-5 w-full sm:w-4/5 lg:w-5/6 xl:w-4/6 mx-auto space-y-10 md:space-y-20 mt-16 ">
-        {status === "pending" ? (
-          <PageLoading />
-        ) : (
-          <div className="mx-auto w-full space-y-10">
-            <button
-              className={"text-sm px-3  py-1   flex"}
-              onClick={() => router.push('/')}
-              type="button"
-            >
-              بازگشت
-              <FaArrowLeftLong className="my-auto text-lg" />
-            </button>
-            <div className="flex gap-2 sm:gap-3   my-auto">
-                {/* <div>
+    <div className="px-5 container sm:max-w-xl lg:max-w-4xl xl:max-w-7xl mx-auto space-y-10 md:space-y-20 mt-16 ">
+      {status === "pending" ? (
+        <PageLoading />
+      ) : (
+        <div className="mx-auto w-full space-y-10">
+          <button
+            className={"text-sm px-3  py-1   flex"}
+            onClick={() => router.push("/")}
+            type="button"
+          >
+            بازگشت
+            <FaArrowLeftLong className="my-auto text-lg" />
+          </button>
+          <div className="flex gap-2 sm:gap-3   my-auto">
+            {/* <div>
            <LikeButton
             isBlocked={{
               isBlockedByUser: product.user?.blockers?.some(
@@ -125,130 +125,146 @@ const ProductPage = ({ name }) => {
             />
         </div> */}
 
-                <div>
-                  <button
-                    className="bg-lcard dark:bg-dcard rounded-full p-2 text-sm sm:text-lg"
-                    onClick={copyToClipboard}
-                  >
-                    <IoShareOutline />
-                  </button>
-                </div>
-                {session?.user.id === product.sellerId && (
-                  <Link
-                    className={
-                      "bg-lcard dark:bg-dcard rounded-full p-2 text-sm sm:text-lg"
-                    }
-                    href={`/admin/edit-product/${product?.name}`}
-                  >
-                    <FaEraser />
-                  </Link>
-                )}
-
-                
-
-                <div>
-                <Comments product={product}  />
-                </div>
-              </div>
-
-            <div className=" space-y-5 md:mt-7">
-              <div className="space-y-3">
-              {minPrice !== maxPrice && (
-                 <p className=" text-lfont text-[10px] md:text-sm">قیمت این محصول از {minPrice} تا {maxPrice} تومان میباشد.</p>
-                 )}
-                <h1 className="text-xl md:text-4xl w-full break-words text-black dark:text-white">
-                  {product.name}
-                </h1>
-                <p className="text-lfont ">{product.desc}</p>
-              </div>
+            <div>
+              <button
+                className="bg-lcard dark:bg-dcard rounded-full p-2 text-sm sm:text-lg"
+                onClick={copyToClipboard}
+              >
+                <IoShareOutline />
+              </button>
             </div>
+            {session?.user.id === product.sellerId && (
+              <Link
+                className={
+                  "bg-lcard dark:bg-dcard rounded-full p-2 text-sm sm:text-lg"
+                }
+                href={`/admin/edit-product/${product?.name}`}
+              >
+                <FaEraser />
+              </Link>
+            )}
+
+            <div>
+              <Comments product={product} />
+            </div>
+          </div>
+
+          <div className=" space-y-5 md:mt-7">
+            <div className="space-y-3">
+              {minPrice !== maxPrice && (
+                <p className=" text-lfont text-[10px] md:text-sm">
+                  قیمت این محصول از {minPrice} تا {maxPrice} تومان میباشد.
+                </p>
+              )}
+              <h1 className="text-xl md:text-4xl w-full break-words text-black dark:text-white">
+                {product.name}
+              </h1>
+              <p className="text-lfont ">{product.desc}</p>
+            </div>
+          </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
             <div className="space-y-10 md:space-y-12">
-            <div className="flex justify-between gap-2">
-              <div className="flex gap-3 flex-wrap">
-                {product?.colors?.filter(color=> color?.status === 'EXISTENT' && color?.stocks >= 1).map((color) => {
-                  return (
-                    <div key={color.name}>
-                      <input
-                        className="hidden peer"
-                        type="radio"
-                        value={color.id}
-                        onClick={() => {
-                          setCurrentColor(color.id);
-                          setCurrentDiscount(color.discount);
-                          setPrice(formatPrice(color.price));
-                          setCurrentColorName(color.name);
-                          setCurrentStocks(color.stocks);
-                          setCurrentPriceDiscount(formatPrice(color.price - (color.price * color.discount / 100))); 
-                        }}
-                        checked={currentColor === color.id}
-                        //   {...register("reason")}
-                        id={color.name}
-                        name="color"
-                      />
-                      <label
-                        className="flex flex-col  ring-2 ring-lbtn dark:ring-dbtn  outline-none  peer-checked:outline-2 peer-checked:ring-0 cursor-pointer rounded-md sm:rounded-lg duration-300  peer-checked:outline-black peer-checked:border-0 dark:peer-checked:outline-white "
-                        htmlFor={color.name}
-                      >
-                        <div
-                          className="w-5 h-5 sm:w-7  sm:h-7  my-auto rounded-md sm:rounded-lg"
-                          style={{ backgroundColor: color.hexCode }}
-                        >
+              <div className="flex justify-between gap-2">
+                <div className="flex gap-3 flex-wrap">
+                  {product?.colors
+                    ?.filter(
+                      (color) =>
+                        color?.status === "EXISTENT" && color?.stocks >= 1
+                    )
+                    .map((color) => {
+                      return (
+                        <div key={color.name}>
+                          <input
+                            className="hidden peer"
+                            type="radio"
+                            value={color.id}
+                            onClick={() => {
+                              setCurrentColor(color.id);
+                              setCurrentDiscount(color.discount);
+                              setPrice(formatPriceFa(color.price));
+                              setCurrentColorName(color.name);
+                              setCurrentStocks(color.stocks);
+                              setCurrentPriceDiscount(
+                                formatPriceFa(
+                                  color.price -
+                                    (color.price * color.discount) / 100
+                                )
+                              );
+                            }}
+                            checked={currentColor === color.id}
+                            //   {...register("reason")}
+                            id={color.name}
+                            name="color"
+                          />
+                          <label
+                            className="flex flex-col  ring-2 ring-lbtn dark:ring-dbtn  outline-none  peer-checked:outline-2 peer-checked:ring-0 cursor-pointer rounded-md sm:rounded-lg duration-300  peer-checked:outline-black peer-checked:border-0 dark:peer-checked:outline-white "
+                            htmlFor={color.name}
+                          >
+                            <div
+                              className="w-5 h-5 sm:w-7  sm:h-7  my-auto rounded-md sm:rounded-lg"
+                              style={{ backgroundColor: color.hexCode }}
+                            ></div>
+                          </label>
                         </div>
-                      </label>
+                      );
+                    })}
+                </div>
+
+                <div className="text-sm sm:text-lg my-auto">
+                  <p> رنگ - {currentColorName}</p>
+                  <div>
+                    {/* <p className="text-sm"> {currentStocks} - موجودی</p> */}
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex flex-wrap justify-between gap-2">
+                <p className="my-auto">قيمت</p>
+                <div className="flex flex-col flex-wrap gap-2 text-sm">
+                  <p className="my-auto "> {currentPriceDiscount} تومان</p>
+                  {currentDiscount > 0 && (
+                    <div className="flex gap-1 text-end ">
+                      <p className="line-through  decoration-2 my-auto  text-lfont">
+                        {" "}
+                        {price}
+                      </p>
+                      <span className=" text-redorange text-sm ">
+                        {formatNumberFa(currentDiscount)}% تخفیف
+                      </span>
                     </div>
-                  );
-                })}
+                  )}
+                </div>
               </div>
 
-              <div className="text-sm sm:text-lg my-auto">
-                <p> رنگ - {currentColorName}</p>
-                <div>
-         {/* <p className="text-sm"> {currentStocks} - موجودی</p> */}
-      </div>
-              </div>
-            </div>
-
-           <div className="flex flex-wrap justify-between gap-2">
-             <p className="my-auto">قيمت</p>
-             <div className="flex flex-col flex-wrap gap-2 text-sm">
-               <p className="my-auto ">  {currentPriceDiscount} تومان</p>
-             {currentDiscount > 0 && 
-             <div className="flex gap-1 text-end ">
-             <p className="line-through  decoration-2 my-auto  text-lfont" >  {price}</p>
-             <span className=" text-redorange text-sm ">
-               {currentDiscount}% تخفیف
-             </span>
-             </div>
-             }
-             </div>
-           </div>
-
-           {/* <div className="flex flex-wrap justify-between gap-2">
+              {/* <div className="flex flex-wrap justify-between gap-2">
                <p>موجودي</p>
                <span className="   rounded p-1 ">{formatNumber(currentStocks)}</span>
            </div> */}
 
               <div className="flex flex-wrap justify-between my-auto gap-2">
-              
-             <div className="flex flex-col gap-2">
-              <div>
-                <button className="bg-lcard dark:bg-dcard rounded-xl text-sm px-10 py-2 border-2 border-lfont">
-              <a href="tel:09901196140" onClick={()=>{toast.success('شماره کپی شد');navigator.clipboard.writeText('09901196140')}} >
-                تماس
-              </a>
-                </button>
-              </div>
+                <div className="flex flex-col gap-2">
+                  <div>
+                    <button className="bg-lcard dark:bg-dcard rounded-xl text-sm px-10 py-2 border-2 border-lfont">
+                      <a
+                        href="tel:09901196140"
+                        onClick={() => {
+                          toast.success("شماره کپی شد");
+                          navigator.clipboard.writeText("09901196140");
+                        }}
+                      >
+                        تماس
+                      </a>
+                    </button>
+                  </div>
 
-                {/* <button className="bg-lcard dark:bg-dcard rounded-xl text-sm px-3 py-2 ">
+                  {/* <button className="bg-lcard dark:bg-dcard rounded-xl text-sm px-3 py-2 ">
                   خريد مستقیم
                 </button> */}
-             </div>
+                </div>
 
-
-            <div>
-                {/* <AddToCartButton
+                <div>
+                  {/* <AddToCartButton
                   // className={"text-sm w-full flex justify-between   rounded-lg p-2  duration-300"}
                   productId={product?.id}
                   price={product?.price} 
@@ -274,67 +290,66 @@ const ProductPage = ({ name }) => {
                   }
                 /> */}
 
-
-<AddToCartButton
-  session={session}
-  product={product}
-  colorId={currentColor}
-  stocks={product?.colors?.find((color) => color.id === currentColor)?.stocks || 0}
-/>
-            </div>
-
-              </div>
-              {/* <p className="text-sm text-lfont underline">میتوانید برای اطلاع از جزئیات محصول و سفارش با ما تماس بگیرید.</p> */}
-
-            </div>
-            <div className="w-full ">
-
-            <EmblaCarousel
-              options={{ loop: false, direction: "rtl" }}
-              dot={true}
-              buttons={true}
-              autoScroll={false}
-              length={product?.images?.length > 1}
-            >
-              {product?.images?.map((image,index) => (
-                <div
-                  className="transform translate-x-0 translate-y-0 translate-z-0  flex-none basis-[100%] h-64 md:h-96  min-w-0 px-4 "
-                  key={index}
-                >
-                  <ImageCom
-                    className={`  w-full h-full object-cover rounded-xl`}
-                    src={image}
-                    alt={"post thumnail"}
+                  <AddToCartButton
+                    session={session}
+                    product={product}
+                    colorId={currentColor}
+                    stocks={
+                      product?.colors?.find(
+                        (color) => color.id === currentColor
+                      )?.stocks || 0
+                    }
                   />
                 </div>
-              ))}
-            </EmblaCarousel>
+              </div>
+              {/* <p className="text-sm text-lfont underline">میتوانید برای اطلاع از جزئیات محصول و سفارش با ما تماس بگیرید.</p> */}
+            </div>
+            <div className="w-full ">
+              <EmblaCarousel
+                options={{ loop: false, direction: "rtl" }}
+                dot={true}
+                buttons={true}
+                autoScroll={false}
+                length={product?.images?.length > 1}
+              >
+                {product?.images?.map((image, index) => (
+                  <div
+                    className="transform translate-x-0 translate-y-0 translate-z-0  flex-none basis-[100%] h-64 md:h-96  min-w-0 px-4 "
+                    key={index}
+                  >
+                    <ImageCom
+                      className={`  w-full h-full object-cover rounded-xl`}
+                      src={image}
+                      alt={"post thumnail"}
+                    />
+                  </div>
+                ))}
+              </EmblaCarousel>
             </div>
           </div>
 
-            
+          <div
+            className="content break-words w-full  normal-case leading-relaxed md:text-lg max-md:text-sm  "
+            dangerouslySetInnerHTML={{ __html: product.content }}
+          />
 
-            <div
-              className="content break-words w-full  normal-case leading-relaxed md:text-lg max-md:text-sm  "
-              dangerouslySetInnerHTML={{ __html: product.content }}
-            />
-
-
-
-<div className="   space-y-10 ">
+          <div className="   space-y-10 ">
             <div>
-          <h1 className="text-lg sm:text-xl text-lfont"><span className="text-2xl sm:text-4xl text-black dark:text-white uppercase">محصولات</span>  پرفروش و مرتبط</h1>
-          {/* <p className=" text-md text-lfont"> با سایر محصولات ما آشنا شوید</p> */}
+              <h1 className="text-lg sm:text-xl text-lfont">
+                <span className="text-2xl sm:text-4xl text-black dark:text-white uppercase">
+                  محصولات
+                </span>{" "}
+                پرفروش و مرتبط
+              </h1>
+              {/* <p className=" text-md text-lfont"> با سایر محصولات ما آشنا شوید</p> */}
             </div>
 
-            <Conneccted productTitle={product?.name} productId={product?.id}/>
+            <Conneccted productTitle={product?.name} productId={product?.id} />
           </div>
-          </div>
-        )}
-      </div>
+        </div>
+      )}
+    </div>
   );
 };
 
 export default ProductPage;
-
-

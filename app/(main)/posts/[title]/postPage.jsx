@@ -82,7 +82,7 @@ const {data: post,isFetching,status,error}=useQuery({
   return (
         <>
         <ProgressBar/>
-          <div className="px-5 w-full sm:w-4/5 lg:w-4/6 xl:w-3/5 mx-auto space-y-10 md:space-y-20">
+          <div className="px-5 container sm:max-w-4xl xl:max-w-6xl  mx-auto space-y-10 md:space-y-20">
           {status === "pending" ? (
              <PageLoading />
            ) : (

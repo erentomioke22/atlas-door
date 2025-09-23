@@ -137,7 +137,7 @@ const PostList = () => {
 
 
   return (
-    <div className="px-7 md:w-3/4 xl mx-auto space-y-20">
+    <div className="px-7 container max-w-7xl  mx-auto space-y-20">
 
           <div className="flex justify-between mt-16">
               <h1 className="text-2xl">مقاله ها</h1>

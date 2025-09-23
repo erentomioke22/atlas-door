@@ -77,29 +77,11 @@ const EditPostRoot = ({ title }) => {
   });
 
 
-  if (status === "success" && post?.length <= 0) {
-    return (
-      <p className="text-center text-muted-foreground">
-        No posts found. Start following people to see their posts here.
-      </p>
-    );
-  }
 
-  if (status === "error" || post?.error) {
-    return (
-      <p className="text-center text-destructive">
-        An error occurred while loading posts.
-      </p>
-    );
-  }
 
-  if (error) {
-    return (
-      <p className="text-center text-destructive">
-        An error occurred while loading posts.!!!
-      </p>
-    );
-  }
+
+
+
 
 
 
@@ -371,40 +353,38 @@ const EditPostRoot = ({ title }) => {
     },
   ];
 
+
+
+  if (status === "success" && post?.length <= 0) {
+    return (
+      <p className="text-center text-destructive h-52 flex flex-col justify-center items-center">
+        No posts found. Start following people to see their posts here.
+        </p>
+    );
+  }
+
+
+  
+  if (status === "error" || post?.error || error) {
+    return (
+      <p className="text-center text-destructive h-52 flex flex-col justify-center items-center">
+        An error occurred while loading posts.!!!
+        </p>
+    );
+  }
+
+
   return (
-    <div className="mb-2 px-2 sm:px-5">
+    <div className="container max-w-5xl  xl:max-w-7xl min-h-screen mx-auto px-2 sm:px-5">
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-7">
       
-      {cancel && (
-        <div className="flex justify-between  py-2 w-full sticky top-0 z-[10]">
-            {/* <div className="space-x-2"> */}
-              <Button
-                className={"px-3 py-1 text-[10px] md:text-sm"}
-                variant="close"
-                onClick={() => setCancel(false)}
-                type="button"
-              >
-                Continue
-              </Button>
 
-              <Button
-                className={"text-[10px] md:text-sm px-3  py-1"}
-                variant="delete"
-                onClick={() => router.back()}
-                type="button"
-              >
-                Cancle and Discard all Changes
-              </Button>
-
-            {/* </div> */}
-            
-        </div>
-          )}
       
       
       
-        {!cancel && (
-          <div className="flex justify-between  w-full sticky top-0 bg-white dark:bg-black z-[10] py-2 ">
+      <div className="flex justify-between  w-full sticky top-0 bg-white dark:bg-black z-[10] py-2 ">
+        {!cancel ? 
+            <>
             <div className="flex gap-2 ">
               <div>
                 <Button
@@ -439,13 +419,13 @@ const EditPostRoot = ({ title }) => {
                   {deleteMutation.isPending ? (
                     <LoadingIcon color={"bg-redorange"}/>
                   ) : (
-                    "Delete Post"
+                    "DELETE POST"
                   )}
                 </Button>
               </div>
               <div className="flex gap-1">
                 <Offcanvas
-                  title={"Edit Post"}
+                  title={"EDIT POST"}
                   disabled={
                     isPending ||
                     deleteMutation.isPending ||
@@ -666,7 +646,7 @@ const EditPostRoot = ({ title }) => {
                           //  mutation.isPending || uploadMutation.isPending
                           <LoadingIcon color={"bg-white dark:bg-black"}/>
                         ) : (
-                          "Edit Post"
+                          "EDIT POST"
                         )}
                       </Button>
                     </div>
@@ -685,10 +665,30 @@ const EditPostRoot = ({ title }) => {
               >
                 cancel
               </Button>
-            </div>
+            </div>            
+            </>
+          :
+          <>
+              <Button
+                className={"text-[10px] md:text-sm px-3  py-1"}
+                variant="delete"
+                onClick={() => router.back()}
+                type="button"
+              >
+                Cancle and Discard all Changes
+              </Button>
 
-          </div>
-        )}
+              <Button
+                className={"px-3 py-1 text-[10px] md:text-sm"}
+                variant="close"
+                onClick={() => setCancel(false)}
+                type="button"
+              >
+                Continue
+              </Button>
+          </>
+        }
+      </div>
 
 
 
@@ -699,7 +699,7 @@ const EditPostRoot = ({ title }) => {
         {isPending ? (
           <EditPostLoading />
         ) : (
-            <div className="w-full md:w-2/3 mx-auto  space-y-3 ">
+            <div className="space-y-4 py-10 ">
         
 
                       {session && (

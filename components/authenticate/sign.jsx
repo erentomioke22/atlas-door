@@ -124,7 +124,7 @@ const Sign = ({ title,commentStyle,session }) => {
             </div>
             <p className="text-center my-5 text-[12px] text-lfont">
           <span className="text-red ">نکته:</span> با ورود، شما موافقت میکنید با
-          <Link href="privacy-policy" className="text-black dark:text-white underline">
+          <Link href="privacy-policy" className="text-black dark:text-white underline" onClick={()=>setClose(!close)}>
             سیاست حفظ حریم خصوصی
           </Link>{" "}
           ,ما شرایط استفاده و رفتار.

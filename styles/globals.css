@@ -7,6 +7,31 @@
 @tailwind utilities;
 
 
+
+html {
+  scroll-behavior: smooth;
+}
+
+@layer components {
+  .tab-focus {
+    @apply outline-none ring-2 ring-blue-500 ring-offset-2 transition-all duration-200;
+  }
+}
+
+.tab-panel {
+  transition: all 0.3s ease-in-out;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+
 @layer utilities{
   .animation-delay-2000{
     animation-delay: 2s;

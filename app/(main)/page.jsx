@@ -87,7 +87,7 @@ const projects=[
 ]
 
   return (
-    <div className="mt-20  md:mt-10 px-5 md:w-3/4 xl mx-auto space-y-20">
+    <div className=" container  max-w-7xl px-5 py-20  mx-auto space-y-20">
 
 
       {/* <div className="mx-auto "> */}
