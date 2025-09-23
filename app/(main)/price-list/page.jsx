@@ -3,7 +3,7 @@ import ImageCom from '@components/ui/Image';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FaBolt,FaLightbulb ,FaHandshake ,FaWandMagicSparkles ,FaStar ,FaArrowLeftLong } from "react-icons/fa6";
-import Tabs from '@components/ui/tabs';
+import Tabs from '@components/ui/Tabs';
 import { notFound } from 'next/navigation';
 
 
