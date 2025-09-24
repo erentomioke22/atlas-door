@@ -3,9 +3,8 @@ import ImageCom from '@components/ui/Image';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FaBolt,FaLightbulb ,FaHandshake ,FaWandMagicSparkles ,FaStar ,FaArrowLeftLong } from "react-icons/fa6";
-import Tabs from '@components/ui/Tabs';
 import { notFound } from 'next/navigation';
-
+import Tabs from '@components/ui/Tabs';
 
 export const metadata = {
   title: ' لیست قیمت شیشه سکوریت و لمینت - اطلس در',

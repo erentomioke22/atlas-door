@@ -88,7 +88,7 @@ export default function Tabs({
             onKeyDown={(e) => handleKeyDown(e, index)}
             disabled={tab.disabled}
             className={`
-              relative flex items-center space-x-2 focus:outline-none focus:ring-0 ring-0
+              relative flex items-center space-x-2 focus:outline-none focus:ring-0 ring-0 text-center
               ${styles.tab(activeTab === index)}
               ${tab.disabled ? 'opacity-50 cursor-not-allowed' : ''}
             `}
