@@ -626,7 +626,7 @@ const CreateProduct = () => {
                   onClick={() => setCancel(true)}
                   type="button"
                 >
-                  cancel
+                  Cancel
                 </Button>
               </div>
             </>

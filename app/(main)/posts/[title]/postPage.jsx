@@ -24,7 +24,7 @@ import TableOfContents from "@components/posts/TocPost";
 import Accordion from "@components/ui/Accordion";
 
 
-const PostPage = ({title}) => {
+const PostPage = ({initialPost}) => {
 
   const {data:session}=useSession()
   const contentRef = useRef(null);
@@ -32,15 +32,18 @@ const PostPage = ({title}) => {
   const pathName = usePathname();
   const currentUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/${pathName}`;
   const router = useRouter()
-const {data: post,isFetching,status,error}=useQuery({
-    queryKey: ["post", title],
-    queryFn: async()=>{
-     const response = await axios.get(`/api/posts?postTitle=${title}`);
-     return response.data
-    }
+
+
+  const { data: post, isLoading ,status , error} = useQuery({
+    queryKey: ["post", initialPost.link],
+    queryFn: async () => {
+      const response = await axios.get(`/api/posts?postTitle=${initialPost.link}`);
+      return response.data;
+    },
+    initialData: initialPost, // استفاده از داده اولیه
+    staleTime: 5 * 60 * 1000, // 5 دقیقه cache
+    refetchOnMount: false // اگر داده اولیه داریم، refetch نکن
   });
-
-
 
   useEffect(() => {
     const handleScroll = () => {
@@ -83,7 +86,7 @@ const {data: post,isFetching,status,error}=useQuery({
         <>
         <ProgressBar/>
           <div className="px-5 container sm:max-w-4xl xl:max-w-6xl  mx-auto space-y-10 md:space-y-20">
-          {status === "pending" ? (
+          {!post && isLoading ? (
              <PageLoading />
            ) : (
           <div className="mx-auto w-full space-y-10">
@@ -95,10 +98,10 @@ const {data: post,isFetching,status,error}=useQuery({
                                 بازگشت
                                 <FaArrowLeftLong className="my-auto text-lg"/>
                          </button>
-            <header>
+            <header className="space-y-5">
                <div className=" space-y-5 md:mt-7">
                 <div className="space-y-3">
-                   <p className="text-xl md:text-4xl w-full break-words text-black dark:text-white">{post.title}</p>   
+                   <p className="text-xl md:text-4xl w-full break-words text-black dark:text-white leading-8 md:leading-[60px]">{post.title}</p>   
                     <div className="flex  gap-2">
                            <span className="flex gap-2 flex-wrap">
                                {post?.tags?.map((tag) => {

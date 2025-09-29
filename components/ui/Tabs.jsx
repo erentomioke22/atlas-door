@@ -49,8 +49,8 @@ export default function Tabs({
       tab: (isActive) => 
         `px-4 py-2 font-medium text-sm rounded-xl transition-all duration-300 ease-in-out outline-none ring-none focus:outline-none w-full text-center ${
           isActive 
-            ? 'bg-lbtn dark:dbtn  shadow-sm' 
-            : ' text-lfont '
+            ? 'bg-lbtn dark:bg-dbtn shadow-sm' 
+            : 'text-lfont'
         }`,
       activeIndicator: ''
     },
@@ -88,13 +88,13 @@ export default function Tabs({
             onKeyDown={(e) => handleKeyDown(e, index)}
             disabled={tab.disabled}
             className={`
-              relative flex items-center space-x-2 focus:outline-none focus:ring-0 ring-0 text-center
+              relative flex items-center space-x-2 focus:outline-none focus:ring-0 ring-0 text-center mx-auto
               ${styles.tab(activeTab === index)}
               ${tab.disabled ? 'opacity-50 cursor-not-allowed' : ''}
             `}
           >
             {tab.icon && <span>{tab.icon}</span>}
-            <span>{tab.label}</span>
+            <span className='text-center mx-auto'>{tab.label}</span>
             {variant === 'underline' && activeTab === index && (
               <span className={styles.activeIndicator} />
             )}

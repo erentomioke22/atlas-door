@@ -173,7 +173,7 @@ export default async function Page({ params }) {
         </script>
       </Head>
       <article className='mt-16'>
-        <PostPage title={title} />
+        <PostPage initialPost={post} />
       </article>
     </>
   );

@@ -161,7 +161,7 @@ const page = async({params}) => {
           {JSON.stringify(breadcrumbJsonLd)}
         </script>
       </Head>
-      <ProductPage name={name}/>
+      <ProductPage initialProduct={product}/>
     </>
   )
 }

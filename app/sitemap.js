@@ -7,7 +7,7 @@ function formatDateISO(date) {
 export default async function sitemap() {
   const posts = await prisma.post.findMany();
   const products = await prisma.product.findMany();
-  const tags = await prisma.tag.findMany();
+  // const tags = await prisma.tag.findMany();
 
   const postEntries = posts.map(({ link, updatedAt, images }) => ({
     url: `${process.env.NEXT_PUBLIC_BASE_URL}/posts/${link}`,
@@ -41,7 +41,7 @@ export default async function sitemap() {
   //   priority:0.8,
   // }));
 
-  const routes = ['automatic-door', 'balcony-glass', 'partition-glass', 'roller-shutter', 'tempered-glass', 'posts'];
+  const routes = ['about-us', 'privacy-policy', 'posts' ,'products'];
   const routeEntries = routes.map(route => ({
     url: `${process.env.NEXT_PUBLIC_BASE_URL}/${route}`,
     lastModified: formatDateISO(new Date()),

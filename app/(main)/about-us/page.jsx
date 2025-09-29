@@ -6,12 +6,51 @@ import { FiInstagram } from "react-icons/fi";
 import { FaWhatsapp } from "react-icons/fa6";
 import { FaBolt,FaLightbulb ,FaHandshake ,FaWandMagicSparkles ,FaStar ,FaArrowLeftLong } from "react-icons/fa6";
 export const metadata = {
-  title: 'درباره ما - اطلس در',
-  description: 'درباره شرکت اطلس در، تولید کننده شیشه های سکوریت و ابزارآلات مربوطه',
+  title: 'درباره ما | شرکت اطلس در | تولید کننده شیشه سکوریت و لمینت',
+  description: 'شرکت اطلس در با ۲۰ سال تجربه در تولید و نصب شیشه های سکوریت و لمینت. کیفیت عالی، قیمت مناسب و خدمات پس از فروش مطمئن',
+  keywords: 'شیشه سکوریت, شیشه لمینت, نصب شیشه, تولید شیشه, شرکت اطلس در, درباره ما',
+  openGraph: {
+    title: 'درباره شرکت اطلس در | تخصص در شیشه های سکوریت و لمینت',
+    description: '۲۰ سال تجربه در تولید و نصب شیشه های ایمنی با کیفیت عالی',
+    type: 'website',
+    locale: 'fa_IR'
+  }
 };
 
 export default function AboutUs() {
+
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'شرکت اطلس در',
+    description: 'تولید کننده و مجری شیشه های سکوریت و لمینت با ۲۰ سال سابقه',
+    url: 'https://atlasdoors,ir',
+    logo: 'https://atlasdoors,ir/images/logo/atlasDoor.png',
+    foundingDate: '2004',
+    address: {
+      '@type': 'PostalAddress',
+      addressCountry: 'IR',
+      addressRegion: 'تهران',
+      addressLocality: 'تهران'
+    },
+    contactPoint: {
+      '@type': 'ContactPoint',
+      telephone: '+98-21-55589837',
+      contactType: 'پشتیبانی'
+    },
+    sameAs: [
+      'https://t.me/Atlasdoor96',
+      'https://www.instagram.com/atlasshishe96'
+    ]
+  };
+
   return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      
     <div className="min-h-screen  py-8">
       <div className="container mx-auto px-4 max-w-6xl">
         {/* Header */}
@@ -185,5 +224,6 @@ export default function AboutUs() {
 
       </div>
     </div>
+    </>
   );
 }

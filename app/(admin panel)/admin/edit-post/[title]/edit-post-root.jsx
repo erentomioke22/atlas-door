@@ -524,19 +524,19 @@ const EditPostRoot = ({ title }) => {
                     </div>
                     <p className="text-sm">Title , Tags & desc </p>
                     <div>
-                      <TextArea
-                        placeholder={"Write Your Post Title ..."}
-                        name={"title"}
-                        type={"text"}
-                        ref={register}
-                        {...register("title")}
-                        // watch={watch('title')}
-                        label={false}
-                        className={
-                          "resize-none  bg-lcard dark:bg-dcard rounded-lg placeholder:text-[#000000a4] dark:placeholder:text-lfont text-lg  p-2 focus:ring-2 focus:ring-black dark:focus:ring-white outline-none duration-200"
-                        }
-                        error={errors?.title?.message}
-                      />
+                    <TextArea
+                      placeholder={"Write Your Post Title ..."}
+                      name={"title"}
+                      type={"text"}
+                      ref={register}
+                      {...register("title")}
+                      // watch={watch('title')}
+                      label={false}
+                      className={
+                        "resize-none  bg-lcard dark:bg-dcard rounded-lg placeholder:text-[#000000a4] dark:placeholder:text-lfont text-lg  p-2 focus:ring-2 focus:ring-black dark:focus:ring-white outline-none duration-200"
+                      }
+                      error={errors?.title?.message}
+                    />
                     </div>
 
                     <div>
@@ -663,7 +663,7 @@ const EditPostRoot = ({ title }) => {
                 onClick={() => setCancel(true)}
                 type="button"
               >
-                cancel
+                Cancel
               </Button>
             </div>            
             </>
@@ -729,8 +729,8 @@ const EditPostRoot = ({ title }) => {
           )}
 
 
-<div>
-<textarea
+       <div>
+         <textarea
             placeholder={"Write Your Post Title ..."}
             name="title"
             type="text"
@@ -740,8 +740,6 @@ const EditPostRoot = ({ title }) => {
             onChange={(e)=>{setValue('title',e.target.value)}}
             value={getValues('title')}
           />
-
-
         </div>
 
               <Controller

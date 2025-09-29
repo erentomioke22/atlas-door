@@ -443,13 +443,13 @@ const CreatePostRoot = () => {
                     )}
 
                                         {/* <ImageInput selectedImage={selectedImage}  setSelectedImage={setSelectedImage} selectedInputImage={selectedInputImage}  setSelectedInputImage={setSelectedInputImage} setValue={setValue} rmThumbnailFile={rmThumbnailFile} setRmThumbnailFile={setRmThumbnailFile}/> */}
-                    <div
+                    {/* <div
                        className={`text-red  text-[10px] md:text-sm transition-opacity duration-300  ${
                          errors?.image?.message ? "opacity-100" : "opacity-0"
                        }`}
                      >
                        {errors?.image?.message}
-                   </div>
+                   </div> */}
                   </div>
                   <p className="text-sm">Title , Tags & desc </p>
                   <div>
@@ -608,7 +608,7 @@ const CreatePostRoot = () => {
                 onClick={() => setCancel(true)}
                 type="button"
               >
-                cancel
+                Cancel
               </Button>
             </div>
         </>

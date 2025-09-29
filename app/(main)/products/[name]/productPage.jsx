@@ -23,7 +23,7 @@ import { formatPriceFa, formatNumberFa } from "@lib/utils";
 import AddToCartButton from "@components/products/AddToCartButtonRoot";
 import Conneccted from "@components/products/Connected";
 
-const ProductPage = ({ name }) => {
+const ProductPage = ({ initialProduct }) => {
   const [currentColor, setCurrentColor] = useState(null);
   const [currentDiscount, setCurrentDiscount] = useState(null);
   const [price, setPrice] = useState(null);
@@ -36,20 +36,20 @@ const ProductPage = ({ name }) => {
   const pathName = usePathname();
   const currentUrl = `http://localhost:3000/${pathName}`;
   const router = useRouter();
-  const {
-    data: product,
-    isFetching,
-    status,
-    error,
-  } = useQuery({
-    queryKey: ["product", name],
+
+
+
+  const { data: product, isLoading ,status , error} = useQuery({
+    queryKey: ["product", initialProduct.name],
     queryFn: async () => {
-      const response = await axios.get(
-        `/api/product/product?productName=${name}`
-      );
+      const response = await axios.get(`/api/product/product?productName=${initialProduct.name}`);
       return response.data;
     },
+    initialData: initialProduct, // استفاده از داده اولیه
+    staleTime: 5 * 60 * 1000, // 5 دقیقه cache
+    refetchOnMount: false // اگر داده اولیه داریم، refetch نکن
   });
+
 
   useEffect(() => {
     if (product?.colors?.length > 0 && !currentColor) {
@@ -94,7 +94,7 @@ const ProductPage = ({ name }) => {
 
   return (
     <div className="px-5 container sm:max-w-xl lg:max-w-4xl xl:max-w-7xl mx-auto space-y-10 md:space-y-20 mt-16 ">
-      {status === "pending" ? (
+      {!product && isLoading ? (
         <PageLoading />
       ) : (
         <div className="mx-auto w-full space-y-10">
@@ -156,7 +156,7 @@ const ProductPage = ({ name }) => {
                   قیمت این محصول از {minPrice} تا {maxPrice} تومان میباشد.
                 </p>
               )}
-              <h1 className="text-xl md:text-4xl w-full break-words text-black dark:text-white">
+              <h1 className="text-xl md:text-4xl w-full break-words text-black dark:text-white leading-8 md:leading-[60px]">
                 {product.name}
               </h1>
               <p className="text-lfont ">{product.desc}</p>
