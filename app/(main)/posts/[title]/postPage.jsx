@@ -21,7 +21,6 @@ import { FaArrowLeftLong,FaPhone } from "react-icons/fa6";
 import Link from "next/link";
 import { FaEraser } from "react-icons/fa6";
 import TableOfContents from "@components/posts/TocPost";
-import Accordion from "@components/ui/Accordion";
 
 
 const PostPage = ({initialPost}) => {

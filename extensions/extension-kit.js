@@ -46,8 +46,6 @@ import {
   ImageFigure,
   Iframe,
   Blockquote,
-  // TableOfContentsNode
-  // TableOfContents,
     // BlockquoteFigure,
   // Video,
     // SlashCommand,
@@ -107,11 +105,6 @@ export const ExtensionKit = ({ provider }) => [
   }),
   Highlight.configure({ multicolor: true }),
   Underline,
-  // TableOfContents,
-  // TableOfContentsNode,
-  // ImageUpload.configure({
-  //   clientId: provider?.document?.clientID,
-  // }),
   FileHandler.configure({
     allowedMimeTypes: ['image/png', 'image/jpeg', 'image/gif', 'image/webp'],
     onDrop: (currentEditor, files, pos) => {

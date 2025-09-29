@@ -14,7 +14,7 @@ import { IoClose } from "react-icons/io5";
 import { useEditProductMutation } from "@components/products/mutations";
 import { useDeleteProductMutation } from "@components/products/mutations";
 import LoadingIcon from "@components/ui/loading/LoadingIcon";
-import BlockEditor from "@components/BlockEditor/BlockEditor";
+import BlockEditor from "@components/BlockEditor/BlockEditor-root";
 import { useMemo } from "react";
 import { Doc as YDoc } from "yjs";
 import EditPostLoading from "@components/ui/loading/editPostLoading";
@@ -48,6 +48,8 @@ const EditProduct = ({ name }) => {
   const ydoc = useMemo(() => new YDoc(), []);
   const [preventNavigation, setPreventNavigation] = useState(false);
   const [contentImages, setContentImages] = useState();
+  const [deletedPostFiles, setDeletedPostFiles] = useState([]);
+  const [editorContent, setEditorContent] = useState();
   const [thumnailIndex, setThumnailIndex] = useState();
   const [cancel, setCancel] = useState(false);
   const [productThumnail, setProductThumnail] = useState(0);
@@ -224,7 +226,7 @@ const EditProduct = ({ name }) => {
         }
       } else {
         if (productThumnail) {
-          const allImages = productPictures.map((item) => item || item.url);
+          const allImages = productPictures.map((item) => item.url);
           const thumbnailIndex = productPictures.findIndex(
             (picture) =>
               picture === productThumnail || picture.url === productThumnail
@@ -751,30 +753,31 @@ const EditProduct = ({ name }) => {
                 </p>
               </div>
             </div>
-            <Controller
-              name="content"
-              control={control}
-              render={({ field: { onChange, onBlur, value, name, ref } }) => (
-                <BlockEditor
-                  content={value}
-                  onChange={onChange}
-                  ref={ref}
-                  setValue={setValue}
-                  ydoc={ydoc}
-                  initialContent={value}
-                  files={files}
-                  setFiles={setFiles}
-                  contentImages={contentImages}
-                  setContentImage={setContentImages}
-                  thumnailIndex={thumnailIndex}
-                  setThumnailIndex={setThumnailIndex}
-                  // items={items}
-                  // setItems={setItems}
-                  // hasCollab={hasCollab}
-                  // provider={provider}
-                />
-              )}
-            />
+         
+         
+           <Controller
+            name="content"
+            control={control}
+            render={({ field: { onChange, onBlur, value, name, ref } }) => (
+              <BlockEditor
+                initialContent={value}
+                onChange={onChange}
+                ref={ref}
+                ydoc={ydoc}
+                files={files}
+                setFiles={setFiles}
+                setEditorContent={setEditorContent}
+                setDeletedFiles={setDeletedFiles}
+                setDeletedPostFiles={setDeletedPostFiles}
+                setValue={setValue}
+                setContentImage={setContentImages}
+                thumnailIndex={thumnailIndex}
+                setThumnailIndex={setThumnailIndex}
+                //  hasCollab={hasCollab}
+                //  provider={provider}
+              />
+            )}
+          />
 
             <div
               className={`text-red mt-2 text-[10px] md:text-sm transition-opacity duration-300  ${

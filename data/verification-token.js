@@ -10,15 +10,6 @@ export const getVerificationTokenByEmail = async (email)=>{
 }
 
 
-export const getVerificationTokenByToken = async (token)=>{
-    try{
-      const newVerificationToken = await prisma.verificationToken.findFirst({where:{token:token}});
-      return newVerificationToken;
-    }catch(error){
-      console.error(error);
-    }
-}
-
 
 
 export const deleteVerificationTokenById = async (verificationId)=>{

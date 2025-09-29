@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import {
   useMutation,
   useQueryClient,
@@ -25,16 +25,13 @@ import useDebounce from "@hook/useDebounce";
 import InfiniteScrollContainer from "@components/InfiniteScrollContainer";
 import Dropdown from "@components/ui/dropdown";
 import LoadingIcon from "@components/ui/loading/LoadingIcon";
-import { usePathname, useParams, notFound } from "next/navigation";
-import { useRouter } from "next/navigation";
+import {useParams, notFound } from "next/navigation";
 
 export default function page() {
   const [search, setSearch] = useState("");
   const debouncedSearch = useDebounce(search, 400);
   const [dropdownCloseTick, setDropdownCloseTick] = useState(0);
   const { data: session, status: sessionStatus } = useSession();
-  const path = usePathname();
-  const router = useRouter();
   const { userName } = useParams();
 
   if (

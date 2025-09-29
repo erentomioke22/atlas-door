@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { IoNotificationsSharp } from "react-icons/io5";
 import InfiniteScrollContainer from "@/components/InfiniteScrollContainer";
 import {

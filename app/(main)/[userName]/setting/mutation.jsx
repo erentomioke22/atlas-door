@@ -3,8 +3,7 @@ import { useRouter } from "next/navigation";
 import { updateUserProfile } from "./action";
 import { deleteUser } from "./action";
 import { deleteAccount } from "./action";
-import { Toaster, toast } from "sonner";
-import { suspendAccount } from "./action";
+import {  toast } from "sonner";
 import { deleteSession } from "./action";
 
 export function useUpdateProfileMutation() {

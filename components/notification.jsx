@@ -1,10 +1,7 @@
 import Link from "next/link";
-import { FaUserPlus } from "react-icons/fa";
 import { IoPencil } from "react-icons/io5";
 import { FaMessage } from "react-icons/fa6";
 import moment from "moment";
-import { PiHeartFill } from "react-icons/pi";
-import { FaUserGroup } from "react-icons/fa6";
 import ImageCom from "./ui/Image";
 import { IoBag } from "react-icons/io5";
 import { FaHandshakeSimple } from "react-icons/fa6";

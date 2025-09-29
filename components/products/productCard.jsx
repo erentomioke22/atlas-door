@@ -2,28 +2,18 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { IoShareOutline } from "react-icons/io5";
-import { toast } from "sonner";
-import { useSession } from "next-auth/react";
-// import moment from 'moment';
 import { formatNumberFa, formatPriceFa } from "@lib/utils";
-import { TbMessageCircleFilled } from "react-icons/tb";
 import ImageCom from "@components/ui/Image";
 import moment from "moment-jalaali";
-import AddToCartButton from "./AddToCartButton";
 
 moment.loadPersian({ usePersianDigits: true });
 
 const ProductCard = ({ product, draft }) => {
-  const { data: session } = useSession();
   const [link, setLink] = useState(
     draft ? `/edit-product/${post.name}` : `/products/${product.name}`
   );
 
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText(link);
-    toast.success("لینک اشترک گذاری کپی شد");
-  };
+
 
   const createdAt = moment(
     product.createdAt,
@@ -36,18 +26,6 @@ const ProductCard = ({ product, draft }) => {
   return (
     <div className="   sm:w-64   border-2 border-lcard dark:border-dcard rounded-3xl shadow-sm duration-500   max-sm:w-full   py-2 space-y-2 px-3   select-none">
       <div className="flex justify-between">
-        {/* <div className='my-auto'>
-                    {session?.user.role === 'admin' ? 
-                   <Link href={`/edit-product/${product.name}`}
-                   className='text-[10px]  text-lfont' >
-                       Edit product
-                   </Link>
-                     :
-                     <button className='text-sm my-auto' onClick={copyToClipboard}>
-                     <IoShareOutline className='text-[16px]'/> 
-                    </button> 
-                    }
-                  </div> */}
       </div>
       <Link href={link}>
         {product?.images[0] && (
@@ -126,15 +104,9 @@ const ProductCard = ({ product, draft }) => {
           )}
         </div>
       </div>
-      {/* <button className="bg-lbtn dark:bg-dbtn rounded-lg text-sm w-full py-2 ">
-              <a href="tel:09901196140" onClick={()=>{toast.success('شماره کپی شد');navigator.clipboard.writeText('09901196140')}} >
-                تماس
-              </a>
-                </button> */}
     </div>
   );
 };
 
 export default ProductCard;
 
-// components/ImageWithLoading.js

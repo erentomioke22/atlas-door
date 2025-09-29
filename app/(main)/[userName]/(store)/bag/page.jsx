@@ -6,7 +6,7 @@ import OrderCard from "@components/products/orderCard";
 import { formatPriceFa } from "@lib/utils";
 import LoadingOrder from "@components/ui/loading/loadingOrder";
 import PaymentPanel from "@components/paymentPanel";
-import { usePathname, useParams, notFound } from "next/navigation";
+import { useParams, notFound } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 
@@ -19,7 +19,6 @@ export default function page() {
     hasHydrated,
     restoreFromServer,
   } = useCart();
-  const path = usePathname();
   const router = useRouter();
   const { userName } = useParams();
   const { data: session, status } = useSession();

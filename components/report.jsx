@@ -8,10 +8,8 @@ import { reportValidation } from "@lib/validation";
 import TextArea from "./ui/TextArea";
 import { useMutation } from "@tanstack/react-query";
 import { usePathname } from "next/navigation";
-import Dropdown from "./ui/dropdown";
 
 const Report = ({ type }) => {
-  const [onClose, setOnClose] = useState(false);
   const currentUrl = usePathname();
 
   // console.log(currentUrl)

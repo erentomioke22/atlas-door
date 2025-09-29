@@ -2,8 +2,6 @@ import { BubbleMenu as BaseBubbleMenu, useEditorState } from "@tiptap/react";
 import { useCallback } from "react";
 import { sticky } from "tippy.js";
 import { v4 as uuid } from "uuid";
-
-// import { MenuProps } from "@components/menus/types";
 import getRenderContainer from "@lib/utils/getRenderContainer";
 import { Toolbar } from "@components/ui/Toolbar";
 import { ColumnLayout } from "../Columns";

@@ -9,18 +9,16 @@ import Link from "next/link";
 import ImageCom from "@components/ui/Image";
 import Accordion from "@components/ui/Accordion";
 import { IoClose } from "react-icons/io5";
-import moment from "moment";
 import { FaCreditCard } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
 import { FaTruckFast } from "react-icons/fa6";
 import { FaHandshakeSimple } from "react-icons/fa6";
 import { FaForwardStep } from "react-icons/fa6";
-import { usePathname, useParams, notFound } from "next/navigation";
+import { useParams, notFound } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 
 export default function page() {
-  const path = usePathname();
   const router = useRouter();
   const { userName } = useParams();
   const { data: session, status: sessionStatus } = useSession();

@@ -5,29 +5,25 @@ import { ExtensionKit } from "@extensions/extension-kit";
 
 export const useBlockEditor = ({
   // aiToken,
-  ydoc,
   // provider,
   // userId,
   // userName = 'Maxi',
+  ydoc,
   initialContent,
   onChange,
   files,
   setFiles,
   setValue,
-  deletedFiles,
   setDeletedFiles,
   setEditorContent,
   setDeletedPostFiles,
-  deletedPostFiles,
-  contentImages,
   setContentImage,
   thumnailIndex,
   setThumnailIndex,
 }) => {
   const [tempRemovedFiles, setTempRemovedFiles] = useState([]);
   const [prevNewFiles, setPrevNewFiles] = useState([]);
-  // const [content, setContent] = useState(initialContent);
-  // const [debouncedContent] = useDebounce(content, 2000);
+
 
   const editor = useEditor(
     {
@@ -67,14 +63,6 @@ export const useBlockEditor = ({
         //       },
         //     })
         //   : undefined,
-        // TableOfContents.configure({
-        //   getIndex: getHierarchicalIndexes,
-        //   onUpdate(content) {
-        //     setItems(content);
-        //     const tocs = content.map(({ dom, editor, node,isActive,isScrolledOver,pos, ...cleanedItem }) => cleanedItem);
-        //     setValue('tocs',tocs);
-        //   },
-        // }),
         // aiToken
         //   ? AiWriter.configure({
         //       authorId: userId,
@@ -186,21 +174,31 @@ export const useBlockEditor = ({
     }
   }, [initialContent, editor]);
 
-  // Load from local storage on mount
-  // useEffect(() => {
-  //   const savedContent = localStorage.getItem(LOCAL_STORAGE_KEY);
-  //   if (savedContent && !initialContent) {
-  //     setContent(savedContent);
-  //     editor?.commands.setContent(savedContent);
-  //   }
-  // }, [editor]);
+  // const users = useEditorState({
+  //   editor,
+  //   selector: (ctx) => {
+  //     if (!ctx.editor?.storage.collaborationCursor?.users) {
+  //       return []
+  //     }
 
-  // // Save to server when content changes (debounced)
+  //     return ctx.editor.storage.collaborationCursor.users.map((user) => {
+  //       const names = user.name?.split(' ')
+  //       const firstName = names?.[0]
+  //       const lastName = names?.[names.length - 1]
+  //       const initials = `${firstName?.[0] || '?'}${lastName?.[0] || '?'}`
+
+  //       return { ...user, initials: initials.length ? initials : '?' }
+  //     })
+  //   },
+  // })
+
   // useEffect(() => {
-  //   if (debouncedContent && debouncedContent !== initialContent) {
-  //     saveToServer(debouncedContent);
-  //   }
-  // }, [debouncedContent]);
+  //   provider?.on('status', (event) => {
+  //     setCollabState(event.status)
+  //   })
+  // }, [provider])
+
+  // window.editor = editor
 
   return { editor };
 };

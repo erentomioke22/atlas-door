@@ -101,11 +101,9 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { IoShareOutline } from "react-icons/io5";
 import { toast } from "sonner";
 import { useSession } from "next-auth/react";
 import { formatNumberFa, formatPriceFa } from "@lib/utils";
-import { TbMessageCircleFilled } from "react-icons/tb";
 import ImageCom from "@components/ui/Image";
 import moment from "moment-jalaali";
 import AddToCartButton from "./AddToCartButtonRoot";
@@ -113,15 +111,9 @@ import AddToCartButton from "./AddToCartButtonRoot";
 moment.loadPersian({ usePersianDigits: true });
 
 const OrderCard = ({ item }) => {
-  const { data: session } = useSession();
   const [link, setLink] = useState(`/products/${item?.product.name}`);
 
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText(link);
-    toast.success("لینک اشترک گذاری کپی شد");
-  };
 
-  const price = item?.color.price * item?.quantity || 1;
   const discountedPrice =
     item?.color.price -
     (item?.color.price * (item?.color?.discount || 0)) / 100;

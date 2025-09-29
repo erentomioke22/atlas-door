@@ -2,7 +2,6 @@ import React, { useEffect, useState,useDeferredValue } from "react";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { BiSearchAlt } from "react-icons/bi";
-import Dropdown from "./ui/dropdown";
 import LoadingSearch from "./ui/loading/loadingSearch";
 import Link from 'next/link';
 import ImageCom from "./ui/Image";

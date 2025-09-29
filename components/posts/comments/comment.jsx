@@ -10,8 +10,7 @@ import Report from "@components/report";
 import { LuReply } from "react-icons/lu";
 import ImageCom from "@components/ui/Image";
 import { FaArrowLeftLong } from "react-icons/fa6";
-// import CommentInput from "./commentInput";
-// import LikeButton from "@components/posts/likeButton";
+
 
 
 const Comment = ({content,user,createdAt,userId,id,replies,likes,_count,parent,post,margin,category,scrollToComment,setCurrentCommentId,setMessage,setReplyInfo}) => {
@@ -19,7 +18,6 @@ const Comment = ({content,user,createdAt,userId,id,replies,likes,_count,parent,p
   const [ShowAll,setShowAll]=useState(false)
   const { data: session } = useSession();
   const deleteMutation = useDeleteCommentMutation(post?.id,category)
-  const [showAllReply,setShowAllReply]=useState(false)
   const [showReport,setShowReport] = useState(false)
 
 

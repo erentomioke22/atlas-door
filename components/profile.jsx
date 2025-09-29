@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
-import Dropdown from "./ui/dropdown";
-import { FaCaretLeft } from "react-icons/fa6";
-import { IoPencil,IoLogOut } from "react-icons/io5";
 import ImageCom from "./ui/Image";
 import DropDrawer from "./ui/dropdrawer";
 import Darkmode from "./ui/darkmode";

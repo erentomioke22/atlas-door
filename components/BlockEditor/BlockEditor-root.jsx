@@ -30,12 +30,10 @@ export const BlockEditor =
       files,
       setFiles,
       setValue,
-      deletedFiles,
       setEditorContent,
       setDeletedPostFiles,
-      deletedPostFiles,
       setDeletedFiles,
-      contentImages, setContentImage,thumnailIndex,setThumnailIndex
+      setContentImage,thumnailIndex,setThumnailIndex
     },ref
     
   ) => {
@@ -53,11 +51,10 @@ export const BlockEditor =
       files,
       setFiles,
       setValue,
-      deletedFiles,
       setDeletedFiles,
       setEditorContent,
       setDeletedPostFiles,
-      deletedPostFiles,contentImages, setContentImage,thumnailIndex,setThumnailIndex
+      setContentImage,thumnailIndex,setThumnailIndex
     });
     if (
       !editor

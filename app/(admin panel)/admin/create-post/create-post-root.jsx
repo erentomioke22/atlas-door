@@ -33,15 +33,15 @@ const CreatePostRoot = () => {
   const { data: session } = useSession();
   const [dropTag, setDropTag] = useState([]);
   const router = useRouter();
-  const [onClose, setOnClose] = useState(false);
-  const [files, setFiles] = useState([]);
-  const [editorContent, setEditorContent] = useState();
   const [deletedFiles, setDeletedFiles] = useState([]);
   const [deletedPostFiles, setDeletedPostFiles] = useState([]);
+  const [contentImages, setContentImages] = useState();
+  const [files, setFiles] = useState([]);
+  const [editorContent, setEditorContent] = useState();
   const [preventNavigation, setPreventNavigation] = useState(false);
   const [thumnailIndex, setThumnailIndex] = useState(0);
-  const [contentImages, setContentImage] = useState();
   const [cancel, setCancel] = useState(false);
+  const [onClose, setOnClose] = useState(false);
   const ydoc = useMemo(() => new YDoc(), []);
   const mutation = useSubmitPostMutation();
   usePreventNavigation(preventNavigation);
@@ -691,12 +691,9 @@ const CreatePostRoot = () => {
                 setFiles={setFiles}
                 setEditorContent={setEditorContent}
                 setDeletedFiles={setDeletedFiles}
-                deletedFiles={deletedFiles}
                 setDeletedPostFiles={setDeletedPostFiles}
-                deletedPostFiles={deletedPostFiles}
                 setValue={setValue}
-                contentImages={contentImages}
-                setContentImage={setContentImage}
+                setContentImage={setContentImages}
                 thumnailIndex={thumnailIndex}
                 setThumnailIndex={setThumnailIndex}
                 //  hasCollab={hasCollab}

@@ -9,7 +9,7 @@ import { useSubmitProductMutation } from "@components/products/mutations";
 import LoadingIcon from "@components/ui/loading/LoadingIcon";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import BlockEditor from "@components/BlockEditor/BlockEditor";
+import BlockEditor from "@components/BlockEditor/BlockEditor-root";
 import { useMemo } from "react";
 import { Doc as YDoc } from "yjs";
 import { useSession } from "next-auth/react";
@@ -39,9 +39,12 @@ const CreateProduct = () => {
   const { data: session } = useSession();
   const [onClose, setOnClose] = useState(false);
   const router = useRouter();
+  const [editorContent, setEditorContent] = useState();
+  const [deletedFiles, setDeletedFiles] = useState([]);
+  const [deletedPostFiles, setDeletedPostFiles] = useState([]);
+  const [contentImages, setContentImages] = useState([]);
   const [thumnailIndex, setThumnailIndex] = useState(0);
   const [productThumnail, setProductThumnail] = useState(0);
-  const [contentImages, setContentImages] = useState([]);
   const [productPictures, setProductPictures] = useState([]);
   const [cancel, setCancel] = useState(false);
   const [editColorIndex, setEditColorIndex] = useState(null);
@@ -111,7 +114,6 @@ const CreateProduct = () => {
         throw new Error("error occurred while uploading");
       },
       onUploadBegin: ({ file }) => {
-        // console.log("upload has begun for", file);
       },
     });
 
@@ -135,36 +137,49 @@ const CreateProduct = () => {
         const uploadedData = await postUpload(filesData);
         // const uploadedUrls = uploadedData.map(item => item.url);
 
-        // Create a map of uploaded URLs
         const newBlobUrlMap = productPictures.map((picture, index) => {
           if (picture.file) {
-            // For files that were uploaded
             return {
               blobUrl: picture.url,
-              url: uploadedData.shift()?.url, // Take the first uploaded URL for each file
+              url: uploadedData.shift()?.url, 
             };
           } else {
-            // For URLs that were already provided
             return {
               blobUrl: picture.url,
-              url: picture.url, // Keep the original URL
+              url: picture.url, 
             };
           }
         });
 
         setProductPictures(newBlobUrlMap);
 
-        // Set the images array with thumbnail as first image
         if (productThumnail) {
           const allImages = newBlobUrlMap.map((item) => item.url);
           const thumbnailIndex = productPictures.findIndex(
             (picture) => picture.url === productThumnail
           );
           if (thumbnailIndex !== -1) {
-            // Move thumbnail to the front
             const thumbnailUrl = allImages[thumbnailIndex];
-            allImages.splice(thumbnailIndex, 1); // Remove from current position
+            allImages.splice(thumbnailIndex, 1); 
             setValue("images", [thumbnailUrl, ...allImages]);
+          } else {
+            setValue("images", allImages);
+          }
+        }
+      }else {
+        if (productThumnail) {
+          const allImages = productPictures.map((item) => item.url);
+          const thumbnailIndex = productPictures.findIndex(
+            (picture) =>
+              picture === productThumnail || picture.url === productThumnail
+          );
+          if (thumbnailIndex !== -1) {
+            const thumbnailUrl = allImages[thumbnailIndex];
+            const remainingImages = allImages.filter(
+              (_, index) => index !== thumbnailIndex
+            );
+            const currentImages = [thumbnailUrl, ...remainingImages];
+            setValue("images", currentImages);
           } else {
             setValue("images", allImages);
           }
@@ -338,9 +353,9 @@ const CreateProduct = () => {
       return;
     }
     if (
-      debouncedContent.length >= 5 ||
-      debouncedName.length >= 5 ||
-      debouncedColor.length >= 1
+      debouncedContent?.length >= 5 ||
+      debouncedName?.length >= 5 ||
+      debouncedColor?.length >= 1
     ) {
       const formValues = getValues();
       const cleanedContent = stripImagesFromContent(formValues.content);
@@ -683,21 +698,25 @@ const CreateProduct = () => {
             control={control}
             render={({ field: { onChange, onBlur, value, name, ref } }) => (
               <BlockEditor
-                content={value}
+                initialContent={value}
                 onChange={onChange}
                 ref={ref}
-                setValue={setValue}
                 ydoc={ydoc}
-                initialContent={value}
                 files={files}
                 setFiles={setFiles}
-                contentImages={contentImages}
+                setEditorContent={setEditorContent}
+                setDeletedFiles={setDeletedFiles}
+                setDeletedPostFiles={setDeletedPostFiles}
+                setValue={setValue}
                 setContentImage={setContentImages}
                 thumnailIndex={thumnailIndex}
                 setThumnailIndex={setThumnailIndex}
+                //  hasCollab={hasCollab}
+                //  provider={provider}
               />
             )}
           />
+          
           <div
             className={`text-red mt-2 text-[10px] md:text-sm transition-opacity duration-300  ${
               errors?.content?.message ? "opacity-100" : "opacity-0"

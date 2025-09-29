@@ -3,19 +3,15 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useSession } from "next-auth/react";
-// import Sign from "@components/authenticate/sign";
 import LoadingComment from "@components/ui/loading/loadingComment";
 import InfiniteScrollContainer from "@components/InfiniteScrollContainer";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import CommentInput from "./commentInput";
 import Offcanvas from "@components/ui/offcanvas";
 import { IoClose } from "react-icons/io5";
-// import { IoLockClosed} from "react-icons/io5";
-// import { MdOutlineBlock } from "react-icons/md";
 import { TbMessageCircleFilled } from "react-icons/tb";
 import Comment from "./comment";
 import ImageCom from "@components/ui/Image";
-import Sign from "@components/authenticate/sign";
 
 
 

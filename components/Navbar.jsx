@@ -7,11 +7,9 @@ import Darkmode from "./ui/darkmode";
 import { HiMenuAlt4 } from "react-icons/hi";
 import { IoBag, IoClose } from "react-icons/io5";
 import Search from "@components/search";
-import Button from "./ui/button";
 import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { toast } from 'sonner'
-// import Banner from "./ui/Banner";
 import Offcanvas from "./ui/offcanvas";
 import Banner from "./ui/Banner";
 import Profile from "./profile";
@@ -88,43 +86,6 @@ const Navbar = () => {
       name: "لیست قیمت",
       href:'/posts/لیست-قیمت-شیشه-سکوریت-و-شیشه-لمینت-|-۱۴۰۴-۲۰۲۵_skivln562f',
     },
-    // { id: "2", 
-    //   name: "کرکره برقی",
-    //   href:'/roller-shutter',
-    // },
-    // { id: "11", 
-    //   name: "آیینه",
-    //   href:'/mirror',
-    // },
-    // { id: "10", 
-    //   name: "UPVC",
-    //   href:'/',
-    // },
-    // { id: "12", 
-    //   name: "ضایعات شیشه",
-    //   href:'/trash-glass',
-    // },
-    // { id: "12", 
-    //   name: "پنل حورشیدی",
-    //   href:'/sun-panel',
-    // },
-        // { id: "3", 
-    //   name: "جک پارکینگ",
-    //   href:'/',
-    // },
-    // { id: "4", 
-    //   name: "راهبند پارکینگ",
-    //   href:'/',
-    // },
-    // { id: "6", 
-    //   name: "پرده برقی",
-    //   href:'/electric-canopies',
-    // },
-    // { id: "7", 
-    //   name: "سایبان برقی",
-    //   href:'/electric-canopies',
-    // },
-
   ];
 
   return (

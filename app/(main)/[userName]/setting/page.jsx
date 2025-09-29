@@ -14,7 +14,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useUpdateProfileMutation } from "./mutation";
 import { FaCaretLeft } from "react-icons/fa6";
 import { IoClose } from "react-icons/io5";
-import { useQueryClient, useQuery } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import Offcanvas from "@components/ui/offcanvas";
 import { usePathname, useParams } from "next/navigation";
 import { FaArrowLeftLong } from "react-icons/fa6";

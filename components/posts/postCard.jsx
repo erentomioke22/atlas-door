@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { IoShareOutline } from "react-icons/io5";
 import {toast } from 'sonner'
 import { useSession } from 'next-auth/react';
-// import moment from 'moment';
 import { formatNumber } from '@lib/utils';
 import { TbMessageCircleFilled } from "react-icons/tb";
 import ImageCom from '@components/ui/Image';

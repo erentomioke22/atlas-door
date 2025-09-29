@@ -1,28 +1,25 @@
 import React, { useState, useEffect } from "react";
 import Offcanvas from './ui/offcanvas'
-import { useInfiniteQuery, useQuery,useMutation } from "@tanstack/react-query";
+import {useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { useSession } from 'next-auth/react';
 import { toast } from 'sonner';
-import { useRouter } from 'next/navigation';
 import TextArea from "@components/ui/TextArea";
 import LoadingIcon from "./ui/loading/LoadingIcon";
-import { useForm, useFieldArray, Controller } from 'react-hook-form'
+import {useForm} from 'react-hook-form'
 import { yupResolver } from "@hookform/resolvers/yup";
-import ImageCom from "@components/ui/Image";
 import { IoClose } from "react-icons/io5";
 import Input from "@components/ui/input";
 import {
 orderGatewayValidation,
 orderDirectValidation
 } from "@lib/validation";
-import { FaCreditCard ,FaArrowUp  } from "react-icons/fa";
+import { FaCreditCard   } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
 import { useCart } from "@hook/useCart";
 
 
 const PaymentPanel = ({status}) => {
-    const router = useRouter();
     const { data: session } = useSession();
     const [close, setClose] = useState(false);
     const { clearCart } = useCart();
