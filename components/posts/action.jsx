@@ -13,7 +13,16 @@ export async function submitPost(values) {
   const session = await auth()
   if (!session) throw new Error("Unauthorized");
 
-
+  const existPost = await prisma.post.findMany({
+    where:{
+      title:values.title,
+      userId:session?.user.id
+    }
+  })
+  if(existPost.length >= 1){
+    throw new Error( "محصولی با این نام وجود دارد")
+  }
+  
   let sanitizedTitle = values.title.replace(/\s+/g, '-').toLowerCase();
   const randomString = Math.random().toString(36).substring(2, 12);
   sanitizedTitle += `_${randomString}`;
@@ -80,6 +89,12 @@ export async function editPost(values) {
     const session = await auth();
     if (!session) throw new Error("Unauthorized");
   
+
+
+   let sanitizedTitle = values.title.replace(/\s+/g, '-').toLowerCase();
+   const randomString = Math.random().toString(36).substring(2, 12);
+   sanitizedTitle += `_${randomString}`;
+
    const tags = values.tags?.filter(tag => tag !== undefined) || [];
     
 
@@ -106,6 +121,7 @@ export async function editPost(values) {
       where: { id: values.postId },
       data: {
         title: values.title,
+        link:sanitizedTitle,
         desc: values.desc,
         images: values.images,
         content: values.content,
