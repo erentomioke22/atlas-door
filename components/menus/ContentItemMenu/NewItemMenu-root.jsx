@@ -177,7 +177,7 @@ export const NewItemMenu = ({ editor, getPos, setFiles, files, setValue }) => {
         <Dropdown
           title={<Icon name="Video" />}
           className={
-            "-left-14 w-72 z-50  overflow-auto bg-white border border-lbtn px-3 dark:border-dbtn dark:bg-black "
+            "-right-10 w-72 z-50  overflow-auto bg-white border border-lbtn px-3 dark:border-dbtn dark:bg-black "
           }
           btnStyle={
             "p-2 rounded-full border-2 border-black dark:border-white text-black dark:text-white"
@@ -205,7 +205,7 @@ export const NewItemMenu = ({ editor, getPos, setFiles, files, setValue }) => {
         <Dropdown
           title={<Icon name="Image" />}
           className={
-            "-left-24 w-72 z-50  overflow-auto bg-white border border-lbtn px-3 dark:border-dbtn dark:bg-black "
+            "-right-20 w-72 z-50  overflow-auto bg-white border border-lbtn px-3 dark:border-dbtn dark:bg-black "
           }
           btnStyle={
             "p-2 rounded-full border-2 border-black dark:border-white text-black dark:text-white"

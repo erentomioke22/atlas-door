@@ -41,17 +41,17 @@ const projects=[
   {
     name:'شیشه سکوریت',
     url:'/posts/شیشه-سکوریت-چیست؟-مزایا،-کاربردها-و-تفاوت-با-شیشه-معمولی_b2qh02hbuv',
-    image:'/images/tempered-glass/1732009538394.jpg'
+    image:'/images/tempered-glass/1732009538381.jpg'
   },
   {
     name:'شیشه لمینت',
     url:'/posts/شیشه-لمینت:-انواع،-مزایا،-معایب-و-کاربردها-در-ساختمان-و-خودرو-|-راهنمای-جامع_jucfrkg1a7',
-    image:'/images/tempered-glass/1732009538394.jpg'
+    image:'/images/laminet-glass/thumnail.jpg'
   },
   {
     name:'پارتیشن شیشه ای',
     url:'/posts/پارتیشن-شیشه‌ای:-راهنمای-کامل-نصب،-مزایا،-معایب-و-انواع-|-قیمت-و-طراحی_aqscgthk3m',
-    image:'/images/partition/media_20241118_121418_2590378291697560303.jpg'
+    image:'/images/partition/1732009538326.jpg'
   },
   {
     name:'جام بالکن',

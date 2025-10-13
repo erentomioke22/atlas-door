@@ -95,6 +95,7 @@ export const useBlockEditor = ({
       content: initialContent,
       onUpdate: ({ editor }) => {
         onChange(editor.getHTML());
+
         setEditorContent(editor);
         const html = editor.getHTML();
         const tempDiv = document.createElement("div");

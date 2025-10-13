@@ -83,18 +83,33 @@ export const ImageMenu = ({
 
 
 
-  const { isImageCenter, isImageLeft, isImageRight, width,altText } = useEditorState({
+  // const { isImageCenter, isImageLeft, isImageRight, width,altText } = useEditorState({
+  //   editor,
+  //   selector: (ctx) => {
+  //     return {
+  //       width: parseInt(ctx.editor.getAttributes("imageFigure")?.width || 0) || parseInt(ctx.editor.getAttributes("image")?.width || 0),
+  //       altText:ctx.editor.getAttributes('imageFigure') ?.alt || '' || ctx.editor.getAttributes('image') ?.alt || ''
+  //       // isImageLeft: ctx.editor.isActive("imageBlock", { align: "left" }),
+  //       // isImageCenter: ctx.editor.isActive("imageBlock", { align: "center" }),
+  //       // isImageRight: ctx.editor.isActive("imageBlock", { align: "right" }),
+  //     };
+  //   },
+  // });
+
+  const { width, altText } = useEditorState({
     editor,
     selector: (ctx) => {
       return {
-        width: parseInt(ctx.editor.getAttributes("imageFigure")?.width || 0) || parseInt(ctx.editor.getAttributes("image")?.width || 0),
-        altText:ctx.editor.getAttributes('imageFigure') ?.alt || '' || ctx.editor.getAttributes('image') ?.alt || ''
-        // isImageLeft: ctx.editor.isActive("imageBlock", { align: "left" }),
-        // isImageCenter: ctx.editor.isActive("imageBlock", { align: "center" }),
-        // isImageRight: ctx.editor.isActive("imageBlock", { align: "right" }),
-      };
+        width:
+          parseInt(ctx.editor.getAttributes("imageFigure")?.width || 0) ||
+          parseInt(ctx.editor.getAttributes("image")?.width || 0),
+        altText:
+          ctx.editor.getAttributes("image")?.alt ||
+          ctx.editor.getAttributes("imageFigure")?.alt ||
+          '',
+      }
     },
-  });
+  })
 
   return (
     <BaseBubbleMenu
