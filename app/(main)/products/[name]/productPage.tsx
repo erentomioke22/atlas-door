@@ -41,9 +41,9 @@ const ProductPage: React.FC<ProductPageProps> = ({ initialProduct, session }) =>
   const [currentColorName, setCurrentColorName] = useState<string>("");
 
   const pathName = usePathname();
-  const currentUrl = `http://localhost:3000/${pathName}`;
+  const currentUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/${pathName}`;
   const router = useRouter();
-
+ 
   const {
     data: product,
     isLoading,
