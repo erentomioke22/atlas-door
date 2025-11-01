@@ -23,7 +23,7 @@ interface Tag {
   link: string;
 }
 
-const PostList: React.FC = (): JSX.Element => {
+const PostList: React.FC = () => {
   const router = useRouter();
   const [postPerPage, setPostPerPage] = useState<number>(10);
   const [currentPage, setCurrentPage] = useState<number>(0);
