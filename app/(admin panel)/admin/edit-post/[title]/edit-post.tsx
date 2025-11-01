@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import TextArea from "@/components/ui/textArea";
+import TextArea from "@/components/ui/TextArea";
 import Dropdown from "@/components/ui/Dropdown";
 import { toast } from "sonner";
 import { useQuery } from "@tanstack/react-query";

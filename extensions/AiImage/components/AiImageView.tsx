@@ -13,7 +13,7 @@ import * as Dropdown from "@radix-ui/react-dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { Loader } from "@/components/ui/Loader";
 import { Panel, PanelHeadline } from "@/components/ui/Panel";
-import { Textarea } from "@/components/ui/textArea";
+import { Textarea } from "@/components/ui/TextArea";
 import { Icon } from "@/components/ui/Icon";
 import { Surface } from "@/components/ui/Surface";
 import { DropdownButton } from "@/components/ui/Dropdown";
