@@ -102,7 +102,7 @@ export async function generateMetadata({ params }: PageProps) {
   }
 }
 
-const page: React.FC<PageProps> = async ({ params }) => {
+const page = async ({ params }:PageProps) => {
   const { name } = await params;
   const product = await getProduct(name);
   const  session  = await getServerSession();

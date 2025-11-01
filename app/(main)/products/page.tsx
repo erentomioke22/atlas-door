@@ -77,7 +77,7 @@ interface JsonLdData {
 
 
 
-const AllProducts : React.FC = () : JSX.Element => {
+const AllProducts  = ()  => {
   
   const jsonLd : JsonLdData = {
     "@context": "https://schema.org",

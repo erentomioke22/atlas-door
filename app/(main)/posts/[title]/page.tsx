@@ -1,4 +1,3 @@
-import React from 'react';
 import PostPage from './postPage';
 import { cache } from 'react';
 import { prisma } from '@/utils/database';
@@ -107,7 +106,7 @@ export async function generateMetadata({ params }: PageProps) {
   }
 }
 
-const Page: React.FC<PageProps> = async ({ params }) => {
+const Page = async ({ params }:PageProps) => {
   const { title } = await params;
   const post = await getPost(title);
   const  session  = await getServerSession();

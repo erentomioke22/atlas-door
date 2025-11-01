@@ -64,7 +64,7 @@ interface JsonLdData {
   };
 }
 
-const AllPosts: React.FC = (): JSX.Element => {
+const AllPosts = () => {
   const jsonLd: JsonLdData = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
