@@ -15,7 +15,7 @@ interface ImageMenuProps {
 export const ImageMenu = ({
   editor,
   appendTo,
-}: ImageMenuProps) : JSX.Element => {
+}: ImageMenuProps) => {
   const menuRef = useRef<HTMLDivElement>(null);
   const tippyInstance = useRef<Instance | null>(null);
 

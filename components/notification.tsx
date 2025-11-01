@@ -5,6 +5,7 @@ import moment from "moment";
 import ImageCom from "./ui/Image";
 import { IoBag } from "react-icons/io5";
 import { FaHandshakeSimple } from "react-icons/fa6";
+import { JSX } from "react";
 
 type NotificationType = "COMMENT" | "REPLY" | "POST" | "PAID" | "DELIVERED";
 
