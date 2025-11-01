@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import TextArea from "@/components/ui/Textarea";
+import TextArea from "@/components/ui/textarea";
 import Dropdown from "@/components/ui/Dropdown";
 import { toast } from "sonner";
 import { useQuery } from "@tanstack/react-query";
@@ -30,8 +30,6 @@ import Darkmode from "@/components/ui/darkmode";
 import type { Session } from "@/lib/auth";
 import { z } from "zod";
 
-
-
 interface Tag {
   id: string;
   name: string;
@@ -46,14 +44,12 @@ export interface FileItem {
 
 interface EditPostRootProps {
   title: string;
-  session:Session | null;
+  session: Session | null;
 }
-
 
 type FormData = z.infer<typeof postValidation>;
 
-
-const EditPost: React.FC<EditPostRootProps> = ({ title , session }) => {
+const EditPost: React.FC<EditPostRootProps> = ({ title, session }) => {
   const [dropTag, setDropTag] = useState<string[]>([]);
   const router = useRouter();
   const mutation = useEditPostMutation();
@@ -147,7 +143,6 @@ const EditPost: React.FC<EditPostRootProps> = ({ title , session }) => {
         return null;
       });
 
-
       const filesData: File[] = files
         .map(({ file }) => {
           if (file && typeof file !== "string") {
@@ -161,7 +156,7 @@ const EditPost: React.FC<EditPostRootProps> = ({ title , session }) => {
         })
         .filter((f): f is File => f !== null);
 
-        let finalImages: string[] = [];
+      let finalImages: string[] = [];
 
       if (filesData.length >= 1) {
         const uploadedData = await postUpload(filesData);
@@ -183,37 +178,37 @@ const EditPost: React.FC<EditPostRootProps> = ({ title , session }) => {
         });
 
         setFiles(newBlobUrlMap);
-          updateEditorContentWithUploadedUrls(newBlobUrlMap);
-          if (thumnailIndex) {
-            const allImages = newBlobUrlMap.map((item) => item.url);
-            const thumbnailIndex = files.findIndex(
-              (file) => file.url === thumnailIndex
-            );
-            if (thumbnailIndex !== -1) {
-              const thumbnailUrl = allImages[thumbnailIndex];
-              allImages.splice(thumbnailIndex, 1);
-              finalImages = [thumbnailUrl, ...allImages];
-            } else {
-              finalImages = allImages;
-            }
-          } 
-        } else {
-          if (thumnailIndex) {
-            const allImages = files.map((item) => item.url);
-            const thumbnailIndex = files.findIndex(
-              (file) => file.url === thumnailIndex
-            );
-            if (thumbnailIndex !== -1) {
-              const thumbnailUrl = allImages[thumbnailIndex];
-              allImages.splice(thumbnailIndex, 1);
-              finalImages = [thumbnailUrl, ...allImages];
-            } else {
-              finalImages = allImages;
-            }
+        updateEditorContentWithUploadedUrls(newBlobUrlMap);
+        if (thumnailIndex) {
+          const allImages = newBlobUrlMap.map((item) => item.url);
+          const thumbnailIndex = files.findIndex(
+            (file) => file.url === thumnailIndex
+          );
+          if (thumbnailIndex !== -1) {
+            const thumbnailUrl = allImages[thumbnailIndex];
+            allImages.splice(thumbnailIndex, 1);
+            finalImages = [thumbnailUrl, ...allImages];
           } else {
-            finalImages = files.map(item => item.url);
+            finalImages = allImages;
           }
         }
+      } else {
+        if (thumnailIndex) {
+          const allImages = files.map((item) => item.url);
+          const thumbnailIndex = files.findIndex(
+            (file) => file.url === thumnailIndex
+          );
+          if (thumbnailIndex !== -1) {
+            const thumbnailUrl = allImages[thumbnailIndex];
+            allImages.splice(thumbnailIndex, 1);
+            finalImages = [thumbnailUrl, ...allImages];
+          } else {
+            finalImages = allImages;
+          }
+        } else {
+          finalImages = files.map((item) => item.url);
+        }
+      }
       const finalContent = editorContent?.getHTML() || values.content;
       mutation.mutate(
         {
@@ -221,7 +216,7 @@ const EditPost: React.FC<EditPostRootProps> = ({ title , session }) => {
           postId: post?.id ?? "",
           rmFiles: removeKey.filter(Boolean) as string[],
           images: finalImages,
-          content: finalContent
+          content: finalContent,
         },
         {
           onSuccess: () => {
@@ -247,17 +242,16 @@ const EditPost: React.FC<EditPostRootProps> = ({ title , session }) => {
     newBlobUrlMap.forEach(({ blobUrl, url }) => {
       updatedContent = updatedContent.split(blobUrl).join(url);
     });
-  
+
     editorContent.commands.setContent(updatedContent);
     return updatedContent;
   }
 
   const handleAddTag = (newTag: string) => {
     if (newTag) {
-      if(dropTag.includes(newTag)){
-        handleRemoveTag(newTag)
-      }
-      else{
+      if (dropTag.includes(newTag)) {
+        handleRemoveTag(newTag);
+      } else {
         const addTags = [...dropTag, newTag].filter((tag) => tag);
         setDropTag(addTags);
         setValue("tags", addTags, { shouldValidate: true });
@@ -270,8 +264,6 @@ const EditPost: React.FC<EditPostRootProps> = ({ title , session }) => {
     setDropTag(removetag);
     setValue("tags", removetag);
   };
-
-
 
   const handleInputKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
@@ -577,7 +569,7 @@ const EditPost: React.FC<EditPostRootProps> = ({ title , session }) => {
                               return (
                                 <div
                                   key={tag.name}
-                                  onClick={() => handleAddTag( tag.name )}
+                                  onClick={() => handleAddTag(tag.name)}
                                   className={` ${
                                     dropTag.includes(tag.name)
                                       ? "bg-black dark:bg-white text-white dark:text-black"

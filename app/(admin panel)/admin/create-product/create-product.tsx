@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useState, useRef, useEffect } from "react";
-import TextArea from "@/components/ui/Textarea";
+import TextArea from "@/components/ui/textarea";
 import Dropdown from "@/components/ui/Dropdown";
 import { toast } from "sonner";
 import { useSubmitProductMutation } from "@/components/products/mutations";
@@ -47,8 +47,6 @@ interface ProductPicture {
   url: string;
 }
 
-
-
 interface PredefinedColor {
   name: string;
   hexCode: string;
@@ -60,11 +58,9 @@ export interface FileItem {
   blobUrl?: string;
 }
 
-
 type FormData = z.infer<typeof productValidation>;
 
-
-const CreateProduct = ({session}:{session:Session | null}) => {
+const CreateProduct = ({ session }: { session: Session | null }) => {
   const [onClose, setOnClose] = useState<boolean>(false);
   const router = useRouter();
   const [editorContent, setEditorContent] = useState<any>();
@@ -87,8 +83,6 @@ const CreateProduct = ({session}:{session:Session | null}) => {
   const [selectedInputImage, setSelectedInputImage] = useState<string>("");
   const [files, setFiles] = useState<any[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
-
-
 
   const predefinedColors: PredefinedColor[] = [
     { name: "قرمز", hexCode: "#FF0000" },
@@ -167,7 +161,8 @@ const CreateProduct = ({session}:{session:Session | null}) => {
           throw new Error("Upload failed - no data returned");
         }
         const newBlobUrlMap: FileItem[] = productPictures.map((picture) => {
-          const pictureUrl = typeof picture === 'string' ? picture : picture.url;
+          const pictureUrl =
+            typeof picture === "string" ? picture : picture.url;
           if (picture.file) {
             return {
               blobUrl: picture.url,
@@ -182,7 +177,7 @@ const CreateProduct = ({session}:{session:Session | null}) => {
         });
 
         setProductPictures(newBlobUrlMap);
-      
+
         if (productThumnail) {
           const allImages = newBlobUrlMap.map((item) => item.url);
           const thumbnailIndex = productPictures.findIndex(
@@ -198,9 +193,13 @@ const CreateProduct = ({session}:{session:Session | null}) => {
         }
       } else {
         if (productThumnail) {
-          const allImages = productPictures.map(picture =>  typeof picture === 'string' ? picture : picture.url);
-          const thumbnailIndex = productPictures.findIndex(
-            (picture) =>  typeof picture === 'string' ?  picture === productThumnail : picture.url === productThumnail 
+          const allImages = productPictures.map((picture) =>
+            typeof picture === "string" ? picture : picture.url
+          );
+          const thumbnailIndex = productPictures.findIndex((picture) =>
+            typeof picture === "string"
+              ? picture === productThumnail
+              : picture.url === productThumnail
           );
           if (thumbnailIndex !== -1) {
             const thumbnailUrl = allImages[thumbnailIndex];
@@ -210,7 +209,9 @@ const CreateProduct = ({session}:{session:Session | null}) => {
             finalImages = allImages;
           }
         } else {
-          finalImages = productPictures.map(picture => typeof picture === 'string' ? picture : picture.url);
+          finalImages = productPictures.map((picture) =>
+            typeof picture === "string" ? picture : picture.url
+          );
         }
       }
 
@@ -232,58 +233,52 @@ const CreateProduct = ({session}:{session:Session | null}) => {
     }
   };
 
-
-
-
   function handleAddImage(file: File | null) {
     if (file) {
       const result = imageFileValidation.safeParse({ image: file });
       if (result.success) {
-          setFileError("");
-          const url = URL.createObjectURL(file);
-          if (productPictures.length === 0) {
-            setProductThumnail(url);
-            setProductPictures((prevFiles) => {
-              const updatedFiles = [...prevFiles, { file, url }];
-              return updatedFiles;
-            });
-          } else {
-            setProductPictures((prevFiles) => {
-              const updatedFiles = [...prevFiles, { file, url }];
-              return updatedFiles;
-            });
-          }
+        setFileError("");
+        const url = URL.createObjectURL(file);
+        if (productPictures.length === 0) {
+          setProductThumnail(url);
+          setProductPictures((prevFiles) => {
+            const updatedFiles = [...prevFiles, { file, url }];
+            return updatedFiles;
+          });
+        } else {
+          setProductPictures((prevFiles) => {
+            const updatedFiles = [...prevFiles, { file, url }];
+            return updatedFiles;
+          });
         }
-        else {
-          setFileError(result.error.issues[0]?.message || "Invalid URL");
-        }
+      } else {
+        setFileError(result.error.issues[0]?.message || "Invalid URL");
+      }
     }
   }
 
   const setImageByUrl = (url: string) => {
     if (url) {
-    const result = imageUrlValidation.safeParse({ image: url });
+      const result = imageUrlValidation.safeParse({ image: url });
       if (result.success) {
-          setFileError("");
-          if (productPictures.length === 0) {
-            setProductThumnail(url);
-            setProductPictures((prevFiles) => {
-              const updatedFiles = [...prevFiles, { url }];
-              return updatedFiles;
-            });
-          } else {
-            setProductPictures((prevFiles) => {
-              const updatedFiles = [...prevFiles, { url }];
-              return updatedFiles;
-            });
-          }
+        setFileError("");
+        if (productPictures.length === 0) {
+          setProductThumnail(url);
+          setProductPictures((prevFiles) => {
+            const updatedFiles = [...prevFiles, { url }];
+            return updatedFiles;
+          });
+        } else {
+          setProductPictures((prevFiles) => {
+            const updatedFiles = [...prevFiles, { url }];
+            return updatedFiles;
+          });
         }
-        else {
-          setFileError(result.error.issues[0]?.message || "Invalid URL");
-        }
+      } else {
+        setFileError(result.error.issues[0]?.message || "Invalid URL");
+      }
     }
   };
-
 
   const handleRemoveImage = (indexToRemove: number, urlToRemove: string) => {
     if (urlToRemove === productThumnail) {
@@ -658,7 +653,9 @@ const CreateProduct = ({session}:{session:Session | null}) => {
                     className="rounded-xl h-10 w-10 "
                     size={"h-10 w-10"}
                     src={session?.user?.image ?? ""}
-                    alt={`${session.user?.displayName || session?.user?.name} avatar`}
+                    alt={`${
+                      session.user?.displayName || session?.user?.name
+                    } avatar`}
                   />
                 )}
               </div>

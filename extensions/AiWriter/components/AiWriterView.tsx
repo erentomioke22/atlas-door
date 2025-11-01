@@ -1,55 +1,60 @@
-import { NodeViewProps, NodeViewWrapper, useEditorState } from '@tiptap/react'
-import { useCallback, useEffect, useMemo, useState } from 'react'
-import toast from 'react-hot-toast'
-import { v4 as uuid } from 'uuid'
+import { NodeViewProps, NodeViewWrapper, useEditorState } from "@tiptap/react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import toast from "react-hot-toast";
+import { v4 as uuid } from "uuid";
 
-import { Button } from '@/components/ui/Button'
-import { Panel, PanelHeadline } from '@/components/ui/Panel'
-import { Textarea } from '@/components/ui/Textarea'
-import { Icon } from '@/components/ui/Icon'
+import { Button } from "@/components/ui/Button";
+import { Panel, PanelHeadline } from "@/components/ui/Panel";
+import { Textarea } from "@/components/ui/textarea";
+import { Icon } from "@/components/ui/Icon";
 
-import { AiTone, AiToneOption } from '@/components/BlockEditor/types'
-import { tones } from '@/lib/constants'
+import { AiTone, AiToneOption } from "@/components/BlockEditor/types";
+import { tones } from "@/lib/constants";
 
-import * as Dropdown from '@radix-ui/react-dropdown-menu'
-import { Toolbar } from '@/components/ui/Toolbar'
-import { Surface } from '@/components/ui/Surface'
-import { DropdownButton } from '@/components/ui/Dropdown'
-import { AiStorage, tryParseToTiptapHTML } from '@/extensions/Ai/index'
+import * as Dropdown from "@radix-ui/react-dropdown-menu";
+import { Toolbar } from "@/components/ui/Toolbar";
+import { Surface } from "@/components/ui/Surface";
+import { DropdownButton } from "@/components/ui/Dropdown";
+import { AiStorage, tryParseToTiptapHTML } from "@/extensions/Ai/index";
 
 export interface DataProps {
-  text: string
-  tone?: AiTone
-  textUnit?: string
-  textLength?: string
+  text: string;
+  tone?: AiTone;
+  textUnit?: string;
+  textLength?: string;
 }
 
 // TODO rewrite this component to use the new Ai extension features
-export const AiWriterView = ({ editor, node, getPos, deleteNode }: NodeViewProps) => {
+export const AiWriterView = ({
+  editor,
+  node,
+  getPos,
+  deleteNode,
+}: NodeViewProps) => {
   const { isLoading, generatedText, error } = useEditorState({
     editor,
-    selector: ctx => {
-      const aiStorage = ctx.editor.storage.ai as AiStorage
+    selector: (ctx) => {
+      const aiStorage = ctx.editor.storage.ai as AiStorage;
       return {
-        isLoading: aiStorage.state === 'loading',
+        isLoading: aiStorage.state === "loading",
         generatedText: aiStorage.response,
         error: aiStorage.error,
-      }
+      };
     },
-  })
+  });
 
   const [data, setData] = useState<DataProps>({
-    text: '',
+    text: "",
     tone: undefined,
-  })
-  const currentTone = tones.find(t => t.value === data.tone)
-  const textareaId = useMemo(() => uuid(), [])
+  });
+  const currentTone = tones.find((t) => t.value === data.tone);
+  const textareaId = useMemo(() => uuid(), []);
 
   const generateText = useCallback(() => {
     if (!data.text) {
-      toast.error('Please enter a description')
+      toast.error("Please enter a description");
 
-      return
+      return;
     }
 
     editor.commands.aiTextPrompt({
@@ -57,39 +62,46 @@ export const AiWriterView = ({ editor, node, getPos, deleteNode }: NodeViewProps
       insert: false,
       tone: data.tone,
       stream: true,
-      format: 'rich-text',
-    })
-  }, [data.text, data.tone, editor])
+      format: "rich-text",
+    });
+  }, [data.text, data.tone, editor]);
 
   useEffect(() => {
     if (error) {
-      toast.error(error.message)
+      toast.error(error.message);
     }
-  }, [error])
+  }, [error]);
 
   const insert = useCallback(() => {
-    const from = getPos()
-    const to = from + node.nodeSize
-    editor.chain().focus().aiAccept({ insertAt: { from, to }, append: false }).run()
-  }, [editor, getPos, node.nodeSize])
+    const from = getPos();
+    const to = from + node.nodeSize;
+    editor
+      .chain()
+      .focus()
+      .aiAccept({ insertAt: { from, to }, append: false })
+      .run();
+  }, [editor, getPos, node.nodeSize]);
 
   const discard = useCallback(() => {
-    deleteNode()
-  }, [deleteNode])
+    deleteNode();
+  }, [deleteNode]);
 
-  const onTextAreaChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setData(prevData => ({ ...prevData, text: e.target.value }))
-  }, [])
+  const onTextAreaChange = useCallback(
+    (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+      setData((prevData) => ({ ...prevData, text: e.target.value }));
+    },
+    []
+  );
 
   const onUndoClick = useCallback(() => {
-    setData(prevData => ({ ...prevData, tone: undefined }))
-  }, [])
+    setData((prevData) => ({ ...prevData, tone: undefined }));
+  }, []);
 
   const createItemClickHandler = useCallback((tone: AiToneOption) => {
     return () => {
-      setData(prevData => ({ ...prevData, tone: tone.value }))
-    }
-  }, [])
+      setData((prevData) => ({ ...prevData, tone: tone.value }));
+    };
+  }, []);
 
   return (
     <NodeViewWrapper data-drag-handle>
@@ -100,7 +112,9 @@ export const AiWriterView = ({ editor, node, getPos, deleteNode }: NodeViewProps
               <PanelHeadline>Preview</PanelHeadline>
               <div
                 className="bg-white dark:bg-black border-l-4 border-neutral-100 dark:border-neutral-700 text-black dark:text-white text-base max-h-[14rem] mb-4 ml-2.5 overflow-y-auto px-4 relative"
-                dangerouslySetInnerHTML={{ __html: tryParseToTiptapHTML(generatedText, editor) ?? '' }}
+                dangerouslySetInnerHTML={{
+                  __html: tryParseToTiptapHTML(generatedText, editor) ?? "",
+                }}
               />
             </>
           )}
@@ -113,7 +127,7 @@ export const AiWriterView = ({ editor, node, getPos, deleteNode }: NodeViewProps
             id={textareaId}
             value={data.text}
             onChange={onTextAreaChange}
-            placeholder={'Tell me what you want me to write about.'}
+            placeholder={"Tell me what you want me to write about."}
             required
             className="mb-2"
           />
@@ -123,7 +137,7 @@ export const AiWriterView = ({ editor, node, getPos, deleteNode }: NodeViewProps
                 <Dropdown.Trigger asChild>
                   <Button variant="tertiary">
                     <Icon name="Mic" />
-                    {currentTone?.label || 'Change tone'}
+                    {currentTone?.label || "Change tone"}
                     <Icon name="ChevronDown" />
                   </Button>
                 </Dropdown.Trigger>
@@ -133,7 +147,10 @@ export const AiWriterView = ({ editor, node, getPos, deleteNode }: NodeViewProps
                       {!!data.tone && (
                         <>
                           <Dropdown.Item asChild>
-                            <DropdownButton isActive={data.tone === undefined} onClick={onUndoClick}>
+                            <DropdownButton
+                              isActive={data.tone === undefined}
+                              onClick={onUndoClick}
+                            >
                               <Icon name="Undo2" />
                               Reset
                             </DropdownButton>
@@ -141,9 +158,12 @@ export const AiWriterView = ({ editor, node, getPos, deleteNode }: NodeViewProps
                           <Toolbar.Divider horizontal />
                         </>
                       )}
-                      {tones.map(tone => (
+                      {tones.map((tone) => (
                         <Dropdown.Item asChild key={tone.value}>
-                          <DropdownButton isActive={tone.value === data.tone} onClick={createItemClickHandler(tone)}>
+                          <DropdownButton
+                            isActive={tone.value === data.tone}
+                            onClick={createItemClickHandler(tone)}
+                          >
                             {tone.label}
                           </DropdownButton>
                         </Dropdown.Item>
@@ -165,19 +185,32 @@ export const AiWriterView = ({ editor, node, getPos, deleteNode }: NodeViewProps
                 </Button>
               )}
               {generatedText && (
-                <Button variant="ghost" onClick={insert} disabled={!generatedText}>
+                <Button
+                  variant="ghost"
+                  onClick={insert}
+                  disabled={!generatedText}
+                >
                   <Icon name="Check" />
                   Insert
                 </Button>
               )}
-              <Button variant="primary" onClick={generateText} style={{ whiteSpace: 'nowrap' }} disabled={isLoading}>
-                {generatedText ? <Icon name="Repeat" /> : <Icon name="Sparkles" />}
-                {generatedText ? 'Regenerate' : 'Generate text'}
+              <Button
+                variant="primary"
+                onClick={generateText}
+                style={{ whiteSpace: "nowrap" }}
+                disabled={isLoading}
+              >
+                {generatedText ? (
+                  <Icon name="Repeat" />
+                ) : (
+                  <Icon name="Sparkles" />
+                )}
+                {generatedText ? "Regenerate" : "Generate text"}
               </Button>
             </div>
           </div>
         </div>
       </Panel>
     </NodeViewWrapper>
-  )
-}
+  );
+};

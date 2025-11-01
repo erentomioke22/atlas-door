@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import TextArea from "@/components/ui/Textarea";
+import TextArea from "@/components/ui/textarea";
 import Dropdown from "@/components/ui/Dropdown";
 import { toast } from "sonner";
 import { useQuery } from "@tanstack/react-query";
@@ -38,7 +38,7 @@ import { IoPencil } from "react-icons/io5";
 
 interface EditProductProps {
   name: string;
-  session:Session | null;
+  session: Session | null;
 }
 
 interface Color {
@@ -49,16 +49,14 @@ interface Color {
   stocks: number;
 }
 
-
-
 export interface FileItem {
   file?: File;
   url: string;
   blobUrl?: string;
-} 
+}
 type FormData = z.infer<typeof productValidation>;
 
-const EditProduct: React.FC<EditProductProps> = ({ name , session}) => {
+const EditProduct: React.FC<EditProductProps> = ({ name, session }) => {
   const router = useRouter();
   const mutation = useEditProductMutation();
   const deleteMutation = useDeleteProductMutation();
@@ -83,7 +81,6 @@ const EditProduct: React.FC<EditProductProps> = ({ name , session}) => {
   const [fileError, setFileError] = useState<string>("");
   const [selectedInputImage, setSelectedInputImage] = useState<string>("");
   const fileInputRef = useRef<HTMLInputElement>(null);
-
 
   usePreventNavigation(preventNavigation);
 
@@ -183,7 +180,6 @@ const EditProduct: React.FC<EditProductProps> = ({ name , session}) => {
         return null;
       });
 
-
       const filesData: File[] = productPictures
         .map(({ file }) => {
           if (file && typeof file !== "string") {
@@ -196,7 +192,7 @@ const EditProduct: React.FC<EditProductProps> = ({ name , session}) => {
           return null;
         })
         .filter((f): f is File => f !== null);
-      
+
       let finalImages: string[] = [];
 
       if (filesData.length >= 1) {
@@ -205,7 +201,8 @@ const EditProduct: React.FC<EditProductProps> = ({ name , session}) => {
           throw new Error("Upload failed - no data returned");
         }
         const newBlobUrlMap: FileItem[] = productPictures.map((picture) => {
-          const pictureUrl = typeof picture === 'string' ? picture : picture.url;
+          const pictureUrl =
+            typeof picture === "string" ? picture : picture.url;
           if (picture.file) {
             return {
               blobUrl: picture.url,
@@ -220,7 +217,7 @@ const EditProduct: React.FC<EditProductProps> = ({ name , session}) => {
         });
 
         setProductPictures(newBlobUrlMap);
-      
+
         if (productThumnail) {
           const allImages = newBlobUrlMap.map((item) => item.url);
           const thumbnailIndex = productPictures.findIndex(
@@ -236,22 +233,27 @@ const EditProduct: React.FC<EditProductProps> = ({ name , session}) => {
         }
       } else {
         if (productThumnail) {
-          const allImages = productPictures.map(picture =>  typeof picture === 'string' ? picture : picture.url);
-          const thumbnailIndex = productPictures.findIndex(
-            (picture) =>  typeof picture === 'string' ?  picture === productThumnail : picture.url === productThumnail 
+          const allImages = productPictures.map((picture) =>
+            typeof picture === "string" ? picture : picture.url
           );
-          console.log(productPictures,allImages,thumbnailIndex)
+          const thumbnailIndex = productPictures.findIndex((picture) =>
+            typeof picture === "string"
+              ? picture === productThumnail
+              : picture.url === productThumnail
+          );
+          console.log(productPictures, allImages, thumbnailIndex);
           if (thumbnailIndex !== -1) {
             const thumbnailUrl = allImages[thumbnailIndex];
             allImages.splice(thumbnailIndex, 1);
             finalImages = [thumbnailUrl, ...allImages];
-           console.log(finalImages)
-
+            console.log(finalImages);
           } else {
             finalImages = allImages;
           }
         } else {
-          finalImages = productPictures.map(picture => typeof picture === 'string' ? picture : picture.url);
+          finalImages = productPictures.map((picture) =>
+            typeof picture === "string" ? picture : picture.url
+          );
         }
       }
       mutation.mutate(
@@ -282,48 +284,46 @@ const EditProduct: React.FC<EditProductProps> = ({ name , session}) => {
     if (file) {
       const result = imageFileValidation.safeParse({ image: file });
       if (result.success) {
-          setFileError("");
-          const url = URL.createObjectURL(file);
-          if (productPictures.length === 0) {
-            setProductThumnail(url);
-            setProductPictures((prevFiles) => {
-              const updatedFiles = [...prevFiles, { file, url }];
-              return updatedFiles;
-            });
-          } else {
-            setProductPictures((prevFiles) => {
-              const updatedFiles = [...prevFiles, { file, url }];
-              return updatedFiles;
-            });
-          }
+        setFileError("");
+        const url = URL.createObjectURL(file);
+        if (productPictures.length === 0) {
+          setProductThumnail(url);
+          setProductPictures((prevFiles) => {
+            const updatedFiles = [...prevFiles, { file, url }];
+            return updatedFiles;
+          });
+        } else {
+          setProductPictures((prevFiles) => {
+            const updatedFiles = [...prevFiles, { file, url }];
+            return updatedFiles;
+          });
         }
-        else {
-          setFileError(result.error.issues[0]?.message || "Invalid URL");
-        }
+      } else {
+        setFileError(result.error.issues[0]?.message || "Invalid URL");
+      }
     }
   }
 
   const setImageByUrl = (url: string) => {
     if (url) {
-    const result = imageUrlValidation.safeParse({ image: url });
+      const result = imageUrlValidation.safeParse({ image: url });
       if (result.success) {
-          setFileError("");
-          if (productPictures.length === 0) {
-            setProductThumnail(url);
-            setProductPictures((prevFiles) => {
-              const updatedFiles = [...prevFiles, { url }];
-              return updatedFiles;
-            });
-          } else {
-            setProductPictures((prevFiles) => {
-              const updatedFiles = [...prevFiles, { url }];
-              return updatedFiles;
-            });
-          }
+        setFileError("");
+        if (productPictures.length === 0) {
+          setProductThumnail(url);
+          setProductPictures((prevFiles) => {
+            const updatedFiles = [...prevFiles, { url }];
+            return updatedFiles;
+          });
+        } else {
+          setProductPictures((prevFiles) => {
+            const updatedFiles = [...prevFiles, { url }];
+            return updatedFiles;
+          });
         }
-        else {
-          setFileError(result.error.issues[0]?.message || "Invalid URL");
-        }
+      } else {
+        setFileError(result.error.issues[0]?.message || "Invalid URL");
+      }
     }
   };
 
@@ -386,7 +386,6 @@ const EditProduct: React.FC<EditProductProps> = ({ name , session}) => {
     setColorDiscount("");
     setColorStocks("");
   };
-
 
   const handleRemoveColor = (index: number) => {
     const removeColor = colors.filter((_, i) => i !== index);

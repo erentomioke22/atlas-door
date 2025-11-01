@@ -5,7 +5,7 @@ import LoadingIcon from "./ui/loading/LoadingIcon";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { reportValidation } from "@/lib/validation";
-import TextArea from "./ui/Textarea";
+import TextArea from "./ui/textarea";
 import { useMutation } from "@tanstack/react-query";
 import { usePathname } from "next/navigation";
 

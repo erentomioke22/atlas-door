@@ -3,7 +3,7 @@ import Offcanvas from "./ui/offcanvas";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { toast } from "sonner";
-import TextArea from "./ui/Textarea";
+import TextArea from "./ui/textarea";
 import LoadingIcon from "./ui/loading/LoadingIcon";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -17,7 +17,7 @@ import Button from "./ui/Button";
 import { Session } from "@/lib/auth";
 interface PaymentPanelProps {
   status?: "pending" | "idle" | "success" | "error" | string;
-  session: Session | null
+  session: Session | null;
 }
 
 interface OrderFormValues {
@@ -33,7 +33,7 @@ interface PaymentResponse {
   paymentUrl?: string;
 }
 
-const PaymentPanel: React.FC<PaymentPanelProps> = ({ status , session }) => {
+const PaymentPanel: React.FC<PaymentPanelProps> = ({ status, session }) => {
   const [close, setClose] = useState(false);
   const { clearCart } = useCart();
 

@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useState, useEffect } from "react";
-import TextArea from "@/components/ui/Textarea";
+import TextArea from "@/components/ui/textarea";
 import Dropdown from "@/components/ui/Dropdown";
 import { toast } from "sonner";
 import { useSubmitPostMutation } from "@/components/posts/mutations";
@@ -28,8 +28,6 @@ import { useDebounce } from "use-debounce";
 import type { Session } from "@/lib/auth";
 import { z } from "zod";
 
-
-
 interface Tag {
   id: string;
   name: string;
@@ -42,11 +40,9 @@ export interface FileItem {
   blobUrl?: string;
 }
 
-
 type FormData = z.infer<typeof postValidation>;
 
-
-const CreatePost = ({session}:{session:Session | null}) => {
+const CreatePost = ({ session }: { session: Session | null }) => {
   const [dropTag, setDropTag] = useState<string[]>([]);
   const router = useRouter();
   const [deletedFiles, setDeletedFiles] = useState<string[]>([]);
@@ -77,7 +73,7 @@ const CreatePost = ({session}:{session:Session | null}) => {
       images: [],
       content: "",
       tags: [],
-      scheduledPublish:"",
+      scheduledPublish: "",
     },
     resolver: zodResolver(postValidation),
   });
@@ -97,12 +93,10 @@ const CreatePost = ({session}:{session:Session | null}) => {
     setValue(name as any, value as any);
   };
 
-
-
   const onSubmit = async (values: FormData) => {
     try {
       setPreventNavigation(true);
-  
+
       const filesData: File[] = files
         .map(({ file }) => {
           if (file && typeof file !== "string") {
@@ -115,9 +109,9 @@ const CreatePost = ({session}:{session:Session | null}) => {
           return null;
         })
         .filter((f): f is File => f !== null);
-  
+
       let finalImages: string[] = [];
-  
+
       if (filesData.length >= 1) {
         const uploadedData = await postUpload(filesData);
         if (!uploadedData || uploadedData.length === 0) {
@@ -137,7 +131,7 @@ const CreatePost = ({session}:{session:Session | null}) => {
           }
         });
         setFiles(newBlobUrlMap);
-       updateEditorContentWithUploadedUrls(newBlobUrlMap);
+        updateEditorContentWithUploadedUrls(newBlobUrlMap);
         if (thumnailIndex) {
           const allImages = newBlobUrlMap.map((item) => item.url);
           const thumbnailIndex = files.findIndex(
@@ -150,7 +144,7 @@ const CreatePost = ({session}:{session:Session | null}) => {
           } else {
             finalImages = allImages;
           }
-        } 
+        }
       } else {
         if (thumnailIndex) {
           const allImages = files.map((item) => item.url);
@@ -165,26 +159,29 @@ const CreatePost = ({session}:{session:Session | null}) => {
             finalImages = allImages;
           }
         } else {
-          finalImages = files.map(item => item.url);
+          finalImages = files.map((item) => item.url);
         }
       }
 
       const finalContent = editorContent?.getHTML() || values.content;
 
-      mutation.mutate({
-        ...values,
-        images: finalImages,
-        content: finalContent
-      }, {
-        onSuccess: () => {
-          localStorage.removeItem("postDraft");
-          setPreventNavigation(false);
-          reset();
-          setDropTag([]);
-          setFiles([]);
-          router.back();
+      mutation.mutate(
+        {
+          ...values,
+          images: finalImages,
+          content: finalContent,
         },
-      });
+        {
+          onSuccess: () => {
+            localStorage.removeItem("postDraft");
+            setPreventNavigation(false);
+            reset();
+            setDropTag([]);
+            setFiles([]);
+            router.back();
+          },
+        }
+      );
     } catch (err: any) {
       toast.error(err.message || "An error occurred");
       setPreventNavigation(false);
@@ -210,16 +207,15 @@ const CreatePost = ({session}:{session:Session | null}) => {
     newBlobUrlMap.forEach(({ blobUrl, url }) => {
       updatedContent = updatedContent.split(blobUrl).join(url);
     });
-  
+
     editorContent.commands.setContent(updatedContent);
     return updatedContent;
   }
   const handleAddTag = (newTag: string) => {
     if (newTag) {
-      if(dropTag.includes(newTag)){
-        handleRemoveTag(newTag)
-      }
-      else{
+      if (dropTag.includes(newTag)) {
+        handleRemoveTag(newTag);
+      } else {
         const addTags = [...dropTag, newTag].filter((tag) => tag);
         setDropTag(addTags);
         setValue("tags", addTags, { shouldValidate: true });
@@ -232,8 +228,6 @@ const CreatePost = ({session}:{session:Session | null}) => {
     setDropTag(removetag);
     setValue("tags", removetag);
   };
-
-
 
   const handleInputKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
@@ -315,7 +309,6 @@ const CreatePost = ({session}:{session:Session | null}) => {
   const [debouncedTitle] = useDebounce(title, 3500);
   const [debouncedTags] = useDebounce(draftTags, 3500);
 
-
   const stripImagesFromContent = (html: string) => {
     if (!html) return "";
     const tempDiv = document.createElement("div");
@@ -329,7 +322,11 @@ const CreatePost = ({session}:{session:Session | null}) => {
     if (!debouncedContent && !debouncedTitle && !debouncedTags) {
       return;
     }
-    if (debouncedContent?.length >= 5 || debouncedTitle?.length >= 5 || debouncedTags?.length >= 1) {
+    if (
+      debouncedContent?.length >= 5 ||
+      debouncedTitle?.length >= 5 ||
+      debouncedTags?.length >= 1
+    ) {
       const formValues = getValues();
       const cleanedContent = stripImagesFromContent(formValues.content);
 
@@ -519,7 +516,7 @@ const CreatePost = ({session}:{session:Session | null}) => {
                           return (
                             <div
                               key={tag.name}
-                              onClick={() => handleAddTag( tag.name )}
+                              onClick={() => handleAddTag(tag.name)}
                               className={` ${
                                 dropTag.includes(tag.name)
                                   ? "bg-black dark:bg-white text-white dark:text-black"
@@ -607,7 +604,9 @@ const CreatePost = ({session}:{session:Session | null}) => {
                     className="rounded-lg h-9 w-9 "
                     size={"h-9 w-9"}
                     src={session?.user?.image ?? ""}
-                    alt={`${session.user?.displayName || session?.user?.name || ""} avatar`}
+                    alt={`${
+                      session.user?.displayName || session?.user?.name || ""
+                    } avatar`}
                   />
                 </div>
               )}
@@ -616,7 +615,7 @@ const CreatePost = ({session}:{session:Session | null}) => {
                   {session?.user?.displayName || session?.user?.name || ""}
                 </p>
                 <p className=" text-lfont text-[10px]">
-                  {new Date().toLocaleDateString('en-US')}
+                  {new Date().toLocaleDateString("en-US")}
                 </p>
               </div>
             </div>
