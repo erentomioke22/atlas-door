@@ -47,7 +47,7 @@ interface JsonLd {
   sameAs: string[];
 }
 
-const RootLayout = ({ children }: RootLayoutProps): JSX.Element => {
+const RootLayout = ({ children }: RootLayoutProps) => {
   // Handle potential undefined environment variable
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://default-url.com";
   

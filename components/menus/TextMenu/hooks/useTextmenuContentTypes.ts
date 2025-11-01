@@ -1,10 +1,10 @@
 import { Editor, useEditorState } from '@tiptap/react'
-import { ContentPickerOptions } from '../components/ContentTypePicker'
+// import { ContentPickerOptions } from '../components/ContentTypePicker'
 
 export const useTextmenuContentTypes = (editor: Editor) => {
   return useEditorState({
     editor,
-    selector: (ctx): ContentPickerOptions => [
+    selector: (ctx) => [
       {
         type: 'category',
         label: 'Hierarchy',

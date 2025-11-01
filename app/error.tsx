@@ -7,7 +7,7 @@ interface ErrorProps {
   reset: () => void;
 }
 
-const Error = ({ error, reset }: ErrorProps): JSX.Element => {
+const Error = ({ error, reset }: ErrorProps) => {
   return (
     <main className="flex min-h-svh items-center justify-center px-4   container max-w-xl   mx-auto place-items-center ">
       <div className="text-center">
