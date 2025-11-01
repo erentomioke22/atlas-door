@@ -41,7 +41,7 @@ interface JsonLdData {
   sameAs: string[];
 }
 
-export default function AboutUs(): JSX.Element {
+export default function AboutUs() {
   const jsonLd: JsonLdData = {
     '@context': 'https://schema.org',
     '@type': 'Organization',

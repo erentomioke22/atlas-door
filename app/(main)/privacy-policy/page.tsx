@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description: 'سیاست حفظ حریم خصوصی شرکت اطلس در، تولید کننده شیشه های سکوریت و ابزارآلات مربوطه',
 };
 
-export default function PrivacyPolicy(): JSX.Element {
+export default function PrivacyPolicy() {
   return (
     <div className="min-h-screen  py-8">
       <div className="container mx-auto px-4 max-w-4xl">
