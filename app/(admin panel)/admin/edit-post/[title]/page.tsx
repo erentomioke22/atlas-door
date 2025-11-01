@@ -15,11 +15,7 @@ interface JsonLd {
   description: string;
 }
 
-interface PageProps {
-  params: {
-    title: string;
-  };
-}
+
 
 
 export const metadata : Metadata = {
@@ -29,7 +25,10 @@ export const metadata : Metadata = {
 
 
 
-const Page : React.FC<PageProps> = async ({ params }) => {
+const Page  = async ({ params }: { params: Promise<{ title: string }> }) => {
+
+
+  const { title } = await params;
 
   const jsonLd : JsonLd = {
     "@context": "https://schema.org",
@@ -49,7 +48,7 @@ const Page : React.FC<PageProps> = async ({ params }) => {
         <meta name="twitter:card" content="summary_large_image" />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       </Head>
-      <EditPost title={params.title} session={session} />
+      <EditPost title={title} session={session} />
     </div>
   );
 };
