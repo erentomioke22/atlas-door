@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import { ResendVerificationButton } from './verification-button';
 import { getServerSession } from '@/lib/get-session';
-import { redirect, unauthorized } from "next/navigation";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || 'https://www.atlasdoor.ir'),
@@ -79,7 +79,7 @@ export default async function VerifyEmailPage() {
   const session = await getServerSession();
   const user = session?.user;
 
-  if (!user) unauthorized();
+  if (!user) redirect("/");
   
   if (user.emailVerified) redirect("/");
   redirect("/");
