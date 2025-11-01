@@ -23,7 +23,7 @@ import ImageCom from "@/components/ui/Image";
 import Offcanvas from "@/components/ui/offcanvas";
 import Darkmode from "@/components/ui/darkmode";
 import { IoClose } from "react-icons/io5";
-import Button from "@/components/ui/Button";
+import Button from "@/components/ui/button";
 import { useDebounce } from "use-debounce";
 import type { Session } from "@/lib/auth";
 import { z } from "zod";

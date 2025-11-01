@@ -5,10 +5,7 @@ import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { getServerSession } from "@/lib/get-session";
 import { useRouter } from "next/navigation";
 import LoadingIcon from "@/components/ui/loading/LoadingIcon";
-import {
-  useForm,
-  UseFormRegister,
-} from "react-hook-form";
+import { useForm, UseFormRegister } from "react-hook-form";
 import {
   settingProfileValidation,
   settingPasswordValidation,
@@ -19,14 +16,11 @@ import { IoClose } from "react-icons/io5";
 import Offcanvas from "@/components/ui/offcanvas";
 import { FaArrowLeftLong } from "react-icons/fa6";
 import { useDeleteUserMutation } from "./mutation";
-import Button from "@/components/ui/Button";
+import Button from "@/components/ui/button";
 import { authClient } from "@/lib/auth-client";
 import { Session } from "@/lib/auth";
 import { z } from "zod";
 import { toast } from "sonner";
-
-
-
 
 interface FormField {
   title: string;
@@ -48,9 +42,7 @@ interface ButtonList {
 type PasswordFormData = z.infer<typeof settingPasswordValidation>;
 type ProfileFormData = z.infer<typeof settingProfileValidation>;
 
-
-
-export default function SettingPage ({session} : {session : Session | null}){
+export default function SettingPage({ session }: { session: Session | null }) {
   const [showpass, setShowPsss] = useState<boolean>(false);
   const [onClose, setOnClose] = useState<boolean>(false);
   const router = useRouter();
@@ -59,7 +51,6 @@ export default function SettingPage ({session} : {session : Session | null}){
   const [error, setError] = useState<string | null>(null);
   const [accounts, setAccounts] = useState<any[]>([]);
   const deleteUserMutation = useDeleteUserMutation();
-
 
   const {
     register: passwordRegister,
@@ -73,7 +64,6 @@ export default function SettingPage ({session} : {session : Session | null}){
   } = useForm<PasswordFormData>({
     resolver: zodResolver(settingPasswordValidation),
   });
-
 
   const {
     register,
@@ -91,7 +81,10 @@ export default function SettingPage ({session} : {session : Session | null}){
 
   useEffect(() => {
     if (session) {
-      setValue("displayName", session?.user?.displayName ?? session?.user?.name);
+      setValue(
+        "displayName",
+        session?.user?.displayName ?? session?.user?.name
+      );
       setValue("address", session?.user?.address ?? "");
       setValue("phone", session?.user?.phone ?? "");
     }
@@ -99,14 +92,14 @@ export default function SettingPage ({session} : {session : Session | null}){
 
   useEffect(() => {
     const initializeData = async () => {
-        try {
-          const { data: accounts } = await authClient.listAccounts();
-          setAccounts(accounts ?? []);
-        } catch (error) {
-          // console.error("Error fetching accounts:", error);
-        }
+      try {
+        const { data: accounts } = await authClient.listAccounts();
+        setAccounts(accounts ?? []);
+      } catch (error) {
+        // console.error("Error fetching accounts:", error);
+      }
     };
-    
+
     initializeData();
   }, []);
 
@@ -147,7 +140,6 @@ export default function SettingPage ({session} : {session : Session | null}){
     }
   }
 
-
   async function handleLogoutEverywhere() {
     setLoading(true);
     const { error } = await authClient.revokeSessions();
@@ -161,13 +153,8 @@ export default function SettingPage ({session} : {session : Session | null}){
     }
   }
 
-
   const PasswordLoading = passwordFormState.isSubmitting;
   const profileLoading = profileFormState.isSubmitting;
-
-
-
-
 
   const userForm: FormField[] = [
     {
@@ -446,5 +433,4 @@ export default function SettingPage ({session} : {session : Session | null}){
       </div>
     </div>
   );
-};
-
+}

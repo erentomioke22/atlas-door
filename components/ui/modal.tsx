@@ -1,35 +1,42 @@
-'use client'
+"use client";
 
-import React, { useState, useEffect } from 'react'
-import { IoClose } from 'react-icons/io5'
-import Button from './Button'
+import React, { useState, useEffect } from "react";
+import { IoClose } from "react-icons/io5";
+import Button from "./button";
 
 type ModalProps = {
-  children?: React.ReactNode
-  title?: React.ReactNode
-  header?: React.ReactNode
-  headerStyle?: string
-  btnStyle?: string
-  onClose?: unknown
-}
+  children?: React.ReactNode;
+  title?: React.ReactNode;
+  header?: React.ReactNode;
+  headerStyle?: string;
+  btnStyle?: string;
+  onClose?: unknown;
+};
 
-const Modal: React.FC<ModalProps> = ({ children, title, header, headerStyle, btnStyle, onClose }) => {
-  const [open, setOpen] = useState(false)
+const Modal: React.FC<ModalProps> = ({
+  children,
+  title,
+  header,
+  headerStyle,
+  btnStyle,
+  onClose,
+}) => {
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     if (open) {
-      document.body.style.overflow = 'hidden'
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = 'auto'
+      document.body.style.overflow = "auto";
     }
     return () => {
-      document.body.style.overflow = 'auto'
-    }
-  }, [open])
+      document.body.style.overflow = "auto";
+    };
+  }, [open]);
 
   useEffect(() => {
-    setOpen(false)
-  }, [onClose])
+    setOpen(false);
+  }, [onClose]);
 
   return (
     <>
@@ -39,7 +46,9 @@ const Modal: React.FC<ModalProps> = ({ children, title, header, headerStyle, btn
 
       <div
         className={`fixed inset-0 h-screen transition-opacity  duration-300 ease-in-out z-[99999] ${
-          open ? 'backdrop-blur-sm  opacity-100 ' : 'pointer-events-none invisible backdrop-blur-0 opacity-0 '
+          open
+            ? "backdrop-blur-sm  opacity-100 "
+            : "pointer-events-none invisible backdrop-blur-0 opacity-0 "
         }`}
       >
         <div className="fixed inset-0 " onClick={() => setOpen(false)}></div>
@@ -64,7 +73,7 @@ const Modal: React.FC<ModalProps> = ({ children, title, header, headerStyle, btn
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default Modal
+export default Modal;

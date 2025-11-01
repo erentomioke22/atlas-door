@@ -25,7 +25,7 @@ import { FaImage } from "react-icons/fa6";
 import { FaCheck } from "react-icons/fa";
 import ImageCom from "@/components/ui/Image";
 import Offcanvas from "@/components/ui/offcanvas";
-import Button from "@/components/ui/Button";
+import Button from "@/components/ui/button";
 import Darkmode from "@/components/ui/darkmode";
 import type { Session } from "@/lib/auth";
 import { z } from "zod";

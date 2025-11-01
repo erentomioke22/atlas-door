@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import React, { useEffect, useState } from "react";
 import LoadingPage from "@/components/ui/loading/loadingCard";
@@ -7,11 +7,10 @@ import PostCard, { PostLite } from "@/components/posts/postCard";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { FaArrowLeftLong } from "react-icons/fa6";
-import Button from "@/components/ui/Button";
+import Button from "@/components/ui/button";
 import Dropdown from "@/components/ui/Dropdown";
 
 // Define types for post data
-
 
 interface PostResponse {
   posts: PostLite[];
@@ -28,39 +27,49 @@ const PostList: React.FC = (): JSX.Element => {
   const router = useRouter();
   const [postPerPage, setPostPerPage] = useState<number>(10);
   const [currentPage, setCurrentPage] = useState<number>(0);
-  const [arrOfCurrentPage, setArrOfCurrentPage] = useState<(number | string)[]>([]);
+  const [arrOfCurrentPage, setArrOfCurrentPage] = useState<(number | string)[]>(
+    []
+  );
   const dotsInitial = "...";
   const dotsLeft = "... ";
   const dotsRight = " ...";
 
   const searchParams = useSearchParams();
   const path = usePathname();
-  
-  const categoryFromQuery = searchParams.get('category');
-  const tagFromQuery = searchParams.get('tag');
-  
-  const [category, setCategory] = useState<string>(categoryFromQuery || "new-post");
+
+  const categoryFromQuery = searchParams.get("category");
+  const tagFromQuery = searchParams.get("tag");
+
+  const [category, setCategory] = useState<string>(
+    categoryFromQuery || "new-post"
+  );
   const [tag, setTag] = useState<string>(tagFromQuery || "");
-  
+
   // Update URL when category changes
   const updateUrlWithCategory = (newCategory: string): void => {
     const params = new URLSearchParams(searchParams);
-    params.set('category', newCategory);
+    params.set("category", newCategory);
     router.push(`${path}?${params.toString()}` as any, { scroll: false });
     setCategory(newCategory);
   };
-  
+
   // Update URL when tag changes
   const updateUrlWithTag = (newTag: string): void => {
     const params = new URLSearchParams(searchParams);
-    params.set('tag', newTag);
+    params.set("tag", newTag);
     router.push(`${path}?${params.toString()}` as any, { scroll: false });
     setTag(newTag === "همه ی وبلاگ ها" ? "" : newTag);
   };
 
   const { data, status, isFetching } = useQuery<PostResponse, Error>({
-      queryKey: ["post-feed", "user-posts", `/posts/tag/${tag}?category=${category}`, currentPage, postPerPage],  
-      queryFn: async () => {
+    queryKey: [
+      "post-feed",
+      "user-posts",
+      `/posts/tag/${tag}?category=${category}`,
+      currentPage,
+      postPerPage,
+    ],
+    queryFn: async () => {
       const response = await axios.get(
         `/api/posts/tag/${tag}?category=${category}&pgnum=${currentPage}&pgsize=${postPerPage}`
       );
@@ -69,9 +78,9 @@ const PostList: React.FC = (): JSX.Element => {
     staleTime: 0,
     // keepPreviousData: true,
   });
-  
+
   // Remove the nested .post access
-  const posts: PostLite[] = data?.posts || [] as PostLite[];
+  const posts: PostLite[] = data?.posts || ([] as PostLite[]);
   const count: number = data?.count || 0;
 
   let pages: number[] = [];
@@ -110,7 +119,7 @@ const PostList: React.FC = (): JSX.Element => {
   }, [currentPage, count]);
 
   const tags: Tag[] = [
-    { id: "1", name: "همه ی وبلاگ ها", link: "همه ی وبلاگ ها"},
+    { id: "1", name: "همه ی وبلاگ ها", link: "همه ی وبلاگ ها" },
     { id: "2", name: "شیشه سکوریت", link: "شیشه سکوریت" },
     { id: "3", name: "لمینت", link: "لمینت" },
     { id: "4", name: "درب اتوماتیک", link: "درب اتوماتیک" },
@@ -136,7 +145,7 @@ const PostList: React.FC = (): JSX.Element => {
         <h1 className="text-2xl">مقاله ها</h1>
         <button
           className={"text-sm px-3  py-1    flex"}
-          onClick={() => router.push('/')}
+          onClick={() => router.push("/")}
           type="button"
         >
           بازگشت
@@ -146,12 +155,20 @@ const PostList: React.FC = (): JSX.Element => {
 
       <div className="sm:flex gap-2 sm:justify-center">
         <div className=" px-1 py-2  flex text-nowrap overflow-x-auto gap-2 md:text-sm text-[10px]">
-          <Button variant={category === "popular" ? "menuActive" : "menu"} className={'px-2 py-1'} onClick={() => updateUrlWithCategory("popular")}>
+          <Button
+            variant={category === "popular" ? "menuActive" : "menu"}
+            className={"px-2 py-1"}
+            onClick={() => updateUrlWithCategory("popular")}
+          >
             محبوب ترین ها
           </Button>
-          <Button variant={category === "new-post" ? "menuActive" : "menu"} className={'px-2 py-1'} onClick={() => updateUrlWithCategory("new-post")}>
+          <Button
+            variant={category === "new-post" ? "menuActive" : "menu"}
+            className={"px-2 py-1"}
+            onClick={() => updateUrlWithCategory("new-post")}
+          >
             جدید ترین ها
-          </Button> 
+          </Button>
         </div>
         <div className="my-auto max-sm:my-5">
           <Dropdown
@@ -182,26 +199,26 @@ const PostList: React.FC = (): JSX.Element => {
         </div>
       </div>
 
-      {status === "error" && 
+      {status === "error" && (
         <p className="text-center text-lfont underline">
           مشکلی در دریافت اطلاعات پیش آمده لطفا صفحه را یکبار رفرش کنید
         </p>
-      }
+      )}
 
-      {status === "success" && !posts?.length && 
+      {status === "success" && !posts?.length && (
         <p className="text-center text-lfont underline">
           هنوز پستی در اینجا قرار داده نشده
         </p>
-      }
-      
+      )}
+
       <div className="my-10">
-        <div className='px-5 max-sm:space-y-5 sm:flex sm:flex-wrap justify-center gap-3 sm:gap-5 my-10 '>
+        <div className="px-5 max-sm:space-y-5 sm:flex sm:flex-wrap justify-center gap-3 sm:gap-5 my-10 ">
           {status === "pending" ? (
             <>
               {Array(postPerPage)
                 .fill({})
                 .map((_, index: number) => {
-                  return <LoadingPage key={index}/>;
+                  return <LoadingPage key={index} />;
                 })}
             </>
           ) : (
@@ -229,8 +246,8 @@ const PostList: React.FC = (): JSX.Element => {
                     }}
                     className={`${
                       currentPage === (page as number) - 1
-                         ? "bg-black dark:bg-white text-lcard dark:border-white dark:text-black rounded-lg border-2 border-black px-2 py-1   "  
-                         : "bg-transparent border-2 border-black dark:border-white dark:text-white rounded-lg  px-2 py-1 "
+                        ? "bg-black dark:bg-white text-lcard dark:border-white dark:text-black rounded-lg border-2 border-black px-2 py-1   "
+                        : "bg-transparent border-2 border-black dark:border-white dark:text-white rounded-lg  px-2 py-1 "
                     }`}
                   >
                     {page}

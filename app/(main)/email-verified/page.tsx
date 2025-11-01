@@ -1,4 +1,4 @@
-import Button from "@/components/ui/Button";
+import Button from "@/components/ui/button";
 import type { Metadata } from "next";
 import Link from "next/link";
 
@@ -12,11 +12,9 @@ export default function EmailVerifiedPage() {
       <div className="space-y-6">
         <div className="space-y-2">
           <h1 className="text-2xl font-semibold">ایمیل تایید شد</h1>
-          <p className="text-muted-foreground">
-            ایمیل شما با موفقیت تایید شد
-          </p>
+          <p className="text-muted-foreground">ایمیل شما با موفقیت تایید شد</p>
         </div>
-        <Button >
+        <Button>
           <Link href="/">بازگشت به صفحه ی اصلی</Link>
         </Button>
       </div>

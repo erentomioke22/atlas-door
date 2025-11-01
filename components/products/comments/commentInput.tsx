@@ -6,7 +6,7 @@ import { useSubmitCommentMutation } from "./mutations";
 import LoadingIcon from "@/components/ui/loading/LoadingIcon";
 import { useEditCommentMutation } from "./mutations";
 import CommentTextEditor from "@/components/commentTextEditor";
-import Button from "@/components/ui/Button";
+import Button from "@/components/ui/button";
 import { FaCaretLeft } from "react-icons/fa6";
 import { FaCheck } from "react-icons/fa6";
 import type { Session } from "@/lib/auth";
@@ -42,7 +42,7 @@ interface CommentInputProps {
     content: string;
   } | null;
   setMessage: (v: string | null) => void;
-  session:Session | null
+  session: Session | null;
 }
 
 type FormValues = {
@@ -67,7 +67,7 @@ const CommentInput: React.FC<CommentInputProps> = ({
   setReplyInfo,
   replyInfo,
   setMessage,
-  session
+  session,
 }) => {
   const addMutation = useSubmitCommentMutation(product?.id, category);
   const editMutation = useEditCommentMutation(product?.id, category);

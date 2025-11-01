@@ -23,7 +23,7 @@ import EmblaCarousel from "@/components/ui/carousel/carousel";
 import { FaPlus, FaCheck, FaPalette } from "react-icons/fa6";
 import ImageCom from "@/components/ui/Image";
 import Offcanvas from "@/components/ui/offcanvas";
-import Button from "@/components/ui/Button";
+import Button from "@/components/ui/button";
 import Darkmode from "@/components/ui/darkmode";
 import Input from "@/components/ui/input";
 import type { Session } from "@/lib/auth";

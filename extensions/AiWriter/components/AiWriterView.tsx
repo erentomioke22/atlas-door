@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
 import { v4 as uuid } from "uuid";
 
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/ui/button";
 import { Panel, PanelHeadline } from "@/components/ui/Panel";
 import { Textarea } from "@/components/ui/textarea";
 import { Icon } from "@/components/ui/Icon";

@@ -8,11 +8,10 @@ import Offcanvas from "../ui/offcanvas";
 import { IoClose } from "react-icons/io5";
 import Login from "./login";
 import Signup from "./signup";
-import Button from "../ui/Button";
+import Button from "../ui/button";
 import { authClient } from "@/lib/auth-client";
 import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
-
 
 type ShowState = "login" | "register" | "password";
 
@@ -31,7 +30,9 @@ const Sign: React.FC<SignProps> = ({ title, commentStyle, session }) => {
   const searchParams = useSearchParams();
   const redirect = searchParams.get("redirect");
 
-  async function handleSocialSignIn(provider: "google" | "github" | "linkedin" | "twitter") {
+  async function handleSocialSignIn(
+    provider: "google" | "github" | "linkedin" | "twitter"
+  ) {
     setError(null);
     setLoading(true);
 
@@ -48,12 +49,13 @@ const Sign: React.FC<SignProps> = ({ title, commentStyle, session }) => {
     }
   }
 
-
   return (
     <Offcanvas
       title={title}
       position={"top-0 right-0"}
-      size={"h-screen max-w-full w-96 border-l-2 border-l-lcard dark:border-l-dcard"}
+      size={
+        "h-screen max-w-full w-96 border-l-2 border-l-lcard dark:border-l-dcard"
+      }
       openTransition={"translate-x-0"}
       closeTransition={"translate-x-full"}
       onClose={close}
@@ -62,7 +64,9 @@ const Sign: React.FC<SignProps> = ({ title, commentStyle, session }) => {
         <h1 className="text-xl ">ثبت نام - ورود</h1>
 
         <Button
-          className={" text-lg bg-lcard dark:bg-dcard px-2 py-1  rounded-full border-2 text-lfont "}
+          className={
+            " text-lg bg-lcard dark:bg-dcard px-2 py-1  rounded-full border-2 text-lfont "
+          }
           onClick={() => setClose(!close)}
           type="button"
           variant="close"
@@ -77,7 +81,9 @@ const Sign: React.FC<SignProps> = ({ title, commentStyle, session }) => {
             onClick={() => {
               setShow("register");
             }}
-            className={` px-2 py-1 m-1 rounded-lg text-sm ${show === "register" ? "bg-lbtn dark:bg-dbtn" : " "}`}
+            className={` px-2 py-1 m-1 rounded-lg text-sm ${
+              show === "register" ? "bg-lbtn dark:bg-dbtn" : " "
+            }`}
           >
             ثبت نام
           </button>
@@ -85,7 +91,9 @@ const Sign: React.FC<SignProps> = ({ title, commentStyle, session }) => {
             onClick={() => {
               setShow("login");
             }}
-            className={` px-2 py-1 m-1 rounded-lg text-sm ${show === "login" ? "bg-lbtn dark:bg-dbtn" : " "}`}
+            className={` px-2 py-1 m-1 rounded-lg text-sm ${
+              show === "login" ? "bg-lbtn dark:bg-dbtn" : " "
+            }`}
           >
             ورود
           </button>
@@ -93,7 +101,8 @@ const Sign: React.FC<SignProps> = ({ title, commentStyle, session }) => {
 
         <div className="space-y-3 ">
           <p className="text-xl ">
-            {show === "register" ? "ثبت نام" : "ورود"} با حساب های شما <span className="text-darkgreen text-sm">روش ساده تر</span>
+            {show === "register" ? "ثبت نام" : "ورود"} با حساب های شما{" "}
+            <span className="text-darkgreen text-sm">روش ساده تر</span>
           </p>
 
           <button
@@ -153,17 +162,28 @@ const Sign: React.FC<SignProps> = ({ title, commentStyle, session }) => {
         <div className=" space-y-5">
           {show === "password" || (
             <p className="text-xl ">
-              {show === "register" ? "ثبت نام" : "ورود"} با ایمیل <span className="text-redorange text-sm">روش طولاني تر</span>
+              {show === "register" ? "ثبت نام" : "ورود"} با ایمیل{" "}
+              <span className="text-redorange text-sm">روش طولاني تر</span>
             </p>
           )}
-          <p className=" text-xl">{show === "password" && "بازیابی رمز عبور"}</p>
+          <p className=" text-xl">
+            {show === "password" && "بازیابی رمز عبور"}
+          </p>
           <div>
-            {show === "register" ? <Signup setShow={setShow} /> : <Login show={show} setShow={setShow} />}
+            {show === "register" ? (
+              <Signup setShow={setShow} />
+            ) : (
+              <Login show={show} setShow={setShow} />
+            )}
           </div>
         </div>
         <p className="text-center my-5 text-[12px] text-lfont">
           <span className="text-red ">نکته:</span> با ورود، شما موافقت میکنید با
-          <Link href="/privacy-policy" className="text-black dark:text-white underline" onClick={() => setClose(!close)}>
+          <Link
+            href="/privacy-policy"
+            className="text-black dark:text-white underline"
+            onClick={() => setClose(!close)}
+          >
             سیاست حفظ حریم خصوصی
           </Link>{" "}
           ,ما شرایط استفاده و رفتار.

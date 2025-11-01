@@ -10,7 +10,7 @@ import { ImageOptions } from "@tiptap-pro/extension-ai";
 
 import * as Dropdown from "@radix-ui/react-dropdown-menu";
 
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/ui/button";
 import { Loader } from "@/components/ui/Loader";
 import { Panel, PanelHeadline } from "@/components/ui/Panel";
 import { Textarea } from "@/components/ui/textarea";

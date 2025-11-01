@@ -30,7 +30,7 @@ import { formatPriceFa } from "@/lib/utils";
 import { IoPencil } from "react-icons/io5";
 import Darkmode from "@/components/ui/darkmode";
 import { useDebounce } from "use-debounce";
-import Button from "@/components/ui/Button";
+import Button from "@/components/ui/button";
 import type { Session } from "@/lib/auth";
 import { z } from "zod";
 

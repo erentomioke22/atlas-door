@@ -6,7 +6,7 @@ import { useSubmitCommentMutation } from "./mutations";
 import LoadingIcon from "@/components/ui/loading/LoadingIcon";
 import { useEditCommentMutation } from "./mutations";
 import CommentTextEditor from "@/components/commentTextEditor";
-import Button from "@/components/ui/Button";
+import Button from "@/components/ui/button";
 import { FaCaretLeft } from "react-icons/fa6";
 import { FaCheck } from "react-icons/fa6";
 import { Session } from "@/lib/auth";
@@ -43,7 +43,7 @@ interface CommentInputProps {
     content: string;
   } | null;
   setMessage: (v: string | null) => void;
-  session:Session | null
+  session: Session | null;
 }
 
 type FormValues = {
@@ -68,7 +68,7 @@ const CommentInput: React.FC<CommentInputProps> = ({
   setReplyInfo,
   replyInfo,
   setMessage,
-  session
+  session,
 }) => {
   const addMutation = useSubmitCommentMutation(post?.id, category);
   const editMutation = useEditCommentMutation(post?.id, category);
@@ -85,7 +85,7 @@ const CommentInput: React.FC<CommentInputProps> = ({
     resolver: zodResolver(commentValidation) as any,
     defaultValues: {
       content: "",
-      userId:session?.user?.id,
+      userId: session?.user?.id,
       parentId: commentId,
     },
   });

@@ -13,7 +13,7 @@ import { orderGatewayValidation } from "@/lib/validation";
 import { FaCreditCard } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
 import { useCart } from "@/hook/useCart";
-import Button from "./ui/Button";
+import Button from "./ui/button";
 import { Session } from "@/lib/auth";
 interface PaymentPanelProps {
   status?: "pending" | "idle" | "success" | "error" | string;
