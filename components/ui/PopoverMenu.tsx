@@ -109,3 +109,5 @@ export const CategoryTitle: React.FC<CategoryTitleProps> = ({ children }) => {
 export const Divider = React.forwardRef<HTMLHRElement, React.ComponentPropsWithoutRef<'hr'>>((props, ref) => {
   return <hr {...props} ref={ref} className="my-1 border-neutral-200 dark:border-neutral-800" />
 })
+
+Divider.displayName = 'Divider'
