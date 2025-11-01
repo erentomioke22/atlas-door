@@ -215,10 +215,15 @@ const CreatePost = ({session}:{session:Session | null}) => {
     return updatedContent;
   }
   const handleAddTag = (newTag: string) => {
-    if (newTag && !dropTag.includes(newTag)) {
-      const addTags = [...dropTag, newTag].filter((tag) => tag);
-      setDropTag(addTags);
-      setValue("tags", addTags, { shouldValidate: true });
+    if (newTag) {
+      if(dropTag.includes(newTag)){
+        handleRemoveTag(newTag)
+      }
+      else{
+        const addTags = [...dropTag, newTag].filter((tag) => tag);
+        setDropTag(addTags);
+        setValue("tags", addTags, { shouldValidate: true });
+      }
     }
   };
 
@@ -228,17 +233,7 @@ const CreatePost = ({session}:{session:Session | null}) => {
     setValue("tags", removetag);
   };
 
-  function handleTag(name: { name: string }) {
-    const existTag = dropTag.includes(name.name);
 
-    if (existTag) {
-      const updateTag = dropTag.filter((tag) => tag !== name.name);
-      setDropTag(updateTag);
-      setValue("tags", updateTag, { shouldValidate: true });
-    }
-    setDropTag([...dropTag, name.name]);
-    setValue("tags", [...dropTag, name.name], { shouldValidate: true });
-  }
 
   const handleInputKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
@@ -314,9 +309,12 @@ const CreatePost = ({session}:{session:Session | null}) => {
 
   const content = watch("content");
   const title = watch("title");
+  const draftTags = watch("tags");
 
   const [debouncedContent] = useDebounce(content, 3500);
   const [debouncedTitle] = useDebounce(title, 3500);
+  const [debouncedTags] = useDebounce(draftTags, 3500);
+
 
   const stripImagesFromContent = (html: string) => {
     if (!html) return "";
@@ -328,10 +326,10 @@ const CreatePost = ({session}:{session:Session | null}) => {
   };
 
   useEffect(() => {
-    if (!debouncedContent && !debouncedTitle) {
+    if (!debouncedContent && !debouncedTitle && !debouncedTags) {
       return;
     }
-    if (debouncedContent?.length >= 5 || debouncedTitle?.length >= 5) {
+    if (debouncedContent?.length >= 5 || debouncedTitle?.length >= 5 || debouncedTags?.length >= 1) {
       const formValues = getValues();
       const cleanedContent = stripImagesFromContent(formValues.content);
 
@@ -343,7 +341,7 @@ const CreatePost = ({session}:{session:Session | null}) => {
         })
       );
     }
-  }, [debouncedContent, debouncedTitle]);
+  }, [debouncedContent, debouncedTitle, debouncedTags]);
 
   useEffect(() => {
     const lastDraftId = localStorage.getItem("lastDraftId");
@@ -352,6 +350,8 @@ const CreatePost = ({session}:{session:Session | null}) => {
     setValue("title", postDraft?.title);
     setValue("desc", postDraft?.desc);
     setValue("content", postDraft?.content);
+    setValue("tags", postDraft?.tags || []);
+    setDropTag(postDraft?.tags || []);
     if (lastDraftId) {
       // Redirect to the same page with the draft ID
     }
@@ -402,7 +402,7 @@ const CreatePost = ({session}:{session:Session | null}) => {
                       >
                         {files?.map(({ url }, index) => (
                           <div
-                            className="transform translate-x-0 translate-y-0 translate-z-0  flex-none basis-[100%] h-44 min-w-0  "
+                            className="transform translate-x-0 translate-y-0 translate-z-0  flex-none basis-[100%] h-44 min-w-0  pl-2 "
                             onClick={() => {
                               setThumnailIndex(url);
                             }}
@@ -519,7 +519,7 @@ const CreatePost = ({session}:{session:Session | null}) => {
                           return (
                             <div
                               key={tag.name}
-                              onClick={() => handleTag({ name: tag.name })}
+                              onClick={() => handleAddTag( tag.name )}
                               className={` ${
                                 dropTag.includes(tag.name)
                                   ? "bg-black dark:bg-white text-white dark:text-black"

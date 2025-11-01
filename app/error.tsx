@@ -9,7 +9,7 @@ interface ErrorProps {
 
 const Error = ({ error, reset }: ErrorProps): JSX.Element => {
   return (
-    <main className="grid min-h-full place-items-center bg-white px-6 py-24 sm:py-32 lg:px-8">
+    <main className="flex min-h-svh items-center justify-center px-4   container max-w-xl   mx-auto place-items-center ">
       <div className="text-center">
         <p className="text-base font-semibold text-red">ERROR</p>
         {/* <h1 className="mt-4  font-bold tracking-tight text-xl">

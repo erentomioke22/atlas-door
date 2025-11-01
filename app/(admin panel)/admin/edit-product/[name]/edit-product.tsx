@@ -537,7 +537,7 @@ const EditProduct: React.FC<EditProductProps> = ({ name , session}) => {
 
                             return (
                               <div
-                                className="transform translate-x-0 translate-y-0 translate-z-0 flex-none basis-[100%] h-44 min-w-0 "
+                                className="transform translate-x-0 translate-y-0 translate-z-0 flex-none basis-[100%] h-44 min-w-0 pl-2 "
                                 onClick={() => setProductThumnail(imageUrl)}
                                 key={index}
                               >

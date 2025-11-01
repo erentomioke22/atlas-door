@@ -11,6 +11,7 @@ import { z } from "zod";
 import LoadingIcon from "@/components/ui/loading/LoadingIcon";
 import { toast } from "sonner";
 import Input from "@/components/ui/input";
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 
 
 
@@ -27,13 +28,14 @@ interface ResetPasswordFormProps {
 export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
   const [success, setSuccess] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [showpass, setShowPass] = useState<boolean>(false);
 
   const router = useRouter();
 
   const {
     register,
     handleSubmit,
-    formState,
+    formState:{errors,isSubmitting},
     reset,
   } = useForm<ResetPasswordValues>({
     resolver: zodResolver(resetPasswordSchema),
@@ -60,36 +62,46 @@ export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
     }
   }
 
-  const loading = formState.isSubmitting;
+
 
   return (
-
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             
             <div className="w-full mx-auto">
           <Input
             title={"رمز جدید"}
-            type={"password"}
-            error={formState.errors?.newPassword?.message}
+            placeholder="رمز جدید خود را وارد کنید"
+            type={showpass ? "text" : "password"}
+            error={errors?.newPassword?.message}
             {...register("newPassword")}
           />
         </div>
-            {/* {success && (
-              <div role="status" className="text-sm text-green-600">
+
+              <div className="flex justify-end ">
+                        <button
+                          className="bg-lcard dark:bg-dcard rounded-lg p-2 border-lbtn dark:border-dbtn border-2"
+                          onClick={() => setShowPass(!showpass)}
+                          type="button"
+                        >
+                          {showpass ? <FaRegEye /> : <FaRegEyeSlash />}
+                        </button>
+                      </div>
+            {success && (
+              <div role="status" className="text-sm text-green">
                 {success}
               </div>
             )}
             {error && (
-              <div role="alert" className="text-sm text-red-600">
+              <div role="alert" className="text-sm text-red">
                 {error}
               </div>
-            )} */}
+            )}
            <button
               className="bg-black my-3 rounded-lg text-lcard dark:bg-white dark:text-black w-full py-2 mx-auto disabled:brightness-90 disabled:cursor-not-allowed text-center flex justify-center"
-              disabled={loading}
+              disabled={isSubmitting}
               type="submit"
             >
-              {loading ? (
+              {isSubmitting ? (
                 <LoadingIcon color={"bg-white dark:bg-black "} />
               ) : (
                 " بازنشانی رمز"

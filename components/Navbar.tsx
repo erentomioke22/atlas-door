@@ -16,7 +16,6 @@ import Notifications from "./notifications";
 import Sign from "./authenticate/sign";
 import { useCart } from '@/hook/useCart';
 import { IoPersonSharp } from "react-icons/io5";
-import { auth } from "@/lib/auth";
 import { Session } from "@/lib/auth";
 
 const Navbar = ({session}:{session:Session | null}) => {

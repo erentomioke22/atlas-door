@@ -196,7 +196,7 @@ const useCartStore = create<CartState>()(
             return true;
           }
         } catch (error) {
-          console.error("Restore error:", error);
+          // console.error("Restore error:", error);
         }
         return false;
       },

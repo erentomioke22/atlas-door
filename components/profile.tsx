@@ -44,6 +44,9 @@ const Profile: React.FC<ProfileProps> = ({ session }) => {
       className={"right-0"}
       disabled={!session}
     >
+      {!session?.user?.emailVerified  &&
+       <p className="text-[12px] text-redorange max-w-72  sm:max-w-52 px-3 md:mx-auto">ایمیل تایید به آدرس ایمیل شما ارسال شده لطفا ایمیلتان را تایید کنید</p>
+      }
       <div className=" flex  max-sm:mt-5  p-3   mx-3  rounded-2xl  gap-2 truncate duration-300">
         <div className="relative h-10 w-10">
           {session?.user?.image === null
@@ -61,6 +64,7 @@ const Profile: React.FC<ProfileProps> = ({ session }) => {
           <p className="text-sm  text-lfont truncate">{session?.user?.email}</p>
         </div>
       </div>
+
 
       <div className="flex flex-col text-start text-[12px] space-y-2 mt-2 px-3">
         {session?.user?.role === "admin" && (

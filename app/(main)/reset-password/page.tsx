@@ -15,7 +15,7 @@ export default async function ResetPasswordPage({
   const { token } = await searchParams;
 
   return (
-    <main className="flex min-h-svh items-center justify-center px-4">
+    <main className="flex min-h-svh items-center justify-center px-4   container max-w-xl   mx-auto">
       {token ? (
         <ResetPasswordUI token={token} />
       ) : (
@@ -35,8 +35,11 @@ function ResetPasswordUI({ token }: ResetPasswordUIProps) {
   return (
     <div className="w-full space-y-6">
       <div className="space-y-2 text-center">
-        <h1 className="text-2xl font-semibold">بازنشانی رمز</h1>
-        <p className="text-muted-foreground">رمز جدید خود را اینجا وارد کنید</p>
+      <h1  className="font-blanka text-2xl ">
+         ATLAS DOOR
+        </h1>
+        <h1 className="text-xl font-semibold">بازنشانی رمز</h1>
+        <p className="text-lfont">رمز جدید خود را اینجا وارد کنید</p>
       </div>
       <ResetPasswordForm token={token} />
     </div>

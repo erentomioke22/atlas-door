@@ -4,12 +4,14 @@ import { ForgotPasswordForm } from "./forgot-password";
 import { toast } from "sonner";
 import { loginValidation } from "@/lib/validation";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import LoadingIcon from "../ui/loading/LoadingIcon";
 import Input from "../ui/input";
 import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
-import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod"
+import * as z from "zod"
+import Toggle from "../ui/toggle";
+
 
 type ShowState = "login" | "register" | "password";
 
@@ -18,16 +20,10 @@ interface LoginProps {
   setShow: React.Dispatch<React.SetStateAction<ShowState>>;
 }
 
-interface LoginFormValues {
-  email: string;
-  password: string;
-  rememberMe: boolean;
-}
-
 type SignInValues = z.infer<typeof loginValidation>;
 
 const Login: React.FC<LoginProps> = ({ show, setShow }) => {
-  const [showpass, setShowPsss] = useState<boolean>(false);
+  const [showpass, setShowPass] = useState<boolean>(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
@@ -46,6 +42,7 @@ const Login: React.FC<LoginProps> = ({ show, setShow }) => {
     },
   });
 
+
   async function onSubmit({ email, password, rememberMe }: SignInValues) {
     setError(null);
     setLoading(true);
@@ -60,17 +57,17 @@ const Login: React.FC<LoginProps> = ({ show, setShow }) => {
 
     if (error) {
       setError(error.message || "Something went wrong");
-      toast.error(error.message || "Something went wrong");
+      toast.error(error.message || "مشکلی در برقراری ارتباط بوجود آمده");
     } else {
-      toast.success("Signed in successfully");
+      toast.success("ورود با موفقیت انجام شد");
+      reset();
       router.refresh();
     }
   }
 
-
   const formValues: Array<{
     title: string;
-    name: keyof LoginFormValues;
+    name: keyof SignInValues;
     type: string;
     error?: string;
   }> = [
@@ -95,31 +92,33 @@ const Login: React.FC<LoginProps> = ({ show, setShow }) => {
       ) : (
         <>
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div className=" space-y-4  mx-auto">
+            <div className="space-y-4 mx-auto">
               {formValues.map((value) => {
+                // Get the register function for this field
+                
                 return (
-                  <div key={value.name}>
+                  <div key={value.name} className="space-y-2">
                     <Input
                       placeholder={value.title}
                       title={value.title}
-                      // name={value.name}
                       type={value.type}
                       error={value.error}
                       {...register(value.name)}
                     />
-
+                    
                     {value.name === "password" && (
-                      <div className="flex gap-5 justify-between mt-2">
+                      <div className="flex gap-5 justify-between">
                         <button
                           type="button"
+                          onClick={() => setShow('password')}
                           className="text-sm text-lfont underline decoration-2 decoration-neutral-900"
                         >
                           گذرواژه رو فراموش كردم؟
                         </button>
                         <button
-                          className="bg-lcard dark:bg-dcard rounded-lg p-2 border-lbtn dark:border-dbtn border-2 "
-                          onClick={() => setShowPsss(!showpass)}
-                          type={"button"}
+                          className="bg-lcard dark:bg-dcard rounded-lg p-2 border-lbtn dark:border-dbtn border-2"
+                          onClick={() => setShowPass(!showpass)}
+                          type="button"
                         >
                           {showpass ? <FaRegEye /> : <FaRegEyeSlash />}
                         </button>
@@ -129,6 +128,16 @@ const Login: React.FC<LoginProps> = ({ show, setShow }) => {
                 );
               })}
             </div>
+
+            {/* Remember Me Checkbox */}
+            <div className="flex items-center space-x-2 my-4 space-x-reverse">
+                    <Toggle
+                      title="مرا به خاطر بسپار"
+                      {...register("rememberMe")}
+                    />
+            </div>
+
+
 
             <button
               className="bg-black my-3 rounded-lg text-lcard dark:bg-white dark:text-black w-full py-2 mx-auto disabled:brightness-90 disabled:cursor-not-allowed text-center flex justify-center"

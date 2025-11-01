@@ -33,11 +33,10 @@ export const auth = betterAuth({
     enabled: true,
     requireEmailVerification: false, 
     async sendResetPassword({ user, url }) {
-      const link = new URL(url);
       await sendEmailAction({
         to: user.email,
         subject: "بازنشانی رمز عبور",
-        meta: generatePasswordResetTemplate(String(link),"برای باز نشانی رمز خود روی لینک کلیک کنید")
+        meta: generatePasswordResetTemplate(url,"برای باز نشانی رمز خود روی لینک کلیک کنید")
       });
     },
   },
@@ -46,12 +45,13 @@ export const auth = betterAuth({
     expiresIn: 60 * 60,
     // autoSignInAfterVerification: true,
     sendVerificationEmail: async ({ user, url }) => {
-      const link = new URL(url);
-      link.searchParams.set("callbackURL", "/auth/verify");
+      // const link = new URL(url);
+      // link.searchParams.set("callbackURL", "/auth/verify");
+      // meta: generateVerificationTemplate(String(link),"لطفا ایمیل خود را تایید کنید")
       await sendEmailAction({
         to: user.email,
         subject: "تایید آدرس ایمیل",
-        meta: generateVerificationTemplate(String(link),"لطفا ایمیل خود را تایید کنید")
+        meta: generateVerificationTemplate(url,"لطفا ایمیل خود را تایید کنید")
 
       });
     },
@@ -91,11 +91,11 @@ export const auth = betterAuth({
         required: false,
         defaultValue: false,
       },
-      // displayName: {
-      //   type: "string",
-      //   // required: true,
-      //   // input: true, // This will be in the sign-up form
-      // },
+      displayName: {
+        type: "string",
+        required: false,
+        // input: true, // This will be in the sign-up form
+      },
       name: {
         type: "string",
         required: false,

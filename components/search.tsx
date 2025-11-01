@@ -92,6 +92,7 @@ const Search: React.FC<SearchProps> = ({ session }) => {
         <form onSubmit={handleSubmit} className="bg-white dark:bg-black border-lbtn  rounded-lg space-x-1 ">
           <Input
             placeholder="جستجو..."
+            title="جستجو..."
             type="text"
             name="search"
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {

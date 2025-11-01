@@ -455,7 +455,7 @@ const CreateProduct = ({session}:{session:Session | null}) => {
                     >
                       {productPictures?.map(({ url }, index) => (
                         <div
-                          className="transform translate-x-0 translate-y-0 translate-z-0  flex-none basis-[100%] h-44 min-w-0  "
+                          className="transform translate-x-0 translate-y-0 translate-z-0  flex-none basis-[100%] h-44 min-w-0 pl-2 "
                           onClick={() => {
                             setProductThumnail(url);
                           }}
@@ -658,13 +658,13 @@ const CreateProduct = ({session}:{session:Session | null}) => {
                     className="rounded-xl h-10 w-10 "
                     size={"h-10 w-10"}
                     src={session?.user?.image ?? ""}
-                    alt={`${session.user?.name} avatar`}
+                    alt={`${session.user?.displayName || session?.user?.name} avatar`}
                   />
                 )}
               </div>
               <div className="flex flex-col ">
                 <p className=" text-black dark:text-white text-sm">
-                  {session?.user?.name}
+                  {session?.user?.displayName || session?.user?.name}
                 </p>
                 <p className=" text-lfont text-[10px]">
                   {new Date().toLocaleDateString()}

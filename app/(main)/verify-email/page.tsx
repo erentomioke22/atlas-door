@@ -80,22 +80,23 @@ export default async function VerifyEmailPage() {
   const user = session?.user;
 
   if (!user) unauthorized();
-
+  
   if (user.emailVerified) redirect("/");
+  redirect("/");
 
   return (
-    <main className="flex flex-1 items-center justify-center px-4 text-center">
+    <main className="flex min-h-svh items-center justify-center px-4   container max-w-xl   mx-auto text-center">
       <div className="space-y-6">
         <div className="space-y-2">
-        <h1  className="font-blanka text-4xl ">
+        <h1  className="font-blanka text-2xl ">
          ATLAS DOOR
         </h1>
-          <h1 className="text-2xl font-semibold">ایمیل خود را تایید کنید</h1>
-          <p className="text-muted-foreground">
+          <h1 className="text-xl font-semibold">ایمیل خود را تایید کنید</h1>
+          <p className="text-lfont">
            ایمیل تایید به بسته ی ایمیل شما ارسال میشود
           </p>
         </div>
-        <ResendVerificationButton email={user.email} />
+        {/* <ResendVerificationButton email={user.email} /> */}
       </div>
     </main>
   );

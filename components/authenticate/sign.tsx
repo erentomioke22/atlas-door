@@ -11,6 +11,8 @@ import Signup from "./signup";
 import Button from "../ui/Button";
 import { authClient } from "@/lib/auth-client";
 import { useRouter, useSearchParams } from "next/navigation";
+import { toast } from "sonner";
+
 
 type ShowState = "login" | "register" | "password";
 
@@ -42,6 +44,7 @@ const Sign: React.FC<SignProps> = ({ title, commentStyle, session }) => {
 
     if (error) {
       setError(error.message || "Something went wrong");
+      toast.error(error.message || "مشکلی در برقراری ارتباط بوجود آمده");
     }
   }
 

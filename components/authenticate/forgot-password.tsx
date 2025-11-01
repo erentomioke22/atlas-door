@@ -1,6 +1,6 @@
 "use client";
 
-import { Input } from "@/components/ui/input";
+import Input from "../ui/input";
 import { authClient } from "@/lib/auth-client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
@@ -16,10 +16,10 @@ interface PasswordProps {
 }
 
 const forgotPasswordSchema = z.object({
-  email: z.email({ message: "Please enter a valid email" }),
+  email: z.email({ message: "لطفا یک ایمیل معتبر وارد کنید" }).trim().min(1, "فیلد ایمیل نباید خالی باشد"),
 });
 
-type ForgotPasswordValues = z.infer<typeof forgotPasswordSchema>;
+type ForgotPasswordValues =  z.infer<typeof forgotPasswordSchema>;
 
 export function ForgotPasswordForm({setShow}:PasswordProps) {
   const [success, setSuccess] = useState<string | null>(null);
@@ -28,7 +28,7 @@ export function ForgotPasswordForm({setShow}:PasswordProps) {
   const {
     register,
     handleSubmit,
-    formState,
+    formState:{errors,isSubmitting},
     reset,
   } = useForm<ForgotPasswordValues>({
     resolver: zodResolver(forgotPasswordSchema),
@@ -58,7 +58,7 @@ export function ForgotPasswordForm({setShow}:PasswordProps) {
     }
   }
 
-  const loading = formState.isSubmitting;
+
 
   return (
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -67,7 +67,8 @@ export function ForgotPasswordForm({setShow}:PasswordProps) {
           <Input
             title={"email"}
             type={"text"}
-            error={formState.errors?.email?.message}
+            placeholder="ایمیل حساب خود را وارد کنید"
+            error={errors?.email?.message}
             {...register("email")}
           />
         </div>
@@ -85,10 +86,10 @@ export function ForgotPasswordForm({setShow}:PasswordProps) {
 
 <button
               className="bg-black my-3 rounded-lg text-lcard dark:bg-white dark:text-black w-full py-2 mx-auto disabled:brightness-90 disabled:cursor-not-allowed text-center flex justify-center"
-              disabled={loading}
+              disabled={isSubmitting}
               type="submit"
             >
-              {loading ? (
+              {isSubmitting ? (
                 <LoadingIcon color={"bg-white dark:bg-black "} />
               ) : (
                 "ارسال لینک"

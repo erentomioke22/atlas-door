@@ -24,7 +24,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       min,
       max,
       step,
-      ...rest
+      ...props
     },
     ref,
   ) => (
@@ -45,7 +45,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           min={min}
           max={max}
           step={step}
-          {...rest}
+          {...props}
         />
       </div>
 
@@ -56,9 +56,59 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       >
         {error}
       </div>
+
+
     </>
   ),
 )
 
 Input.displayName = 'Input'
 export default Input
+
+// import * as React from "react"
+
+// import { cn } from "@/lib/utils"
+
+// function Input({ className, type, ...props  }: React.ComponentProps<"input">) {
+//   return (
+//     <input
+//       type={type}
+//       data-slot="input"
+//       className={` ${className} resize-none w-full appearance-none  rounded-xl px-3 py-2 block border-2 text-sm focus:outline-none dark:bg-dcard  bg-lcard dark:border-dcard  border-lcard  duration-200  `}
+//       {...props}
+//     />
+//   )
+// }
+
+// export { Input }
+
+// components/ui/input.tsx
+// import React from 'react';
+// import { forwardRef } from 'react';
+
+// interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+//   title: string;
+//   error?: string;
+// }
+
+// const Input = forwardRef<HTMLInputElement, InputProps>(
+//   ({ title, error, ...props }, ref) => {
+//     return (
+//       <div className="space-y-1">
+//         <input
+//           ref={ref}
+//           {...props}
+//           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+//         />
+//         {error && (
+//           <p className="text-red-500 text-sm">{error}</p>
+//         )}
+//       </div>
+//     );
+//   }
+// );
+
+// Input.displayName = 'Input';
+
+// export default Input;
+

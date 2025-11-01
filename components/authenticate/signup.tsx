@@ -35,35 +35,47 @@ const Signup: React.FC<SignupProps> = ({ setShow }) => {
   const {
     register,
     handleSubmit,
-    formState,
+    formState:{errors,isSubmitting},
     reset,
+    watch
   } = useForm<SignUpValues>({
     resolver: zodResolver(signupValidation),
   });
 
 
 
+  console.log("Form errors:", errors);
+  console.log("Form isSubmitting:", isSubmitting);
 
 
+  
   async function onSubmit({ email, password, name }: SignUpValues) {
+    console.log("ONSUBMIT CALLED - Form data:", email, password, name);
+    console.log("Form errors at submit:", errors);
     setError(null);
-    const { error } = await authClient.signUp.email({
-      email,
-      password,
-      name,
-      callbackURL: "/email-verified",
-    });
-
-    if (error) {
-      setError(error.message || "Something went wrong");
-      toast.error(error.message || "Something went wrong");
-    } else {
-      toast.success("Signed up successfully");
-      router.refresh();
+    try{
+      const { error } = await authClient.signUp.email({
+        email,
+        password,
+        name,
+        callbackURL: "/email-verified",
+      });
+  
+      if (error) {
+        setError(error.message || "Something went wrong");
+        toast.error(error.message || "مشکلی در ثبت نام پیش آمده است");
+      } else {
+        toast.success("ثبت نام با موفقیت انجام شد");
+        router.refresh();
+      }
+    }catch(error){
+      console.error("Signup error:", error);
+      setError("مشکلی در ثبت نام پیش آمده است");
+      toast.error("مشکلی در ثبت نام پیش آمده است");
     }
+    
   }
 
-  const loading = formState.isSubmitting;
 
 
   const validatePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -93,46 +105,46 @@ const Signup: React.FC<SignupProps> = ({ setShow }) => {
       title: "نام کاربری",
       name: "name",
       type: "text",
-      value: "",
-      error: formState.errors.name?.message,
+      error: errors.name?.message,
     },
     {
       title: "ايميل",
       name: "email",
       type: "email",
-      value: "",
-      error: formState.errors.email?.message,
+      error: errors.email?.message,
     },
     {
       title: "گذرواژه",
       name: "password",
       type: showpass ? "text" : "password",
-      value: "",
-      error: formState.errors.password?.message,
+      error: errors.password?.message,
       onInput: validatePassword,
     },
     {
       title: "تکرار گذرواژه",
       name: "confirmPassword",
       type: showpass ? "text" : "password",
-      value: "",
-      error: formState.errors.confirmPassword?.message,
+      error: errors.confirmPassword?.message,
     },
   ];
 
+
+  const watchedValues = watch();
+console.log(watchedValues)
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="space-y-5">
         {formValues.map((value) => (
           <div key={value.name}>
             <Input
+              id={value.name}
               title={value.title}
               placeholder={value.title}
-              onInput={value.onInput}
-              // name={value.name}
-              type={value.type}
               error={value.error}
               {...register(value.name)}
+              onInput={value.onInput}
+              name={value.name}
+              type={value.type}
             />
 
             {value.name === "password" && (
@@ -186,10 +198,10 @@ const Signup: React.FC<SignupProps> = ({ setShow }) => {
       <div className="flex flex-col space-y-3 text-center mt-10">
         <button
           className="bg-black rounded-lg text-lcard dark:bg-white dark:text-black w-full py-2 mx-auto disabled:brightness-90 disabled:cursor-not-allowed text-center flex justify-center"
-          disabled={loading}
+          disabled={isSubmitting}
           type="submit"
         >
-          {loading ? <LoadingIcon color={"bg-white dark:bg-black"} /> : "ثبت نام"}
+          {isSubmitting ? <LoadingIcon color={"bg-white dark:bg-black"} /> : "ثبت نام"}
         </button>
       </div>
     </form>

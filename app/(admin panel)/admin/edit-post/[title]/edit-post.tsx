@@ -77,9 +77,6 @@ const EditPost: React.FC<EditPostRootProps> = ({ title , session }) => {
   const {
     data: post,
     isPending,
-    // fetchNextPage,
-    // isFetching,
-    // isFetchingNextPage,
     status,
     error,
   } = useQuery({
@@ -256,10 +253,15 @@ const EditPost: React.FC<EditPostRootProps> = ({ title , session }) => {
   }
 
   const handleAddTag = (newTag: string) => {
-    if (newTag && !dropTag.includes(newTag)) {
-      const addTags = [...dropTag, newTag].filter((tag) => tag);
-      setDropTag(addTags);
-      setValue("tags", addTags, { shouldValidate: true });
+    if (newTag) {
+      if(dropTag.includes(newTag)){
+        handleRemoveTag(newTag)
+      }
+      else{
+        const addTags = [...dropTag, newTag].filter((tag) => tag);
+        setDropTag(addTags);
+        setValue("tags", addTags, { shouldValidate: true });
+      }
     }
   };
 
@@ -269,17 +271,7 @@ const EditPost: React.FC<EditPostRootProps> = ({ title , session }) => {
     setValue("tags", removetag);
   };
 
-  function handleTag(name: { name: string }) {
-    const existTag = dropTag.includes(name.name);
 
-    if (existTag) {
-      const updateTag = dropTag.filter((tag) => tag !== name.name);
-      setDropTag(updateTag);
-      setValue("tags", updateTag, { shouldValidate: true });
-    }
-    setDropTag([...dropTag, name.name]);
-    setValue("tags", [...dropTag, name.name], { shouldValidate: true });
-  }
 
   const handleInputKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
@@ -468,7 +460,7 @@ const EditPost: React.FC<EditPostRootProps> = ({ title , session }) => {
                           >
                             {files?.map(({ url }, index) => (
                               <div
-                                className="transform translate-x-0 translate-y-0 translate-z-0  flex-none basis-[100%] h-44 min-w-0  "
+                                className="transform translate-x-0 translate-y-0 translate-z-0  flex-none basis-[100%] h-44 min-w-0  pl-2 "
                                 onClick={() => {
                                   setThumnailIndex(url);
                                 }}
@@ -585,7 +577,7 @@ const EditPost: React.FC<EditPostRootProps> = ({ title , session }) => {
                               return (
                                 <div
                                   key={tag.name}
-                                  onClick={() => handleTag({ name: tag.name })}
+                                  onClick={() => handleAddTag( tag.name )}
                                   className={` ${
                                     dropTag.includes(tag.name)
                                       ? "bg-black dark:bg-white text-white dark:text-black"

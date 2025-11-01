@@ -1,11 +1,41 @@
-import { z } from "zod";
+import * as z from "zod"
 
 const strongRegex = /(?=.*[0-9])/;
 const uppercaseRegex = /^(?=.*[A-Z])/;
 const symboleRegex = /(?=.*[!@#\$%\^&\*;'"])/;
 const abusiveWords = ["fuck","fucking","fucked","fuck off","shut the fuck off","shit","sex","anal","pussy","dick","bitch"];
 
-// Custom refinement for abusive words
+
+
+
+
+// lib/validation.ts
+export const signupValidation = z.object({
+  name: z.string()
+    .trim()
+    .min(1, "نام کاربری نباید خالی باشد")
+    .min(4, "نام کاربری باید بیشتر از ۴ حرف باشد")
+    .max(16, "نام کاربری باید کمتر از ۱۶ حرف باشد")
+    .regex(/^[a-zA-Z0-9_]+$/, "نام کاربری فقط میتواند شامل حروف، اعداد و زیرخط باشد"),
+  email: z.email({ message: "لطفا یک ایمیل معتبر وارد کنید" })
+    .trim()
+    .min(1, "فیلد ایمیل نباید خالی باشد"),
+  password: z.string()
+    .trim()
+    .min(1, "گذرواژه نباید خالی باشد")
+    .min(8, "گذرواژه نباید کمتر از ۸ کاراکتر باشد")
+    .max(16, "گذرواژه نباید بیشتر از ۱۶ کاراکتر باشد")
+    .regex(/(?=.*[0-9])/, "گذرواژه باید دارای حداقل یک عدد باشد")
+    .regex(/(?=.*[A-Z])/, "گذرواژه باید دارای حداقل یک حرف بزرگ باشد")
+    .regex(/(?=.*[$&+,:;=?@#!])/, "گذرواژه باید دارای حداقل یک کاراکتر ویژه ($&+,:;=?@#!) باشد"),
+  confirmPassword: z.string()
+    .min(1, "تکرار گذرواژه نباید خالی باشد")
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "تکرار گذرواژه با گذرواژه مطابقت ندارد",
+  path: ["confirmPassword"],
+});
+
+
 const noAbusiveWords = (value: string) => {
   const words = value.split(" ");
   for (let word of words) {
@@ -14,7 +44,6 @@ const noAbusiveWords = (value: string) => {
   return true;
 };
 
-// Custom refinement for file validation
 const validateFile = (file: File) => {
   const validTypes = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
   if (file.size > 5000000) return false;
@@ -22,38 +51,11 @@ const validateFile = (file: File) => {
   return true;
 };
 
-export const signupValidation = z.object({
-  name: z.string()
-    .trim()
-    .min(1, "نام کاربری نباید خالی باشد")
-    .min(4, "نام کاربری باید بیشتر از ۴ حرف باشد")
-    .max(16, "نام کاربری باید کمتر از ۱۶ حرف باشد"),
-  email: z.string()
-    .trim()
-    .min(1, "فیلد ایمیل نباید خالی باشد")
-    .email("ایمیل اشتباه است"),
-  password: z.string()
-    .trim()
-    .min(1, "گذرواژه نباید خالی باشد")
-    .min(8, "گذرواژه نباید کمتر از ۸ کاراکتر باشد")
-    .max(16, "گذرواژه نباید بیشتر از ۱۶ کاراکتر باشد")
-    .regex(symboleRegex, "گذرواژه باید دارای این سمبل ها باشد $&+,:;=?@#")
-    .regex(strongRegex, "گذرواژه باید دارای عدد باشد")
-    .regex(uppercaseRegex, "گذرواژه باید شامل یک حرف بزرگ باشد"),
-  confirmPassword: z.string()
-    .min(1, "تکرار گذرواژه نباید خالی باشد")
-}).refine((data) => data.password === data.confirmPassword, {
-  message: "تکرار گذرواژه اشتباه است",
-  path: ["confirmPassword"],
-});
+
 
 export const loginValidation = z.object({
-  email: z.string()
-    .email("ایمیل اشتباه است")
-    .min(1, "فیلد ایمیل نباید خالی باشد"),
-  password: z.string()
-    .min(1, "گذرواژه نباید خالی باشد")
-    .min(8, "گذرواژه نباید کمتر از ۸ کاراکتر باشد"),
+  email: z.email({ message: "لطفا ایمیل معتبر وارد کنید" }),
+  password: z.string().min(1, { message: "وارد کردن رمز الزامی است" }),
   rememberMe: z.boolean().optional(),
 });
 
@@ -131,9 +133,7 @@ export const orderGatewayValidation = z.object({
     .min(10, "آدرس نباید کمتر از ۱۰ کاراکتر باشد")
     .max(512, "آدرس نباید بیشتر از ۵۱۲ کاراکتر باشد"),
   rule: z.enum(["direct", "gateway"], 
-  //   {
-  //   errorMap: () => ({ message: "نوع پرداخت معتبر نیست" })
-  // }
+
 ),
 });
 
@@ -247,7 +247,6 @@ export const passwordSchema = z.string()
   .regex(strongRegex, "گذرواژه باید دارای عدد باشد")
   .regex(uppercaseRegex, "گذرواژه باید شامل یک حرف بزرگ باشد");
 
-// Export types for TypeScript
 export type SignupValidation = z.infer<typeof signupValidation>;
 export type LoginValidation = z.infer<typeof loginValidation>;
 export type PostValidation = z.infer<typeof postValidation>;
@@ -258,3 +257,5 @@ export type CommentValidation = z.infer<typeof commentValidation>;
 export type ReportValidation = z.infer<typeof reportValidation>;
 export type SettingProfileValidation = z.infer<typeof settingProfileValidation>;
 export type SettingPasswordValidation = z.infer<typeof settingPasswordValidation>;
+
+

@@ -57,6 +57,7 @@ export default function SettingPage ({session} : {session : Session | null}){
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [accounts, setAccounts] = useState<any[]>([]);
   const deleteUserMutation = useDeleteUserMutation();
 
 
@@ -96,7 +97,18 @@ export default function SettingPage ({session} : {session : Session | null}){
     }
   }, [session, setValue]);
 
-
+  useEffect(() => {
+    const initializeData = async () => {
+        try {
+          const { data: accounts } = await authClient.listAccounts();
+          setAccounts(accounts ?? []);
+        } catch (error) {
+          // console.error("Error fetching accounts:", error);
+        }
+    };
+    
+    initializeData();
+  }, []);
 
   async function onSubmit(values: ProfileFormData) {
     setStatus(null);
@@ -105,10 +117,10 @@ export default function SettingPage ({session} : {session : Session | null}){
     const { error } = await authClient.updateUser(values);
 
     if (error) {
-      setError(error.message || "Failed to update profile");
+      setError(error.message || "به روز رسانی پروفایل با مشکل مواجه شد");
     } else {
       setStatus("Profile updated");
-      toast.success("Profile updated");
+      toast.success("پروفایل با موفقیت به روز رسانی شد");
       router.refresh();
     }
   }
@@ -127,10 +139,10 @@ export default function SettingPage ({session} : {session : Session | null}){
     });
 
     if (error) {
-      setError(error.message || "Failed to change password");
+      setError(error.message || "تغییر گذرواژه با مشکل مواجه شد");
     } else {
       setStatus("Password changed");
-      toast.success("Password changed");
+      toast.success("گذرواژه با موفقیت تغییر یافت");
       passwordReset();
     }
   }
@@ -142,9 +154,9 @@ export default function SettingPage ({session} : {session : Session | null}){
     setLoading(false);
 
     if (error) {
-      toast.error(error.message || "Failed to log out everywhere");
+      toast.error(error.message || "خروج از حساب ها با مشکل مواجه شد");
     } else {
-      toast.success("Logged out from all devices");
+      toast.success("خروج از  حساب ها با موفقیت انجام شد");
       router.push("/");
     }
   }
@@ -155,25 +167,7 @@ export default function SettingPage ({session} : {session : Session | null}){
 
 
 
-  // const onSubmit = async (
-  //   values: ProfileFormData | PasswordFormData
-  // ): Promise<void> => {
-  //   try {
-  //     mutation.mutate(
-  //       {
-  //         values,
-  //       },
-  //       {
-  //         onSuccess: () => {
-  //           passwordReset();
-  //         },
-  //       }
-  //     );
-  //     update(values);
-  //   } catch (e) {
-  //     console.error(e);
-  //   }
-  // };
+
 
   const userForm: FormField[] = [
     {
@@ -243,7 +237,7 @@ export default function SettingPage ({session} : {session : Session | null}){
       input: userForm,
       submit: handleSubmit(onSubmit),
     },
-    ...(session?.user?.emailVerified
+    ...(accounts.length > 0 && accounts[0]?.providerId === "credential"
       ? [
           {
             name: "گذرواژه",
