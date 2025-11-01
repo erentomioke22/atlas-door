@@ -3,9 +3,9 @@ import { prisma } from "@/utils/database";
 import { NextRequest, NextResponse } from "next/server";
 
 interface RouteParams {
-  params: {
+  params: Promise<{
     orderId: string;
-  };
+  }>;
 }
 
 export async function DELETE(
@@ -18,7 +18,9 @@ export async function DELETE(
       return NextResponse.json({ error: "unauthorized" }, { status: 401 });
     }
 
-    const { orderId } = params;
+    const resolvedParams = await params;
+    const { orderId } = resolvedParams;
+    
     if (!orderId) {
       return NextResponse.json(
         { error: "orderId is required" },
