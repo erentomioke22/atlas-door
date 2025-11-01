@@ -13,18 +13,13 @@ interface SetFigureOptions {
 }
 
 
-// declare module '@tiptap/core' {
-//   // eslint-disable-next-line no-unused-vars
-//   interface Commands<ReturnType> {
-//     ImageFigure: {
-//       setFigure: () => ReturnType
-//     }
-//   }
-// }
+
 declare module '@tiptap/core' {
   interface Commands<ReturnType> {
     imageFigure: {
       setFigure: (attrs: { src: string; alt?: string; caption?: string }) => ReturnType
+      setImageBlockAlt: (alt: string) => ReturnType;
+      setImageBlockWidth: (width: number) => ReturnType;
     }
   }
 }

@@ -169,8 +169,8 @@ export const ContentItemMenu = ({ editor, setFiles, files, setValue }: ContentIt
       // width: Math.max(320, parseInt(width, 10)) || 640,
       // height: Math.max(180, parseInt(height, 10)) || 480,
       // })
-      // editor.chain().focus().setIframe({ src: videoUrl }).run();
-      editor.chain().focus().insertContent(`<iframe src="${videoUrl}" width="640" height="360" frameborder="0"></iframe>`).run();
+      editor.chain().focus().setIframe({ src: videoUrl || "" }).run();
+      // editor.chain().focus().insertContent(`<iframe src="${videoUrl}" width="640" height="360" frameborder="0"></iframe>`).run();
       setVideoUrl("");
       // setShowVideoInput(false);
     }

@@ -1,10 +1,19 @@
 import { Node } from '@tiptap/core'
 
+
+declare module '@tiptap/core' {
+  interface Commands<ReturnType> {
+    iframe: {
+      setIframe: (options: IframeAttributes) => ReturnType
+    }
+  }
+}
+
 interface IframeAttributes {
   src: string | null;
-  frameborder: number;
-  loading: string;
-  allowfullscreen: boolean;
+  frameborder?: number;
+  loading?: string;
+  allowfullscreen?: boolean;
 }
 
 interface IframeOptions {

@@ -1,7 +1,48 @@
+
+
+
+//       any: ({ editor, event }: { editor: any; event: KeyboardEvent }) => {
+//         const { selection } = editor.state;
+//         const { $from } = selection;
+      
+//         if ($from.parent.type.name === 'imageFigure') {
+//           event.preventDefault();
+//           const pos = $from.after();
+//           let figcaption = $from.nodeAfter;
+      
+//           if (!figcaption || figcaption.type.name !== 'figcaption') {
+//             // Create a new figcaption with a paragraph
+//             const figcaptionPos = pos;
+//             editor
+//               .chain()
+//               .insertContentAt(figcaptionPos, {
+//                 type: 'figcaption',
+//                 content: [{ type: 'paragraph', content: [{ type: 'text', text: event.key }] }],
+//               })
+//               .focus(figcaptionPos)
+//               .run();
+//           } else {
+//             // Focus on the existing figcaption
+//             const paragraphPos = pos + 1; // Adjust for paragraph structure
+//             editor.chain().focus(paragraphPos).run();
+//           }
+//         }
+//         return false;
+//       },
+
+
+
+
+
+
 import { Image as BaseImage } from "@tiptap/extension-image";
 import { ReactNodeViewRenderer } from "@tiptap/react";
 import { mergeAttributes } from "@tiptap/core";
 import ImageView from "@/extensions/Image/components/ImageView";
+
+interface ImageOptions {
+  HTMLAttributes?: Record<string, any>;
+}
 
 interface ImageAttributes {
   src: string;
@@ -10,11 +51,15 @@ interface ImageAttributes {
   width: string;
 }
 
-
-
-export const Image = BaseImage.extend<ImageAttributes>({
+export const Image = BaseImage.extend<ImageOptions, ImageAttributes>({
   group: "block",
   selectable: true,
+
+  addOptions() {
+    return {
+      HTMLAttributes: {},
+    }
+  },
 
   addAttributes() {
     return {
@@ -60,7 +105,7 @@ export const Image = BaseImage.extend<ImageAttributes>({
   renderHTML({ HTMLAttributes }: { HTMLAttributes: Record<string, any> }) {
     return [
       "img",
-      mergeAttributes(this.options.HTMLAttributes, HTMLAttributes),
+      mergeAttributes(this.options.HTMLAttributes || {}, HTMLAttributes),
     ];
   },
 
@@ -99,34 +144,6 @@ export const Image = BaseImage.extend<ImageAttributes>({
         }
         return false;
       },
-      any: ({ editor, event }: { editor: any; event: KeyboardEvent }) => {
-        const { selection } = editor.state;
-        const { $from } = selection;
-      
-        if ($from.parent.type.name === 'imageFigure') {
-          event.preventDefault();
-          const pos = $from.after();
-          let figcaption = $from.nodeAfter;
-      
-          if (!figcaption || figcaption.type.name !== 'figcaption') {
-            // Create a new figcaption with a paragraph
-            const figcaptionPos = pos;
-            editor
-              .chain()
-              .insertContentAt(figcaptionPos, {
-                type: 'figcaption',
-                content: [{ type: 'paragraph', content: [{ type: 'text', text: event.key }] }],
-              })
-              .focus(figcaptionPos)
-              .run();
-          } else {
-            // Focus on the existing figcaption
-            const paragraphPos = pos + 1; // Adjust for paragraph structure
-            editor.chain().focus(paragraphPos).run();
-          }
-        }
-        return false;
-      },
     };
   },
 
@@ -142,6 +159,3 @@ export const Image = BaseImage.extend<ImageAttributes>({
 });
 
 export default Image;
-
-
-
