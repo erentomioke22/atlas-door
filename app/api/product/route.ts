@@ -8,7 +8,7 @@ interface ProductsResponse {
   nextCursor: string | null;
 }
 
-type ProductCategory = "following" | "popular" | "new-product" | "for-you";
+type ProductCategory = "following" | "popular" | "new-product" ;
 
 export async function GET(
   req: NextRequest
@@ -66,41 +66,6 @@ export async function GET(
             colors: {
               some: {
                 status: "EXISTENT",
-              },
-            },
-          },
-          include: getProductDataInclude(userId),
-          orderBy: { createdAt: "desc" },
-          take: pageSize + 1,
-          cursor: cursor ? { id: cursor } : undefined,
-        });
-        break;
-      case "for-you":
-        // Get followed tags for the user
-        const followedTags = await prisma.tag.findMany({
-          where: {
-            users: {
-              some: {
-                id: session?.user?.id,
-              },
-            },
-          },
-        });
-
-        const followedTagIds = followedTags.map((tag) => tag.id);
-
-        products = await prisma.product.findMany({
-          where: {
-            colors: {
-              some: {
-                status: "EXISTENT",
-              },
-            },
-            tags: {
-              some: {
-                id: {
-                  in: followedTagIds,
-                },
               },
             },
           },
