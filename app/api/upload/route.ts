@@ -2,8 +2,7 @@ import fs from 'fs';
 import { NextRequest, NextResponse } from 'next/server';
 import { join } from 'path';
 import sharp from 'sharp';
-import { auth } from '@/auth';
-
+import { getServerSession } from '@/lib/get-session';
 interface UploadResponse {
   status: number;
   message: string;
