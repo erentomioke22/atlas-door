@@ -85,13 +85,28 @@ import { mergeAttributes } from '@tiptap/core'
 
 export const Blockquote = BaseBlockquote.extend({
   content: 'paragraph+',
+  // parseHTML() {
+  //   return [
+  //     {
+  //       tag: 'blockquote',
+  //       getAttrs: (node) => ({
+  //         ...node.attrs,
+  //       }),
+  //     },
+  //   ]
+  // },
   parseHTML() {
     return [
       {
         tag: 'blockquote',
-        getAttrs: (node) => ({
-          ...node.attrs,
-        }),
+        getAttrs: (node) => {
+          if (node instanceof HTMLElement) {
+            return {
+              ...node.attributes, 
+            }
+          }
+          return {}
+        },
       },
     ]
   },
