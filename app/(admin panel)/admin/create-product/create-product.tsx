@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useState, useRef, useEffect } from "react";
-import TextArea from "@/components/ui/textarea";
+import TextArea from "@/components/ui/textArea";
 import Dropdown from "@/components/ui/Dropdown";
 import { toast } from "sonner";
 import { useSubmitProductMutation } from "@/components/products/mutations";
