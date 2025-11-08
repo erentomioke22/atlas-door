@@ -21,11 +21,10 @@ interface PageProps {
 const getProduct = cache(async (name: string, loggedInUserId?: string | null): Promise<ProductLite | null> => {
   try {
     const decodedTitle = decodeURIComponent(name);
-    const product = await prisma.product.findFirst({
+    return await prisma.product.findFirst({
       where: { name: decodedTitle },
       include: getProductDataInclude(loggedInUserId),
     });
-    return product as ProductLite | null;
   } catch (error) {
     console.error('Error fetching product:', error);
     return null;
@@ -167,7 +166,9 @@ const page = async ({ params }:PageProps) => {
           {JSON.stringify(breadcrumbJsonLd)}
         </script>
       </Head>
-      <ProductPage initialProduct={product} session={session}/>
+      <article className='mt-16'>
+       <ProductPage initialProduct={product} session={session}/>
+      </article>
     </>
   );
 };

@@ -1,5 +1,10 @@
-import TiptapTable from '@tiptap/extension-table'
+// import Table from '@tiptap/extension-table'
 
-export const Table = TiptapTable.configure({ resizable: true, lastColumnResizable: false })
+// export const Table = Table.configure({ resizable: true, lastColumnResizable: false })
 
-export default Table
+// export default Table
+import { Table } from '@tiptap/extension-table'
+
+export const CustomTable = Table.configure({ resizable: true, lastColumnResizable: false })
+
+export default CustomTable

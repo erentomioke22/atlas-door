@@ -246,6 +246,7 @@ export const ContentItemMenu = ({ editor, setFiles, files, setValue }: ContentIt
   }
 
   return (
+    <div className="sticky bottom-0 bg-white dark:bg-black w-full p-2">
     <div className="flex gap-2  my-3">
       <div>
         <button
@@ -441,6 +442,7 @@ export const ContentItemMenu = ({ editor, setFiles, files, setValue }: ContentIt
           <Icon name="Redo" />
         </button>
       </div>
+    </div>
     </div>
   );
 };

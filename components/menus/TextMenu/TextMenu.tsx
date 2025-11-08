@@ -2,7 +2,8 @@ import { Icon } from '@/components/ui/Icon'
 import { Toolbar } from '@/components/ui/Toolbar'
 import { useTextmenuCommands } from './hooks/useTextmenuCommands'
 import { useTextmenuStates } from './hooks/useTextmenuStates'
-import { BubbleMenu, Editor } from '@tiptap/react'
+import { Editor } from '@tiptap/react'
+import { BubbleMenu } from '@tiptap/react/menus'
 import { memo } from 'react'
 import * as Popover from '@radix-ui/react-popover'
 import useContentItemActions from "../ContentItemMenu/hooks/useContentItemActions";
@@ -41,28 +42,18 @@ export const TextMenu = ({ editor }: TextMenuProps) => {
   );
   return (
     <BubbleMenu
-    tippyOptions={{
-      popperOptions: {
-        placement: "top-start",
-        modifiers: [
-          {
-            name: "preventOverflow",
-            options: {
-              boundary: "viewport",
-              padding: 8,
-            },
-          },
-          {
-            name: "flip",
-            options: {
-              fallbackPlacements: ["bottom-start", "top-end", "bottom-end"],
-            },
-          },
-        ],
+    options={{
+      placement: "top-start",
+      strategy: "absolute",
+      offset: { mainAxis: 8, crossAxis: 0 },
+      flip: {
+        fallbackPlacements: ["bottom-start", "top-end", "bottom-end"],
       },
-      maxWidth: "calc(100vw - 16px)",
-      duration: 100
+      shift: {
+        padding: 8,
+      },
     }}
+    className="tiptap-bubble-menu"
     editor={editor}
     pluginKey="textMenu"
     shouldShow={states.shouldShow}

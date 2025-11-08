@@ -1,4 +1,4 @@
-import { BubbleMenu as BaseBubbleMenu } from '@tiptap/react'
+import { BubbleMenu as BaseBubbleMenu } from '@tiptap/react/menus'
 import React, { useCallback } from 'react'
 import * as PopoverMenu from '@/components/ui/PopoverMenu'
 
@@ -36,16 +36,26 @@ export const TableRowMenu = React.memo(({ editor, appendTo }: MenuProps) => {
       editor={editor}
       pluginKey="tableRowMenu"
       updateDelay={0}
-      tippyOptions={{
-        appendTo: () => {
-          return appendTo?.current
-        },
-        placement: 'left',
-        offset: [0, 15],
-        popperOptions: {
-          modifiers: [{ name: 'flip', enabled: false }],
+      // tippyOptions={{
+      //   appendTo: () => {
+      //     return appendTo?.current
+      //   },
+      //   placement: 'left',
+      //   offset: [0, 15],
+      //   popperOptions: {
+      //     modifiers: [{ name: 'flip', enabled: false }],
+      //   },
+      // }}
+      options={{
+        placement: "top",
+        strategy: "absolute",
+        offset: { mainAxis: 15, crossAxis: 0 },
+        flip: false,
+        shift: {
+          padding: 8,
         },
       }}
+
       shouldShow={shouldShow}
     >
       <Toolbar.Wrapper isVertical>

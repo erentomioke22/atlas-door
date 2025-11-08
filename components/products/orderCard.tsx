@@ -77,7 +77,7 @@ const OrderCard  : React.FC<OrderLite> = ({ item }) => {
             </div>
 
             <div className="flex gap-2">
-              {item?.color.discount  && item?.color.discount > 0 && (
+              {item?.color.discount !== null  && item?.color.discount > 0 && (
                 <>
                   <span className="text-redorange  text-sm">
                     {formatNumberFa(item?.color?.discount)}% تخفیف

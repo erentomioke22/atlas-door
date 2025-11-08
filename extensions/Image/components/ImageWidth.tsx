@@ -1,5 +1,4 @@
 import { memo, useCallback, useEffect, useState } from 'react'
-import { MdWidthFull } from "react-icons/md";
 import { MdWidthWide } from "react-icons/md";
 import { MdWidthNormal } from "react-icons/md";
 

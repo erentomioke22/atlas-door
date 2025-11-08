@@ -20,7 +20,6 @@ import Conneccted from "@/components/products/Connected";
 import { ProductLite } from "@/components/products/productCard";
 import type { Session } from "@/lib/auth";
 
-// Type definitions
 
 
 interface ProductPageProps {
@@ -104,7 +103,7 @@ const ProductPage: React.FC<ProductPageProps> = ({ initialProduct, session }) =>
   }
 
   return (
-    <div className="px-5 container sm:max-w-xl lg:max-w-4xl xl:max-w-7xl mx-auto space-y-10 md:space-y-20 mt-16 ">
+    <div className="px-5 container sm:max-w-xl lg:max-w-4xl xl:max-w-7xl mx-auto space-y-10 md:space-y-20  ">
       {isLoading ? (
         <PageLoading />
       ) : (
@@ -214,9 +213,9 @@ const ProductPage: React.FC<ProductPageProps> = ({ initialProduct, session }) =>
 
               <div className="flex flex-wrap justify-between gap-2">
                 <p className="my-auto">قيمت</p>
-                <div className="flex flex-col flex-wrap gap-2 text-sm">
+                <div className="flex flex-col flex-wrap gap-2 text-xl">
                   <p className="my-auto "> {currentPriceDiscount} تومان</p>
-                  {currentDiscount && currentDiscount > 0 && (
+                  {currentDiscount !== null && currentDiscount > 0 && (
                     <div className="flex gap-1 text-end ">
                       <p className="line-through  decoration-2 my-auto  text-lfont">
                         {" "}
@@ -260,7 +259,6 @@ const ProductPage: React.FC<ProductPageProps> = ({ initialProduct, session }) =>
                 </div>
               </div>
             </div>
-            <div className="w-full ">
               <EmblaCarousel
                 options={{ loop: false, direction: "rtl" }}
                 dot={true}
@@ -270,7 +268,9 @@ const ProductPage: React.FC<ProductPageProps> = ({ initialProduct, session }) =>
               >
                 {product?.images?.map((image, index) => (
                   <div
-                    className="transform translate-x-0 translate-y-0 translate-z-0  flex-none basis-[100%] h-64 md:h-96  min-w-0 px-4 "
+                    // className="transform translate-x-0 translate-y-0 translate-z-0  flex-none basis-[100%] h-64 md:h-96  min-w-0 pl-2 "
+                            className="transform translate-x-0 translate-y-0 translate-z-0  flex-none basis-[100%] h-64 md:h-96 min-w-0  pl-2 "
+
                     key={index}
                   >
                     <ImageCom
@@ -281,7 +281,6 @@ const ProductPage: React.FC<ProductPageProps> = ({ initialProduct, session }) =>
                   </div>
                 ))}
               </EmblaCarousel>
-            </div>
           </div>
 
           <div

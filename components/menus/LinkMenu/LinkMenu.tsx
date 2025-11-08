@@ -1,5 +1,6 @@
 import React, { useCallback, useState } from 'react'
-import { BubbleMenu as BaseBubbleMenu, useEditorState } from '@tiptap/react'
+import {  useEditorState } from '@tiptap/react'
+import { BubbleMenu as BaseBubbleMenu } from '@tiptap/react/menus'
 
 import { MenuProps } from '../types'
 import { LinkPreviewPanel } from '@/components/panels/LinkPreviewPanel'
@@ -49,17 +50,20 @@ export const LinkMenu = ({ editor, appendTo }: MenuProps) => {
       pluginKey="textMenu"
       shouldShow={shouldShow}
       updateDelay={0}
-      tippyOptions={{
-        popperOptions: {
-          modifiers: [{ name: 'flip', enabled: false }],
-        },
-        appendTo: () => {
-          return appendTo?.current
-        },
-        onHidden: () => {
-          setShowEdit(false)
-        },
-      }}
+      // tippyOptions={{
+      //   popperOptions: {
+      //     modifiers: [{ name: 'flip', enabled: false }],
+      //   },
+      //   appendTo: () => {
+      //     return appendTo?.current
+      //   },
+      //   onHidden: () => {
+      //     setShowEdit(false)
+      //   },
+      // }}
+
+      options={{ placement: 'bottom', flip: true }}
+
     >
       {showEdit ? (
         <LinkEditorPanel initialUrl={link} initialOpenInNewTab={target === '_blank'} onSetLink={onSetLink} />

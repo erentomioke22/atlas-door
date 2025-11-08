@@ -1,4 +1,5 @@
-import { BubbleMenu as BaseBubbleMenu, useEditorState } from "@tiptap/react";
+import { useEditorState } from "@tiptap/react";
+import { BubbleMenu } from '@tiptap/react/menus'
 import React, { useCallback, useRef } from "react";
 import { Instance, sticky } from "tippy.js";
 import { v4 as uuid } from "uuid";
@@ -67,32 +68,42 @@ export const ImageMenu = ({
   })
 
   return (
-    <BaseBubbleMenu
+    <BubbleMenu
       editor={editor}
       pluginKey={`imageBlockMenu-${uuid()}`}
       shouldShow={shouldShow}
       updateDelay={0}
-      tippyOptions={{
-        offset: [0, 8],
-        popperOptions: {
-          modifiers: [{ name: "flip", enabled: false }],
+      // tippyOptions={{
+      //   offset: [0, 8],
+      //   popperOptions: {
+      //     modifiers: [{ name: "flip", enabled: false }],
+      //   },
+      //   getReferenceClientRect,
+      //   onCreate: (instance: Instance) => {
+      //     tippyInstance.current = instance;
+      //   },
+      //   appendTo: () => {
+      //     return appendTo?.current;
+      //   },
+      //   plugins: [sticky],
+      //   sticky: "popper",
+      // }}
+      options={{
+        placement: "top",
+        strategy: "absolute",
+        offset: { mainAxis: 8, crossAxis: 0 },
+        flip: false,
+        shift: {
+          padding: 8,
         },
-        getReferenceClientRect,
-        onCreate: (instance: Instance) => {
-          tippyInstance.current = instance;
-        },
-        appendTo: () => {
-          return appendTo?.current;
-        },
-        plugins: [sticky],
-        sticky: "popper",
       }}
+      
     >
       <Toolbar.Wrapper shouldShowContent={shouldShow()} ref={menuRef}>
         <ImageWidth onChange={onWidthChange} value={width} />
         <ImageAlt onChange={onAltChange} value={altText}/>
       </Toolbar.Wrapper>
-    </BaseBubbleMenu>
+    </BubbleMenu>
   );
 };
 

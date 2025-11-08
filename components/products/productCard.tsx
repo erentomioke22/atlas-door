@@ -50,9 +50,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, draft }) => {
   const [link, setLink] = useState<string>(
     draft ? `/edit-product/${product.name}` : `/products/${product.name}`
   );
-
+  console.log(product)
   const createdAt = moment(product.createdAt, "YYYY-MM-DDTHH:mm:ss.SSSZ").locale("fa");
-  const formattedDate = createdAt.isValid() ? createdAt.fromNow() : "تاریخ نامعتبر";
+  // const formattedDate = createdAt.isValid() ? createdAt.fromNow() : "تاریخ نامعتبر";
 
   return (
     <div className="   sm:w-64   border-2 border-lcard dark:border-dcard rounded-3xl shadow-sm duration-500   max-sm:w-full   py-2 space-y-2 px-3   select-none">
@@ -68,7 +68,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, draft }) => {
             />
             <div className="inset-0 absolute ">
               <div className="flex justify-between m-2">
-                <div>
                   <div className="flex gap-2 backdrop-blur-sm p-2 rounded-lg  bg-white/20">
                     {product?.colors.map((color) => {
                       return (
@@ -80,14 +79,11 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, draft }) => {
                       );
                     })}
                   </div>
-                </div>
-                {product?.colors[0].discount   && product.colors[0].discount > 0 && (
-                  <div>
+                {product?.colors[0].discount !== null && product.colors[0].discount > 1 && (
                     <div className="text-white backdrop-blur-sm p-1.5 rounded-lg  bg-redorange  text-[10px]">
                       {formatNumberFa(product?.colors[0].discount)}%
                     </div>
-                  </div>
-                )}
+                )}  
               </div>
             </div>
           </div>
@@ -106,7 +102,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, draft }) => {
 )}{" "}
             تومان
           </h2>
-          {product?.colors[0].discount   && product?.colors[0].discount > 0 && (
+          {product?.colors[0].discount !== null && product?.colors[0].discount > 0 && (
             <h3 className="line-through text-sm  decoration-2 my-auto text-lfont">
               {formatPriceFa(product?.colors[0].price)}
             </h3>

@@ -1,4 +1,5 @@
-import { BubbleMenu as BaseBubbleMenu, useEditorState } from '@tiptap/react'
+import {useEditorState } from '@tiptap/react'
+import { BubbleMenu as BaseBubbleMenu } from '@tiptap/react/menus'
 import { useCallback } from 'react'
 import { sticky } from 'tippy.js'
 import { v4 as uuid } from 'uuid'
@@ -50,15 +51,24 @@ export const ColumnsMenu = ({ editor, appendTo }: MenuProps) => {
       pluginKey={`columnsMenu-${uuid()}`}
       shouldShow={shouldShow}
       updateDelay={0}
-      tippyOptions={{
-        offset: [0, 8],
-        popperOptions: {
-          modifiers: [{ name: 'flip', enabled: false }],
+      // tippyOptions={{
+      //   offset: [0, 8],
+      //   popperOptions: {
+      //     modifiers: [{ name: 'flip', enabled: false }],
+      //   },
+      //   getReferenceClientRect,
+      //   appendTo: () => appendTo?.current,
+      //   plugins: [sticky],
+      //   sticky: 'popper',
+      // }} 
+      options={{
+        autoPlacement:true,
+        strategy: "absolute",
+        offset: { mainAxis: 8, crossAxis: 0 },
+        flip: true,
+        shift: {
+          padding: 8,
         },
-        getReferenceClientRect,
-        appendTo: () => appendTo?.current,
-        plugins: [sticky],
-        sticky: 'popper',
       }}
     >
       <Toolbar.Wrapper>
