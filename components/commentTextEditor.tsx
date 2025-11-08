@@ -3,12 +3,12 @@
 import { useEditor, EditorContent, type Editor } from '@tiptap/react'
 import { Color } from '@tiptap/extension-color'
 import StarterKit from '@tiptap/starter-kit'
-import TextStyle from '@tiptap/extension-text-style'
+import { TextStyleKit } from '@tiptap/extension-text-style'
 import Highlight from '@tiptap/extension-highlight'
 import Link from '@tiptap/extension-link'
 import Placeholder from '@tiptap/extension-placeholder'
 import React, { forwardRef, useEffect, type ForwardedRef } from 'react'
-import { Emoji } from '@tiptap-pro/extension-emoji'
+import { Emoji } from '@tiptap/extension-emoji'
 import { emojiSuggestion } from '@/extensions'
 
 interface CommentTextEditorProps {
@@ -26,7 +26,7 @@ const CommentTextEditor = forwardRef(function CommentTextEditor(
     extensions: [
       StarterKit,
       Color,
-      TextStyle,
+      TextStyleKit,
       Highlight.configure({ multicolor: true }),
       Link.configure({ openOnClick: false, autolink: true, defaultProtocol: 'https' }),
       Placeholder.configure({ placeholder: 'Write Something ...' }),
