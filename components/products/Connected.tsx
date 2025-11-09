@@ -34,6 +34,7 @@ function Conneccted({ productTitle, productId }: ConnectedProps) {
     },
   });
 
+
   if (status === "success" && products.length === 0) {
     return (
       <p className="text-center text-destructive h-52 flex flex-col justify-center items-center">

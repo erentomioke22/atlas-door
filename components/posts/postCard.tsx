@@ -65,7 +65,7 @@ const PostCard: React.FC<PostCardProps> = ({post,draft}) => {
           className='flex gap-1 sm:gap-2   p-1 text-[10px]   '>
           <div className='relative w-[32px] h-[32px]'>
             {post.user.image === null ?
-              <div className="h-9 w-9 rounded-lg bg-gradient-to-tr from-redorange to-yellow"></div>
+              <div className="h-9 w-9 rounded-lg bg-linear-to-tr from-redorange to-yellow"></div>
               :
               <ImageCom src={post.user.image ?? ""} className='  rounded-lg' alt={`${post?.user?.name} avatar`}/>
             }

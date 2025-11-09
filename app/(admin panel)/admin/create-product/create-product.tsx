@@ -408,7 +408,7 @@ const CreateProduct = ({ session }: { session: Session | null }) => {
   return (
     <div className="container max-w-5xl  xl:max-w-7xl min-h-screen mx-auto px-2 sm:px-5">
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-7">
-        <div className="flex justify-between  w-full sticky top-0 bg-white dark:bg-black z-[10] py-2 ">
+        <div className="flex justify-between  w-full sticky top-0 bg-white dark:bg-black z-10 py-2 ">
           {!cancel ? (
             <>
               <Offcanvas
@@ -450,7 +450,7 @@ const CreateProduct = ({ session }: { session: Session | null }) => {
                     >
                       {productPictures?.map(({ url }, index) => (
                         <div
-                          className="transform translate-x-0 translate-y-0 translate-z-0  flex-none basis-[100%] h-44 min-w-0 pl-2 "
+                          className="transform translate-x-0 translate-y-0 translate-z-0  flex-none basis-full h-44 min-w-0 pl-2 "
                           onClick={() => {
                             setProductThumnail(url);
                           }}
@@ -496,7 +496,7 @@ const CreateProduct = ({ session }: { session: Session | null }) => {
                         </div>
                       ))}
 
-                      <div className="transform translate-x-0 translate-y-0 translate-z-0  flex-none basis-[100%] h-44 min-w-0 pl-4 space-y-2">
+                      <div className="transform translate-x-0 translate-y-0 translate-z-0  flex-none basis-full h-44 min-w-0 pl-4 space-y-2">
                         <input
                           type="file"
                           accept="image/*"
@@ -647,7 +647,7 @@ const CreateProduct = ({ session }: { session: Session | null }) => {
             <div className="flex gap-2">
               <div className="relative h-10 w-10">
                 {session?.user?.image === null ? (
-                  <div className="h-10 w-10 rounded-xl bg-gradient-to-tr from-redorange to-yellow"></div>
+                  <div className="h-10 w-10 rounded-xl bg-linear-to-tr from-redorange to-yellow"></div>
                 ) : (
                   <ImageCom
                     className="rounded-xl h-10 w-10 "

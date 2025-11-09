@@ -72,7 +72,7 @@ function Notifications() {
     <DropDrawer
       title={<IoNotificationsSharp className={(data?.pages[0]?.unreadCount ?? 0) > 0 ? "text-redorange animate-pulse" : ""}  />}
       btnStyle={`  bg-lcard dark:bg-dcard dark:text-white text-lg p-2  rounded-lg text-black`}
-      className={"-right-12 px-3 w-[22rem] max-h-96 overflow-y-scroll"}
+      className={"-right-12 px-3 w-88 max-h-96 overflow-y-scroll"}
     >
       <div className="flex justify-between mb-5">
         <h1 className={" text-xl "}>پيام ها</h1>

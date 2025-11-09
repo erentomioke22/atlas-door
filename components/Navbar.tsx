@@ -17,6 +17,8 @@ import Sign from "./authenticate/sign";
 import { useCart } from '@/hook/useCart';
 import { IoPersonSharp } from "react-icons/io5";
 import { Session } from "@/lib/auth";
+import Button from "./ui/button";
+
 
 const Navbar = ({session}:{session:Session | null}) => {
   const [menu, setMenu] = useState('');
@@ -95,7 +97,6 @@ const Navbar = ({session}:{session:Session | null}) => {
 
 
        <nav className="flex  md:justify-arround bg-white dark:bg-black    justify-between w-full  px-1  lg:px-5 xl:px-14 py-2 border-b-2 border-lcard dark:border-dcard">
-          {/* <div className="flex  bg-white dark:bg-black  bg-opacity-85 dark:bg-opacity-90 justify-between md:justify-arround    px-2 md:px-3 xl-px-5 py-2 h-full"> */}
       
             <div className="flex gap-1">
 
@@ -105,21 +106,19 @@ const Navbar = ({session}:{session:Session | null}) => {
                   btnStyle={"visible lg:hidden  bg-lcard dark:bg-dcard dark:text-white text-lg p-2  rounded-lg text-black"}
                   position={"top-0 right-0"} size={"h-screen max-w-full w-96 border-l-2 border-l-lcard dark:border-l-dcard "} openTransition={"translate-x-0"} closeTransition={"translate-x-full"}  navbarSetIsOpen={setIsOpen} >
                 
-                <button
-                   aria-label="close menu"
-                   title="close menu"
-                   className={" text-lg bg-lcard dark:bg-dcard px-2 py-1  rounded-full border-2 text-lfont "}
+
+                <Button
                    onClick={() => {setClose(!close) ; setMenu('')}}
-                   type="button"
-                          >
-                        <IoClose/>
-                </button>
-      
+                        className="  text-lg bg-lcard dark:bg-dcard px-2 py-1  rounded-full border-2 text-lfont"
+                        type="button"
+                      >
+                        <IoClose />
+                      </Button>
 
 
 
                  <div
-            className={`transition-all   duration-[1200ms]  delay-100 ease-in-out w-full px-3 right-0 ${
+            className={`transition-all   duration-1200  delay-100 ease-in-out w-full px-3 right-0 ${
               isOpen ? "opacity-100 translate-x-0  delay-100 " : "opacity-0 translate-x-full  "
             }`}
           >
@@ -133,10 +132,8 @@ const Navbar = ({session}:{session:Session | null}) => {
                         onClick={() => {
                           setClose(!close);
                         }}
-                        // onClick={()=>menu === item.name ? setMenu('') :setMenu(item.name)}
                         className="text-2xl font-bold text-right  py-2 px-3 hover:bg-lcard hover:dark:bg-dbtn duration-500 rounded-lg capitalize  w-full"
                       >
-                        {/* <FaCaretLeft className="my-auto"/> */}
                         {item.name}
                       </Link>
                   );
@@ -155,18 +152,10 @@ const Navbar = ({session}:{session:Session | null}) => {
 
 
                  </Offcanvas>
-                    {/* {session?.user?.role === 'admin' &&   
-                                  <>
-                                    <div>
-                                  <Profile session={session} />
 
-                                    </div>
-                                  </>
-                    } */}
 
             {!session ? (
                 <div className="my-auto">
-                  {/* "h-9 w-9 rounded-xl bg-gradient-to-tr from-blue to-darkgreen cursor-pointer"*/}
                   <Sign session={session} title={<div className="bg-lcard dark:bg-dcard dark:text-white text-lg p-2  rounded-lg text-black"><IoPersonSharp/></div>}/>
                 </div>
               ) : (
@@ -230,7 +219,6 @@ const Navbar = ({session}:{session:Session | null}) => {
                       key={item.id}
                       href={item.href as any}
                       className={`  duration-300 ${decodeURIComponent(path) === item.href ? 'text-black dark:text-white':'text-lfont hover:text-black dark:hover:text-white'}`}
-                      // onClick={()=>menu === item.name ? setMenu('') :setMenu(item.name)}
                       >
                         {item.name}
                       </Link>                    
@@ -247,7 +235,6 @@ const Navbar = ({session}:{session:Session | null}) => {
               </Link>
             </div>
 
-          {/* </div> */}
          
 
         </nav> 

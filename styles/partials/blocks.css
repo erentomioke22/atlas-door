@@ -4,7 +4,7 @@
     @apply m-0;
 
     img {
-      @apply rounded block w-full ;
+      @apply rounded-sm block w-full ;
     }
   }
 
@@ -54,7 +54,7 @@
     }
 
     > button {
-      @apply bg-transparent border-none cursor-pointer flex items-center justify-center rounded text-xs h-5 w-5 ;
+      @apply bg-transparent border-none cursor-pointer flex items-center justify-center rounded-sm text-xs h-5 w-5 ;
 
       &:hover {
         @apply dark:bg-dbtn bg-lbtn;
@@ -90,7 +90,7 @@
     }
 
     > button {
-      @apply bg-transparent border-none cursor-pointer flex items-center justify-center rounded text-xs h-5 w-5 ;
+      @apply bg-transparent border-none cursor-pointer flex items-center justify-center rounded-sm text-xs h-5 w-5 ;
 
       &:hover {
         @apply dark:bg-dbtn bg-lbtn;

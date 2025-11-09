@@ -30,10 +30,9 @@ const Profile: React.FC<ProfileProps> = ({ session }) => {
       title={
         <div className="relative h-9 w-9">
           {session?.user?.image === null
-            ? <div className="h-9 w-9 rounded-xl bg-gradient-to-tr from-redorange to-yellow"></div>
+            ? <div className="h-9 w-9 rounded-xl bg-linear-to-tr from-redorange to-yellow"></div>
             : <ImageCom
                 className="rounded-xl h-9 w-9 "
-                size={"h-8 w-8"}
                 src={session.user?.image ?? ""}
                 alt={`${session.user?.name ?? "user"} avatar`}
               />
@@ -50,7 +49,7 @@ const Profile: React.FC<ProfileProps> = ({ session }) => {
       <div className=" flex  max-sm:mt-5  p-3   mx-3  rounded-2xl  gap-2 truncate duration-300">
         <div className="relative h-10 w-10">
           {session?.user?.image === null
-            ? <div className="h-10 w-10 rounded-xl bg-gradient-to-tr from-redorange to-yellow"></div>
+            ? <div className="h-10 w-10 rounded-xl bg-linear-to-tr from-redorange to-yellow"></div>
             : <ImageCom
                 className="rounded-xl h-10 w-10 "
                 size={"h-10 w-10"}

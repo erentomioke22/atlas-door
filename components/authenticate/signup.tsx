@@ -154,28 +154,28 @@ console.log(watchedValues)
                     <span
                       className={`rounded-lg h-full w-1/4 transition-opacity ${
                         strength > 0
-                          ? "opacity-100 duration-500 ease-in-out border border-lcard dark:border-dcard  bg-gradient-to-r from-[red]         to-[orangered]"
+                          ? "opacity-100 duration-500 ease-in-out border border-lcard dark:border-dcard  bg-linear-to-r from-[red]         to-[orangered]"
                           : "opacity-20 duration-500 bg-lbtn  border border-lfont "
                       }`}
                     ></span>
                     <span
                       className={`rounded-lg h-full w-1/4 transition-opacity ${
                         strength > 1
-                          ? "opacity-100 duration-500 ease-in-out border border-lcard dark:border-dcard  bg-gradient-to-r from-[orangered]   to-[yellow]"
+                          ? "opacity-100 duration-500 ease-in-out border border-lcard dark:border-dcard  bg-linear-to-r from-[orangered]   to-[yellow]"
                           : "opacity-20 duration-500 bg-lbtn  border border-lfont "
                       }`}
                     ></span>
                     <span
                       className={`rounded-lg h-full w-1/4 transition-opacity ${
                         strength > 2
-                          ? "opacity-100 duration-500 ease-in-out border border-lcard dark:border-dcard  bg-gradient-to-r from-[yellow]      to-[yellowgreen]"
+                          ? "opacity-100 duration-500 ease-in-out border border-lcard dark:border-dcard  bg-linear-to-r from-[yellow]      to-[yellowgreen]"
                           : "opacity-20 duration-500 bg-lbtn  border border-lfont "
                       }`}
                     ></span>
                     <span
                       className={`rounded-lg h-full w-1/4 transition-opacity ${
                         strength > 3
-                          ? "opacity-100 duration-500 ease-in-out border border-lcard dark:border-dcard  bg-gradient-to-r from-[yellowgreen] to-[green]"
+                          ? "opacity-100 duration-500 ease-in-out border border-lcard dark:border-dcard  bg-linear-to-r from-[yellowgreen] to-[green]"
                           : "opacity-20 duration-500 bg-lbtn  border border-lfont "
                       }`}
                     ></span>

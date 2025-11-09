@@ -61,10 +61,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, draft }) => {
         {product?.images[0] && (
           <div className="relative w-full h-36 md:h-40  rounded-3xl ">
             <ImageCom
-              className={"object-cover  rounded-3xl w-full"}
+              className={"object-cover h-36 md:h-40 rounded-3xl w-full"}
               alt={product?.name}
               src={product?.images[0]}
-              size={"h-36 md:h-40"}
             />
             <div className="inset-0 absolute ">
               <div className="flex justify-between m-2">

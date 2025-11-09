@@ -69,7 +69,7 @@
   }
 
   mark {
-    @apply bg-darkgreen rounded decoration-clone text-white p-1  ;
+    @apply bg-darkgreen rounded-sm box-decoration-clone text-white p-1  ;
   }
 
   & img {

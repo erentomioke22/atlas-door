@@ -17,7 +17,7 @@ const ProgressBar = () => {
     }, []);
 
     return (
-        <div className={`h-1 //${scrollPercentage > 98 ? '--bg-black':''} bg-black dark:bg-white  fixed top-0 left-0 w-full z-[9999999999]`} style={{ width: `${scrollPercentage}%` }} />
+        <div className={`h-1 //${scrollPercentage > 98 ? '--bg-black':''} bg-black dark:bg-white  fixed top-0 left-0 w-full z-9999999999`} style={{ width: `${scrollPercentage}%` }} />
     );
 };
 

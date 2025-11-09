@@ -9,8 +9,7 @@ import { useQuery } from "@tanstack/react-query";
 import { IoShareOutline } from "react-icons/io5";
 import { usePathname } from "next/navigation";
 import ImageCom from "@/components/ui/Image";
-import { useRouter } from "next/navigation";
-import { FaArrowLeftLong } from "react-icons/fa6";
+import { FaArrowLeftLong,FaPhone } from "react-icons/fa6";
 import Link from "next/link";
 import { FaEraser } from "react-icons/fa6";
 import EmblaCarousel from "@/components/ui/carousel/carousel";
@@ -41,7 +40,6 @@ const ProductPage: React.FC<ProductPageProps> = ({ initialProduct, session }) =>
 
   const pathName = usePathname();
   const currentUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/${pathName}`;
-  const router = useRouter();
  
   const {
     data: product,
@@ -108,15 +106,20 @@ const ProductPage: React.FC<ProductPageProps> = ({ initialProduct, session }) =>
         <PageLoading />
       ) : (
         <div className="mx-auto w-full space-y-10">
-          <button
-            className={"text-sm px-3  py-1   flex"}
-            onClick={() => router.push("/")}
-            type="button"
-          >
-            بازگشت
-            <FaArrowLeftLong className="my-auto text-lg" />
-          </button>
+              <Link href="/" className="flex text-sm my-auto px-3  py-5  max-sm:mt-5">
+                بازگشت
+                <FaArrowLeftLong className="my-auto " />
+              </Link>
           <div className="flex gap-2 sm:gap-3   my-auto">
+          <a 
+                 href="tel:09901196140" 
+                 onClick={() => { toast.success('شماره کپی شد'); navigator.clipboard.writeText('09901196140') }} 
+                 title="call number"
+                 aria-label="call number"
+                 className="bg-lcard dark:bg-dcard rounded-full p-2 text-sm sm:text-lg"
+                 >
+                    <FaPhone />
+                 </a>
             <div>
               <button
                 aria-label="share product"
@@ -150,7 +153,7 @@ const ProductPage: React.FC<ProductPageProps> = ({ initialProduct, session }) =>
                   قیمت این محصول از {minPrice} تا {maxPrice} تومان میباشد.
                 </p>
               )}
-              <h1 className="text-xl md:text-4xl w-full break-words text-black dark:text-white leading-8 md:leading-[60px]">
+              <h1 className="text-xl md:text-4xl w-full wrap-break-word text-black dark:text-white leading-8 md:leading-[60px]">
                 {product.name}
               </h1>
               <p className="text-lfont ">{product.desc}</p>
@@ -192,10 +195,15 @@ const ProductPage: React.FC<ProductPageProps> = ({ initialProduct, session }) =>
                             name="color"
                             readOnly
                           />
-                          <label
-                            className="flex flex-col  ring-2 ring-lbtn dark:ring-dbtn  outline-none  peer-checked:outline-2 peer-checked:ring-0 cursor-pointer rounded-md sm:rounded-lg duration-300  peer-checked:outline-black peer-checked:border-0 dark:peer-checked:outline-white "
-                            htmlFor={color.name}
-                          >
+<label
+  className="
+    flex flex-col ring-2 ring-lbtn dark:ring-dbtn cursor-pointer 
+    rounded-md sm:rounded-lg duration-300
+      peer-checked:outline-2 peer-checked:outline-offset-2 
+    peer-checked:outline-black peer-checked:ring-0 
+    dark:peer-checked:outline-white peer-checked:scale-110 transition-transform
+  " htmlFor={color.name}
+>
                             <div
                               className="w-5 h-5 sm:w-7  sm:h-7  my-auto rounded-md sm:rounded-lg"
                               style={{ backgroundColor: color.hexCode }}
@@ -268,15 +276,14 @@ const ProductPage: React.FC<ProductPageProps> = ({ initialProduct, session }) =>
               >
                 {product?.images?.map((image, index) => (
                   <div
-                    // className="transform translate-x-0 translate-y-0 translate-z-0  flex-none basis-[100%] h-64 md:h-96  min-w-0 pl-2 "
-                            className="transform translate-x-0 translate-y-0 translate-z-0  flex-none basis-[100%] h-64 md:h-96 min-w-0  pl-2 "
+                      className="transform translate-x-0 translate-y-0 translate-z-0  flex-none basis-full h-64 md:h-96 min-w-0  pl-2 "
 
                     key={index}
                   >
                     <ImageCom
-                      className={`  w-full h-full object-cover rounded-xl`}
+                      className={`basis-full h-64 md:h-96 object-cover rounded-xl`}
                       src={image}
-                      alt={"post thumnail"}
+                      alt={"product thumnail"}
                     />
                   </div>
                 ))}
@@ -284,7 +291,7 @@ const ProductPage: React.FC<ProductPageProps> = ({ initialProduct, session }) =>
           </div>
 
           <div
-            className="content break-words w-full  normal-case leading-relaxed md:text-lg max-md:text-sm  "
+            className="content wrap-break-word w-full  normal-case leading-relaxed md:text-lg max-md:text-sm  "
             dangerouslySetInnerHTML={{ __html: product.content }}
           />
 

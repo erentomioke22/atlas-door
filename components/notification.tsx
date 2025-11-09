@@ -61,7 +61,7 @@ export default function Notification({ notification }: Props) {
           <div className="relative flex h-9 w-9  rounded-lg">
             <div className="relative h-full w-full">
               {notification?.issuer?.image === null ? (
-                <div className="h-9 w-9 rounded-xl bg-gradient-to-tr from-redorange to-yellow"></div>
+                <div className="h-9 w-9 rounded-xl bg-linear-to-tr from-redorange to-yellow"></div>
               ) : (
                 <ImageCom
                   className="rounded-lg h-full w-full "

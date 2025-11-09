@@ -356,7 +356,7 @@ const EditPost: React.FC<EditPostRootProps> = ({ title, session }) => {
   return (
     <div className="container max-w-5xl  xl:max-w-7xl min-h-screen mx-auto px-2 sm:px-5">
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-7">
-        <div className="flex justify-between  w-full sticky top-0 bg-white dark:bg-black z-[10] py-2 ">
+        <div className="flex justify-between  w-full sticky top-0 bg-white dark:bg-black z-10 py-2 ">
           {!cancel ? (
             <>
               <div className="flex gap-2 ">
@@ -452,7 +452,7 @@ const EditPost: React.FC<EditPostRootProps> = ({ title, session }) => {
                           >
                             {files?.map(({ url }, index) => (
                               <div
-                                className="transform translate-x-0 translate-y-0 translate-z-0  flex-none basis-[100%] h-44 min-w-0  pl-2 "
+                                className="transform translate-x-0 translate-y-0 translate-z-0  flex-none basis-full h-44 min-w-0  pl-2 "
                                 onClick={() => {
                                   setThumnailIndex(url);
                                 }}
@@ -482,7 +482,7 @@ const EditPost: React.FC<EditPostRootProps> = ({ title, session }) => {
                           </EmblaCarousel>
                         ) : (
                           <div className="relative block w-full">
-                            <div className="h-full bg-gradient-to-tr p-3 from-lbtn to-lcard dark:from-dbtn dark:to-dcard rounded-xl items-center align-middle justify-center flex flex-col space-y-1 text-lfont text-center">
+                            <div className="h-full bg-linear-to-tr p-3 from-lbtn to-lcard dark:from-dbtn dark:to-dcard rounded-xl items-center align-middle justify-center flex flex-col space-y-1 text-lfont text-center">
                               <div className=" text-lg p-3">
                                 <FaImage />
                               </div>
@@ -561,7 +561,7 @@ const EditPost: React.FC<EditPostRootProps> = ({ title, session }) => {
                           }
                           btnStyle={"text-lg w-full"}
                           className={
-                            "left-0 -top-44 z-[55] h-44 overflow-auto w-62 rounded-lg bg-white border border-lbtn  dark:border-dbtn dark:bg-black"
+                            "left-0 -top-44 z-55 h-44 overflow-auto w-62 rounded-lg bg-white border border-lbtn  dark:border-dbtn dark:bg-black"
                           }
                         >
                           <div className="  text-start px-2 text-sm space-y-2">
@@ -659,7 +659,7 @@ const EditPost: React.FC<EditPostRootProps> = ({ title, session }) => {
             {session && (
               <div className="flex gap-2">
                 {post?.user?.image === null ? (
-                  <div className="h-9 w-9 rounded-lg bg-gradient-to-tr from-redorange to-yellow"></div>
+                  <div className="h-9 w-9 rounded-lg bg-linear-to-tr from-redorange to-yellow"></div>
                 ) : (
                   <div className="relative w-9 h-9">
                     <ImageCom
@@ -672,7 +672,7 @@ const EditPost: React.FC<EditPostRootProps> = ({ title, session }) => {
                 )}
                 <div className="flex flex-col ">
                   <p className=" text-black dark:text-white text-sm">
-                    {session?.user?.name}
+                    {session?.user?.displayName || session?.user?.name}
                   </p>
                   <p className=" text-lfont text-[10px]">
                     {new Date().toLocaleDateString()}

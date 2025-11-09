@@ -73,13 +73,13 @@ const EmblaCarousel = ({children, options, slides, buttons = false, autoScroll =
               <DotButton
                 key={index}
                 onClick={() => onDotButtonClick(index)}
-                className={`w-3 h-3   flex items-center justify-center rounded-lg ${index === selectedIndexDot ? 'bg-black dark:bg-white' : 'bg-lbtn dark:bg-dbtn'}`}
+                className={`w-3 h-3  cursor-pointer flex items-center justify-center rounded-lg ${index === selectedIndexDot ? 'bg-black dark:bg-white' : 'bg-lbtn dark:bg-dbtn'}`}
               />
             ))}
           </div>}
         {autoScroll &&
           <button
-            className="bg-black text-white  dark:bg-white dark:text-black  rounded-full px-3 py-1  text-lg flex justify-start"
+            className="bg-black text-white  dark:bg-white dark:text-black  rounded-full px-3 py-1  text-lg flex justify-start cursor-pointer"
             onClick={toggleAutoplay} type="button">
             {isPlaying ? <BsFillPauseFill/> : <BsFillPlayFill/>}
           </button>

@@ -103,7 +103,7 @@ const Comments: React.FC<CommentsProps> = ({ post , session}) => {
         <button
           aria-label="close button"
           title="close button"
-          className={" text-lg bg-lcard dark:bg-dcard px-2 py-1  rounded-full border-2 text-lfont "}
+          className={" text-lg bg-lcard dark:bg-dcard px-2 py-1  rounded-full border-2 text-lfont cursor-pointer"}
           onClick={() => setClose(!close)}
           type="button"
         >
@@ -165,12 +165,12 @@ const Comments: React.FC<CommentsProps> = ({ post , session}) => {
                         {message
                           ? <div className="flex text-[12px] gap-1 ">
                               <div className="text-redorange my-auto text-nowrap"><p>  ويرايش  پيام : </p></div>
-                              <div className=" break-words w-full  normal-case leading-loose text-lfont line-clamp-1 my-auto" dangerouslySetInnerHTML={{ __html:message }}/>
+                              <div className=" wrap-break-word w-full  normal-case leading-loose text-lfont line-clamp-1 my-auto" dangerouslySetInnerHTML={{ __html:message }}/>
                             </div>
                           : <div className="py-1 px-2  w-full flex items-start gap-1 text-start  ">
                               {replyInfo?.user?.image === null
-                                ? <div className="h-9 w-9 rounded-lg bg-gradient-to-tr from-redorange to-yellow"></div>
-                                : <div className="relative w-9 h-9 overflow-hidden flex-shrink-0 my-auto">
+                                ? <div className="h-9 w-9 rounded-lg bg-linear-to-tr from-redorange to-yellow"></div>
+                                : <div className="relative w-9 h-9 overflow-hidden shrink-0 my-auto">
                                     <ImageCom
                                       className="rounded-lg object-cover absolute inset-0"
                                       src={replyInfo?.user?.image ?? ""}
@@ -183,7 +183,7 @@ const Comments: React.FC<CommentsProps> = ({ post , session}) => {
                                 <div className="flex gap-1 text-[12px] ">
                                   <div className="text-redorange my-auto"><p className=" ">  پاسخ به پيام : </p></div>
                                   <div
-                                    className="break-words normal-case leading-loose  text-lfont line-clamp-1 my-auto"
+                                    className="wrap-break-word normal-case leading-loose  text-lfont line-clamp-1 my-auto"
                                     dangerouslySetInnerHTML={{ __html:replyInfo?.content ?? "" }}
                                   />
                                 </div>
@@ -197,7 +197,7 @@ const Comments: React.FC<CommentsProps> = ({ post , session}) => {
                     }
                     <div className="flex gap-2">
                       {session?.user?.image === null
-                        ? <div className="h-9 w-9 rounded-lg bg-gradient-to-tr from-redorange to-yellow"></div>
+                        ? <div className="h-9 w-9 rounded-lg bg-linear-to-tr from-redorange to-yellow"></div>
                         : <div className="relative h-10 w-10">
                             <ImageCom
                               className="rounded-xl h-10 w-10"

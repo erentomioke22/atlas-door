@@ -144,7 +144,7 @@ const PostList: React.FC = () => {
       <div className="flex justify-between mt-16">
         <h1 className="text-2xl">مقاله ها</h1>
         <button
-          className={"text-sm px-3  py-1    flex"}
+          className={"text-sm px-3  py-1  cursor-pointer  flex"}
           onClick={() => router.push("/")}
           type="button"
         >

@@ -255,7 +255,7 @@ export const ContentItemMenu = ({ editor, setFiles, files, setValue }: ContentIt
             actions.handleAdd;
             setOpen(!open);
           }}
-          className="bg-black  dark:bg-white text-white dark:text-black p-2 rounded-full"
+          className="bg-black  dark:bg-white text-white dark:text-black p-2 rounded-full cursor-pointer"
         >
           {open ? <Icon name="Plus" /> : <Icon name="Plus" />}
         </button>
@@ -286,7 +286,7 @@ export const ContentItemMenu = ({ editor, setFiles, files, setValue }: ContentIt
             <button
               type="button"
               onClick={addVideo}
-              className="bg-black dark:bg-white rounded-lg mt-2 px-3 py-2 w-full  dark:text-black text-white "
+              className="bg-black dark:bg-white rounded-lg mt-2 px-3 py-2 w-full  dark:text-black text-white  cursor-pointer"
             >
               Insert Video
             </button>
@@ -334,7 +334,7 @@ export const ContentItemMenu = ({ editor, setFiles, files, setValue }: ContentIt
                     : onUpload(selectedFile);
                   setOpen(!open);
                 }}
-                className="text-black border-2 rounded-lg px-3 py-1 w-full text-center text-sm dark:border-white etxt-black dark:text-white disabled:cursor-not-allowed"
+                className="text-black border-2 rounded-lg px-3 py-1 w-full text-center text-sm dark:border-white etxt-black dark:text-white disabled:cursor-not-allowed cursor-pointer"
               >
                 {/* {uploadMutation.isPending? <LoadingIcon color={"text-black dark:text-white dark:fill-black fill-white mx-auto"}/>  : "Add Image"} */}
                 Add Image
@@ -349,7 +349,7 @@ export const ContentItemMenu = ({ editor, setFiles, files, setValue }: ContentIt
                   setSelectedImage(null);
                   setSelectedImageUrl(null);
                 }}
-                className="text-black border-2 rounded-lg px-3 py-1 w-full text-center text-sm dark:border-white etxt-black dark:text-white disabled:cursor-not-allowed"
+                className="text-black border-2 rounded-lg px-3 py-1 w-full text-center text-sm dark:border-white etxt-black dark:text-white disabled:cursor-not-allowed cursor-pointer"
                 >
                 Change Image
               </button>
@@ -359,12 +359,12 @@ export const ContentItemMenu = ({ editor, setFiles, files, setValue }: ContentIt
             <div className="space-y-3">
               <button
                 type="button"
-                className="group relative block w-full"
+                className="group relative block w-full cursor-pointer"
                 onClick={() => {
                   fileInputRef.current?.click();
                 }}
               >
-                <div className="h-full bg-gradient-to-tr p-3 from-lbtn to-lcard dark:from-dbtn dark:to-dcard rounded-xl items-center align-middle justify-center flex flex-col space-y-1 text-lfont">
+                <div className="h-full bg-linear-to-tr p-3 from-lbtn to-lcard dark:from-dbtn dark:to-dcard rounded-xl items-center align-middle justify-center flex flex-col space-y-1 text-lfont">
                   <div className="bg-lcard dark:bg-dcard rounded-2xl text-sm p-3">
                     <FiUpload />
                   </div>
@@ -381,7 +381,7 @@ export const ContentItemMenu = ({ editor, setFiles, files, setValue }: ContentIt
                 value={selectedInputImage || ""}
               />
               <button
-                className="bg-black text-white w-full py-2 px-3 dark:bg-white dark:text-black rounded-lg "
+                className="bg-black text-white w-full py-2 px-3 dark:bg-white dark:text-black rounded-lg  cursor-pointer"
                 type="button"
                 onClick={() => {
                   setSelectedImageUrl(selectedInputImage || null);
@@ -406,7 +406,7 @@ export const ContentItemMenu = ({ editor, setFiles, files, setValue }: ContentIt
             <div key={command.iconName}>
               <button
                 type="button"
-                className="p-2 rounded-full border-2 border-black dark:border-white text-black dark:text-white"
+                className="p-2 rounded-full border-2 border-black dark:border-white text-black dark:text-white cursor-pointer"
                 key={`${command.label}`}
                 onClick={() => {
                   command.action(editor);
@@ -424,7 +424,7 @@ export const ContentItemMenu = ({ editor, setFiles, files, setValue }: ContentIt
           type="button"
           onClick={() => editor.chain().focus().undo().run()}
           disabled={!editor.can().chain().focus().undo().run()}
-          className="bg-black  dark:bg-white text-white dark:text-black p-2 rounded-full disabled:cursor-not-allowed disabled:brightness-75"
+          className="bg-black  dark:bg-white text-white dark:text-black p-2 rounded-full disabled:cursor-not-allowed disabled:brightness-75 cursor-pointer"
           aria-label="Undo"
           title="undo"
         >
@@ -435,7 +435,7 @@ export const ContentItemMenu = ({ editor, setFiles, files, setValue }: ContentIt
           type="button"
           onClick={() => editor.chain().focus().redo().run()}
           disabled={!editor.can().chain().focus().redo().run()}
-          className="bg-black  dark:bg-white text-white dark:text-black p-2 rounded-full disabled:cursor-not-allowed disabled:brightness-75"
+          className="bg-black  dark:bg-white text-white dark:text-black p-2 rounded-full disabled:cursor-not-allowed disabled:brightness-75 cursor-pointer"
           aria-label="Redo"
           title="Redo"
         >

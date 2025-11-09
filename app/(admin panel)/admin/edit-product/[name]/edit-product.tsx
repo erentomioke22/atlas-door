@@ -423,7 +423,7 @@ const EditProduct: React.FC<EditProductProps> = ({ name, session }) => {
   return (
     <div className="container max-w-5xl  xl:max-w-7xl min-h-screen mx-auto px-2 sm:px-5">
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-7">
-        <div className="flex justify-between  w-full sticky top-0 bg-white dark:bg-black z-[10] py-2">
+        <div className="flex justify-between  w-full sticky top-0 bg-white dark:bg-black z-10 py-2">
           {!cancel ? (
             <>
               <div className="flex gap-2 ">
@@ -536,7 +536,7 @@ const EditProduct: React.FC<EditProductProps> = ({ name, session }) => {
 
                             return (
                               <div
-                                className="transform translate-x-0 translate-y-0 translate-z-0 flex-none basis-[100%] h-44 min-w-0 pl-2 "
+                                className="transform translate-x-0 translate-y-0 translate-z-0 flex-none basis-full h-44 min-w-0 pl-2 "
                                 onClick={() => setProductThumnail(imageUrl)}
                                 key={index}
                               >
@@ -581,7 +581,7 @@ const EditProduct: React.FC<EditProductProps> = ({ name, session }) => {
                               </div>
                             );
                           })}
-                          <div className="transform translate-x-0 translate-y-0 translate-z-0  flex-none basis-[100%] h-44 min-w-0 pl-4 space-y-2">
+                          <div className="transform translate-x-0 translate-y-0 translate-z-0  flex-none basis-full h-44 min-w-0 pl-4 space-y-2">
                             <input
                               type="file"
                               accept="image/*"
@@ -730,7 +730,7 @@ const EditProduct: React.FC<EditProductProps> = ({ name, session }) => {
             <div className="flex gap-2">
               <div className="relative  w-9 h-9">
                 {product?.seller?.image === null ? (
-                  <div className="h-8 w-8 rounded-lg bg-gradient-to-tr from-redorange to-yellow"></div>
+                  <div className="h-8 w-8 rounded-lg bg-linear-to-tr from-redorange to-yellow"></div>
                 ) : (
                   <ImageCom
                     src={product?.seller?.image}
@@ -741,7 +741,7 @@ const EditProduct: React.FC<EditProductProps> = ({ name, session }) => {
               </div>
               <div className="flex flex-col ">
                 <p className="text-sm ">
-                  {product?.seller.displayName && product?.seller.name}
+                  {product?.seller.displayName || product?.seller.name}
                 </p>
                 <p className=" text-lfont text-[10px] text-start">
                   {new Date().toLocaleDateString()}

@@ -18,7 +18,7 @@ const Accordion: React.FC<AccordionProps> = ({ title, children, menuStyle, btnSt
   return (
     <div className="w-full ">
       <button
-        className={`flex ${btnStyle} justify-between items-center w-full px-2 py-4 focus:outline-none  gap-3  text-right `}
+        className={`flex ${btnStyle} justify-between items-center w-full px-2 py-4 focus:outline-none  gap-3  text-right cursor-pointer`}
         type="button"
         onClick={toggleAccordion}
       >

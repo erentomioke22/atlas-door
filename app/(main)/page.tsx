@@ -78,7 +78,7 @@ function Home() {
     <div className="container max-w-7xl px-5 py-20 mx-auto space-y-20">
       <div className="text-center mx-auto space-y-5">
         <h1 className="leading-normal text-balance text-4xl md:text-[60px] font-semibold tracking-tight">
-          تمرکز ما بر <span className="bg-gradient-to-tr text-clip from-blue to-darkgreen text-transparent bg-clip-text">کیفیت و عملکرد</span> هربار تجربه ای زیبا را تضمین میکند
+          تمرکز ما بر <span className="bg-linear-to-tr text-clip from-blue to-darkgreen text-transparent bg-clip-text">کیفیت و عملکرد</span> هربار تجربه ای زیبا را تضمین میکند
         </h1>
         <h1 className="text-pretty text-lg leading-loose">
           نمايندگی شيشه سكوريت و خام - فروش و ارائه خدمات كركره برقی - فروش و ارائه خدمات انواع درب اتوماتيک - نصب و تعميرانواع پارتيشن های اداری و حمامی و جام بالكن ها 
@@ -104,7 +104,7 @@ function Home() {
       <div className="space-y-10">
         <div className="text-center">
           <h1 className="leading-normal text-balance text-4xl md:text-[60px] font-semibold tracking-tight">
-            <span className="bg-gradient-to-tr text-clip from-blue to-darkgreen text-transparent bg-clip-text">خدمات و محصولات</span> ما برای خدمت به شما مشتریان عزیز
+            <span className="bg-linear-to-tr text-clip from-blue to-darkgreen text-transparent bg-clip-text">خدمات و محصولات</span> ما برای خدمت به شما مشتریان عزیز
           </h1>
         </div>
 
@@ -126,7 +126,7 @@ function Home() {
                     alt={"thumnail Image"} 
                     src={`${process.env.NEXT_PUBLIC_BASE_URL}${project.image}`} 
                   />
-                  <div className="absolute inset-x-0 bottom-0 rounded-b-xl mx-auto py-3 w-full bg-gradient-to-t from-black/75 from-50% to-transparent flex justify-between px-3 items-center">
+                  <div className="absolute inset-x-0 bottom-0 rounded-b-xl mx-auto py-3 w-full bg-linear-to-t from-black/75 from-50% to-transparent flex justify-between px-3 items-center">
                     <h1 className="text-2xl text-white">{project.name}</h1>
                     <button
                        aria-label="right icon" 
@@ -145,7 +145,7 @@ function Home() {
       <div className="space-y-10 relative px-5">
         <div className="text-center">
           <h1 className="text-4xl md:text-[60px] leading-normal text-balance font-semibold tracking-tight">
-            هر چیزی که برای انجام <span className="bg-gradient-to-tr text-clip from-blue to-darkgreen text-transparent bg-clip-text">پروژه</span> هایتان نیاز دارید
+            هر چیزی که برای انجام <span className="bg-linear-to-tr text-clip from-blue to-darkgreen text-transparent bg-clip-text">پروژه</span> هایتان نیاز دارید
           </h1>
         </div>
 

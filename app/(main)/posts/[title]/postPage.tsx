@@ -12,14 +12,12 @@ import ProgressBar from "@/components/ui/progressbar";
 import { IoShareOutline } from "react-icons/io5";
 import { usePathname } from "next/navigation";
 import ImageCom from "@/components/ui/Image";
-import { useRouter } from "next/navigation";
 import { FaArrowLeftLong, FaPhone } from "react-icons/fa6";
 import Link from "next/link";
 import { FaEraser } from "react-icons/fa6";
 import TableOfContents from "@/components/posts/TocPost";
 import { PostLite } from "@/components/posts/postCard";
 import type { Session } from "@/lib/auth";
-
 
 
 
@@ -33,7 +31,6 @@ const PostPage: React.FC<PostPageProps> = ({ initialPost,session }) => {
   const [progress, setProgress] = useState<number>(0);
   const pathName = usePathname();
   const currentUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/${pathName}`;
-  const router = useRouter();
 
   const { data: post, isLoading, status, error } = useQuery<PostLite>({
     queryKey: ["post", initialPost.link],
@@ -87,18 +84,15 @@ const PostPage: React.FC<PostPageProps> = ({ initialPost,session }) => {
           <PageLoading />
         ) : (
           <div className="mx-auto w-full space-y-10">
-            <button
-              className={"text-sm px-3  py-1  max-sm:mt-5 flex"}
-              onClick={() => router.push('/')}
-              type="button"
-            >
-              بازگشت
-              <FaArrowLeftLong className="my-auto text-lg" />
-            </button>
+
+            <Link href="/" className="flex text-sm my-auto  px-3  py-1  max-sm:mt-5">
+                بازگشت
+                <FaArrowLeftLong className="my-auto " />
+              </Link>
             <header className="space-y-5">
               <div className=" space-y-5 md:mt-7">
                 <div className="space-y-3">
-                  <p className="text-xl md:text-4xl w-full break-words text-black dark:text-white leading-8 md:leading-[60px]">
+                  <p className="text-xl md:text-4xl w-full wrap-break-word text-black dark:text-white leading-8 md:leading-[60px]">
                     {post.title}
                   </p>
                   <div className="flex  gap-2">
@@ -118,7 +112,7 @@ const PostPage: React.FC<PostPageProps> = ({ initialPost,session }) => {
                 <div className=' flex gap-1 sm:gap-2  w-fit p-1 text-[10px]   duration-300 rounded-lg truncate'>
                   <div className='relative w-8 h-8'>
                     {post?.user.image === null ? (
-                      <div className="h-9 w-9 rounded-lg bg-gradient-to-tr from-redorange to-yellow"></div>
+                      <div className="h-9 w-9 rounded-lg bg-linear-to-tr from-redorange to-yellow"></div>
                     ) : (
                       <ImageCom
                         src={post?.user?.image ?? ""}
@@ -150,7 +144,7 @@ const PostPage: React.FC<PostPageProps> = ({ initialPost,session }) => {
                     <FaPhone />
                  </a>
                   <div>
-                    <button aria-label="share post" title="share post" className="bg-lcard dark:bg-dcard rounded-full p-2 text-sm sm:text-lg" onClick={copyToClipboard}>
+                    <button aria-label="share post" title="share post" className="bg-lcard dark:bg-dcard rounded-full p-2 text-sm sm:text-lg cursor-pointer" onClick={copyToClipboard}>
                       <IoShareOutline />
                     </button>
                   </div>
@@ -174,7 +168,7 @@ const PostPage: React.FC<PostPageProps> = ({ initialPost,session }) => {
             <div
               id="post-content"
               ref={contentRef}
-              className="content break-words w-full  normal-case leading-relaxed md:text-lg max-md:text-sm  "
+              className="content wrap-break-word w-full  normal-case leading-relaxed md:text-lg max-md:text-sm  "
               dangerouslySetInnerHTML={{ __html: post?.content }}
             />
 

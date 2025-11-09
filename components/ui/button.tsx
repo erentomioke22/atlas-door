@@ -22,7 +22,7 @@ type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
 
 const Button: React.FC<ButtonProps> = ({ children, variant = 'primary', className, ...props }) => {
   const baseStyles =
-    'font-medium transition duration-300 disabled:brightness-90 disabled:cursor-not-allowed'
+    'font-medium transition duration-300 disabled:brightness-90 cursor-pointer disabled:cursor-not-allowed'
 
   const variantStyles: Record<Variant, string> = {
     simple: '',

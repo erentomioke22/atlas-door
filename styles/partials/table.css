@@ -4,7 +4,7 @@
   }
 
   table {
-    @apply border-collapse border-black/10 rounded box-border w-full;
+    @apply border-collapse border-black/10 rounded-sm box-border w-full;
     @apply dark:border-white/20;
 
     td,
@@ -33,7 +33,7 @@
       @apply -bottom-[2px] flex pointer-events-none absolute -right-1 top-0 w-2;
 
       &::before {
-        @apply bg-black/20 h-full w-[1px] ml-2;
+        @apply bg-black/20 h-full w-px ml-2;
         @apply dark:bg-white/20;
         content: '';
       }
@@ -51,7 +51,7 @@
     }
 
     .grip-column {
-      @apply w-[calc(100%+1px)] border-l border-black/20 h-3 left-0 -ml-[1px] -top-3;
+      @apply w-[calc(100%+1px)] border-l border-black/20 h-3 left-0 -ml-px -top-3;
       @apply dark:border-white/20;
 
       &:hover,
@@ -81,7 +81,7 @@
       }
 
       &.selected {
-        @apply bg-black/30 border-black/30 shadow-sm;
+        @apply bg-black/30 border-black/30 shadow-xs;
         @apply dark:bg-white/30 dark:border-white/30;
 
         &::before {
@@ -91,7 +91,7 @@
     }
 
     .grip-row {
-      @apply h-[calc(100%+1px)] border-t border-black/20 -left-3 w-3 top-0 -mt-[1px];
+      @apply h-[calc(100%+1px)] border-t border-black/20 -left-3 w-3 top-0 -mt-px;
       @apply dark:border-white/20;
 
       &:hover,
@@ -120,7 +120,7 @@
       }
 
       &.selected {
-        @apply bg-black/30 border-black/30 shadow-sm;
+        @apply bg-black/30 border-black/30 shadow-xs;
         @apply dark:bg-white/30 dark:border-white/30;
 
         &::before {

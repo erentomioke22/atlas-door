@@ -19,7 +19,6 @@ export async function GET(
       );
     }
 
-    // Fetch similar products based on title, excluding the current product
     const products = await prisma.product.findMany({
       where: {
         AND: [
@@ -29,14 +28,14 @@ export async function GET(
             },
           },
           {
-            OR: [
-              {
-                name: {
-                  contains: productTitle,
-                  mode: "insensitive",
-                },
-              },
-            ],
+            // OR: [
+            //   {
+            //     name: {
+            //       contains: productTitle,
+            //       mode: "insensitive",
+            //     },
+            //   },
+            // ],
           },
         ],
       },

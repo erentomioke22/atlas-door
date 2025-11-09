@@ -45,7 +45,7 @@ const Modal: React.FC<ModalProps> = ({
       </button>
 
       <div
-        className={`fixed inset-0 h-screen transition-opacity  duration-300 ease-in-out z-[99999] ${
+        className={`fixed inset-0 h-screen transition-opacity  duration-300 ease-in-out z-99999 ${
           open
             ? "backdrop-blur-sm  opacity-100 "
             : "pointer-events-none invisible backdrop-blur-0 opacity-0 "
@@ -53,7 +53,7 @@ const Modal: React.FC<ModalProps> = ({
       >
         <div className="fixed inset-0 " onClick={() => setOpen(false)}></div>
         <div className="flex min-h-full items-end justify-center p-2 text-center sm:items-center sm:p-0 z-10 ">
-          <div className=".offcanvas relative space-y-5 transform max-h-128 overflow-auto  w-full  p-3 rounded-3xl bg-gradient-to-tr from-lcard to-lbtn dark:from-dcard dark:to-dbtn dark:bg-black text-left shadow-xl transition-all  sm:w-full sm:max-w-lg my-10">
+          <div className=".offcanvas relative space-y-5 transform max-h-128 overflow-auto  w-full  p-3 rounded-3xl bg-linear-to-tr from-lcard to-lbtn dark:from-dcard dark:to-dbtn dark:bg-black text-left shadow-xl transition-all  sm:w-full sm:max-w-lg my-10">
             <div className="bg-white p-4 dark:bg-black  rounded-3xl">
               <div className="flex justify-between my-5">
                 <div>

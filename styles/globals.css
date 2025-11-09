@@ -1,48 +1,75 @@
-@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,800;1,800&display=swap');
-@import url('https://fonts.cdnfonts.com/css/blanka');
-@import './tiptap.css';
-@import './editor.css';
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,800;1,800&display=swap')
+layer(base);
+@import url('https://fonts.cdnfonts.com/css/blanka') layer(base);
+@import './tiptap.css' layer(base);
+@import './editor.css' layer(base);
+@import 'tailwindcss';
+
+@config '../tailwind.config.ts';
+@import "tailwindcss";
+
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
 
 
-
-
-
-html {
-  scroll-behavior: smooth;
+  button {
+    cursor: pointer;
+  }
+  
+  button:not(:disabled), 
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
 }
 
-@layer components {
+
+
+@layer utilities {
   .tab-focus {
-    @apply outline-none ring-2 ring-blue-500 ring-offset-2 transition-all duration-200;
+    @apply outline-hidden ring-2 ring-blue ring-offset-2 transition-all duration-200;
   }
-}
 
-.tab-panel {
-  transition: all 0.3s ease-in-out;
-}
-
-/* Reduced motion support */
-@media (prefers-reduced-motion: reduce) {
-  * {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-}
-
-
-@layer utilities{
-  .animation-delay-2000{
+  .animation-delay-2000 {
     animation-delay: 2s;
   }
-  .animation-delay-4000{
+
+  .animation-delay-4000 {
     animation-delay: 4s;
   }
-  .animation-delay-6000{
+
+  .animation-delay-6000 {
     animation-delay: 6s;
+  }
+}
+
+@layer utilities {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@layer utilities {
+  .tab-panel {
+    transition: all 0.3s ease-in-out;
+  }
+
+  /* Reduced motion support */
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
   }
 } 
 
@@ -71,8 +98,15 @@ input::-webkit-inner-spin-button {
   margin: 0;
 }
 
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 /* Firefox */
 input[type=number] {
   -moz-appearance: textfield;
+  appearance: textfield;
 }
-
