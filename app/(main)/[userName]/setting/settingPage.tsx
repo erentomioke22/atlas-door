@@ -241,7 +241,7 @@ export default function SettingPage({ session }: { session: Session | null }) {
       <div className="flex justify-between text-lg ">
         <h1 className="text-2xl">تنظيمات</h1>
         <button
-          className={"text-sm px-3  py-1  cursor-pointer  flex"}
+          className={"text-sm px-3  py-1 flex"}
           onClick={() => router.push("/")}
           type="button"
         >

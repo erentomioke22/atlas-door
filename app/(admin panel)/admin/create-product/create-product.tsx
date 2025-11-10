@@ -486,7 +486,7 @@ const CreateProduct = ({ session }: { session: Session | null }) => {
                             </button>
 
                             {url === productThumnail && (
-                              <div className="absolute inset-0 bg-black bg-opacity-50 rounded-xl flex items-center justify-center">
+                              <div className="absolute inset-0 bg-black opacity-50 rounded-xl flex items-center justify-center">
                                 <h1>
                                   <FaCheck className="text-5xl text-white" />
                                 </h1>
@@ -645,13 +645,12 @@ const CreateProduct = ({ session }: { session: Session | null }) => {
         <div className="space-y-4 py-10">
           {session && (
             <div className="flex gap-2">
-              <div className="relative h-10 w-10">
+              <div className="relative h-9 w-9">
                 {session?.user?.image === null ? (
-                  <div className="h-10 w-10 rounded-xl bg-linear-to-tr from-redorange to-yellow"></div>
+                  <div className="h-9 w-9 rounded-xl bg-linear-to-tr from-redorange to-yellow"></div>
                 ) : (
                   <ImageCom
-                    className="rounded-xl h-10 w-10 "
-                    size={"h-10 w-10"}
+                    className="rounded-xl h-9 w-9 "
                     src={session?.user?.image ?? ""}
                     alt={`${
                       session.user?.displayName || session?.user?.name

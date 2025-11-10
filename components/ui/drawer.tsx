@@ -101,7 +101,7 @@ const Drawer: React.FC<DrawerProps> = ({
         {header && (
           <div className={`flex justify-between items-center px-4 ${headerStyle}`}>
             {header}
-            <button onClick={() => setIsOpen(false)} className="p-2 cursor-pointer" aria-label='close button'>
+            <button onClick={() => setIsOpen(false)} className="p-2" aria-label='close button'>
               <IoClose className="text-2xl" />
             </button>
           </div>

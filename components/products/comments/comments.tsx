@@ -103,7 +103,7 @@ const Comments: React.FC<CommentsProps> = ({product,session}) => {
         <button
           aria-label="close button"
           title="close button"
-          className={" text-lg bg-lcard dark:bg-dcard px-2 py-1  rounded-full border-2 text-lfont cursor-pointer"}
+          className={" text-lg bg-lcard dark:bg-dcard px-2 py-1  rounded-full border-2 text-lfont"}
           onClick={() => setClose(!close)}
           type="button"
         >

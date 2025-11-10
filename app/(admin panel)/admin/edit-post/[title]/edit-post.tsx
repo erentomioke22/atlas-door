@@ -470,7 +470,7 @@ const EditPost: React.FC<EditPostRootProps> = ({ title, session }) => {
                                     alt={" post thumnail"}
                                   />
                                   {url === thumnailIndex && (
-                                    <div className="absolute  inset-0 top-0 right-0  text-5xl text-white bg-black bg-opacity-50  rounded-xl flex items-center justify-center">
+                                    <div className="absolute  inset-0 top-0 right-0  text-5xl text-white bg-black opacity-50  rounded-xl flex items-center justify-center">
                                       <h1>
                                         <FaCheck />
                                       </h1>
@@ -499,21 +499,20 @@ const EditPost: React.FC<EditPostRootProps> = ({ title, session }) => {
                         )}
                       </div>
                       <p className="text-sm">Title , Tags & desc </p>
-                      <div>
-                        <TextArea
-                          placeholder={"Write Your Post Title ..."}
-                          // name={"title"}
-                          // type={"text"}
-                          // ref={register}
-                          {...register("title")}
-                          label={false}
-                          className={
-                            "resize-none  bg-lcard dark:bg-dcard rounded-lg placeholder:text-[#000000a4] dark:placeholder:text-lfont text-lg  p-2 focus:ring-2 focus:ring-black dark:focus:ring-white outline-none duration-200"
-                          }
-                          error={errors?.title?.message}
-                        />
-                      </div>
 
+                      <Controller
+  name="title"
+  control={control}
+  render={({ field }) => (
+    <TextArea
+      {...field}
+      placeholder={"Write Your Post Title ..."}
+      className={
+        "resize-none  bg-lcard dark:bg-dcard rounded-lg placeholder:text-[#000000a4] dark:placeholder:text-lfont text-lg  p-2 focus:ring-2 focus:ring-black dark:focus:ring-white outline-none duration-200"
+      }
+    />
+  )}
+/>
                       <div>
                         <TextArea
                           placeholder={"Write Your Post Description ..."}
@@ -659,11 +658,11 @@ const EditPost: React.FC<EditPostRootProps> = ({ title, session }) => {
             {session && (
               <div className="flex gap-2">
                 {post?.user?.image === null ? (
-                  <div className="h-9 w-9 rounded-lg bg-linear-to-tr from-redorange to-yellow"></div>
+                  <div className="h-9 w-9 rounded-xl bg-linear-to-tr from-redorange to-yellow"></div>
                 ) : (
                   <div className="relative w-9 h-9">
                     <ImageCom
-                      className="rounded-lg h-9 w-9 "
+                      className="rounded-xl h-9 w-9 "
                       size={"h-9 w-9"}
                       src={post?.user.image}
                       alt={`${post?.user?.name} avatar`}
@@ -681,20 +680,19 @@ const EditPost: React.FC<EditPostRootProps> = ({ title, session }) => {
               </div>
             )}
 
-            <div>
-              <textarea
-                placeholder={"Write Your Post Title ..."}
-                name="title"
-                // type="text"
-                className={
-                  "resize-none  bg-transparent   text-2xl  focus:ring-none focus:outline-none ring-0 w-full  border-0 placeholder-black dark:placeholder-white px-2.5"
-                }
-                onChange={(e) => {
-                  setValue("title", e.target.value);
-                }}
-                value={getValues("title")}
-              />
-            </div>
+<Controller
+  name="title"
+  control={control}
+  render={({ field }) => (
+    <textarea
+      {...field}
+      placeholder={"Write Your Post Title ..."}
+      className={
+        "resize-none bg-transparent text-2xl focus:ring-none focus:outline-none ring-0 w-full border-0 placeholder-black dark:placeholder-white px-2.5"
+      }
+    />
+  )}
+/>
 
             <Controller
               name="content"

@@ -49,7 +49,7 @@ const Dropdown: React.FC<DropdownProps> = ({ children, title, close, className, 
       <button
         onClick={() => setIsOpen(!isOpen)}
         type="button"
-        className={`${btnStyle} focus:outline-none cursor-pointer disabled:cursor-not-allowed`}
+        className={`${btnStyle} focus:outline-none disabled:cursor-not-allowed`}
         disabled={disabled}
       >
         {title}

@@ -58,7 +58,7 @@ const Comment: React.FC<CommentProps> = ({
   return (
     <div className="comment w-full  space-y-3 py-5" id={id}>
       {parent &&
-        <button className="cursor-pointer py-1 px-2 bg-lcard dark:bg-dcard rounded-xl w-full flex items-start gap-1 text-start border border-lbtn" onClick={()=>scrollToComment(parent?.id)}>
+        <button className="py-1 px-2 bg-lcard dark:bg-dcard rounded-xl w-full flex items-start gap-1 text-start border border-lbtn" onClick={()=>scrollToComment(parent?.id)}>
           {user?.image === null
             ? <div className="h-9 w-9 rounded-lg bg-linear-to-tr from-redorange to-yellow"></div>
             : <div className="relative w-9 h-9 overflow-hidden shrink-0 my-auto">
@@ -134,7 +134,7 @@ const Comment: React.FC<CommentProps> = ({
                     </button>
                   </>
                 : <div className="space-y-3">
-                    <button onClick={()=>{setShowReport(false)}} className="flex cursor-pointer" type="button">
+                    <button onClick={()=>{setShowReport(false)}} className="flex" type="button">
                       بازگشت
                       <FaArrowLeftLong className="my-auto text-sm"/>
                     </button>

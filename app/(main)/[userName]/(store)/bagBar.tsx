@@ -17,7 +17,7 @@ const BagBar = ({session}:{session:Session | null}) => {
       <div className="flex justify-between text-lg my-5">
         <h1 className="text-2xl">سفارشات</h1>
         <button
-          className={"text-sm px-3  py-1  cursor-pointer  flex"}
+          className={"text-sm px-3  py-1  flex"}
           onClick={() => router.push('/')}
           type="button"
         >

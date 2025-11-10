@@ -1,91 +1,3 @@
-// import { Icon } from '@/components/ui/Icon'
-// import { Toolbar } from '@/components/ui/Toolbar'
-// import DragHandle from '@tiptap-pro/extension-drag-handle-react'
-// import { Editor } from '@tiptap/react'
-
-// import * as Popover from '@radix-ui/react-popover'
-// import { Surface } from '@/components/ui/Surface'
-// import { DropdownButton } from '@/components/ui/Dropdown'
-// import useContentItemActions from './hooks/useContentItemActions'
-// import { useData } from './hooks/useData'
-// import { useEffect, useState } from 'react'
-
-// export type ContentItemMenuProps = {
-//   editor: Editor
-// }
-
-// export const ContentItemMenu = ({ editor }: ContentItemMenuProps) => {
-//   const [menuOpen, setMenuOpen] = useState(false)
-//   const data = useData()
-//   const actions = useContentItemActions(editor, data.currentNode, data.currentNodePos)
-
-//   useEffect(() => {
-//     if (menuOpen) {
-//       editor.commands.setMeta('lockDragHandle', true)
-//     } else {
-//       editor.commands.setMeta('lockDragHandle', false)
-//     }
-//   }, [editor, menuOpen])
-
-//   return (
-//     <DragHandle
-//       pluginKey="ContentItemMenu"
-//       editor={editor}
-//       onNodeChange={data.handleNodeChange}
-//       tippyOptions={{
-//         offset: [-2, 16],
-//         zIndex: 99,
-//       }}
-//     >
-//       <div className="flex items-center gap-0.5">
-//         <Toolbar.Button onClick={actions.handleAdd}>
-//           <Icon name="Plus" />
-//         </Toolbar.Button>
-//         <Popover.Root open={menuOpen} onOpenChange={setMenuOpen}>
-//           <Popover.Trigger asChild>
-//             <Toolbar.Button>
-//               <Icon name="GripVertical" />
-//             </Toolbar.Button>
-//           </Popover.Trigger>
-//           <Popover.Content side="bottom" align="start" sideOffset={8}>
-//             <Surface className="p-2 flex flex-col min-w-[16rem]">
-//               <Popover.Close>
-//                 <DropdownButton onClick={actions.resetTextFormatting}>
-//                   <Icon name="RemoveFormatting" />
-//                   Clear formatting
-//                 </DropdownButton>
-//               </Popover.Close>
-//               <Popover.Close>
-//                 <DropdownButton onClick={actions.copyNodeToClipboard}>
-//                   <Icon name="Clipboard" />
-//                   Copy to clipboard
-//                 </DropdownButton>
-//               </Popover.Close>
-//               <Popover.Close>
-//                 <DropdownButton onClick={actions.duplicateNode}>
-//                   <Icon name="Copy" />
-//                   Duplicate
-//                 </DropdownButton>
-//               </Popover.Close>
-//               <Toolbar.Divider horizontal />
-//               <Popover.Close>
-//                 <DropdownButton
-//                   onClick={actions.deleteNode}
-//                   className="text-red-500 bg-red-500 dark:text-red-500 hover:bg-red-500 dark:hover:text-red-500 dark:hover:bg-red-500 bg-opacity-10 hover:bg-opacity-20 dark:hover:bg-opacity-20"
-//                 >
-//                   <Icon name="Trash2" />
-//                   Delete
-//                 </DropdownButton>
-//               </Popover.Close>
-//             </Surface>
-//           </Popover.Content>
-//         </Popover.Root>
-//       </div>
-//     </DragHandle>
-//   )
-// }
-
-
 import { Icon } from "@/components/ui/Icon";
 import useContentItemActions from "./hooks/useContentItemActions";
 import { useData } from "./hooks/useData";
@@ -170,7 +82,6 @@ export const ContentItemMenu = ({ editor, setFiles, files, setValue }: ContentIt
       // height: Math.max(180, parseInt(height, 10)) || 480,
       // })
       editor.chain().focus().setIframe({ src: videoUrl || "" }).run();
-      // editor.chain().focus().insertContent(`<iframe src="${videoUrl}" width="640" height="360" frameborder="0"></iframe>`).run();
       setVideoUrl("");
       // setShowVideoInput(false);
     }
@@ -182,7 +93,6 @@ export const ContentItemMenu = ({ editor, setFiles, files, setValue }: ContentIt
         // handleImageUpload(file)
         const url = URL.createObjectURL(file);
         setFileError("");
-        // editor.chain().focus().setImage({ src: url }).run()
         editor
           .chain()
           .focus()
@@ -255,7 +165,7 @@ export const ContentItemMenu = ({ editor, setFiles, files, setValue }: ContentIt
             actions.handleAdd;
             setOpen(!open);
           }}
-          className="bg-black  dark:bg-white text-white dark:text-black p-2 rounded-full cursor-pointer"
+          className="bg-black  dark:bg-white text-white dark:text-black p-2 rounded-full"
         >
           {open ? <Icon name="Plus" /> : <Icon name="Plus" />}
         </button>
@@ -286,7 +196,7 @@ export const ContentItemMenu = ({ editor, setFiles, files, setValue }: ContentIt
             <button
               type="button"
               onClick={addVideo}
-              className="bg-black dark:bg-white rounded-lg mt-2 px-3 py-2 w-full  dark:text-black text-white  cursor-pointer"
+              className="bg-black dark:bg-white rounded-lg mt-2 px-3 py-2 w-full  dark:text-black text-white"
             >
               Insert Video
             </button>
@@ -334,7 +244,7 @@ export const ContentItemMenu = ({ editor, setFiles, files, setValue }: ContentIt
                     : onUpload(selectedFile);
                   setOpen(!open);
                 }}
-                className="text-black border-2 rounded-lg px-3 py-1 w-full text-center text-sm dark:border-white etxt-black dark:text-white disabled:cursor-not-allowed cursor-pointer"
+                className="text-black border-2 rounded-lg px-3 py-1 w-full text-center text-sm dark:border-white etxt-black dark:text-white disabled:cursor-not-allowed"
               >
                 {/* {uploadMutation.isPending? <LoadingIcon color={"text-black dark:text-white dark:fill-black fill-white mx-auto"}/>  : "Add Image"} */}
                 Add Image
@@ -349,7 +259,7 @@ export const ContentItemMenu = ({ editor, setFiles, files, setValue }: ContentIt
                   setSelectedImage(null);
                   setSelectedImageUrl(null);
                 }}
-                className="text-black border-2 rounded-lg px-3 py-1 w-full text-center text-sm dark:border-white etxt-black dark:text-white disabled:cursor-not-allowed cursor-pointer"
+                className="text-black border-2 rounded-lg px-3 py-1 w-full text-center text-sm dark:border-white etxt-black dark:text-white disabled:cursor-not-allowed"
                 >
                 Change Image
               </button>
@@ -359,7 +269,7 @@ export const ContentItemMenu = ({ editor, setFiles, files, setValue }: ContentIt
             <div className="space-y-3">
               <button
                 type="button"
-                className="group relative block w-full cursor-pointer"
+                className="group relative block w-full"
                 onClick={() => {
                   fileInputRef.current?.click();
                 }}
@@ -381,7 +291,7 @@ export const ContentItemMenu = ({ editor, setFiles, files, setValue }: ContentIt
                 value={selectedInputImage || ""}
               />
               <button
-                className="bg-black text-white w-full py-2 px-3 dark:bg-white dark:text-black rounded-lg  cursor-pointer"
+                className="bg-black text-white w-full py-2 px-3 dark:bg-white dark:text-black rounded-lg"
                 type="button"
                 onClick={() => {
                   setSelectedImageUrl(selectedInputImage || null);
@@ -406,7 +316,7 @@ export const ContentItemMenu = ({ editor, setFiles, files, setValue }: ContentIt
             <div key={command.iconName}>
               <button
                 type="button"
-                className="p-2 rounded-full border-2 border-black dark:border-white text-black dark:text-white cursor-pointer"
+                className="p-2 rounded-full border-2 border-black dark:border-white text-black dark:text-white"
                 key={`${command.label}`}
                 onClick={() => {
                   command.action(editor);
@@ -424,7 +334,7 @@ export const ContentItemMenu = ({ editor, setFiles, files, setValue }: ContentIt
           type="button"
           onClick={() => editor.chain().focus().undo().run()}
           disabled={!editor.can().chain().focus().undo().run()}
-          className="bg-black  dark:bg-white text-white dark:text-black p-2 rounded-full disabled:cursor-not-allowed disabled:brightness-75 cursor-pointer"
+          className="bg-black  dark:bg-white text-white dark:text-black p-2 rounded-full disabled:cursor-not-allowed disabled:brightness-75"
           aria-label="Undo"
           title="undo"
         >
@@ -435,7 +345,7 @@ export const ContentItemMenu = ({ editor, setFiles, files, setValue }: ContentIt
           type="button"
           onClick={() => editor.chain().focus().redo().run()}
           disabled={!editor.can().chain().focus().redo().run()}
-          className="bg-black  dark:bg-white text-white dark:text-black p-2 rounded-full disabled:cursor-not-allowed disabled:brightness-75 cursor-pointer"
+          className="bg-black  dark:bg-white text-white dark:text-black p-2 rounded-full disabled:cursor-not-allowed disabled:brightness-75"
           aria-label="Redo"
           title="Redo"
         >

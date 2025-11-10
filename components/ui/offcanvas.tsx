@@ -44,7 +44,7 @@ const Offcanvas: React.FC<OffcanvasProps> = ({
   return (
     <div>
       <div className="w-full">
-        <button type="button" className={`${btnStyle} cursor-pointer`} onClick={() => setIsOpen(!isOpen)} disabled={disabled}>
+        <button type="button" className={btnStyle} onClick={() => setIsOpen(!isOpen)} disabled={disabled}>
           {title}
         </button>
       </div>

@@ -133,7 +133,7 @@ const ProductList: React.FC = () => {
         <h1 className="text-2xl">فروشگاه</h1>
 
         <button
-          className={"text-sm px-3  py-1  cursor-pointer  flex"}
+          className={"text-sm px-3  py-1 flex"}
           onClick={() => router.push("/")}
           type="button"
         >

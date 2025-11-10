@@ -412,12 +412,12 @@ const CreatePost = ({ session }: { session: Session | null }) => {
                               } rounded-xl w-full h-44 relative cursor-pointer`}
                             >
                               <ImageCom
-                                className={`  w-full h-full object-cover rounded-xl`}
+                                className={`w-full h-full object-cover rounded-xl`}
                                 src={`${url}`}
                                 alt={"post thumnail"}
                               />
                               {url === thumnailIndex && (
-                                <div className="absolute  inset-0 top-0 right-0  text-5xl text-white bg-black bg-opacity-50  rounded-xl flex items-center justify-center">
+                                <div className="absolute  inset-0 top-0 right-0  text-5xl text-white bg-black opacity-50  rounded-xl flex items-center justify-center">
                                   <h1>
                                     <FaCheck />
                                   </h1>
@@ -597,12 +597,11 @@ const CreatePost = ({ session }: { session: Session | null }) => {
           {session && (
             <div className="flex gap-2">
               {session?.user?.image === null ? (
-                <div className="h-9 w-9 rounded-lg bg-linear-to-tr from-redorange to-yellow"></div>
+                <div className="h-9 w-9 rounded-xl bg-linear-to-tr from-redorange to-yellow"></div>
               ) : (
                 <div className="relative h-9 w-9">
                   <ImageCom
-                    className="rounded-lg h-9 w-9 "
-                    size={"h-9 w-9"}
+                    className="rounded-xl h-9 w-9 "
                     src={session?.user?.image ?? ""}
                     alt={`${
                       session.user?.displayName || session?.user?.name || ""

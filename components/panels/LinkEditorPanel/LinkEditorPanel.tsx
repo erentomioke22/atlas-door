@@ -107,7 +107,7 @@ export const LinkEditorPanel = ({ onSetLink, initialOpenInNewTab, initialUrl } :
             onChange={onChange}
           />
         </label>
-        <button className='bg-transparent text-sm text-white border-2  px-2 py-2  cursor-pointer rounded-lg  dark:text-black disabled:brightness-75 disabled:cursor-not-allowed'  type="button" aria-label='set link' onClick={handleSubmit} 
+        <button className='bg-transparent text-sm text-white border-2  px-2 py-2  rounded-lg  dark:text-black disabled:brightness-75 disabled:cursor-not-allowed'  type="button" aria-label='set link' onClick={handleSubmit} 
         // disabled={!isValidUrl}
         >
           <FaCheck/>

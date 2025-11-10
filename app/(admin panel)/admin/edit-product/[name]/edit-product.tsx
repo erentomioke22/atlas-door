@@ -571,7 +571,7 @@ const EditProduct: React.FC<EditProductProps> = ({ name, session }) => {
                                   </button>
 
                                   {isSelected && (
-                                    <div className="absolute inset-0 bg-black bg-opacity-50 rounded-xl flex items-center justify-center">
+                                    <div className="absolute inset-0 bg-black opacity-50 rounded-xl flex items-center justify-center">
                                       <h1>
                                         <FaCheck className="text-5xl text-white" />
                                       </h1>
@@ -730,11 +730,11 @@ const EditProduct: React.FC<EditProductProps> = ({ name, session }) => {
             <div className="flex gap-2">
               <div className="relative  w-9 h-9">
                 {product?.seller?.image === null ? (
-                  <div className="h-8 w-8 rounded-lg bg-linear-to-tr from-redorange to-yellow"></div>
+                  <div className="h-9 w-9 rounded-xl bg-linear-to-tr from-redorange to-yellow"></div>
                 ) : (
                   <ImageCom
                     src={product?.seller?.image}
-                    className="h-9 w-9 rounded-lg"
+                    className="h-9 w-9 rounded-xl"
                     alt=""
                   />
                 )}

@@ -144,7 +144,7 @@ const PostPage: React.FC<PostPageProps> = ({ initialPost,session }) => {
                     <FaPhone />
                  </a>
                   <div>
-                    <button aria-label="share post" title="share post" className="bg-lcard dark:bg-dcard rounded-full p-2 text-sm sm:text-lg cursor-pointer" onClick={copyToClipboard}>
+                    <button aria-label="share post" title="share post" className="bg-lcard dark:bg-dcard rounded-full p-2 text-sm sm:text-lg" onClick={copyToClipboard}>
                       <IoShareOutline />
                     </button>
                   </div>

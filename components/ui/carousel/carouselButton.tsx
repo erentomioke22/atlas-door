@@ -42,7 +42,7 @@ export const PrevButton = (props: NavButtonProps) => {
 
   return (
     <button
-      className="bg-black text-white  dark:bg-white dark:text-black  rounded-full px-3 py-1 cursor-pointer text-lg disabled:cursor-not-allowed "
+      className="bg-black text-white  dark:bg-white dark:text-black  rounded-full px-3 py-1 text-lg disabled:cursor-not-allowed "
       type="button"
       {...restProps}
     >
@@ -57,7 +57,7 @@ export const NextButton = (props: NavButtonProps) => {
 
   return (
     <button
-      className="bg-black text-white  dark:bg-white dark:text-black  rounded-full px-3 py-1 cursor-pointer text-lg disabled:cursor-not-allowed "
+      className="bg-black text-white  dark:bg-white dark:text-black  rounded-full px-3 py-1 text-lg disabled:cursor-not-allowed "
       type="button"
       {...restProps}
     >

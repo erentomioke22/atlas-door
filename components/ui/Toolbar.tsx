@@ -63,7 +63,7 @@ const ToolbarButton = forwardRef<HTMLButtonElement, ToolbarButtonProps>(
     const buttonClass = cn('gap-1 min-w-8 px-2 w-auto', className)
 
     const buttonClassName = cn(
-      'flex group items-center justify-center border border-transparent gap-2 text-sm font-semibold rounded-md disabled:opacity-50 whitespace-nowrap cursor-pointer',
+      'flex group items-center justify-center border border-transparent gap-2 text-sm font-semibold rounded-md disabled:opacity-50 whitespace-nowrap ',
       variant === 'ghost' &&
         cn(
           'bg-transparent border-transparent ',

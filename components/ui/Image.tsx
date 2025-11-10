@@ -40,13 +40,22 @@ const ImageCom: React.FC<ImageComProps> = ({ src, alt, className }) => {
         className={`${className} transition-opacity duration-500 select-none pointer-events-none ${loading || error ? 'opacity-0' : 'opacity-100'} `}
         loader={imageLoader}
       />
-      <div className={` ${loading || error ? 'animate-pulse' : ''}`}>
-        {loading || error && (
-          <div className={`${className}  flex items-center justify-center bg-lbtn dark:bg-dbtn w-full `}></div>
-        )}
-      </div>
+
+      {(loading || error) && (
+        <div 
+          className={`${className}  absolute inset-0 flex items-center justify-center bg-lbtn dark:bg-dbtn ${
+            loading ? 'animate-pulse' : ''
+          }`}
+        >
+          {error && (
+            <p className="text-[10px] text-center text-lfont underline">
+              مشکلی در بارگذاری تصویر وجود دارد!
+            </p>
+          )}
+        </div>
+      )}
     </>
   )
 }
 
-export default ImageCom
+export default ImageCom;
