@@ -322,7 +322,7 @@ export default function AdminStorePage({session}:{session:Session | null}) {
                   }
                 }}
                 title="حذف سفارش"
-                className="px-3 py-1 text-redorange border-2 rounded-full bg-transparent text-sm "
+                className="px-3 py-1 text-redorange border-2 border-current rounded-full bg-transparent text-sm "
                 disabled={deleteOrder.isPending}
               >
                 {deleteOrder.isPending ? (

@@ -12,7 +12,7 @@ import { useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
 import ImageCom from "@/components/ui/Image";
 import ProductCard, { ProductLite } from "@/components/products/productCard";
-import { LuShieldCheck, LuHammer, LuTimer, LuBadgeDollarSign } from "react-icons/lu";
+import { LuShieldCheck, LuHammer, LuTimer, LuBadgeDollarSign , LuBaggageClaim ,LuCircleCheckBig  } from "react-icons/lu";
 
 interface Project {
   name: string;
@@ -75,37 +75,56 @@ function Home() {
   };
 
   return (
-    <div className="container max-w-7xl px-5 py-20 mx-auto space-y-20">
-      <div className="text-center mx-auto space-y-5">
-        <h1 className="leading-normal text-balance text-4xl md:text-[60px] font-semibold tracking-tight">
-          تمرکز ما بر <span className="bg-linear-to-tr text-clip from-blue to-darkgreen text-transparent bg-clip-text">کیفیت و عملکرد</span> هربار تجربه ای زیبا را تضمین میکند
-        </h1>
-        <h1 className="text-pretty text-lg leading-loose">
-          نمايندگی شيشه سكوريت و خام - فروش و ارائه خدمات كركره برقی - فروش و ارائه خدمات انواع درب اتوماتيک - نصب و تعميرانواع پارتيشن های اداری و حمامی و جام بالكن ها 
-        </h1>
-        <h3 className="text-pretty text-md text-lfont">
-          قدرت محصولات با کیفیت مارا که برای عملکرد زیبا در طول زمان طراحی شده اند ; تجربه کنید .
-        </h3>
+    <div className="container max-w-2xl lg:max-w-7xl px-5 py-20 mx-auto space-y-20">
 
-        <div className="flex justify-center gap-3">
-          <a 
-            href="tel:09901196140" 
-            onClick={handlePhoneClick}
-            className="bg-black px-10 text-center py-2 text-white dark:bg-white dark:text-black rounded-full"
-          >
-            تماس
-          </a>
-          <Link href="/posts" className="bg-lcard dark:bg-dcard rounded-lg py-2 px-5">
-            مقاله ها
-          </Link>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+        <div className="text-center lg:text-start mx-auto space-y-5">
+          <h4 className="leading-normal text-balance text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight">
+            تمرکز ما بر <span className="bg-linear-to-tr text-clip from-blue to-darkgreen text-transparent bg-clip-text">کیفیت و عملکرد</span> هربار تجربه ای زیبا را تضمین میکند
+          </h4>
+          <h1 className="text-pretty text-base md:text-lg leading-loose">
+            نمايندگی شيشه سكوريت و خام - فروش و ارائه خدمات كركره برقی - فروش و ارائه خدمات انواع درب های اتوماتيک - نصب و تعمير انواع شيشه های سكوريت ، نرده های شيشه ای ، پارتيشن های اداری ، حمام شیشه ای و جام بالكن ها 
+          </h1>
+           <div className="flex flex-wrap gap-3 text-center justify-center lg:justify-start text-sm lg:text-base">
+            <div className="flex gap-1">
+              <LuCircleCheckBig className="text-darkgreen text-lg my-auto"/>
+              <p className="text-lfont">پروژه های انجام شده : </p>
+              <span>+ ۱۰۰۰</span>
+            </div>
+            <div className="flex gap-1">
+              <LuBaggageClaim className="text-blue text-lg my-auto"/>
+              <p className="text-lfont">محصولات و خدمات : </p>
+              <span>+ ۱۰</span>
+            </div>
+           </div>
+  
+          <div className="flex justify-center lg:justify-start gap-3">
+            <a 
+              href="tel:09901196140" 
+              onClick={handlePhoneClick}
+              className="bg-black px-10 text-center py-2 text-white dark:bg-white dark:text-black rounded-full"
+            >
+              تماس
+            </a>
+            <Link href="/posts" className="bg-lcard dark:bg-dcard rounded-lg py-2 px-5">
+              مقاله ها
+            </Link>
+          </div>
+        </div >
+        <div className="relative  w-full h-64 sm:h-96 lg:h-full ">
+            <ImageCom 
+                    className='object-cover rounded-xl w-full h-full'
+                    alt={"thumnail Image"} 
+                    src={'/images/balcony/media_20241118_121418_7608682146116698746.jpg'} 
+                  />
         </div>
       </div>
 
       <div className="space-y-10">
         <div className="text-center">
-          <h1 className="leading-normal text-balance text-4xl md:text-[60px] font-semibold tracking-tight">
+          <h4 className="leading-normal text-balance text-4xl md:text-[60px] font-semibold tracking-tight">
             <span className="bg-linear-to-tr text-clip from-blue to-darkgreen text-transparent bg-clip-text">خدمات و محصولات</span> ما برای خدمت به شما مشتریان عزیز
-          </h1>
+          </h4>
         </div>
 
         <EmblaCarousel 
@@ -121,10 +140,9 @@ function Home() {
               <Link href={project.url as any}>
                 <div className="relative w-full h-[200px] md:h-[250px]">
                   <ImageCom 
-                    className='object-cover rounded-xl w-full'
-                    size={'h-[200px] md:h-[250px]'}
+                    className='object-cover h-[200px] md:h-[250px] rounded-xl w-full'
                     alt={"thumnail Image"} 
-                    src={`${process.env.NEXT_PUBLIC_BASE_URL}${project.image}`} 
+                    src={project.image} 
                   />
                   <div className="absolute inset-x-0 bottom-0 rounded-b-xl mx-auto py-3 w-full bg-linear-to-t from-black/75 from-50% to-transparent flex justify-between px-3 items-center">
                     <h1 className="text-2xl text-white">{project.name}</h1>
@@ -144,9 +162,9 @@ function Home() {
 
       <div className="space-y-10 relative px-5">
         <div className="text-center">
-          <h1 className="text-4xl md:text-[60px] leading-normal text-balance font-semibold tracking-tight">
+          <h4 className="text-4xl md:text-[60px] leading-normal text-balance font-semibold tracking-tight">
             هر چیزی که برای انجام <span className="bg-linear-to-tr text-clip from-blue to-darkgreen text-transparent bg-clip-text">پروژه</span> هایتان نیاز دارید
-          </h1>
+          </h4>
         </div>
 
         <div className="grid gap-4 lg:grid-cols-3 lg:grid-rows-2">
@@ -154,7 +172,7 @@ function Home() {
             <LuBadgeDollarSign className="text-4xl max-lg:mx-auto"/>
             <p className="text-2xl">قیمت</p>
             <p className="text-lfont">
-              خريد محصولات و دريافت خدمات با رقابتي ترين قيمت بازار
+              خريد محصولات و دريافت خدمات با رقابتی ترين قيمت بازار
             </p>
           </div>
           
@@ -162,15 +180,15 @@ function Home() {
             <LuHammer className="text-4xl max-lg:mx-auto"/>
             <p className="mt-2 text-2xl">عملکرد</p>
             <p className="text-lfont">
-              عملکرد بالا در مدت زمان طولاني را با محصولات ما تجربه کنید
+            قدرت محصولات با کیفیت مارا که برای عملکرد زیبا در طول زمان طراحی شده اند ؛ تجربه کنید .
             </p>
           </div>
 
           <div className="px-8 py-5 lg:row-span-2 space-y-3 hover:bg-lcard dark:hover:bg-dcard duration-200 rounded-xl max-lg:text-center">
             <LuShieldCheck className="text-4xl max-lg:mx-auto"/>
-            <p className="mt-2 text-2xl">امنیت</p>
+            <p className="mt-2 text-2xl">استاندارد</p>
             <p className="text-lfont">
-              امنیت را در خرید محصولات و خدمات ما تجربه کنید
+              استاندارد را در خرید محصولات و خدمات ما تجربه کنید
             </p>
           </div>
 
@@ -178,7 +196,7 @@ function Home() {
             <LuTimer className="text-4xl max-lg:mx-auto"/>
             <p className="mt-2 text-2xl">زمان</p>
             <p className="text-lfont">
-              تمامی خدمات ما در کمترین زمان ممکن به مشتری ارائه میشوند
+              تمامی خدمات ما در کمترین زمان ممکن به مشتری ها ارائه میشوند
             </p>
           </div>
         </div>

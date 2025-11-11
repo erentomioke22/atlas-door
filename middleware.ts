@@ -16,12 +16,10 @@ export async function middleware(request: NextRequest) {
 
   const isAdminRoute = pathname.startsWith('/admin') || ADMIN_PATHS.includes(lastSegment);
   const isProtectedRoute = PROTECTED_PATHS.includes(lastSegment);
-  // پردازش مسیرهای ادمین
   if (isAdminRoute) {
     return handleAdminRoutes(request, session);
   }
 
-  // پردازش مسیرهای محافظت شده
   if (isProtectedRoute) {
     return handleProtectedRoutes(request, session, routeUserName,lastSegment);
   }
@@ -29,7 +27,6 @@ export async function middleware(request: NextRequest) {
   return NextResponse.next();
 }
 
-// هندلر مخصوص مسیرهای ادمین
 function handleAdminRoutes(request: NextRequest, session: any) {
   if (!session) {
     return NextResponse.redirect(new URL("/not-found", request.url));
@@ -42,13 +39,11 @@ function handleAdminRoutes(request: NextRequest, session: any) {
   return NextResponse.next();
 }
 
-// هندلر مخصوص مسیرهای محافظت شده
 function handleProtectedRoutes(request: NextRequest, session: any, routeUserName: string,lastSegment:string) {
   if (!session) {
     return NextResponse.redirect(new URL("/not-found", request.url));
   }
 
-  // بررسی تطابق userName
   if (routeUserName && routeUserName !== session.user.name) {
     return NextResponse.redirect(new URL(`/${session.user.name}/${lastSegment}`, request.url));
   }

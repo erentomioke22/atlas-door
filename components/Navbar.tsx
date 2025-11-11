@@ -229,7 +229,7 @@ const Navbar = ({session}:{session:Session | null}) => {
             <div>
               <Link
                 href="/"
-                className="font-blanka text-md text-lfont hover:dark:text-white hover:text-black duration-300"
+                className="font-blanka font-bold text-md text-lfont hover:dark:text-white hover:text-black duration-300"
               >
                 ATLAS DOOR
               </Link>

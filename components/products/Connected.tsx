@@ -52,8 +52,6 @@ function Conneccted({ productTitle, productId }: ConnectedProps) {
   }
 
   return (
-    <div className="px-7 space-y-5">
-
       <EmblaCarousel options={{ loop: false, dragFree: true, direction: 'rtl' }} dot={false} autoScroll={false}>
         {status === "pending" &&
           Array(10)
@@ -77,7 +75,6 @@ function Conneccted({ productTitle, productId }: ConnectedProps) {
           </div>
         ))}
       </EmblaCarousel>
-    </div>
   );
 }
 

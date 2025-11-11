@@ -79,13 +79,13 @@ const PostPage: React.FC<PostPageProps> = ({ initialPost,session }) => {
   return (
     <>
       <ProgressBar />
-      <div className="px-5 container sm:max-w-4xl xl:max-w-6xl  mx-auto space-y-10 md:space-y-20">
+      <div className="px-5 container sm:max-w-4xl xl:max-w-6xl  mx-auto ">
         {!post && isLoading ? (
           <PageLoading />
         ) : (
-          <div className="mx-auto w-full space-y-10">
+          <div className="flex flex-col gap-7">
 
-            <Link href="/" className="flex text-sm my-auto  px-3  py-1  max-sm:mt-5">
+            <Link href="/" className="flex text-sm ">
                 بازگشت
                 <FaArrowLeftLong className="my-auto " />
               </Link>

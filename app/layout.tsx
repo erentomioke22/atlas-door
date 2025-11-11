@@ -7,26 +7,49 @@ import { GoogleTagManager } from "@next/third-parties/google";
 import NextTopLoader from "nextjs-toploader";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { ThemeProvider } from "next-themes";
+import { Inter, Rubik } from 'next/font/google'
+import localFont from 'next/font/local'
 
+
+
+const inter = Inter({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-inter',
+})
+
+const rubik = Rubik({
+  subsets: ['latin'],
+  display: 'swap', 
+  variable: '--font-rubik',
+  weight:"800"
+})
+
+const blanka = localFont({
+  src: '../public/fonts/Blanka-Regular.otf',
+  variable: '--font-blanka',
+})
 
 
 export const metadata: Metadata = {
   metadataBase: new URL(`${process.env.NEXT_PUBLIC_BASE_URL}`),
+  // title: {
+  //   default: "Atlas Door | 0990-119-6140 | اطلس در  | 55589837-021",
+  //   template: "%s - 0990-119-6140 | اطلس در | 55589837-021",
+  // },
   title: {
-    default: "Atlas Door | 0990-119-6140 | اطلس در  | 55589837-021",
+    default: "اطلس در - نمايندگی شيشه سكوريت و خام - فروش و ارائه خدمات كركره برقی - فروش و ارائه خدمات انواع درب هاي اتوماتيک - نصب و تعمير انواع شيشه هاي سكوريت ، نرده هاي شيشه اي ، پارتيشن های اداری ، حمامی و جام بالكن ها ",
     template: "%s - 0990-119-6140 | اطلس در | 55589837-021",
   },
-  description:
-    "نمایندگی شیشه سکوریت و فروش محصولات کرکره برقی و درب اتوماتیک ونصب انواع پارتیشن و جام بالکن ها",
+  description: "نمايندگی شيشه سكوريت و خام - فروش و ارائه خدمات كركره برقی - فروش و ارائه خدمات انواع درب هاي اتوماتيک - نصب و تعمير انواع شيشه هاي سكوريت ، نرده هاي شيشه اي ، پارتيشن های اداری ، حمامی و جام بالكن ها ",
   keywords:
     "کرکره برقی,درب اتوماتیک,جام باکن,پارتیشن شیشه ای,پارتیشن حمامی,پارتیشن حمومی, پارتیشن,موتور درب اتوماتیک,موتور کرکره برقی,سکوریت شیشه",
   twitter: {
     card: "summary_large_image",
   },
   openGraph: {
-    title: " اطلس در | 2121295-021",
-    description:
-      "نمایندگی شیشه سکوریت و فروش محصولات کرکره برقی و درب اتوماتیک ونصب انواع پارتیشن و جام بالکن ها",
+    title: "اطلس در - نمايندگی شيشه سكوريت و خام - فروش و ارائه خدمات كركره برقی - فروش و ارائه خدمات انواع درب هاي اتوماتيک - نصب و تعمير انواع شيشه هاي سكوريت ، نرده هاي شيشه اي ، پارتيشن های اداری ، حمامی و جام بالكن ها ",
+    description: "نمايندگی شيشه سكوريت و خام - فروش و ارائه خدمات كركره برقی - فروش و ارائه خدمات انواع درب هاي اتوماتيک - نصب و تعمير انواع شيشه هاي سكوريت ، نرده هاي شيشه اي ، پارتيشن های اداری ، حمامی و جام بالكن ها ",
     type: "website",
     locale: "fa_IR",
     url: `${process.env.NEXT_PUBLIC_BASE_URL}`,
@@ -55,8 +78,7 @@ const RootLayout = ({ children }: RootLayoutProps) => {
     "@context": "https://schema.org",
     "@type": "WebSite",
     name: "Atlas Door",
-    description:
-      "نمایندگی شیشه سکوریت و فروش محصولات کرکره برقی و درب اتوماتیک ونصب انواع پارتیشن و جام بالکن ها",
+    description: "نمايندگی شيشه سكوريت و خام - فروش و ارائه خدمات كركره برقی - فروش و ارائه خدمات انواع درب های اتوماتيک - نصب و تعمير انواع شيشه های سكوريت ، نرده های شيشه ای ، پارتيشن های اداری ، حمام شیشه ای و جام بالكن ها ",
     url: baseUrl,
     sameAs: [
       "https://www.facebook.com/AtlasDoor",
@@ -66,14 +88,14 @@ const RootLayout = ({ children }: RootLayoutProps) => {
   };
 
   return (
-    <html lang="fa" dir="rtl" suppressHydrationWarning>
+    <html lang="fa" dir="rtl" className={`${inter.variable} ${rubik.variable} ${blanka.variable}`} suppressHydrationWarning>
       <head>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className="font-Rubik font-bold bg-[#ffffff] text-[#1f2937] dark:bg-[#1d232a] dark:text-white" suppressHydrationWarning>
+      <body className="font-rubik  bg-white text-[#1f2937] dark:bg-black dark:text-white" suppressHydrationWarning>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

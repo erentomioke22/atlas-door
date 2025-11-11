@@ -11,14 +11,14 @@ const Footer: React.FC = () => {
 <footer className="container max-w-7xl mx-auto  text-lfont pt-16 ">
   <div className='flex max-md:flex-col md:justify-between  px-5 max-md:space-y-5 md:space-x-5 my-10 '>
     <div className=''>
-    <Link href="/" className="font-blanka hover:text-black dark:hover:text-white duration-500 text-xl">
+    <Link href="/" className="font-blanka font-bold hover:text-black dark:hover:text-white duration-500 text-xl">
     <h1>
 		  ATLAS DOOR
     </h1>
     </Link>
       <div  className=" text-[10px] md:text-[10px]  mt-3 space-x-3 flex">
         <p>تمامی حقوق شما در سایت ما محفوظ است</p>
-        <span>© 1381 <span className='font-blanka'>ATLAS DOOR™</span></span> 
+        <span>© 1381 <span className='font-blanka font-bold'>ATLAS DOOR™</span></span> 
       {/* <Link href="privacy-policy">Privay</Link>
       <Link href="privacy-policy">Terms</Link>
       <Link href="privacy-policy">Cookies</Link> */}

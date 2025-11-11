@@ -35,7 +35,7 @@ function ResetPasswordUI({ token }: ResetPasswordUIProps) {
   return (
     <div className="w-full space-y-6">
       <div className="space-y-2 text-center">
-      <h1  className="font-blanka text-2xl ">
+      <h1  className="font-blanka font-bold text-2xl ">
          ATLAS DOOR
         </h1>
         <h1 className="text-xl font-semibold">بازنشانی رمز</h1>

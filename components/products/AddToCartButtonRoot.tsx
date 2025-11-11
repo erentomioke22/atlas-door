@@ -86,7 +86,7 @@ export default function AddToCartButton({
     return (
       <button
         onClick={handleAddToCart}
-        className={`text-sm rounded-full px-3 py-2 bg-black text-white dark:bg-white dark:text-black border-2 ${className}`}
+        className={`text-sm rounded-full px-3 py-2 bg-black text-white dark:bg-white dark:text-black border-2 border-current ${className}`}
       >
         افزودن به سبد
       </button>
@@ -97,7 +97,7 @@ export default function AddToCartButton({
     <div className="flex items-center gap-2 ">
       <button
         onClick={handleRemoveFromCart}
-        className="p-2 rounded-full text-red border-2 bg-transparent text-sm"
+        className="p-2 rounded-full text-red border-2 border-current bg-transparent text-sm"
       >
         حذف از سبد خرید
       </button>

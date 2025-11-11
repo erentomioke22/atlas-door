@@ -101,12 +101,12 @@ const ProductPage: React.FC<ProductPageProps> = ({ initialProduct, session }) =>
   }
 
   return (
-    <div className="px-5 container sm:max-w-xl lg:max-w-4xl xl:max-w-7xl mx-auto space-y-10 md:space-y-20  ">
+    <div className="px-5 container sm:max-w-xl lg:max-w-4xl xl:max-w-7xl mx-auto  ">
       {isLoading ? (
         <PageLoading />
       ) : (
-        <div className="mx-auto w-full space-y-10">
-              <Link href="/" className="flex text-sm my-auto px-3  py-5  max-sm:mt-5">
+        <div className="flex flex-col gap-5">
+              <Link href="/" className="flex text-sm ">
                 بازگشت
                 <FaArrowLeftLong className="my-auto " />
               </Link>
@@ -146,6 +146,9 @@ const ProductPage: React.FC<ProductPageProps> = ({ initialProduct, session }) =>
             </div>
           </div>
 
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+            <div className="space-y-10 md:space-y-12">
           <div className=" space-y-5 md:mt-7">
             <div className="space-y-3">
               {minPrice !== maxPrice && (
@@ -156,12 +159,9 @@ const ProductPage: React.FC<ProductPageProps> = ({ initialProduct, session }) =>
               <h1 className="text-xl md:text-4xl w-full wrap-break-word text-black dark:text-white leading-8 md:leading-[60px]">
                 {product.name}
               </h1>
-              <p className="text-lfont ">{product.desc}</p>
+              {/* <p className="text-lfont ">{product.desc}</p> */}
             </div>
           </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-            <div className="space-y-10 md:space-y-12">
               <div className="flex justify-between gap-2">
                 <div className="flex gap-3 flex-wrap">
                   {product?.colors
@@ -195,15 +195,15 @@ const ProductPage: React.FC<ProductPageProps> = ({ initialProduct, session }) =>
                             name="color"
                             readOnly
                           />
-<label
-  className="
-    flex flex-col ring-2 ring-lbtn dark:ring-dbtn cursor-pointer 
-    rounded-md sm:rounded-lg duration-300
-      peer-checked:outline-2 peer-checked:outline-offset-2 
-    peer-checked:outline-black peer-checked:ring-0 
-    dark:peer-checked:outline-white peer-checked:scale-110 transition-transform
-  " htmlFor={color.name}
->
+                           <label
+                             className="
+                               flex flex-col ring-2 ring-lbtn dark:ring-dbtn cursor-pointer 
+                               rounded-md sm:rounded-lg duration-300
+                                 peer-checked:outline-2 peer-checked:outline-offset-2 
+                               peer-checked:outline-black peer-checked:ring-0 
+                               dark:peer-checked:outline-white peer-checked:scale-110 transition-transform
+                             " htmlFor={color.name}
+                           >
                             <div
                               className="w-5 h-5 sm:w-7  sm:h-7  my-auto rounded-md sm:rounded-lg"
                               style={{ backgroundColor: color.hexCode }}
@@ -268,7 +268,7 @@ const ProductPage: React.FC<ProductPageProps> = ({ initialProduct, session }) =>
               </div>
             </div>
               <EmblaCarousel
-                options={{ loop: false, direction: "rtl" }}
+                options={{ loop: false, direction: "rtl", }}
                 dot={true}
                 buttons={true}
                 autoScroll={false}
@@ -276,8 +276,7 @@ const ProductPage: React.FC<ProductPageProps> = ({ initialProduct, session }) =>
               >
                 {product?.images?.map((image, index) => (
                   <div
-                      className="transform translate-x-0 translate-y-0 translate-z-0  flex-none basis-full h-64 md:h-96 min-w-0  pl-2 "
-
+                      className="transform translate-x-0 translate-y-0 translate-z-0  flex-none basis-full h-64 md:h-96 min-w-0"
                     key={index}
                   >
                     <ImageCom
@@ -295,7 +294,7 @@ const ProductPage: React.FC<ProductPageProps> = ({ initialProduct, session }) =>
             dangerouslySetInnerHTML={{ __html: product.content }}
           />
 
-          <div className="   space-y-10 ">
+          <div className="space-y-10 ">
             <div>
               <h1 className="text-lg sm:text-xl text-lfont">
                 <span className="text-2xl sm:text-4xl text-black dark:text-white uppercase">

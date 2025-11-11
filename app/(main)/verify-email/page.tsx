@@ -88,7 +88,7 @@ export default async function VerifyEmailPage() {
     <main className="flex min-h-svh items-center justify-center px-4   container max-w-xl   mx-auto text-center">
       <div className="space-y-6">
         <div className="space-y-2">
-        <h1  className="font-blanka text-2xl ">
+        <h1  className="font-blanka font-bold text-2xl ">
          ATLAS DOOR
         </h1>
           <h1 className="text-xl font-semibold">ایمیل خود را تایید کنید</h1>
