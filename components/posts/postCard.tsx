@@ -27,8 +27,8 @@ interface TagLite {
 
 export interface PostLite {
   id: string;
-  link: string;
   title: string;
+  slug: string;
   desc?: string | null;
   content: string;
   images: string[];
@@ -48,7 +48,7 @@ interface PostCardProps {
 }
 
 const PostCard: React.FC<PostCardProps> = ({post,draft}) => {
-  const [link,setLink]=useState<string>(draft ? `/edit-post/${post.link}` :`/posts/${post.link}`)
+  const [link,setLink]=useState<string>(draft ? `/edit-post/${post.slug}` :`/posts/${post.slug}`)
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(link);
@@ -77,7 +77,7 @@ const PostCard: React.FC<PostCardProps> = ({post,draft}) => {
         </div>
         <div className='my-auto'>
           {/* {session?.user?.role === 'admin' ? 
-            <Link href={`/admin/edit-post/${post.link}`}
+            <Link href={`/admin/edit-post/${post.slug}`}
               className='text-[10px]  text-lfont' >
               Edit Post
             </Link>

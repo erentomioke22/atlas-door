@@ -4,6 +4,8 @@ import { prisma } from "@/utils/database";
 import { getPostDataInclude } from "@/lib/types";
 import { getServerSession } from "@/lib/get-session";
 import { utapi } from "@/server/uploadthing";
+import { generateSlug, getUniqueSlug } from "@/lib/slug-utils";
+
 
 type SubmitPostValues = {
   title: string;
@@ -19,19 +21,16 @@ export async function submitPost(values: SubmitPostValues) {
     const session = await getServerSession();
     if (!session) throw new Error("Unauthorized");
 
-    const existPost = await prisma.post.findMany({
-      where: {
-        title: values.title,
-        userId: session?.user?.id,
-      },
-    });
-    if (existPost.length >= 1) {
-      throw new Error("محصولی با این نام وجود دارد");
-    }
-
-    let sanitizedTitle = values.title.replace(/\s+/g, "-").toLowerCase();
-    const randomString = Math.random().toString(36).substring(2, 12);
-    sanitizedTitle += `_${randomString}`;
+    const baseSlug = generateSlug(values.title, false);
+    const uniqueSlug = await getUniqueSlug(
+      baseSlug,
+      async (slug) => {
+        const existing = await prisma.post.findFirst({
+          where: { slug }
+        });
+        return !!existing;
+      }
+    );
 
     const tags =
       values.tags?.filter((tag): tag is string => tag !== undefined) || [];
@@ -47,7 +46,7 @@ export async function submitPost(values: SubmitPostValues) {
     const newPost = await prisma.post.create({
       data: {
         title: values.title,
-        link: sanitizedTitle,
+        slug: uniqueSlug,
         desc: values.desc,
         images: values.images,
         content: values.content as any,
@@ -99,9 +98,19 @@ export async function editPost(values: EditPostValues) {
     const session = await getServerSession();
     if (!session) throw new Error("Unauthorized");
 
-    let sanitizedTitle = values.title.replace(/\s+/g, "-").toLowerCase();
-    const randomString = Math.random().toString(36).substring(2, 12);
-    sanitizedTitle += `_${randomString}`;
+    const baseSlug = generateSlug(values.title, false);
+    const uniqueSlug = await getUniqueSlug(
+      baseSlug,
+      async (slug) => {
+        const existing = await prisma.post.findFirst({
+          where: { 
+            slug,
+            NOT: { id: values.postId }
+          }
+        });
+        return !!existing;
+      }
+    );
 
     const tags =
       values.tags?.filter((tag): tag is string => tag !== undefined) || [];
@@ -127,7 +136,7 @@ export async function editPost(values: EditPostValues) {
       where: { id: values.postId },
       data: {
         title: values.title,
-        link: sanitizedTitle,
+        slug: uniqueSlug,
         desc: values.desc,
         images: values.images,
         content: values.content as any,

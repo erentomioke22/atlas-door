@@ -25,6 +25,7 @@ interface OrderItem {
   product: {
     id: string;
     name: string;
+    slug: string;
     images: string[];
   };
   color: {
@@ -231,7 +232,7 @@ console.log(data)
                     )}
 
                     <Link
-                      href={`/products/${item?.product.name}`}
+                      href={`/products/${item?.product.slug}`}
                       className="flex flex-col justify-between h-full space-y-1"
                     >
                       <div className="space-y-1 text-wrap">

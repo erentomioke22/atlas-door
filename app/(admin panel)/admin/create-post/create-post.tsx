@@ -100,15 +100,20 @@ const CreatePost = ({ session }: { session: Session | null }) => {
       const filesData: File[] = files
         .map(({ file }) => {
           if (file && typeof file !== "string") {
-            const extension = file.name.split(".").pop();
+            // const extension = file.name.split(".").pop();
+            // `post_${crypto.randomUUID()}.${extension}.webp`
+            const originalName = file.name;
+            const nameWithoutExt = originalName.replace(/\.[^/.]+$/, "");
             return new File(
               [file],
-              `post_${crypto.randomUUID()}.${extension}.webp`
+              `post-${nameWithoutExt.toLowerCase().replace(/[^a-z0-9]/g, '-')}-${crypto.randomUUID()}.webp`,
+              { type: 'image/webp' }
             );
           }
           return null;
         })
         .filter((f): f is File => f !== null);
+
 
       let finalImages: string[] = [];
 

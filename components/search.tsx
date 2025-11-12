@@ -14,7 +14,7 @@ import type { Session } from "@/lib/auth";
 // API response types
 interface PostSearchItem {
   id: string;
-  link: string;
+  slug: string;
   title: string;
   images: string[];
   user: {
@@ -26,6 +26,7 @@ interface PostSearchItem {
 interface ProductSearchItem {
   id: string;
   name: string;
+  slug: string;
   images: string[];
   seller: {
     name?: string | null;
@@ -130,7 +131,7 @@ const Search: React.FC<SearchProps> = ({ session }) => {
             :
             <>
               {data?.posts?.map((post) => (
-                <Link href={`/posts/${post?.link}`} key={post?.id}>
+                <Link href={`/posts/${post?.slug}`} key={post?.id}>
                   <div className="p-2 w-full mx-auto ">
                     <div className=' flex gap-2'>
                       <div className="relative w-[40px] h-[40px]">
@@ -147,7 +148,7 @@ const Search: React.FC<SearchProps> = ({ session }) => {
               ))}
 
               {data?.products?.map((product) => (
-                <Link href={`/products/${product?.name}`} key={product?.id}>
+                <Link href={`/products/${product?.slug}`} key={product?.id}>
                   <div className="p-2 w-full mx-auto ">
                     <div className=' flex gap-2'>
                       <div className="relative w-[40px] h-[40px]">

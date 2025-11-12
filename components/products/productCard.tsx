@@ -20,6 +20,7 @@ export interface ProductColorLite {
 export interface ProductLite {
   id: string;
   name: string;
+  slug: string;
   desc: string;
   content: string;
   images: string[];
@@ -48,7 +49,7 @@ interface ProductCardProps {
 
 const ProductCard: React.FC<ProductCardProps> = ({ product, draft }) => {
   const [link, setLink] = useState<string>(
-    draft ? `/edit-product/${product.name}` : `/products/${product.name}`
+    draft ? `/edit-product/${product.slug}` : `/products/${product.slug}`
   );
   console.log(product)
   const createdAt = moment(product.createdAt, "YYYY-MM-DDTHH:mm:ss.SSSZ").locale("fa");

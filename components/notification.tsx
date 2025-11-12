@@ -16,12 +16,13 @@ interface NotificationIssuer {
 }
 
 interface NotificationPost {
-  link: string;
+  slug: string;
   title: string;
   images: string[];
 }
 
 interface NotificationProduct {
+  slug: string;
   name: string;
   images: string[];
 }
@@ -86,7 +87,7 @@ export default function Notification({ notification }: Props) {
       </div>
 
       {notification?.post && (
-        <Link href={`/posts/${notification?.post.link}`}>
+        <Link href={`/posts/${notification?.post.slug}`}>
           <div className="text-sm bg-lcard opacity-50 dark:bg-dcard p-2  rounded-xl mt-3">
             <div className="flex gap-2">
               <div className="relative w-7 h-7">
@@ -105,7 +106,7 @@ export default function Notification({ notification }: Props) {
       )}
 
       {notification?.product && (
-        <Link href={`/products/${notification?.product.name}`}>
+        <Link href={`/products/${notification?.product.slug}`}>
           <div className="text-sm bg-lcard opacity-50 dark:bg-dcard p-2  rounded-xl mt-3">
             <div className="flex gap-2">
               <div className="relative w-7 h-7">

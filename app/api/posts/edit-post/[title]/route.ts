@@ -23,7 +23,7 @@ export async function GET(
 
     const post = await prisma.post.findFirst({
       include: getPostDataInclude(session?.user?.id),
-      where: { link: title },
+      where: { slug: title },
     });
 
     if (!post) {

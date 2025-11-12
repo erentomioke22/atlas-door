@@ -4,6 +4,8 @@ import { prisma } from "@/utils/database";
 import { getProductDataInclude } from "@/lib/types";
 import { getServerSession } from "@/lib/get-session";
 import { utapi } from "@/server/uploadthing";
+import { generateSlug, getUniqueSlug } from "@/lib/slug-utils";
+
 
 type ColorInput = {
   id?: string;
@@ -27,18 +29,21 @@ export async function submitProduct(values: SubmitProductValues) {
     const session = await getServerSession();
     if (!session) throw new Error("Unauthorized");
 
-    const existProduct = await prisma.product.findMany({
-      where: {
-        name: values.name,
-      },
-    });
-    if (existProduct.length > 0) {
-      throw new Error("محصولی با این نام وجود دارد");
-    }
+    const baseSlug = generateSlug(values.name, false);
+    const uniqueSlug = await getUniqueSlug(
+      baseSlug,
+      async (slug) => {
+        const existing = await prisma.product.findFirst({
+          where: { slug }
+        });
+        return !!existing;
+      }
+    );
 
     const newProduct = await prisma.product.create({
       data: {
         name: values.name,
+        slug: uniqueSlug,
         desc: values.desc,
         content: values.content as any,
         images: values.images,
@@ -93,6 +98,21 @@ export async function editProduct(values: EditProductValues) {
       }
     }
 
+    const baseSlug = generateSlug(values.name, false);
+    const uniqueSlug = await getUniqueSlug(
+      baseSlug,
+      async (slug) => {
+        const existing = await prisma.product.findFirst({
+          where: { 
+            slug ,
+            NOT: { id: values.productId }
+          }
+        });
+        return !!existing;
+      }
+    );
+    
+
     const incomingColors = Array.isArray(values.colors) ? values.colors : [];
     const keepIds = incomingColors
       .filter((c) => c.id)
@@ -110,6 +130,7 @@ export async function editProduct(values: EditProductValues) {
         where: { id: values.productId },
         data: {
           name: values.name,
+          slug: uniqueSlug,
           desc: values.desc,
           content: values.content as any,
           images: values.images,

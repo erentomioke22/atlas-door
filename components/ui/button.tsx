@@ -33,7 +33,7 @@ const Button: React.FC<ButtonProps> = ({ children, variant = 'primary', classNam
     menu: 'bg-transparent border-2 border-black dark:border-white dark:text-white rounded-full ',
     menuActive:
       'bg-black dark:bg-white text-white dark:border-white dark:text-black rounded-full border-2 border-black',
-    close: 'bg-lcard dark:bg-dcard rounded-full border-2 text-lfont',
+    close: 'bg-lcard dark:bg-dcard rounded-full border-2 border-current text-lfont',
     delete: 'bg-transparent text-redorange border-2 border-current rounded-full',
     empty: '',
     primary: '',

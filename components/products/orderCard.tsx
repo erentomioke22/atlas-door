@@ -14,6 +14,7 @@ moment.loadPersian({ usePersianDigits: true });
 export interface OrderColorLite {
   id: string;
   name:string;
+  slug:string;
   hexCode: string;
   price: number;
   discount: number;
@@ -35,7 +36,7 @@ export interface OrderLite {
 
 
 const OrderCard  : React.FC<OrderLite> = ({ item }) => {
-  const [link, setLink] = useState(`/products/${item?.product.name}`);
+  const [link, setLink] = useState(`/products/${item?.product.slug}`);
 
 
   const discountedPrice =

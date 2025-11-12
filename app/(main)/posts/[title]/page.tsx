@@ -23,7 +23,7 @@ const getPost = cache(async (title: string, loggedInUserId?: string | null): Pro
   try {
     const decodedTitle = decodeURIComponent(title);
     return await prisma.post.findFirst({
-      where: { link: decodedTitle, status: 'PUBLISHED' },
+      where: { slug: decodedTitle, status: 'PUBLISHED' },
       include: getPostDataInclude(loggedInUserId),
     });
   } catch (error) {
@@ -37,12 +37,12 @@ export async function generateStaticParams(): Promise<Array<{ title: string }>> 
     const posts = await prisma.post.findMany({
       where: { status: 'PUBLISHED' },
       select: {
-        link: true,
+        slug: true,
       },
     });
 
     return posts.map((post) => ({
-      title: post.link,
+      title: post.slug,
     }));
   } catch (error) {
     console.error('Error fetching posts:', error);
@@ -69,12 +69,12 @@ export async function generateMetadata({ params }: PageProps) {
     }));
 
     return {
-      metadataBase: new URL(`${process.env.NEXT_PUBLIC_BASE_URL}/${post?.title}`),
+      metadataBase: new URL(`${process.env.NEXT_PUBLIC_BASE_URL}/posts/${post?.slug}`),
       title: `${post?.title} - ${post?.desc?.slice(0, 50)}... | Atlas Door`,
       description: `${post?.desc}`,
       keywords: post?.tags.map(tag => tag.name).join(', '),
       alternates: {
-        canonical: `${process.env.NEXT_PUBLIC_BASE_URL}/posts/${post?.link}`
+        canonical: `${process.env.NEXT_PUBLIC_BASE_URL}/posts/${post?.slug}`
       },
       openGraph: {
         title: post?.title,
@@ -84,7 +84,7 @@ export async function generateMetadata({ params }: PageProps) {
         modifiedTime: post?.updatedAt.toISOString(),
         authors: [post?.user.displayName || post?.user.name],
         tags: post?.tags.map(tag => tag.name),
-        url: `${process.env.NEXT_PUBLIC_BASE_URL}/posts/${post?.link}`,
+        url: `${process.env.NEXT_PUBLIC_BASE_URL}/posts/${post?.slug}`,
         locale: 'fa_IR',
         siteName: 'Atlas Door',
         images: [...contentImages],
@@ -142,7 +142,7 @@ const Page = async ({ params }:PageProps) => {
     })),
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": `${process.env.NEXT_PUBLIC_BASE_URL}/posts/${post?.link}`
+      "@id": `${process.env.NEXT_PUBLIC_BASE_URL}/posts/${post?.slug}`
     },
     "keywords": post?.tags.map(tag => tag.name).join(', '),
     "articleBody": post?.content
@@ -162,7 +162,7 @@ const Page = async ({ params }:PageProps) => {
         "@type": "ListItem",
         "position": 2,
         "name": post.title,
-        "item": `${process.env.NEXT_PUBLIC_BASE_URL}/posts/${post.link}`
+        "item": `${process.env.NEXT_PUBLIC_BASE_URL}/posts/${post.slug}`
       }
     ]
   };

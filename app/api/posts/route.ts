@@ -7,7 +7,7 @@ interface PostResponse {
   id: string;
   title: string;
   desc: string;
-  link: string;
+  slug: string;
   content: string;
   images: string[];
   status: string;
@@ -39,7 +39,7 @@ export async function GET(
     }
 
     const currentPost = await prisma.post.findFirst({
-      where: { link: postTitle },
+      where: { slug: postTitle },
       include: getPostDataInclude(session?.user?.id),
     });
 

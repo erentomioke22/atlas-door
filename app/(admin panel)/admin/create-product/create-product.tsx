@@ -143,10 +143,12 @@ const CreateProduct = ({ session }: { session: Session | null }) => {
       const filesData: File[] = productPictures
         .map(({ file }) => {
           if (file && typeof file !== "string") {
-            const extension = file.name.split(".").pop();
+            const originalName = file.name;
+            const nameWithoutExt = originalName.replace(/\.[^/.]+$/, "");
             return new File(
               [file],
-              `post_${crypto.randomUUID()}.${extension}.webp`
+              `product-${nameWithoutExt.toLowerCase().replace(/[^a-z0-9]/g, '-')}-${crypto.randomUUID()}.webp`,
+              { type: 'image/webp' }
             );
           }
           return null;
@@ -562,7 +564,7 @@ const CreateProduct = ({ session }: { session: Session | null }) => {
                     </div>
                   </div>
 
-                  <p className="text-sm">name , Tags & desc </p>
+                  <p className="text-sm">name , desc </p>
                   <div>
                     <TextArea
                       placeholder={"Write Your Product name ..."}

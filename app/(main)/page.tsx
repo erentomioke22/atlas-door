@@ -145,7 +145,7 @@ function Home() {
                     src={project.image} 
                   />
                   <div className="absolute inset-x-0 bottom-0 rounded-b-xl mx-auto py-3 w-full bg-linear-to-t from-black/75 from-50% to-transparent flex justify-between px-3 items-center">
-                    <h1 className="text-2xl text-white">{project.name}</h1>
+                    <h2 className="text-2xl text-white">{project.name}</h2>
                     <button
                        aria-label="right icon" 
                       title="right icon" 

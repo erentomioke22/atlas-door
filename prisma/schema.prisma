@@ -96,7 +96,7 @@ model Post {
   id                  String         @id @default(cuid())
   title               String
   desc                String
-  link                String
+  slug                String         @unique
   content             String
   images              String[]
   status              String         @default("DRAFT")
@@ -118,6 +118,7 @@ model Product {
   id                  String         @id @default(cuid())
   name                String
   desc                String
+  slug                String         @unique 
   content             String
   feature             String?
   images              String[]

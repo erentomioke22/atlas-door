@@ -22,7 +22,7 @@ const getProduct = cache(async (name: string, loggedInUserId?: string | null): P
   try {
     const decodedTitle = decodeURIComponent(name);
     return await prisma.product.findFirst({
-      where: { name: decodedTitle },
+      where: { slug: decodedTitle },
       include: getProductDataInclude(loggedInUserId),
     });
   } catch (error) {
@@ -36,12 +36,12 @@ export async function generateStaticParams(): Promise<Array<{ name: string }>> {
   try {
     const products = await prisma.product.findMany({
       select: {
-        name: true,
+        slug: true,
       },
     });
 
     return products.map((product) => ({
-      name: product.name,
+      name: product.slug,
     }));
   } catch (error) {
     console.error('Error fetching products:', error);
@@ -68,11 +68,11 @@ export async function generateMetadata({ params }: PageProps) {
     }));
 
     return {
-      metadataBase: new URL(`${process.env.NEXT_PUBLIC_BASE_URL}/${product.name}`),
+      metadataBase: new URL(`${process.env.NEXT_PUBLIC_BASE_URL}/products/${product.slug}`),
       title: `${product?.name} - ${product?.desc?.slice(0, 50)}... | Atlas Door`,
       description: product?.desc,
       alternates: {
-        canonical: `${process.env.NEXT_PUBLIC_BASE_URL}/products/${product.name}`
+        canonical: `${process.env.NEXT_PUBLIC_BASE_URL}/products/${product.slug}`
       },
       openGraph: {
         title: product?.name,
@@ -80,7 +80,7 @@ export async function generateMetadata({ params }: PageProps) {
         type: 'article',
         publishedTime: product.createdAt.toISOString(),
         modifiedTime: product.updatedAt.toISOString(),
-        url: `${process.env.NEXT_PUBLIC_BASE_URL}/products/${product.name}`,
+        url: `${process.env.NEXT_PUBLIC_BASE_URL}/products/${product.slug}`,
         siteName: 'Atlas Door',
         images: [...ogImages],
       },
@@ -120,7 +120,7 @@ const page = async ({ params }:PageProps) => {
     "sku": product.id,
     "offers": {
       "@type": "Offer",
-      "url": `${process.env.NEXT_PUBLIC_BASE_URL}/products/${product.name}`,
+      "url": `${process.env.NEXT_PUBLIC_BASE_URL}/products/${product.slug}`,
       "priceCurrency": "IRR",
       "price": product.colors[0]?.price || 0,
       "availability": "https://schema.org/InStock",
@@ -151,7 +151,7 @@ const page = async ({ params }:PageProps) => {
         "@type": "ListItem",
         "position": 2,
         "name": product.name,
-        "item": `${process.env.NEXT_PUBLIC_BASE_URL}/products/${product.name}`
+        "item": `${process.env.NEXT_PUBLIC_BASE_URL}/products/${product.slug}`
       }
     ]
   };

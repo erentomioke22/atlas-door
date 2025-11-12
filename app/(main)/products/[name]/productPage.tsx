@@ -135,7 +135,7 @@ const ProductPage: React.FC<ProductPageProps> = ({ initialProduct, session }) =>
                 className={
                   "bg-lcard dark:bg-dcard rounded-full p-2 text-sm sm:text-lg"
                 }
-                href={`/admin/edit-product/${product?.name}`}
+                href={`/admin/edit-product/${product?.slug}`}
               >
                 <FaEraser />
               </Link>

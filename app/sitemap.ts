@@ -7,22 +7,22 @@ function formatDateISO(date: Date | string | number): string {
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const posts = await prisma.post.findMany({
-    select: { link: true, updatedAt: true, images: true },
+    select: { slug: true, updatedAt: true, images: true },
   });
   const products = await prisma.product.findMany({
-    select: { name: true, updatedAt: true, images: true },
+    select: { slug: true, updatedAt: true, images: true },
   });
 
-  const postEntries: MetadataRoute.Sitemap = posts.map(({ link, updatedAt, images }) => ({
-    url: `${process.env.NEXT_PUBLIC_BASE_URL}/posts/${link}`,
+  const postEntries: MetadataRoute.Sitemap = posts.map(({ slug, updatedAt, images }) => ({
+    url: `${process.env.NEXT_PUBLIC_BASE_URL}/posts/${slug}`,
     lastModified: formatDateISO(updatedAt),
     changeFrequency: 'yearly',
     priority: 0.8,
     images: images.map((image: string) => `${process.env.NEXT_PUBLIC_BASE_URL}/${image}`),
   }));
 
-  const productEntries: MetadataRoute.Sitemap = products.map(({ name, updatedAt, images }) => ({
-    url: `${process.env.NEXT_PUBLIC_BASE_URL}/products/${name}`,
+  const productEntries: MetadataRoute.Sitemap = products.map(({ slug, updatedAt, images }) => ({
+    url: `${process.env.NEXT_PUBLIC_BASE_URL}/products/${slug}`,
     lastModified: formatDateISO(updatedAt),
     changeFrequency: 'yearly',
     priority: 0.8,

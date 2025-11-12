@@ -14,6 +14,16 @@ const nextConfig: NextConfig = {
         port: '',
         pathname: '/images/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'media.atlasdoors.ir',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https', 
+        hostname: 'uploadthing.com',
+        pathname: '/**',
+      },
       { protocol: 'http', hostname: 'localhost', port: '3000', pathname: '/media/**', },
       { protocol: 'https', hostname: 'api2.zoomg.ir', port: '', pathname: '/media/**', },
       { protocol: 'https', hostname: 'cdn.atlasdoor.ir', port: '', pathname: '/**', }, 

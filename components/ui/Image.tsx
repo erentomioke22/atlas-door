@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react'
 import NextImage, { type ImageLoader } from 'next/image'
-
+import { FaCircleExclamation } from "react-icons/fa6";
 const imageLoader: ImageLoader = ({ src, width, quality }) => {
   return `${src}?w=${width}&q=${quality || 75}`
 }
@@ -48,9 +48,7 @@ const ImageCom: React.FC<ImageComProps> = ({ src, alt, className }) => {
           }`}
         >
           {error && (
-            <p className="text-[10px] text-center text-lfont underline">
-              مشکلی در بارگذاری تصویر وجود دارد!
-            </p>
+            <FaCircleExclamation className="text-sm text-center text-lfont "/>
           )}
         </div>
       )}

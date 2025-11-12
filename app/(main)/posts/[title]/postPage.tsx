@@ -33,9 +33,9 @@ const PostPage: React.FC<PostPageProps> = ({ initialPost,session }) => {
   const currentUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/${pathName}`;
 
   const { data: post, isLoading, status, error } = useQuery<PostLite>({
-    queryKey: ["post", initialPost.link],
+    queryKey: ["post", initialPost.slug],
     queryFn: async (): Promise<PostLite> => {
-      const response = await axios.get(`/api/posts?postTitle=${initialPost.link}`);
+      const response = await axios.get(`/api/posts?postTitle=${initialPost.slug}`);
       return response.data;
     },
     initialData: initialPost,
@@ -99,9 +99,9 @@ const PostPage: React.FC<PostPageProps> = ({ initialPost,session }) => {
                     <span className="flex gap-2 flex-wrap">
                       {post?.tags?.map((tag) => {
                         return (
-                          <p key={tag.name} className="text-[10px] md:text-[13px] text-lfont text-nowrap">
+                          <h3 key={tag.name} className="text-[10px] md:text-[13px] text-lfont text-nowrap">
                             <span className="text-black dark:text-white">#</span> {tag.name}
-                          </p>
+                          </h3>
                         );
                       })}
                     </span>
@@ -149,7 +149,7 @@ const PostPage: React.FC<PostPageProps> = ({ initialPost,session }) => {
                     </button>
                   </div>
                   {session?.user?.id === post?.userId && (
-                    <Link className={"bg-lcard dark:bg-dcard rounded-full p-2 text-sm sm:text-lg"} href={`/admin/edit-post/${post?.link}`}>
+                    <Link className={"bg-lcard dark:bg-dcard rounded-full p-2 text-sm sm:text-lg"} href={`/admin/edit-post/${post?.slug}`}>
                       <FaEraser />
                     </Link>
                   )}

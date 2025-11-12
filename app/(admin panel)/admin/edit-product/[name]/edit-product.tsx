@@ -183,10 +183,12 @@ const EditProduct: React.FC<EditProductProps> = ({ name, session }) => {
       const filesData: File[] = productPictures
         .map(({ file }) => {
           if (file && typeof file !== "string") {
-            const extension = file.name.split(".").pop();
+            const originalName = file.name;
+            const nameWithoutExt = originalName.replace(/\.[^/.]+$/, "");
             return new File(
               [file],
-              `post_${crypto.randomUUID()}.${extension}.webp`
+              `product-${nameWithoutExt.toLowerCase().replace(/[^a-z0-9]/g, '-')}-${crypto.randomUUID()}.webp`,
+              { type: 'image/webp' }
             );
           }
           return null;
@@ -640,7 +642,7 @@ const EditProduct: React.FC<EditProductProps> = ({ name, session }) => {
                           </div>
                         </EmblaCarousel>
                       </div>
-                      <p className="text-sm">Title , Tags & desc </p>
+                      <p className="text-sm">Title , desc </p>
                       <div>
                         <TextArea
                           placeholder={"Write Your Post name ..."}

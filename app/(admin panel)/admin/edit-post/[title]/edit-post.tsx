@@ -146,10 +146,12 @@ const EditPost: React.FC<EditPostRootProps> = ({ title, session }) => {
       const filesData: File[] = files
         .map(({ file }) => {
           if (file && typeof file !== "string") {
-            const extension = file.name.split(".").pop();
+            const originalName = file.name;
+            const nameWithoutExt = originalName.replace(/\.[^/.]+$/, "");
             return new File(
               [file],
-              `post_${crypto.randomUUID()}.${extension}.webp`
+              `post-${nameWithoutExt.toLowerCase().replace(/[^a-z0-9]/g, '-')}-${crypto.randomUUID()}.webp`,
+              { type: 'image/webp' }
             );
           }
           return null;
