@@ -4,9 +4,9 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { formatNumberFa, formatPriceFa } from "@/lib/utils";
 import ImageCom from "../ui/Image";
-import moment from 'moment-jalaali'
+// import moment from 'moment-jalaali'
 
-moment.loadPersian({ usePersianDigits: true }) 
+// moment.loadPersian({ usePersianDigits: true }) 
 export interface ProductColorLite {
   id: string;
   hexCode: string;
@@ -51,9 +51,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, draft }) => {
   const [link, setLink] = useState<string>(
     draft ? `/edit-product/${product.slug}` : `/products/${product.slug}`
   );
-  console.log(product)
-  const createdAt = moment(product.createdAt, "YYYY-MM-DDTHH:mm:ss.SSSZ").locale("fa");
-  // const formattedDate = createdAt.isValid() ? createdAt.fromNow() : "تاریخ نامعتبر";
+  // const createdAt = moment(product.createdAt, "YYYY-MM-DDTHH:mm:ss.SSSZ").locale("fa");
 
   return (
     <div className="   sm:w-64   border-2 border-lcard dark:border-dcard rounded-3xl shadow-sm duration-500   max-sm:w-full   py-2 space-y-2 px-3   select-none">

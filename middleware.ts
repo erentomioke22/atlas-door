@@ -2,26 +2,26 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "./lib/get-session";
 
 export async function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl;
-  const session = await getServerSession();
-
-  const pathSegments = pathname.split('/').filter(Boolean);
-  const lastSegment = pathSegments[pathSegments.length - 1];
-  const routeUserName = pathSegments[0];
+  const { pathname, searchParams } = request.nextUrl;
   const ADMIN_PATHS = ['/admin', 'adminOrders'];
-  const PROTECTED_PATHS = ['setting', 'orders', 'delivered', 'bag'];
+  
+  if (searchParams.get('redirected') === 'true') {
+    return NextResponse.next();
+  }
 
-  // const isAdminRoute = ADMIN_PATHS.some(path => pathname.includes(lastSegment));
-  // const isProtectedRoute = PROTECTED_PATHS.some(path => pathname.includes(lastSegment));
+  const session = await getServerSession();
+  const pathSegments = pathname.split('/').filter(Boolean);
 
-  const isAdminRoute = pathname.startsWith('/admin') || ADMIN_PATHS.includes(lastSegment);
-  const isProtectedRoute = PROTECTED_PATHS.includes(lastSegment);
-  if (isAdminRoute) {
+  // More specific route detection
+  if (pathname.startsWith('/admin') || ADMIN_PATHS.includes(pathSegments[1])) {
     return handleAdminRoutes(request, session);
   }
 
-  if (isProtectedRoute) {
-    return handleProtectedRoutes(request, session, routeUserName,lastSegment);
+  if (pathSegments.length === 2) {
+    const protectedPaths = ['setting', 'orders', 'delivered', 'bag'];
+    if (protectedPaths.includes(pathSegments[1])) {
+      return handleProtectedRoutes(request, session, pathSegments[0], pathSegments[1]);
+    }
   }
 
   return NextResponse.next();
@@ -29,23 +29,29 @@ export async function middleware(request: NextRequest) {
 
 function handleAdminRoutes(request: NextRequest, session: any) {
   if (!session) {
-    return NextResponse.redirect(new URL("/not-found", request.url));
+    const loginUrl = new URL("/login", request.url);
+    loginUrl.searchParams.set('callbackUrl', request.url);
+    return NextResponse.redirect(loginUrl);
   }
   
   if (session.user.role !== 'admin') {
-    return NextResponse.redirect(new URL("/not-found", request.url));
+    return NextResponse.redirect(new URL("/not-authorized", request.url));
   }
 
   return NextResponse.next();
 }
 
-function handleProtectedRoutes(request: NextRequest, session: any, routeUserName: string,lastSegment:string) {
+function handleProtectedRoutes(request: NextRequest, session: any, routeUserName: string, protectedPath: string) {
   if (!session) {
-    return NextResponse.redirect(new URL("/not-found", request.url));
+    const loginUrl = new URL("/login", request.url);
+    loginUrl.searchParams.set('callbackUrl', request.url);
+    return NextResponse.redirect(loginUrl);
   }
 
-  if (routeUserName && routeUserName !== session.user.name) {
-    return NextResponse.redirect(new URL(`/${session.user.name}/${lastSegment}`, request.url));
+  if (routeUserName !== session.user.name) {
+    const correctUrl = new URL(`/${session.user.name}/${protectedPath}`, request.url);
+    correctUrl.searchParams.set('redirected', 'true');
+    return NextResponse.redirect(correctUrl);
   }
 
   return NextResponse.next();
@@ -57,7 +63,7 @@ export const config = {
     "/admin/:path*",
     "/:userName/setting",
     "/:userName/orders", 
-    "/:userName/delivered",
+    "/:userName/delivered", 
     "/:userName/bag",
     "/:userName/adminOrders"
   ],

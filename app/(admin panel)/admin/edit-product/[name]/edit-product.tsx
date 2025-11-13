@@ -42,6 +42,7 @@ interface EditProductProps {
 }
 
 interface Color {
+  id?: string;
   name: string;
   hexCode: string;
   price: number;
@@ -81,7 +82,6 @@ const EditProduct: React.FC<EditProductProps> = ({ name, session }) => {
   const [fileError, setFileError] = useState<string>("");
   const [selectedInputImage, setSelectedInputImage] = useState<string>("");
   const fileInputRef = useRef<HTMLInputElement>(null);
-
   usePreventNavigation(preventNavigation);
 
   const predefinedColors = [
@@ -107,9 +107,6 @@ const EditProduct: React.FC<EditProductProps> = ({ name, session }) => {
   const {
     data: product,
     isPending,
-    // fetchNextPage,
-    // isFetching,
-    // isFetchingNextPage,
     status,
     error,
   } = useQuery({
@@ -152,7 +149,7 @@ const EditProduct: React.FC<EditProductProps> = ({ name, session }) => {
       setProductThumnail(product?.images[0]);
       setColors(product?.colors);
       setProductPictures(product?.images);
-      setDeletedFiles(product?.images);
+      setDeletedPostFiles(product?.images);
     }
   }, [product]);
 
@@ -243,12 +240,10 @@ const EditProduct: React.FC<EditProductProps> = ({ name, session }) => {
               ? picture === productThumnail
               : picture.url === productThumnail
           );
-          console.log(productPictures, allImages, thumbnailIndex);
           if (thumbnailIndex !== -1) {
             const thumbnailUrl = allImages[thumbnailIndex];
             allImages.splice(thumbnailIndex, 1);
             finalImages = [thumbnailUrl, ...allImages];
-            console.log(finalImages);
           } else {
             finalImages = allImages;
           }
@@ -264,6 +259,12 @@ const EditProduct: React.FC<EditProductProps> = ({ name, session }) => {
           productId: product?.id ?? "",
           rmFiles: removeKey.filter(Boolean) as string[],
           images: finalImages,
+          colors: colors.map(color => ({
+            ...color,
+            price: Number(color.price),
+            discount: Number(color.discount) || 0,
+            stocks: Number(color.stocks) || 0,
+          })),
         },
         {
           onSuccess: () => {
@@ -355,33 +356,39 @@ const EditProduct: React.FC<EditProductProps> = ({ name, session }) => {
   };
 
   const handleAddColor = () => {
+    if (!colorName || !colorHex) {
+      toast.error("Color name and hex code are required");
+      return;
+    }
+  
+    const newColor = {
+      name: colorName,
+      hexCode: colorHex,
+      price: colorPrice === "" ? 0 : Number(colorPrice),
+      discount: Number(colorDiscount) || 0,
+      stocks: Number(colorStocks) || 0,
+    };
+  
     if (editColorIndex !== null) {
-      const updatedColor = colors.map((color, index) =>
+      // Editing existing color - preserve the id if it exists
+      const updatedColors = colors.map((color, index) =>
         index === editColorIndex
           ? {
-              ...color,
-              name: colorName,
-              hexCode: colorHex,
-              price: colorPrice === "" ? 0 : Number(colorPrice),
-              discount: Number(colorDiscount) || 0,
-              stocks: Number(colorStocks) || 0,
+              ...color, 
+              ...newColor
             }
           : color
       );
-      setColors(updatedColor);
-      setValue("colors", updatedColor, { shouldValidate: true });
+      setColors(updatedColors);
+      setValue("colors", updatedColors, { shouldValidate: true });
       setEditColorIndex(null);
     } else {
-      const newColor = {
-        name: colorName,
-        hexCode: colorHex,
-        price: colorPrice === "" ? 0 : Number(colorPrice),
-        discount: Number(colorDiscount) || 0,
-        stocks: Number(colorStocks) || 0,
-      };
-      setColors([...colors, newColor]);
-      setValue("colors", [...colors, newColor], { shouldValidate: true });
+      const updatedColors = [...colors, newColor];
+      setColors(updatedColors);
+      setValue("colors", updatedColors, { shouldValidate: true });
     }
+  
+    // Reset form
     setColorHex("");
     setColorName("");
     setColorPrice("");
@@ -451,7 +458,7 @@ const EditProduct: React.FC<EditProductProps> = ({ name, session }) => {
                       deleteMutation.mutate(
                         {
                           id: product?.id ?? "",
-                          removeKey: deletedFiles
+                          removeKey: deletedPostFiles
                             .map((file: string) => {
                               if (typeof file === "string") {
                                 return file.split("/").pop();

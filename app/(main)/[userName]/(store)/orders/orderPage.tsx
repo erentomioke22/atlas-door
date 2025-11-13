@@ -101,7 +101,6 @@ export default function OrderPage({session}:{session:Session | null}){
       </p>
     );
   }
-console.log(data)
   const orderTypeMap: Record<string, OrderTypeMap> = {
     PENDING: {
       message: <span className="text-yellow">در حال پردازش</span>,

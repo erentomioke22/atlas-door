@@ -91,7 +91,7 @@ export async function editProduct(values: EditProductValues) {
     if (values.rmFiles.length > 0) {
       try {
         const deletedImages = await utapi.deleteFiles(values.rmFiles);
-        console.log(deletedImages);
+        // console.log(deletedImages);
       } catch (err) {
         console.error(err);
         throw new Error("field to delete archive image");
@@ -118,52 +118,47 @@ export async function editProduct(values: EditProductValues) {
       .filter((c) => c.id)
       .map((c) => c.id!) as string[];
 
-    const [, editedProduct] = await prisma.$transaction([
-      prisma.color.deleteMany({
-        where: {
-          productId: values.productId,
-          id: { notIn: keepIds.length ? keepIds : ["_no_match_"] },
-        },
-      }),
 
-      prisma.product.update({
-        where: { id: values.productId },
-        data: {
-          name: values.name,
-          slug: uniqueSlug,
-          desc: values.desc,
-          content: values.content as any,
-          images: values.images,
-          colors: {
-            update: incomingColors
-              .filter((c) => c.id)
-              .map((c) => ({
-                where: { id: c.id! },
-                data: {
-                  status: "EXISTENT",
-                  name: c.name,
-                  hexCode: c.hexCode,
-                  price: parseFloat(String(c.price)),
-                  discount: parseFloat(String(c.discount || 0)),
-                  stocks: parseInt(String(c.stocks || 0)),
-                },
-              })),
-            create: incomingColors
-              .filter((c) => !c.id)
-              .map((c) => ({
-                status: "EXISTENT",
-                name: c.name,
-                hexCode: c.hexCode,
-                price: parseFloat(String(c.price)),
-                discount: parseFloat(String(c.discount || 0)),
-                stocks: parseInt(String(c.stocks || 0)),
-              })),
+
+    const editedProduct = await prisma.product.update({
+      where: { id: values.productId },
+      data: {
+        name: values.name,
+        slug: uniqueSlug,
+        desc: values.desc,
+        content: values.content as any,
+        images: values.images,
+        colors: {
+          deleteMany: {
+              id: { notIn: keepIds.length >=1 ? keepIds : ["_no_match_"] },
           },
+          update: incomingColors
+          .filter((c) => c.id)
+          .map((c) => ({
+            where: { id: c.id! },
+            data: {
+              status: "EXISTENT",
+              name: c.name,
+              hexCode: c.hexCode,
+              price: parseFloat(String(c.price)),
+              discount: parseFloat(String(c.discount || 0)),
+              stocks: parseInt(String(c.stocks || 0)),
+            },
+          })),
+          create: incomingColors
+          .filter((c) => !c.id)
+          .map((c) => ({
+            status: "EXISTENT",
+            name: c.name,
+            hexCode: c.hexCode,
+            price: parseFloat(String(c.price)),
+            discount: parseFloat(String(c.discount || 0)),
+            stocks: parseInt(String(c.stocks || 0)),
+          })),
         },
-        include: getProductDataInclude(session?.user?.id),
-      }),
-    ]);
-
+      },
+      include: getProductDataInclude(session?.user?.id),
+    });
     return editedProduct;
   } catch (error: any) {
     throw new Error(error);
@@ -192,7 +187,7 @@ export async function deleteProduct(values: DeleteProductValues) {
     if (values.removeKey.length > 0) {
       try {
         const deletedImages = await utapi.deleteFiles(values.removeKey);
-        console.log(deletedImages);
+        // console.log(deletedImages);
       } catch (err) {
         console.error(err);
         throw new Error("field to delete archive image");

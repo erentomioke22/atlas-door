@@ -78,16 +78,5 @@ export function useDeleteProductMutation() {
   return mutation;
 }
 
-export function useUploadMutation() {
-  const uploadFile = async (file: FormData | File | Blob | unknown) => {
-    const response = await axios.post('/api/upload', file);
-    return response.data as { url: string; key?: string };
-  };
 
-  const mutation = useMutation({
-    mutationFn: uploadFile,
-  });
-
-  return mutation;
-}
 

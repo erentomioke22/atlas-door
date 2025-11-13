@@ -26,7 +26,7 @@ export const useCart = () => {
   const [isOnline, setIsOnline] = useState<boolean>(true);
 
   const [lastQtyChange, setLastQtyChange] = useState<QtyChange>(null);
-  const debouncedQtyChange = useDebounce(lastQtyChange, 1600);
+  const debouncedQtyChange = useDebounce(lastQtyChange, 1200);
 
   const {
     items,

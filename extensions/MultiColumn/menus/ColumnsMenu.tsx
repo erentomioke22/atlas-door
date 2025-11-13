@@ -1,9 +1,7 @@
 import {useEditorState } from '@tiptap/react'
 import { BubbleMenu as BaseBubbleMenu } from '@tiptap/react/menus'
 import { useCallback } from 'react'
-import { sticky } from 'tippy.js'
-import { v4 as uuid } from 'uuid'
-
+import { useId } from "react";
 import { MenuProps } from '@/components/menus/types'
 import { getRenderContainer } from '@/lib/utils/getRenderContainer'
 import { Toolbar } from '@/components/ui/Toolbar'
@@ -11,13 +9,15 @@ import { ColumnLayout } from '../Columns'
 import { Icon } from '@/components/ui/Icon'
 
 export const ColumnsMenu = ({ editor, appendTo }: MenuProps) => {
+  const menuId = useId();
+ 
+ 
   const getReferenceClientRect = useCallback(() => {
     const renderContainer = getRenderContainer(editor, 'columns')
     const rect = renderContainer?.getBoundingClientRect() || new DOMRect(-1000, -1000, 0, 0)
-
     return rect
   }, [editor])
-
+  
   const shouldShow = useCallback(() => {
     const isColumns = editor.isActive('columns')
     return isColumns
@@ -48,7 +48,7 @@ export const ColumnsMenu = ({ editor, appendTo }: MenuProps) => {
   return (
     <BaseBubbleMenu
       editor={editor}
-      pluginKey={`columnsMenu-${uuid()}`}
+      pluginKey={`columnsMenu-${menuId}`}
       shouldShow={shouldShow}
       updateDelay={0}
       // tippyOptions={{

@@ -44,14 +44,11 @@ const Signup: React.FC<SignupProps> = ({ setShow }) => {
 
 
 
-  console.log("Form errors:", errors);
-  console.log("Form isSubmitting:", isSubmitting);
+
 
 
   
   async function onSubmit({ email, password, name }: SignUpValues) {
-    console.log("ONSUBMIT CALLED - Form data:", email, password, name);
-    console.log("Form errors at submit:", errors);
     setError(null);
     try{
       const { error } = await authClient.signUp.email({
@@ -129,8 +126,6 @@ const Signup: React.FC<SignupProps> = ({ setShow }) => {
   ];
 
 
-  const watchedValues = watch();
-console.log(watchedValues)
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="space-y-5">

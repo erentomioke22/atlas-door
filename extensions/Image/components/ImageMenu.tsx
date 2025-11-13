@@ -1,8 +1,7 @@
 import { useEditorState } from "@tiptap/react";
 import { BubbleMenu } from '@tiptap/react/menus'
-import React, { useCallback, useRef } from "react";
-import { Instance, sticky } from "tippy.js";
-import { v4 as uuid } from "uuid";
+import React, { useCallback, useRef , useId } from "react";
+import { Instance } from "tippy.js";
 import { Toolbar } from "@/components/ui/Toolbar";
 import { ImageWidth } from "./ImageWidth";
 import getRenderContainer from "@/lib/utils/getRenderContainer";
@@ -19,7 +18,7 @@ export const ImageMenu = ({
 }: ImageMenuProps) => {
   const menuRef = useRef<HTMLDivElement>(null);
   const tippyInstance = useRef<Instance | null>(null);
-
+  const menuId = useId();
   const getReferenceClientRect = useCallback(() => {
     const renderContainer = getRenderContainer(editor, "node-image");
     const rect =
@@ -70,7 +69,7 @@ export const ImageMenu = ({
   return (
     <BubbleMenu
       editor={editor}
-      pluginKey={`imageBlockMenu-${uuid()}`}
+      pluginKey={`imageBlockMenu-${menuId}`}
       shouldShow={shouldShow}
       updateDelay={0}
       // tippyOptions={{

@@ -14,7 +14,6 @@ export async function deleteUserAction({ userId }: { userId: string }) {
   const session = await auth.api.getSession({
     headers: headersList,
   });
-  console.log(session?.user.id, userId)
   if (!session) throw new Error("Unauthorized");
 
   if (session.user.id !== userId) {
@@ -47,15 +46,7 @@ export async function deleteUserAction({ userId }: { userId: string }) {
 
 
 
-// if (values.removedAvatar !== null) {
-//   try {
-//    const deletedFiles = await utapi.deleteFiles([values.removedAvatar]);
-//   //  console.log(values.removedAvatar,deletedFiles)
-//   } catch (err) {
-//     console.error(err);
-//     throw new Error('Failed to delete archive image');
-//   }
-// }
+
 
 
 
