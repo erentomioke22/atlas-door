@@ -94,9 +94,9 @@ const Drawer: React.FC<DrawerProps> = ({
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
       >
-        <div className="flex justify-center ">
+        {/* <div className="flex justify-center ">
           <div className="w-12 h-1.5 bg-gray-600 dark:bg-gray-800 rounded-full" />
-        </div>
+        </div> */}
 
         {header && (
           <div className={`flex justify-between items-center px-4 ${headerStyle}`}>

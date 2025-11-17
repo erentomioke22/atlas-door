@@ -71,7 +71,7 @@ const Comment: React.FC<CommentProps> = ({
               </div>
           }
           <div className="min-w-0">
-            <p className="text-sm">{parent.user?.displayName || parent.user?.name}</p>
+            <p className="text-sm capitalize">{parent.user?.displayName || parent.user?.name}</p>
             <div
               className="wrap-break-word normal-case leading-loose text-[12px] text-lfont line-clamp-1"
               dangerouslySetInnerHTML={{ __html:parent.content }}
@@ -93,7 +93,7 @@ const Comment: React.FC<CommentProps> = ({
               </div>
           }
           <div >
-            <p className="text-[10px] md:text-sm truncate ">{user?.displayName || user?.name}</p>
+            <p className="text-[10px] md:text-sm truncate capitalize">{user?.displayName || user?.name}</p>
             <p className="text-[8px] md:text-[10px]  ">
               <span className="text-lfont">{moment(new Date(createdAt), "YYYYMMDD").fromNow()}  .</span>
               {"   "}<span className="truncate uperrcase">

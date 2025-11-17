@@ -179,7 +179,7 @@ const Comments: React.FC<CommentsProps> = ({product,session}) => {
                                   </div>
                               }
                               <div className="min-w-0">
-                                <p className="text-sm">{replyInfo?.user?.displayName || replyInfo?.user?.name}</p>
+                                <p className="text-sm capitalize">{replyInfo?.user?.displayName || replyInfo?.user?.name}</p>
                                 <div className="flex gap-1 text-[12px] ">
                                   <div className="text-redorange my-auto"><p className=" ">  پاسخ به پيام : </p></div>
                                   <div

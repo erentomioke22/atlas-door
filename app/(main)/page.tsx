@@ -44,27 +44,37 @@ function Home() {
   const projects: Project[] = [
     {
       name: 'درب اتوماتیک',
-      url: '/posts/درب-های-اتوماتیک_lxi5fhspu7',
+      url:'/posts/درب-اتوماتیک-چیست؟-انواع،-مزایا-و-نکات-خرید-قیمت-روز',
       image: '/images/automatic-door/slide/thumnail.jpg'
     },
     {
       name: 'شیشه سکوریت',
-      url: '/posts/شیشه-سکوریت-چیست؟-مزایا،-کاربردها-و-تفاوت-با-شیشه-معمولی_b2qh02hbuv',
+      url:'/posts/شیشه-سکوریت-چیست؟-مزایا،-کاربردها-و-تفاوت-با-شیشه-معمولی',
       image: '/images/tempered-glass/1732009538381.jpg'
     },
     {
       name: 'شیشه لمینت',
-      url: '/posts/شیشه-لمینت:-انواع،-مزایا،-معایب-و-کاربردها-در-ساختمان-و-خودرو-|-راهنمای-جامع_jucfrkg1a7',
+      url:'/posts/شیشه-لمینت-انواع،-مزایا،-معایب-و-کاربردها-در-ساختمان-و-خودرو-راهنمای-جامع',
       image: '/images/laminet-glass/thumnail.jpg'
     },
     {
       name: 'پارتیشن شیشه ای',
-      url: '/posts/پارتیشن-شیشه‌ای:-راهنمای-کامل-نصب،-مزایا،-معایب-و-انواع-|-قیمت-و-طراحی_aqscgthk3m',
+      url:'/posts/پارتیشن-شیشهای-راهنمای-کامل-نصب،-مزایا،-معایب-و-انواع-قیمت-و-طراحی',
       image: '/images/partition/1732009538326.jpg'
     },
     {
       name: 'جام بالکن',
-      url: '/posts/شیشه-های-بالکنی-و-شیشه-های-ایمنی-برای-پرتگاه-ها:-راهنمای-جامع_4unfbbxaua',
+      url:'/posts/جام-بالکن-آکاردئونی-قیمت،-مزایا-و-نصب-با-شیشه-سکوریت',
+      image: '/images/balcony/1732009538274.jpg'
+    },
+    {
+      name: 'حمام شیشه ای',
+      url:'/posts/حمام-شیشه-ای-مزایا،-معایب-و-راهنمای-خرید-حمام-شيشه-ای-فروش-و-نصب-حمام-شیشه-ای',
+      image: '/images/bathroom/Marble Tile Shower Area.jpeg'
+    },
+    {
+      name: 'نرده ی شیشه ای',
+      url:'/posts/نرده-شیشه-ای-قیمت،-نصب-و-مزایای-جان-پناه-شیشه-سکوریت',
       image: '/images/balcony/media_20241118_121418_6280590525011645464.jpg'
     },
   ];
@@ -75,10 +85,18 @@ function Home() {
   };
 
   return (
-    <div className="container max-w-2xl lg:max-w-7xl px-5 py-20 mx-auto space-y-20">
+    <div className="container max-w-2xl lg:max-w-7xl px-5 py-20 mx-auto space-y-20 ">
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-        <div className="text-center lg:text-start mx-auto space-y-5">
+      <div className=" grid grid-cols-1 lg:grid-cols-2 gap-5">
+        <div className="text-center lg:text-start mx-auto space-y-5 ">
+      <div className="w-full  flex justify-center ">
+        <div className="absolute w-full max-w-lg mt-20">
+          <div className="absolute top-0 left-20             w-32 h-32 md:w-65 md:h-65            bg-purple      rounded-full mix-blend-multiple dark:mix-blend-lighten-light dark:opacity-90 filter blur-2xl opacity-95 animate-blob "></div>
+          <div className="absolute top-0 left-65             w-32 h-32 md:w-65 md:h-65            bg-yellow      rounded-full mix-blend-multiple dark:mix-blend-lighten-light dark:opacity-90 filter blur-2xl opacity-95 animate-blob animation-delay-4000"></div>
+          <div className="absolute top-0 left-40  -bottom-20 w-32 h-32 md:w-65 md:h-65            bg-redorange   rounded-full mix-blend-multiple dark:mix-blend-lighten-light dark:opacity-90 filter blur-2xl opacity-95 animate-blob animation-delay-6000"></div>
+        </div>
+      </div>
+      <div className="relative flex-col flex gap-5">
           <h4 className="leading-normal text-balance text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight">
             تمرکز ما بر <span className="bg-linear-to-tr text-clip from-blue to-darkgreen text-transparent bg-clip-text">کیفیت و عملکرد</span> هربار تجربه ای زیبا را تضمین میکند
           </h4>
@@ -94,10 +112,9 @@ function Home() {
             <div className="flex gap-1">
               <LuBaggageClaim className="text-blue text-lg my-auto"/>
               <p className="text-lfont">محصولات و خدمات : </p>
-              <span>+ ۱۰</span>
+              <span>+ ۳۰</span>
             </div>
-           </div>
-  
+      </div>
           <div className="flex justify-center lg:justify-start gap-3">
             <a 
               href="tel:09901196140" 
@@ -110,6 +127,8 @@ function Home() {
               مقاله ها
             </Link>
           </div>
+      </div>
+  
         </div >
         <div className="relative  w-full h-64 sm:h-96 lg:h-full ">
             <ImageCom 

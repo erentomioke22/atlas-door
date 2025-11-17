@@ -18,7 +18,7 @@ import { useCart } from '@/hook/useCart';
 import { IoPersonSharp } from "react-icons/io5";
 import { Session } from "@/lib/auth";
 import Button from "./ui/button";
-
+import Dropdown from "./ui/Dropdown";
 
 const Navbar = ({session}:{session:Session | null}) => {
   const [menu, setMenu] = useState('');
@@ -83,10 +83,6 @@ const Navbar = ({session}:{session:Session | null}) => {
       name: "درباره ما",
       href:'/about-us',
     },
-    { id: "9", 
-      name: "لیست قیمت",
-      href:'/posts/لیست-قیمت-شیشه-سکوریت-۱۴۰۴-۲۰۲۵',
-    },
   ];
 
   return (
@@ -96,9 +92,9 @@ const Navbar = ({session}:{session:Session | null}) => {
 
 
 
-       <nav className="flex  md:justify-arround bg-white dark:bg-black    justify-between w-full  px-1  lg:px-5 xl:px-14 py-2 border-b-2 border-lcard dark:border-dcard">
+       <nav className="flex  md:justify-arround bg-white dark:bg-black  gap-1  justify-between w-full  px-2   xl:px-14 py-2 border-b-2 border-lcard dark:border-dcard 2xl:max-w-7xl mx-auto">
       
-            <div className="flex gap-1">
+            <div className="flex gap-1 my-auto">
 
                  <Offcanvas       
                   title={<HiMenuAlt4/>}   
@@ -132,13 +128,24 @@ const Navbar = ({session}:{session:Session | null}) => {
                         onClick={() => {
                           setClose(!close);
                         }}
-                        className="text-2xl font-bold text-right  py-2 px-3 hover:bg-lcard hover:dark:bg-dbtn duration-500 rounded-lg capitalize  w-full"
+                        className="text-2xl font-bold   py-2 px-3 hover:bg-lcard hover:dark:bg-dbtn duration-500 rounded-lg  w-full"
                       >
                         {item.name}
                       </Link>
                   );
                 })}
-
+                    <Link  href={'/posts/لیست-قیمت-شیشه-سکوریت-۱۴۰۴-۲۰۲۵'}>
+                    <div className="text-2xl font-bold   py-2 px-3 hover:bg-lcard dark:hover:bg-dcard duration-500 rounded-lg w-full">
+                        <p>قیمت شیشه سکوریت</p>
+                        <p className="text-lfont text-sm">لیست قیمت انواع شیشه سکوریت</p>
+                    </div>
+                    </Link>
+                    <Link  href={'/posts/لیست-قیمت-شیشه-لمینت-۱۴۰۴-۲۰۲۵'}>
+                    <div className="text-2xl font-bold   py-2 px-3 hover:bg-lcard dark:hover:bg-dcard duration-500 rounded-lg w-full">
+                        <p>قیمت شیشه لمینت</p>
+                        <p className="text-lfont text-sm">لیست قیمت انواع شیشه لمینت</p>
+                    </div>
+                    </Link>
               </div>
 
                 </div>
@@ -155,12 +162,12 @@ const Navbar = ({session}:{session:Session | null}) => {
 
 
             {!session ? (
-                <div className="my-auto">
+                <div>
                   <Sign session={session} title={<div className="bg-lcard dark:bg-dcard dark:text-white text-lg p-2  rounded-lg text-black"><IoPersonSharp/></div>}/>
                 </div>
               ) : (
                 <>
-                <div className="my-auto">
+                <div>
                   <Profile session={session} />
                 </div>
                 
@@ -213,7 +220,7 @@ const Navbar = ({session}:{session:Session | null}) => {
 
             </div>
             
-            <div className="max-lg:hidden lg:flex md:gap-4 my-auto   capitalize font-bold  md:text-sm">
+            <div className="max-lg:hidden lg:flex md:gap-4 my-auto   capitalize font-bold  md:text-sm ">
                    {items.map((item,index) => (                   
                       <Link 
                       key={item.id}
@@ -224,12 +231,32 @@ const Navbar = ({session}:{session:Session | null}) => {
                       </Link>                    
                      )
                    )}
+                       <Dropdown
+                           className="-right-10 px-2  rounded-xl w-52"
+                           title={"لیست قیمت"}
+                           btnStyle={"text-lfont hover:text-black dark:hover:text-white duration-300"}
+                         >
+                           <div className="flex flex-col space-y-1 ">
+                              <Link  href={'/posts/لیست-قیمت-شیشه-سکوریت-۱۴۰۴-۲۰۲۵'}>
+                              <div className="p-2 hover:bg-lcard dark:hover:bg-dcard duration-200 rounded-xl">
+                                  <p className="text-lg">شیشه سکوریت</p>
+                                  <p className="text-lfont text-xs">لیست قیمت انواع شیشه سکوریت</p>
+                              </div>
+                              </Link>
+                              <Link  href={'/posts/لیست-قیمت-شیشه-لمینت-۱۴۰۴-۲۰۲۵'}>
+                              <div className="p-2 hover:bg-lcard dark:hover:bg-dcard duration-200 rounded-xl">
+                                  <p className="text-lg">شیشه لمینت</p>
+                                  <p className="text-lfont text-xs">لیست قیمت انواع شیشه لمینت</p>
+                              </div>
+                              </Link>
+                           </div>
+                        </Dropdown>
             </div>
     
-            <div>
+            <div className="my-auto">
               <Link
                 href="/"
-                className="font-blanka font-bold text-md text-lfont hover:dark:text-white hover:text-black duration-300"
+                className="font-blanka font-bold text-sm pt-2 xl:text-base text-lfont hover:dark:text-white hover:text-black duration-300 "
               >
                 ATLAS DOOR
               </Link>

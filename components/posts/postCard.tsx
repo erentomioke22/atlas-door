@@ -71,7 +71,7 @@ const PostCard: React.FC<PostCardProps> = ({post,draft}) => {
             }
           </div>
           <div className='flex flex-col truncate'>
-            <p className='truncate'>{post.user.displayName || post.user.name}</p>
+            <p className='truncate capitalize'>{post.user.displayName || post.user.name}</p>
             <p className='text-lfont truncate' >{formattedDate}</p>
           </div>
         </div>

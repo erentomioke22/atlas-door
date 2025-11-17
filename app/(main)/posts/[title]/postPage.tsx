@@ -123,7 +123,7 @@ const PostPage: React.FC<PostPageProps> = ({ initialPost,session }) => {
                     )}
                   </div>
                   <div className='flex-1 truncate'>
-                    <p className='truncate text-black dark:text-white'>{post?.user.displayName || post?.user.name}</p>
+                    <p className='truncate capitalize'>{post?.user.displayName || post?.user.name}</p>
                     <p className=' truncate text-lfont'>
                       {moment(new Date(post?.createdAt), "YYYYMMDD").fromNow()} -
                       <span className="">

@@ -40,7 +40,7 @@ const Profile: React.FC<ProfileProps> = ({ session }) => {
         </div>
       }
       close={close}
-      className={"right-0"}
+      className={"right-0 w-72"}
       disabled={!session}
     >
       {!session?.user?.emailVerified  &&
@@ -57,9 +57,9 @@ const Profile: React.FC<ProfileProps> = ({ session }) => {
               />
           }
         </div>
-        <div className="t truncate max-w-36">
-          <p className="text-sm  text-black dark:text-white truncate">{session?.user?.displayName || session?.user?.name}</p>
-          <p className="text-sm  text-lfont truncate">{session?.user?.email}</p>
+        <div className=" truncate ">
+          <p className="text-sm  text-black dark:text-white truncate capitalize">{session?.user?.displayName || session?.user?.name}</p>
+          <p className="text-sm text-end text-lfont truncate ">{session?.user?.email}</p>
         </div>
       </div>
 

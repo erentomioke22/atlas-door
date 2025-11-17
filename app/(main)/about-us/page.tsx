@@ -78,7 +78,6 @@ export default function AboutUs() {
         <div className="container mx-auto px-4 max-w-6xl">
           {/* Header */}
           <header className="text-center mb-12">
-            <div className="w-24 h-1 bg-blue-600 mx-auto mt-4"></div>
             <div className="flex justify-between  mt-16">
               <h1 className="text-2xl">درباره ما</h1>
               <Link href="/" className="flex text-sm my-auto">

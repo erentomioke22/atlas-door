@@ -4,7 +4,7 @@ const Banner = () => {
   const[close,setClose]=useState(true);
 
   return (
-      <div className="relative isolate overflow-hidden bg-lcard dark:bg-dcard text-lfont px-3 md:px-5 rtl:ml-0 py-2">
+      <div className="relative isolate overflow-hidden bg-lcard dark:bg-dcard text-lfont px-3 md:px-5 2xl:max-w-7xl mx-auto py-2">
          <div className='flex justify-normal sm:justify-between  gap-2 text-right'>
           <div className='text-[12px] md:text-sm  my-auto '>
             <p >برای ثبت سفارش و مشاوره رایگان با ما تماس بگیرید</p>

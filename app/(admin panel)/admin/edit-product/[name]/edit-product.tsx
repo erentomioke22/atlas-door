@@ -749,7 +749,7 @@ const EditProduct: React.FC<EditProductProps> = ({ name, session }) => {
                 )}
               </div>
               <div className="flex flex-col ">
-                <p className="text-sm ">
+                <p className="text-sm capitalize">
                   {product?.seller.displayName || product?.seller.name}
                 </p>
                 <p className=" text-lfont text-[10px] text-start">

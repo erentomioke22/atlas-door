@@ -661,7 +661,7 @@ const CreateProduct = ({ session }: { session: Session | null }) => {
                 )}
               </div>
               <div className="flex flex-col ">
-                <p className=" text-black dark:text-white text-sm">
+                <p className=" text-sm capitalize">
                   {session?.user?.displayName || session?.user?.name}
                 </p>
                 <p className=" text-lfont text-[10px]">
