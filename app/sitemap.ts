@@ -18,7 +18,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: formatDateISO(updatedAt),
     changeFrequency: 'yearly',
     priority: 0.8,
-    images: images.map((image: string) => `${process.env.NEXT_PUBLIC_BASE_URL}/${image}`),
+    images: images.map((image: string) => `${image}`),
   }));
 
   const productEntries: MetadataRoute.Sitemap = products.map(({ slug, updatedAt, images }) => ({
@@ -26,7 +26,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: formatDateISO(updatedAt),
     changeFrequency: 'yearly',
     priority: 0.8,
-    images: images.map((image: string) => `${process.env.NEXT_PUBLIC_BASE_URL}/${image}`),
+    images: images.map((image: string) => `${image}`),
   }));
 
   const routes = ['about-us', 'privacy-policy', 'posts', 'products'] as const;

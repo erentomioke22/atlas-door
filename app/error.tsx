@@ -11,7 +11,7 @@ const Error = ({ error, reset }: ErrorProps) => {
   return (
     <main className="flex min-h-svh items-center justify-center px-4   container max-w-xl   mx-auto place-items-center ">
       <div className="text-center">
-        <p className="text-base font-semibold text-red">ERROR</p>
+        <h1 className="text-base font-semibold text-red">ERROR</h1>
         {/* <h1 className="mt-4  font-bold tracking-tight text-xl">
           error {String(error?.message ?? '')}
         </h1> */}
