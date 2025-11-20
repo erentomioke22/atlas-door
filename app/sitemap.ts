@@ -7,6 +7,7 @@ function formatDateISO(date: Date | string | number): string {
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const posts = await prisma.post.findMany({
+    where: {status: "PUBLISHED",},
     select: { slug: true, updatedAt: true, images: true },
   });
   const products = await prisma.product.findMany({
