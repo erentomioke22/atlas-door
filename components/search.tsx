@@ -139,7 +139,7 @@ const Search: React.FC<SearchProps> = ({ session }) => {
                       </div>
 
                       <div className="flex-1 space-y-1">
-                        <p className="text-lfont text-sm">{post?.user.displayName || post?.user.name} . <span className="text-[10px] text-red">مقاله</span></p>
+                        <p className="text-lfont text-sm capitalize">{post?.user.displayName || post?.user.name} . <span className="text-[10px] text-red">مقاله</span></p>
                         <p className="text-sm line-clamp-1 hover:underline underline-offset-2 decoration-2 duration-100">{post?.title}</p>
                       </div>
                     </div>
@@ -156,7 +156,7 @@ const Search: React.FC<SearchProps> = ({ session }) => {
                       </div>
 
                       <div className="flex-1 space-y-1">
-                        <p className="text-lfont text-sm">{product?.seller.displayName || product?.seller.name} . <span className="text-[10px] text-red">محصول</span></p>
+                        <p className="text-lfont text-sm capitalize">{product?.seller.displayName || product?.seller.name} . <span className="text-[10px] text-red">محصول</span></p>
                         <p className="text-sm line-clamp-1 hover:underline underline-offset-2 decoration-2 duration-100">{product?.name}</p>
                       </div>
                     </div>

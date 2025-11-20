@@ -134,7 +134,7 @@ const Navbar = ({session}:{session:Session | null}) => {
                       </Link>
                   );
                 })}
-                    <Link  href={'/posts/لیست-قیمت-شیشه-سکوریت-۱۴۰۴-۲۰۲۵'}>
+                    {/* <Link  href={'/posts/لیست-قیمت-شیشه-سکوریت-۱۴۰۴-۲۰۲۵'}>
                     <div className="text-2xl font-bold   py-2 px-3 hover:bg-lcard dark:hover:bg-dcard duration-500 rounded-lg w-full">
                         <p>قیمت شیشه سکوریت</p>
                         <p className="text-lfont text-sm">لیست قیمت انواع شیشه سکوریت</p>
@@ -145,7 +145,7 @@ const Navbar = ({session}:{session:Session | null}) => {
                         <p>قیمت شیشه لمینت</p>
                         <p className="text-lfont text-sm">لیست قیمت انواع شیشه لمینت</p>
                     </div>
-                    </Link>
+                    </Link> */}
               </div>
 
                 </div>
@@ -231,7 +231,7 @@ const Navbar = ({session}:{session:Session | null}) => {
                       </Link>                    
                      )
                    )}
-                       <Dropdown
+                       {/* <Dropdown
                            className="-right-10 px-2  rounded-xl w-52"
                            title={"لیست قیمت"}
                            btnStyle={"text-lfont hover:text-black dark:hover:text-white duration-300"}
@@ -250,7 +250,7 @@ const Navbar = ({session}:{session:Session | null}) => {
                               </div>
                               </Link>
                            </div>
-                        </Dropdown>
+                        </Dropdown> */}
             </div>
     
             <div className="my-auto">

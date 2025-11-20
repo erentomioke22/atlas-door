@@ -54,9 +54,20 @@ const PostList: React.FC = () => {
   };
 
   // Update URL when tag changes
+  // const updateUrlWithTag = (newTag: string): void => {
+  //   const params = new URLSearchParams(searchParams);
+  //   params.set("tag", newTag);
+  //   router.push(`${path}?${params.toString()}` as any, { scroll: false });
+  //   setTag(newTag === "همه ی وبلاگ ها" ? "" : newTag);
+  // };
+
   const updateUrlWithTag = (newTag: string): void => {
     const params = new URLSearchParams(searchParams);
-    params.set("tag", newTag);
+    if (newTag === "همه ی وبلاگ ها") {
+      params.delete("tag");
+    } else {
+      params.set("tag", newTag);
+    }
     router.push(`${path}?${params.toString()}` as any, { scroll: false });
     setTag(newTag === "همه ی وبلاگ ها" ? "" : newTag);
   };
@@ -70,8 +81,9 @@ const PostList: React.FC = () => {
       postPerPage,
     ],
     queryFn: async () => {
+      const tagParam = tag === "" ? "all" : tag;
       const response = await axios.get(
-        `/api/posts/tag/${tag}?category=${category}&pgnum=${currentPage}&pgsize=${postPerPage}`
+        `/api/posts/tag/${tagParam}?category=${category}&pgnum=${currentPage}&pgsize=${postPerPage}`
       );
       return response.data;
     },
@@ -79,7 +91,6 @@ const PostList: React.FC = () => {
     // keepPreviousData: true,
   });
 
-  // Remove the nested .post access
   const posts: PostLite[] = data?.posts || ([] as PostLite[]);
   const count: number = data?.count || 0;
 
@@ -125,8 +136,10 @@ const PostList: React.FC = () => {
     { id: "4", name: "درب اتوماتیک", link: "درب اتوماتیک" },
     { id: "5", name: "نصب", link: "نصب" },
     { id: "6", name: "خدمات", link: "خدمات" },
-    { id: "7", name: "کرکره برقی", link: "کرکره برقی" },
-    { id: "8", name: "جام بالکن", link: "جام بالکن" },
+    { id: "7", name: "جام بالکن", link: "جام بالکن" },
+    { id: "8", name: "نرده شیشه ای", link: "نرده شیشه ای" },
+    { id: "9", name: "نمای کرتین وال", link: "کرتین وال" },
+    { id: "10", name: "کرکره برقی", link: "کرکره برقی" },
   ];
 
   const handleDotsClick = (dotType: string): void => {

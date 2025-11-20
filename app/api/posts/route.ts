@@ -39,7 +39,7 @@ export async function GET(
     }
 
     const currentPost = await prisma.post.findFirst({
-      where: { slug: postTitle },
+      where: { slug: postTitle , status: "PUBLISHED",},
       include: getPostDataInclude(session?.user?.id),
     });
 

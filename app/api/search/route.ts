@@ -51,6 +51,7 @@ export async function GET(
             },
           },
         ],
+        status:"PUBLISHED"
       },
       include: getPostDataInclude(session?.user?.id),
       orderBy: { createdAt: "desc" },

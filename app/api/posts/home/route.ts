@@ -23,6 +23,9 @@ export async function GET(req: NextRequest): Promise<NextResponse<HomeResponse |
     switch (category) {
       case 'following':
         posts = await prisma.post.findMany({
+          where: {
+            status: "PUBLISHED",
+          },
           orderBy: { createdAt: "desc" },
           take: 6,
           include: getPostDataInclude(userId),
@@ -30,6 +33,9 @@ export async function GET(req: NextRequest): Promise<NextResponse<HomeResponse |
         break;
       case 'popular':
         posts = await prisma.post.findMany({
+          where: {
+            status: "PUBLISHED",
+          },
           include: getPostDataInclude(userId),
           orderBy: [
             // { likes: { _count: "desc" } },
@@ -41,6 +47,9 @@ export async function GET(req: NextRequest): Promise<NextResponse<HomeResponse |
         break;
       case 'new-post':
         posts = await prisma.post.findMany({
+          where: {
+            status: "PUBLISHED",
+          },
           include: getPostDataInclude(userId),
           orderBy: { createdAt: "desc" },
           take: 6,
@@ -48,6 +57,9 @@ export async function GET(req: NextRequest): Promise<NextResponse<HomeResponse |
         break;
       case 'for-you':
         posts = await prisma.post.findMany({
+          where: {
+            status: "PUBLISHED",
+          },
           include: getPostDataInclude(userId),
           orderBy: { createdAt: "desc" },
           take: 6,
@@ -55,6 +67,9 @@ export async function GET(req: NextRequest): Promise<NextResponse<HomeResponse |
         break;
       default:
         posts = await prisma.post.findMany({
+          where: {
+            status: "PUBLISHED",
+          },
           include: getPostDataInclude(userId),
           orderBy: { createdAt: "desc" },
           take: 6,

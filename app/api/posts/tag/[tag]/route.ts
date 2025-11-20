@@ -14,6 +14,7 @@ interface RouteParams {
 
 type CategoryType = "following" | "popular" | "new-post";
 
+
 export async function GET(
   req: NextRequest,
   { params }: RouteParams
@@ -28,22 +29,29 @@ export async function GET(
     const session = await getServerSession();
     const { tag } = await params;
 
-    if (!tag) {
-      return NextResponse.json({ error: "Tag is required" }, { status: 400 });
+    const baseWhere = {
+      status: "PUBLISHED"
+    };
+
+    // Build the where condition based on tag
+    let whereCondition: any = baseWhere;
+
+    if (tag && tag.trim() !== "" && tag !== "all") {
+      whereCondition = {
+        ...baseWhere,
+        tags: {
+          some: {
+            name: tag,
+          },
+        },
+      };
     }
 
     let posts: any[];
     switch (category) {
       case "following":
         posts = await prisma.post.findMany({
-          where: {
-            tags: {
-              some: {
-                name: tag,
-              },
-            },
-            status: "PUBLISHED",
-          },
+          where: whereCondition,
           include: getPostDataInclude(session?.user?.id),
           skip: pgnum * pgsize,
           take: pgsize,
@@ -51,14 +59,7 @@ export async function GET(
         break;
       case "popular":
         posts = await prisma.post.findMany({
-          where: {
-            tags: {
-              some: {
-                name: tag,
-              },
-            },
-            status: "PUBLISHED",
-          },
+          where: whereCondition,
           include: getPostDataInclude(session?.user?.id),
           orderBy: [{ comments: { _count: "desc" } }, { createdAt: "desc" }],
           skip: pgnum * pgsize,
@@ -67,14 +68,7 @@ export async function GET(
         break;
       case "new-post":
         posts = await prisma.post.findMany({
-          where: {
-            tags: {
-              some: {
-                name: tag,
-              },
-            },
-            status: "PUBLISHED",
-          },
+          where: whereCondition,
           include: getPostDataInclude(session?.user?.id),
           orderBy: { createdAt: "desc" },
           skip: pgnum * pgsize,
@@ -83,14 +77,7 @@ export async function GET(
         break;
       default:
         posts = await prisma.post.findMany({
-          where: {
-            tags: {
-              some: {
-                name: tag,
-              },
-            },
-            status: "PUBLISHED",
-          },
+          where: whereCondition,
           include: getPostDataInclude(session?.user?.id),
           orderBy: { createdAt: "desc" },
           skip: pgnum * pgsize,
@@ -99,14 +86,7 @@ export async function GET(
     }
 
     const count = await prisma.post.count({
-      where: {
-        tags: {
-          some: {
-            name: tag,
-          },
-        },
-        status: "PUBLISHED",
-      },
+      where: whereCondition,
     });
 
     return NextResponse.json({ posts, count });

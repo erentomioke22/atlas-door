@@ -101,7 +101,7 @@ function Home() {
             تمرکز ما بر <span className="bg-linear-to-tr text-clip from-blue to-darkgreen text-transparent bg-clip-text">کیفیت و عملکرد</span> هربار تجربه ای زیبا را تضمین میکند
           </h4>
           <h1 className="text-pretty text-base md:text-lg leading-loose">
-            نمايندگی شيشه سكوريت و خام - فروش و ارائه خدمات كركره برقی - فروش و ارائه خدمات انواع درب های اتوماتيک - نصب و تعمير انواع شيشه های سكوريت ، نرده های شيشه ای ، پارتيشن های اداری ، حمام شیشه ای و جام بالكن ها 
+            نمايندگی شيشه سكوريت و خام - فروش و ارائه خدمات انواع درب های اتوماتيک - نصب و تعمير انواع شيشه های سكوريت ، نرده های شيشه ای ، پارتيشن های اداری ، حمام شیشه ای و جام بالكن ها 
           </h1>
            <div className="flex flex-wrap gap-3 text-center justify-center lg:justify-start text-sm lg:text-base">
             <div className="flex gap-1">
