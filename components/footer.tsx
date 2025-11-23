@@ -10,7 +10,7 @@ const Footer: React.FC = () => {
 
 <footer className="container max-w-7xl mx-auto  text-lfont pt-16 ">
   <div className='flex max-md:flex-col md:justify-between  px-5 max-md:space-y-5 md:space-x-5 my-10 '>
-    <div className='flex-col space-y-2'>
+    <div className='flex-col space-y-3'>
     <Link href="/" className="font-blanka font-bold hover:text-black dark:hover:text-white duration-500 text-xl">
     <h1>
 		  ATLAS DOOR
@@ -32,11 +32,21 @@ const Footer: React.FC = () => {
          <a className='text-blue duration-500' href="https://t.me/Atlasdoor96" target="_blank" rel="noopener noreferrer" title="telegram"><FaTelegram/></a>
          <a className='text-[violet] duration-500' href="https://www.instagram.com/atlasshishe96" target="_blank" rel="noopener noreferrer" title="instagram"><FiInstagram/></a>
          <a className='text-darkgreen duration-500' href="https://wa.me/+989334922498" target="_blank" rel="noopener noreferrer" title="WhatsApp"><FaWhatsapp/></a>
-       </div>
-          <div className='flex gap-5 text-xs'>
+    </div>
+    <div className='flex gap-5 text-xs'>
       <Link href="/privacy-policy">سیاست حفظ حریم خصوصی</Link>
       <Link href="/about-us">درباره ی ما</Link>
-          </div>
+    </div>
+     <div className='size-16'>
+       <a referrerPolicy='origin' rel='noopener' aria-label='enamad' title='enamad' target='_blank' href='https://trustseal.enamad.ir/?id=676467&Code=D9AtshITMsWD7xr8ZQweznQrxmkFpaJN'>
+        <img 
+        referrerPolicy='origin' 
+        src='https://trustseal.enamad.ir/logo.aspx?id=676467&Code=D9AtshITMsWD7xr8ZQweznQrxmkFpaJN' 
+        alt='' 
+        className='cursor-pointer' 
+        data-code='D9AtshITMsWD7xr8ZQweznQrxmkFpaJN'/>
+        </a>
+     </div>
     </div>
      <div className=' text-sm md:my-auto  max-md:py-2 '>
           <h2>آدرس : تهران اتوبان آزادگان آهن مکان فاز ۳ مرکزی پلاک ۶۸۲</h2>
