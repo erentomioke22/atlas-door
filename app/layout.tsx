@@ -106,6 +106,7 @@ const RootLayout = ({ children }: RootLayoutProps) => {
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
+        <meta name="enamad" content="22538924" />
       </head>
       <body className="font-rubik  bg-white text-[#1f2937] dark:bg-black dark:text-white" suppressHydrationWarning>
         <ThemeProvider
