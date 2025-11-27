@@ -49,14 +49,11 @@ const OrderCard  : React.FC<OrderLite> = ({ item }) => {
       <div className="w-full px-1 py-3 space-y-1 mx-auto flex flex-wrap justify-between gap-2 select-none">
         <div className="flex gap-2">
           {item?.product.images[0] && (
-            <div className="relative w-20 h-20 rounded-2xl">
               <ImageCom
-                className={"object-cover rounded-xl w-20 h-20"}
+                className={"rounded-2xl w-20 h-20"}
                 alt={item?.product.name}
                 src={item?.product.images[0]}
-                // size={'w-20 h-20 '}
               />
-            </div>
           )}
 
           <Link

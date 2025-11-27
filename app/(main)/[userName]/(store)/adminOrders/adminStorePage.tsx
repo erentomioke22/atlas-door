@@ -406,14 +406,11 @@ export default function AdminStorePage({session}:{session:Session | null}) {
                   <div key={item.id}>
                     <div className="flex gap-2 py-3">
                       {item?.product?.images[0] && (
-                        <div className="relative  w-20 h-20  rounded-2xl ">
                           <ImageCom
-                            className={"object-cover  rounded-xl w-full"}
+                            className={" w-20 h-20  rounded-2xl"}
                             alt={item?.product?.name}
                             src={item?.product?.images[0]}
-                            size={"h-36 md:h-40"}
                           />
-                        </div>
                       )}
 
                       <Link

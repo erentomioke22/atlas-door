@@ -468,8 +468,7 @@ const CreateProduct = ({ session }: { session: Session | null }) => {
       `}
                           >
                             <ImageCom
-                              className="w-full h-full object-cover rounded-xl"
-                              size="w-full h-full"
+                              className="w-full h-44rounded-xl"
                               src={`${url}`}
                               alt="post thumnail"
                             />
@@ -647,7 +646,6 @@ const CreateProduct = ({ session }: { session: Session | null }) => {
         <div className="space-y-4 py-10">
           {session && (
             <div className="flex gap-2">
-              <div className="relative h-9 w-9">
                 {session?.user?.image === null ? (
                   <div className="h-9 w-9 rounded-xl bg-linear-to-tr from-redorange to-yellow"></div>
                 ) : (
@@ -659,7 +657,6 @@ const CreateProduct = ({ session }: { session: Session | null }) => {
                     } avatar`}
                   />
                 )}
-              </div>
               <div className="flex flex-col ">
                 <p className=" text-sm capitalize">
                   {session?.user?.displayName || session?.user?.name}

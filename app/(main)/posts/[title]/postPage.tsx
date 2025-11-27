@@ -30,7 +30,7 @@ const PostPage: React.FC<PostPageProps> = ({ initialPost,session }) => {
   const contentRef = useRef<HTMLDivElement>(null);
   const [progress, setProgress] = useState<number>(0);
   const pathName = usePathname();
-  const currentUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/${pathName}`;
+  const currentUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${pathName}`;
 
   const { data: post, isLoading, status, error } = useQuery<PostLite>({
     queryKey: ["post", initialPost.slug],
@@ -99,7 +99,7 @@ const PostPage: React.FC<PostPageProps> = ({ initialPost,session }) => {
                     <span className="flex gap-2 flex-wrap">
                       {post?.tags?.map((tag) => {
                         return (
-                          <h3 key={tag.name} className="text-[10px] md:text-[13px] text-lfont text-nowrap">
+                          <h3 key={tag.name} className="text-[10px] md:text-[13px] text-neutral-500 dark:text-neutral-400 text-nowrap">
                             <span className="text-black dark:text-white">#</span> {tag.name}
                           </h3>
                         );
@@ -110,18 +110,15 @@ const PostPage: React.FC<PostPageProps> = ({ initialPost,session }) => {
               </div>
               <div className='flex justify-between'>
                 <div className=' flex gap-1 sm:gap-2  w-fit p-1 text-[10px]   duration-300 rounded-lg truncate'>
-                  <div className='relative w-8 h-8'>
                     {post?.user.image === null ? (
-                      <div className="h-9 w-9 rounded-lg bg-linear-to-tr from-redorange to-yellow"></div>
+                      <div className="h-8 w-8 rounded-lg bg-linear-to-tr from-redorange to-yellow"></div>
                     ) : (
                       <ImageCom
                         src={post?.user?.image ?? ""}
                         className='h-8 w-8  rounded-lg'
-                        size={'h-8 w-8 '}
                         alt={`${post?.user?.name} avatar`}
                       />
                     )}
-                  </div>
                   <div className='flex-1 truncate'>
                     <p className='truncate capitalize'>{post?.user.displayName || post?.user.name}</p>
                     <p className=' truncate text-lfont'>

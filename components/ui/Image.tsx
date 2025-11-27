@@ -14,7 +14,7 @@ type ImageComProps = {
   size?: string
 }
 
-const ImageCom: React.FC<ImageComProps> = ({ src, alt, className }) => {
+const ImageCom: React.FC<ImageComProps> = ({ src, alt, className,...props }) => {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
 
@@ -28,7 +28,7 @@ const ImageCom: React.FC<ImageComProps> = ({ src, alt, className }) => {
     setError(true)
   }
   return (
-    <>
+    <div className={`relative overflow-hidden shrink-0 ${className}`}>
       <NextImage
         src={src}
         alt={alt}
@@ -37,8 +37,9 @@ const ImageCom: React.FC<ImageComProps> = ({ src, alt, className }) => {
         fill
         priority
         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-        className={`${className} transition-opacity duration-500 select-none pointer-events-none ${loading || error ? 'opacity-0' : 'opacity-100'} `}
+        className={`object-cover ${className} transition-opacity duration-500 select-none  pointer-events-none ${loading || error ? 'opacity-0' : 'opacity-100'} `}
         loader={imageLoader}
+        {...props}
       />
 
       {(loading || error) && (
@@ -52,7 +53,7 @@ const ImageCom: React.FC<ImageComProps> = ({ src, alt, className }) => {
           )}
         </div>
       )}
-    </>
+    </div>
   )
 }
 

@@ -169,18 +169,17 @@ const Comments: React.FC<CommentsProps> = ({product,session}) => {
                             </div>
                           : <div className="py-1 px-2  w-full flex items-start gap-1 text-start  ">
                               {replyInfo?.user?.image === null
-                                ? <div className="h-9 w-9 rounded-lg bg-linear-to-tr from-redorange to-yellow"></div>
-                                : <div className="relative w-9 h-9 overflow-hidden shrink-0 my-auto">
+                                ? <div className="h-9 w-9 rounded-xl bg-linear-to-tr from-redorange to-yellow"></div>
+                                : 
                                     <ImageCom
-                                      className="rounded-lg object-cover absolute inset-0"
+                                      className="rounded-xl  absolute inset-0 w-9 h-9  my-auto"
                                       src={replyInfo?.user?.image ?? ""}
                                       alt={replyInfo?.user?.displayName || replyInfo?.user?.name || ""}
-                                    />
-                                  </div>
+                                    />                               
                               }
-                              <div className="min-w-0">
-                                <p className="text-sm capitalize">{replyInfo?.user?.displayName || replyInfo?.user?.name}</p>
-                                <div className="flex gap-1 text-[12px] ">
+                              <div >
+                                <p className="text-xs capitalize">{replyInfo?.user?.displayName || replyInfo?.user?.name}</p>
+                                <div className="flex gap-1 text-xs ">
                                   <div className="text-redorange my-auto"><p className=" ">  پاسخ به پيام : </p></div>
                                   <div
                                     className="wrap-break-word normal-case leading-loose  text-lfont line-clamp-1 my-auto"
@@ -197,14 +196,13 @@ const Comments: React.FC<CommentsProps> = ({product,session}) => {
                     }
                     <div className="flex gap-2">
                       {session?.user?.image === null
-                        ? <div className="h-9 w-9 rounded-lg bg-linear-to-tr from-redorange to-yellow"></div>
-                        : <div className="relative h-10 w-10">
+                        ? <div className="h-10 w-10 rounded-xl bg-linear-to-tr from-redorange to-yellow"></div>
+                        : 
                             <ImageCom
-                              className="rounded-xl h-10 w-10"
+                              className="rounded-xl  inset-0 w-10 h-10"
                               src={session?.user?.image ?? ""}
                               alt={session?.user?.displayName|| session?.user?.name  || ""}
-                            />
-                          </div>
+                            />                        
                       }
                       <CommentInput 
                       product={product as any}  

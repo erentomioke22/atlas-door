@@ -60,7 +60,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, draft }) => {
         {product?.images[0] && (
           <div className="relative w-full h-36 md:h-40  rounded-3xl ">
             <ImageCom
-              className={"object-cover h-36 md:h-40 rounded-3xl w-full"}
+              className={" h-36 md:h-40 rounded-3xl w-full"}
               alt={product?.name}
               src={product?.images[0]}
             />

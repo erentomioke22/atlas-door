@@ -48,7 +48,7 @@ interface PostCardProps {
 }
 
 const PostCard: React.FC<PostCardProps> = ({post,draft}) => {
-  const [link,setLink]=useState<string>(draft ? `/edit-post/${post.slug}` :`/posts/${post.slug}`)
+  const [link,setLink]=useState<string>(draft ? `/edit-post/${post.slug}` :`${process.env.NEXT_PUBLIC_BASE_URL}/posts/${post.slug}`)
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(link);
@@ -63,13 +63,11 @@ const PostCard: React.FC<PostCardProps> = ({post,draft}) => {
       <div className='flex justify-between'>
         <div
           className='flex gap-1 sm:gap-2   p-1 text-[10px]   '>
-          <div className='relative w-[32px] h-[32px]'>
             {post.user.image === null ?
               <div className="h-9 w-9 rounded-lg bg-linear-to-tr from-redorange to-yellow"></div>
               :
-              <ImageCom src={post.user.image ?? ""} className='  rounded-lg' alt={`${post?.user?.name} avatar`}/>
+              <ImageCom src={post.user.image ?? ""} className='w-8 h-8 rounded-lg' alt={`${post?.user?.name} avatar`}/>
             }
-          </div>
           <div className='flex flex-col truncate'>
             <p className='truncate capitalize'>{post.user.displayName || post.user.name}</p>
             <p className='text-lfont truncate' >{formattedDate}</p>
@@ -94,13 +92,11 @@ const PostCard: React.FC<PostCardProps> = ({post,draft}) => {
       <Link href={link as any} className='flex flex-col justify-between h-full'>
         <div>
           {post?.images[0] && 
-            <div className='relative w-full h-36 md:h-40  rounded-3xl '>
               <ImageCom 
-                className={'object-cover  rounded-3xl w-full'}
+                className={' w-full h-36 md:h-40 rounded-3xl '}
                 alt={post?.title} 
                 src={post?.images[0]}
-                size={'h-36 md:h-40'} />
-            </div>
+                 />
           }
           <div className="space-y-1 text-wrap">
             <h1 className='text-wrap line-clamp-3  hover:underline duration-150 decoration-2'>{post.title}</h1>

@@ -134,9 +134,7 @@ const Search: React.FC<SearchProps> = ({ session }) => {
                 <Link href={`/posts/${post?.slug}`} key={post?.id}>
                   <div className="p-2 w-full mx-auto ">
                     <div className=' flex gap-2'>
-                      <div className="relative w-[40px] h-[40px]">
                         <ImageCom src={post?.images[0]} className="rounded-lg bg-lbtn dark:bg-dbtn  h-10 w-10" alt={'thumnail'} />
-                      </div>
 
                       <div className="flex-1 space-y-1">
                         <p className="text-lfont text-sm capitalize">{post?.user.displayName || post?.user.name} . <span className="text-[10px] text-red">مقاله</span></p>
@@ -151,9 +149,7 @@ const Search: React.FC<SearchProps> = ({ session }) => {
                 <Link href={`/products/${product?.slug}`} key={product?.id}>
                   <div className="p-2 w-full mx-auto ">
                     <div className=' flex gap-2'>
-                      <div className="relative w-[40px] h-[40px]">
                         <ImageCom src={product?.images[0]} className="rounded-lg bg-lbtn dark:bg-dbtn  h-10 w-10" alt={'thumnail'} />
-                      </div>
 
                       <div className="flex-1 space-y-1">
                         <p className="text-lfont text-sm capitalize">{product?.seller.displayName || product?.seller.name} . <span className="text-[10px] text-red">محصول</span></p>

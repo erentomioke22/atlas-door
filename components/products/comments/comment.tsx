@@ -61,19 +61,19 @@ const Comment: React.FC<CommentProps> = ({
       {parent &&
         <button className=" py-1 px-2 bg-lcard dark:bg-dcard rounded-xl w-full flex items-start gap-1 text-start border border-lbtn" onClick={()=>scrollToComment(parent?.id)}>
           {user?.image === null
-            ? <div className="h-9 w-9 rounded-lg bg-linear-to-tr from-redorange to-yellow"></div>
-            : <div className="relative w-9 h-9 overflow-hidden shrink-0 my-auto">
+            ? <div className="h-9 w-9 rounded-xl bg-linear-to-tr from-redorange to-yellow"></div>
+            : 
                 <ImageCom
-                  className="rounded-lg object-cover absolute inset-0"
+                  className="rounded-xl absolute inset-0 w-9 h-9  my-auto"
                   src={parent?.user?.image ?? "https://static.vecteezy.com/system/resources/previews/006/801/624/non_2x/user-avatar-people-icon-solid-style-icon-design-element-icon-template-background-free-vector.jpg"}
                   alt={parent?.user?.displayName || parent?.user?.name || ""}
                 />
-              </div>
+             
           }
-          <div className="min-w-0">
-            <p className="text-sm capitalize">{parent.user?.displayName || parent.user?.name}</p>
+          <div>
+            <p className="text-xs capitalize">{parent.user?.displayName || parent.user?.name}</p>
             <div
-              className="wrap-break-word normal-case leading-loose text-[12px] text-lfont line-clamp-1"
+              className="wrap-break-word normal-case leading-loose text-xs text-lfont line-clamp-1"
               dangerouslySetInnerHTML={{ __html:parent.content }}
             />
           </div>
@@ -83,14 +83,13 @@ const Comment: React.FC<CommentProps> = ({
       <div className="flex justify-between gap-1">
         <div className="flex capitalize gap-2 ">
           {user?.image === null
-            ? <div className="h-9 w-9 rounded-lg bg-linear-to-tr from-redorange to-yellow"></div>
-            : <div className="relative h-9 w-9">
+            ? <div className="h-9 w-9 rounded-xl bg-linear-to-tr from-redorange to-yellow"></div>
+            : 
                 <ImageCom
-                  className="rounded-lg w-9 h-9"
+                  className="rounded-xl  absolute inset-0 w-9 h-9  my-auto"
                   src={user?.image ?? "https://static.vecteezy.com/system/resources/previews/006/801/624/non_2x/user-avatar-people-icon-solid-style-icon-design-element-icon-template-background-free-vector.jpg"}
                   alt={user?.displayName || user?.name || ""}
-                />
-              </div>
+                />             
           }
           <div >
             <p className="text-[10px] md:text-sm truncate capitalize">{user?.displayName || user?.name}</p>

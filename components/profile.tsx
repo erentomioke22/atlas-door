@@ -28,35 +28,30 @@ const Profile: React.FC<ProfileProps> = ({ session }) => {
   return (
     <DropDrawer
       title={
-        <div className="relative h-9 w-9">
-          {session?.user?.image === null
+          session?.user?.image === null
             ? <div className="h-9 w-9 rounded-xl bg-linear-to-tr from-redorange to-yellow"></div>
             : <ImageCom
-                className="rounded-xl h-9 w-9 object-cover"
+                className="rounded-xl h-9 w-9 "
                 src={session.user?.image ?? ""}
                 alt={`${session.user?.name ?? "user"} avatar`}
               />
-          }
-        </div>
       }
       close={close}
-      className={"right-0 w-72"}
+      className={"right-0 w-65"}
       disabled={!session}
     >
       {!session?.user?.emailVerified  &&
        <p className="text-[12px] text-redorange max-w-72  sm:max-w-52 px-3 md:mx-auto">ایمیل تایید به آدرس ایمیل شما ارسال شده لطفا ایمیلتان را تایید کنید</p>
       }
       <div className=" flex  max-sm:mt-5  p-3   mx-3  rounded-2xl  gap-2 truncate duration-300">
-        <div className="relative h-10 w-10">
           {session?.user?.image === null
             ? <div className="h-10 w-10 rounded-xl bg-linear-to-tr from-redorange to-yellow"></div>
             : <ImageCom
-                className="rounded-xl h-10 w-10 object-cover"
+                className="rounded-xl h-10 w-10 "
                 src={session.user?.image ?? ""}
                 alt={`${session.user?.name ?? "user"} avatar`}
               />
           }
-        </div>
         <div className=" truncate ">
           <p className="text-sm  text-black dark:text-white truncate capitalize">{session?.user?.displayName || session?.user?.name}</p>
           <p className="text-sm text-end text-lfont truncate ">{session?.user?.email}</p>

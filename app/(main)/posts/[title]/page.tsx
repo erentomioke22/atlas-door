@@ -62,12 +62,11 @@ export async function generateMetadata({ params }: PageProps) {
     };
 
     const contentImages = (post?.images ?? []).map((image) => ({
-      url: image?.startsWith('http') ? image : `${process.env.NEXT_PUBLIC_BASE_URL}/${image}`,
+      url:  image ,
       width: 800,
       height: 600,
       alt: post?.title,
     }));
-
     return {
       metadataBase: new URL(`${process.env.NEXT_PUBLIC_BASE_URL}/posts/${post?.slug}`),
       title: `${post?.title} - ${post?.desc?.slice(0, 50)}... | Atlas Door`,
@@ -136,7 +135,7 @@ const Page = async ({ params }:PageProps) => {
     },
     "image": post?.images.map(img => ({
       "@type": "ImageObject",
-      "url": img?.startsWith('http') ? `${img}` : `${process.env.NEXT_PUBLIC_BASE_URL}/${img}`,
+      "url": `${img}`,
       "width": 1200,
       "height": 630
     })),

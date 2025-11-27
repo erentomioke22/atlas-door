@@ -15,10 +15,8 @@ export default function PrivacyPolicy() {
           {/* Header */}
           <div className="text-center mb-8">
             <Link href="/" className="inline-block ">
-              <div className='relative h-44 w-44'>
                 <ImageCom src={'/images/logo/atlas_Door__2_-removebg-preview.png'} alt={'atlas door logo'} className={'w-44 h-44 dark:hidden'}/>
                 <ImageCom src={'/images/logo/atlas_Door__3_-removebg-preview-3.png'} alt={'atlas door logo'} className={'w-44 h-44 hidden dark:block'}/>
-              </div>
             </Link>
             <h1 className="text-2xl md:text-3xl font-bold ">
               سیاست حفظ حریم خصوصی

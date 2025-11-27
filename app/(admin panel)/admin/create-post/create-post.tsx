@@ -417,7 +417,7 @@ const CreatePost = ({ session }: { session: Session | null }) => {
                               } rounded-xl w-full h-44 relative cursor-pointer`}
                             >
                               <ImageCom
-                                className={`w-full h-full object-cover rounded-xl`}
+                                className={`w-full h-44  rounded-xl`}
                                 src={`${url}`}
                                 alt={"post thumnail"}
                               />
@@ -604,7 +604,6 @@ const CreatePost = ({ session }: { session: Session | null }) => {
               {session?.user?.image === null ? (
                 <div className="h-9 w-9 rounded-xl bg-linear-to-tr from-redorange to-yellow"></div>
               ) : (
-                <div className="relative h-9 w-9">
                   <ImageCom
                     className="rounded-xl h-9 w-9 "
                     src={session?.user?.image ?? ""}
@@ -612,7 +611,6 @@ const CreatePost = ({ session }: { session: Session | null }) => {
                       session.user?.displayName || session?.user?.name || ""
                     } avatar`}
                   />
-                </div>
               )}
               <div className="flex flex-col ">
                 <p className=" text-sm capitalize">

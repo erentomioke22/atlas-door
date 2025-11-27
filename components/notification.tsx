@@ -90,13 +90,11 @@ export default function Notification({ notification }: Props) {
         <Link href={`/posts/${notification?.post.slug}`}>
           <div className="text-sm bg-lcard opacity-50 dark:bg-dcard p-2  rounded-xl mt-3">
             <div className="flex gap-2">
-              <div className="relative w-7 h-7">
                 <ImageCom
                   src={notification.post?.images[0]}
                   className="h-7 w-7 rounded-lg my-auto"
                   alt={notification.post.title.slice(0,7)}
                 />
-              </div>
               <div className="flex flex-col ">
                 <span className="text-sm  line-clamp-2">{notification.post.title}</span>
               </div>
@@ -109,13 +107,11 @@ export default function Notification({ notification }: Props) {
         <Link href={`/products/${notification?.product.slug}`}>
           <div className="text-sm bg-lcard opacity-50 dark:bg-dcard p-2  rounded-xl mt-3">
             <div className="flex gap-2">
-              <div className="relative w-7 h-7">
                 <ImageCom
                   src={notification.product?.images[0]}
                   className="h-7 w-7 rounded-lg my-auto"
                   alt={notification.product.name.slice(0,7)}
                 />
-              </div>
               <div className="flex flex-col ">
                 <span className="text-sm  line-clamp-2">{notification.product.name}</span>
               </div>

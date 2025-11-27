@@ -130,13 +130,11 @@ function Home() {
       </div>
   
         </div >
-        <div className="relative  w-full h-64 sm:h-96 lg:h-full ">
             <ImageCom 
-                    className='object-cover rounded-xl w-full h-full'
+                    className='rounded-xl w-full h-64 sm:h-96 lg:h-full'
                     alt={"thumnail Image"} 
                     src={'/images/balcony/media_20241118_121418_7608682146116698746.jpg'} 
                   />
-        </div>
       </div>
 
       <div className="space-y-10">
@@ -157,9 +155,9 @@ function Home() {
               key={project.url}
             >
               <Link href={project.url as any}>
-                <div className="relative w-full h-[200px] md:h-[250px]">
+                <div className="relative">
                   <ImageCom 
-                    className='object-cover h-[200px] md:h-[250px] rounded-xl w-full'
+                    className='h-[200px] md:h-[250px] rounded-xl w-full'
                     alt={"thumnail Image"} 
                     src={project.image} 
                   />

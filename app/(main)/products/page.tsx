@@ -35,20 +35,11 @@ export const metadata : Metadata = {
     siteName: "Atlas Door",
     locale: "fa_IR",
     type: "website",
-    // images: [
-    //   {
-    //     url: `${baseUrl}/images/og-products.jpg`,
-    //     width: 1200,
-    //     height: 630,
-    //     alt: "محصولات اطلس در"
-    //   }
-    // ]
   },
   twitter: {
     card: "summary_large_image",
     title: "محصولات - فروش شیشه سکوریت و درب های اتوماتیک | اطلس در",
     description: "فروش تخصصی شیشه سکوریت، لمینت و درب های اتوماتیک با بهترین کیفیت و قیمت",
-    // images: [`${baseUrl}/images/og-products.jpg`]
   },
   robots: {
     index: true,

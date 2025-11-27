@@ -61,7 +61,7 @@ export async function generateMetadata({ params }: PageProps) {
     };
 
     const ogImages = (product?.images ?? []).map((image) => ({
-      url: image?.startsWith('http') ? image : `${process.env.NEXT_PUBLIC_BASE_URL}/${image}`,
+      url: image ,
       width: 800,
       height: 600,
       alt: product?.name,
@@ -131,7 +131,7 @@ const page = async ({ params }:PageProps) => {
     },
     "image": product.images.map(img => ({
       "@type": "ImageObject",
-      "url": img?.startsWith('http') ? `${img}` : `${process.env.NEXT_PUBLIC_BASE_URL}/${img}`,
+      "url": `${img}`,
       "width": 800,
       "height": 600
     })),

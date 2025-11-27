@@ -18,6 +18,7 @@ type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: Variant
   className?: string
   children?: React.ReactNode
+  title?:string
 }
 
 const Button: React.FC<ButtonProps> = ({ children, variant = 'primary', className, ...props }) => {

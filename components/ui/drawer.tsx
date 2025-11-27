@@ -77,7 +77,7 @@ const Drawer: React.FC<DrawerProps> = ({
   return (
     <div>
       <div className="w-full">
-        <button type="button" className={btnStyle} onClick={() => setIsOpen(!isOpen)} disabled={disabled}>
+        <button type="button" className={btnStyle} onClick={() => setIsOpen(!isOpen)} disabled={disabled} title='drawer button'>
           {title}
         </button>
       </div>

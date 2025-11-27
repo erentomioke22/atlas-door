@@ -51,6 +51,7 @@ const Dropdown: React.FC<DropdownProps> = ({ children, title, close, className, 
         type="button"
         className={`${btnStyle} focus:outline-none disabled:cursor-not-allowed`}
         disabled={disabled}
+        title='dropdown button'
       >
         {title}
       </button>

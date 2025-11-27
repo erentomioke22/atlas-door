@@ -39,7 +39,7 @@ const ProductPage: React.FC<ProductPageProps> = ({ initialProduct, session }) =>
   const [currentColorName, setCurrentColorName] = useState<string>("");
 
   const pathName = usePathname();
-  const currentUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/${pathName}`;
+  const currentUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${pathName}`;
  
   const {
     data: product,
@@ -276,11 +276,11 @@ const ProductPage: React.FC<ProductPageProps> = ({ initialProduct, session }) =>
               >
                 {product?.images?.map((image, index) => (
                   <div
-                      className="transform translate-x-0 translate-y-0 translate-z-0  flex-none basis-full h-64 md:h-96 min-w-0"
+                      className="transform translate-x-0 translate-y-0 translate-z-0  flex-none basis-full h-64 md:h-96 min-w-0 pl-2"
                     key={index}
                   >
                     <ImageCom
-                      className={`basis-full h-64 md:h-96 object-cover rounded-xl`}
+                      className={`basis-full h-64 md:h-96  rounded-xl`}
                       src={image}
                       alt={"product thumnail"}
                     />

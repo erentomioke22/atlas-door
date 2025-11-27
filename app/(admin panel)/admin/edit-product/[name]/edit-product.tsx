@@ -560,8 +560,7 @@ const EditProduct: React.FC<EditProductProps> = ({ name, session }) => {
         `}
                                 >
                                   <ImageCom
-                                    className="w-full h-full object-cover rounded-xl"
-                                    size="w-full h-full"
+                                    className="w-full h-44 rounded-xl"
                                     src={imageUrl}
                                     alt="post thumbnail"
                                   />
@@ -737,7 +736,6 @@ const EditProduct: React.FC<EditProductProps> = ({ name, session }) => {
         ) : (
           <div className="  space-y-4 py-10 ">
             <div className="flex gap-2">
-              <div className="relative  w-9 h-9">
                 {product?.seller?.image === null ? (
                   <div className="h-9 w-9 rounded-xl bg-linear-to-tr from-redorange to-yellow"></div>
                 ) : (
@@ -747,7 +745,6 @@ const EditProduct: React.FC<EditProductProps> = ({ name, session }) => {
                     alt=""
                   />
                 )}
-              </div>
               <div className="flex flex-col ">
                 <p className="text-sm capitalize">
                   {product?.seller.displayName || product?.seller.name}
