@@ -482,3 +482,7 @@ input[type=number] {
   -moz-appearance: textfield;
   appearance: textfield;
 }
+
+.profile-link{
+  @apply flex justify-between py-2 w-full  px-3 text-lg sm:text-sm  rounded-lg  hover:bg-lcard dark:hover:bg-dcard sm:hover:text-black sm:dark:hover:text-white sm:text-neutral-500 dark:sm:text-neutral-300 duration-500
+}

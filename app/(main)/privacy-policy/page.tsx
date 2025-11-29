@@ -25,7 +25,7 @@ export default function PrivacyPolicy() {
           </div>
 
           {/* Content */}
-          <div className="prose prose-lg max-w-none text-justify text-lfont">
+          <div className="prose prose-lg max-w-none text-justify text-neutral-500 dark:text-neutral-300">
             <p className="mb-6">
               به وبسایت اطلس در خوش آمدید. ما در شرکت اطلس در به حریم خصوصی شما احترام می‌گذاریم و متعهد به محافظت از اطلاعات شخصی شما که از طریق وبسایت ما به اشتراک می‌گذارید، هستیم. این سیاست حفظ حریم خصوصی توضیح می‌دهد که چگونه اطلاعات شما را جمع‌آوری، استفاده و حفظ می‌کنیم.
             </p>

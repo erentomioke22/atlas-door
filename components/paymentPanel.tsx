@@ -115,6 +115,7 @@ const PaymentPanel: React.FC<PaymentPanelProps> = ({ status, session }) => {
             className="  text-lg bg-lcard dark:bg-dcard px-2 py-1  rounded-full border-2 text-lfont"
             type="button"
             variant="close"
+            title="close button"
           >
             <IoClose />
           </Button>

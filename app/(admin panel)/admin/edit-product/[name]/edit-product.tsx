@@ -446,6 +446,7 @@ const EditProduct: React.FC<EditProductProps> = ({ name, session }) => {
                       productIsUploading
                     }
                     variant="delete"
+                    title="delete button"
                     className="text-[10px] md:text-sm px-3  py-1"
                     onClick={() => {
                       // const removeKey = deletedFiles.map((file) => {
@@ -513,6 +514,7 @@ const EditProduct: React.FC<EditProductProps> = ({ name, session }) => {
                         variant="close"
                         className="text-lg px-2 py-1"
                         type="button"
+                        title="close button"
                       >
                         <IoClose />
                       </Button>
@@ -560,7 +562,7 @@ const EditProduct: React.FC<EditProductProps> = ({ name, session }) => {
         `}
                                 >
                                   <ImageCom
-                                    className="w-full h-44 rounded-xl"
+                                    className="w-full h-full rounded-xl"
                                     src={imageUrl}
                                     alt="post thumbnail"
                                   />
@@ -685,6 +687,7 @@ const EditProduct: React.FC<EditProductProps> = ({ name, session }) => {
                           variant="menuActive"
                           disabled={mutation.isPending || productIsUploading}
                           type="submit"
+                          title="edit button"
                         >
                           {mutation.isPending || productIsUploading ? (
                             <LoadingIcon color={"bg-white dark:bg-black"} />
@@ -704,6 +707,7 @@ const EditProduct: React.FC<EditProductProps> = ({ name, session }) => {
                   variant="close"
                   onClick={() => setCancel(true)}
                   type="button"
+                  title="cancel button"
                 >
                   Cancel
                 </Button>
@@ -716,6 +720,7 @@ const EditProduct: React.FC<EditProductProps> = ({ name, session }) => {
                 variant="delete"
                 onClick={() => router.back()}
                 type="button"
+                title="Cancle and Discard all Changes button"
               >
                 Cancle and Discard all Changes
               </Button>
@@ -724,6 +729,7 @@ const EditProduct: React.FC<EditProductProps> = ({ name, session }) => {
                 variant="close"
                 onClick={() => setCancel(false)}
                 type="button"
+                title="Continue button"
               >
                 Continue
               </Button>

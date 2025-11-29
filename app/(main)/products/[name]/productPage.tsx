@@ -152,7 +152,7 @@ const ProductPage: React.FC<ProductPageProps> = ({ initialProduct, session }) =>
           <div className=" space-y-5 md:mt-7">
             <div className="space-y-3">
               {minPrice !== maxPrice && (
-                <p className=" text-lfont text-[10px] md:text-sm">
+                <p className=" text-neutral-500 dark:text-neutral-300 text-[10px] md:text-sm">
                   قیمت این محصول از {minPrice} تا {maxPrice} تومان میباشد.
                 </p>
               )}
@@ -225,7 +225,7 @@ const ProductPage: React.FC<ProductPageProps> = ({ initialProduct, session }) =>
                   <p className="my-auto "> {currentPriceDiscount} تومان</p>
                   {currentDiscount !== null && currentDiscount > 0 && (
                     <div className="flex gap-1 text-end ">
-                      <p className="line-through  decoration-2 my-auto  text-lfont">
+                      <p className="line-through  decoration-2 my-auto  text-neutral-500 dark:text-neutral-300">
                         {" "}
                         {price}
                       </p>
@@ -296,7 +296,7 @@ const ProductPage: React.FC<ProductPageProps> = ({ initialProduct, session }) =>
 
           <div className="space-y-10 ">
             <div>
-              <h1 className="text-lg sm:text-xl text-lfont">
+              <h1 className="text-lg sm:text-xl text-neutral-500 dark:text-neutral-300">
                 <span className="text-2xl sm:text-4xl text-black dark:text-white uppercase">
                   محصولات
                 </span>{" "}

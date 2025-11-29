@@ -14,7 +14,7 @@ export default function EmailVerifiedPage() {
           <h1 className="text-2xl font-semibold">ایمیل تایید شد</h1>
           <p className="text-muted-foreground">ایمیل شما با موفقیت تایید شد</p>
         </div>
-        <Button>
+        <Button title="home button">
           <Link href="/">بازگشت به صفحه ی اصلی</Link>
         </Button>
       </div>

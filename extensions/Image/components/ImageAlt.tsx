@@ -74,6 +74,7 @@ export const ImageAlt = memo<ImageAltProps>(({ onChange, value }) => {
             onChange(altText);
           }}
           type="button"
+          title="alt text button"
         >
           Set Alt Text
         </Button>

@@ -90,7 +90,7 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ content, postId }) =>
           <div className="flex justify-between">
             <h1 className="text-xl">فهرست مطالب</h1>
             <button aria-label='close button' title='close button'
-              className={"text-lg bg-lcard dark:bg-dcard px-2 py-1 rounded-full border-2 text-lfont"}
+              className={"text-lg bg-lcard dark:bg-dcard px-2 py-1 rounded-full border-2 text-neutral-500 dark:text-neutral-300"}
               onClick={() => setOnClose(!onClose)}
               type="button"
             >
@@ -105,7 +105,7 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ content, postId }) =>
                 className={`w-full rounded-md font-semibold duration-300 text-wrap line-clamp-2 text-start ${
                   activeId === heading.id
                     ? 'underline decoration-2 text-black dark:text-white'
-                    : 'hover:text-black dark:hover:text-white text-lfont'
+                    : 'hover:text-black dark:hover:text-white text-neutral-500 dark:text-neutral-300'
                 }`}
                 title={heading.text}
                 onClick={() => handleClick(heading.id)}

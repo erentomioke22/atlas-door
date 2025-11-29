@@ -70,6 +70,7 @@ const Sign: React.FC<SignProps> = ({ title, commentStyle, session }) => {
           onClick={() => setClose(!close)}
           type="button"
           variant="close"
+          title="close button"
         >
           <IoClose />
         </Button>

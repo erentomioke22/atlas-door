@@ -372,6 +372,7 @@ const EditPost: React.FC<EditPostRootProps> = ({ title, session }) => {
                       postIsUploading
                     }
                     variant="delete"
+                    title="delete"
                     className="text-[10px] md:text-sm px-3  py-1"
                     onClick={() => {
                       // const removeKey = deletedPostFiles.map((file: string) => {
@@ -439,6 +440,7 @@ const EditPost: React.FC<EditPostRootProps> = ({ title, session }) => {
                         variant="close"
                         className="text-lg px-2 py-1"
                         type="button"
+                        title="close button"
                       >
                         <IoClose />
                       </Button>
@@ -467,7 +469,7 @@ const EditPost: React.FC<EditPostRootProps> = ({ title, session }) => {
                                   } rounded-xl w-full h-44 relative cursor-pointer`}
                                 >
                                   <ImageCom
-                                    className={`  w-full h-44 rounded-xl`}
+                                    className={`  w-full h-full rounded-xl`}
                                     src={`${url}`}
                                     alt={" post thumnail"}
                                   />
@@ -606,6 +608,7 @@ const EditPost: React.FC<EditPostRootProps> = ({ title, session }) => {
                           variant="menuActive"
                           disabled={mutation.isPending || postIsUploading}
                           type="submit"
+                          title="submit button"
                         >
                           {mutation.isPending || postIsUploading ? (
                             <LoadingIcon color={"bg-white dark:bg-black"} />
@@ -625,6 +628,7 @@ const EditPost: React.FC<EditPostRootProps> = ({ title, session }) => {
                   variant="close"
                   onClick={() => setCancel(true)}
                   type="button"
+                  title="cancel button"
                 >
                   Cancel
                 </Button>
@@ -637,6 +641,7 @@ const EditPost: React.FC<EditPostRootProps> = ({ title, session }) => {
                 variant="delete"
                 onClick={() => router.back()}
                 type="button"
+                title="cancel and discard all change button"
               >
                 Cancle and Discard all Changes
               </Button>
@@ -646,6 +651,7 @@ const EditPost: React.FC<EditPostRootProps> = ({ title, session }) => {
                 variant="close"
                 onClick={() => setCancel(false)}
                 type="button"
+                title="continue button"
               >
                 Continue
               </Button>

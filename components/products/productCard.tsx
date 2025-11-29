@@ -87,7 +87,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, draft }) => {
           </div>
         )}
 
-        <h1 className="text-wrap line-clamp-3 text-lfont hover:underline decoration-black dark:decoration-white duration-150 decoration-2">
+        <h1 className="text-wrap line-clamp-3 text-neutral-500 dark:text-neutral-400 hover:underline decoration-black dark:decoration-white duration-150 decoration-2">
           {product?.name}
         </h1>
       </Link>
@@ -101,7 +101,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, draft }) => {
             تومان
           </h2>
           {product?.colors[0].discount !== null && product?.colors[0].discount > 0 && (
-            <h3 className="line-through text-sm  decoration-2 my-auto text-lfont">
+            <h3 className="line-through text-sm  decoration-2 my-auto text-neutral-500 dark:text-neutral-400">
               {formatPriceFa(product?.colors[0].price)}
             </h3>
           )}

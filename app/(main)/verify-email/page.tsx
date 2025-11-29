@@ -92,7 +92,7 @@ export default async function VerifyEmailPage() {
          ATLAS DOOR
         </h1>
           <h1 className="text-xl font-semibold">ایمیل خود را تایید کنید</h1>
-          <p className="text-lfont">
+          <p className="text-neutral-500 dark:text-neutral-300">
            ایمیل تایید به بسته ی ایمیل شما ارسال میشود
           </p>
         </div>

@@ -39,7 +39,7 @@ function ResetPasswordUI({ token }: ResetPasswordUIProps) {
          ATLAS DOOR
         </h1>
         <h1 className="text-xl font-semibold">بازنشانی رمز</h1>
-        <p className="text-lfont">رمز جدید خود را اینجا وارد کنید</p>
+        <p className="text-neutral-500 dark:text-neutral-300">رمز جدید خود را اینجا وارد کنید</p>
       </div>
       <ResetPasswordForm token={token} />
     </div>

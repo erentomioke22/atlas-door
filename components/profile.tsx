@@ -54,7 +54,7 @@ const Profile: React.FC<ProfileProps> = ({ session }) => {
           }
         <div className=" truncate ">
           <p className="text-sm  text-black dark:text-white truncate capitalize">{session?.user?.displayName || session?.user?.name}</p>
-          <p className="text-sm text-end text-lfont truncate ">{session?.user?.email}</p>
+          <p className="text-sm text-end text-neutral-500 dark:text-neutral-300 truncate ">{session?.user?.email}</p>
         </div>
       </div>
 
@@ -65,14 +65,14 @@ const Profile: React.FC<ProfileProps> = ({ session }) => {
             <Link 
               href={"/admin/create-post"}   
               onClick={() => { setClose(!close); }}
-              className={"flex justify-between py-2 w-full  px-3 text-lg sm:text-sm  rounded-lg  hover:bg-lcard dark:hover:bg-dcard sm:hover:text-black sm:dark:hover:text-white sm:text-lfont duration-500"} >
+              className={"profile-link"} >
               <span>ساخت بلاگ</span>
             </Link>
 
             <Link 
               href={"/admin/create-product"}   
               onClick={() => { setClose(!close); }}
-              className={" flex justify-between py-2 w-full  px-3 text-lg sm:text-sm  rounded-lg  hover:bg-lcard dark:hover:bg-dcard sm:hover:text-black sm:dark:hover:text-white sm:text-lfont duration-500"} >
+              className={" profile-link"} >
               <span>ساخت محصول</span>
             </Link>
           </>
@@ -85,7 +85,7 @@ const Profile: React.FC<ProfileProps> = ({ session }) => {
         <Link
           onClick={() => { setClose(!close); }}
           href={`/${session?.user?.name}/setting`}
-          className={"flex justify-between py-2 w-full  px-3 text-lg sm:text-sm  rounded-lg  hover:bg-lcard dark:hover:bg-dcard sm:hover:text-black sm:dark:hover:text-white sm:text-lfont duration-500"}           >
+          className={"profile-link"}           >
           <span>تنظيمات</span>
         </Link>
 

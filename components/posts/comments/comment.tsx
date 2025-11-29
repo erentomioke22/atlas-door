@@ -71,7 +71,7 @@ const Comment: React.FC<CommentProps> = ({
           <div>
             <p className="text-xs capitalize">{parent.user?.displayName || parent.user?.name}</p>
             <div
-              className="wrap-break-word normal-case leading-loose text-xs text-lfont line-clamp-1"
+              className="wrap-break-word normal-case leading-loose text-xs text-neutral-500 dark:text-neutral-300 line-clamp-1"
               dangerouslySetInnerHTML={{ __html:parent.content }}
             />
           </div>
@@ -92,7 +92,7 @@ const Comment: React.FC<CommentProps> = ({
           <div >
             <p className="text-[10px] md:text-sm truncate capitalize">{user?.displayName || user?.name}</p>
             <p className="text-[8px] md:text-[10px]  ">
-              <span className="text-lfont">{moment(new Date(createdAt), "YYYYMMDD").fromNow()}  .</span>
+              <span className="text-neutral-500 dark:text-neutral-300">{moment(new Date(createdAt), "YYYYMMDD").fromNow()}  .</span>
               {"   "}<span className="truncate uperrcase">
                 {(userId === post?.userId && "ادمين") ||
                  (userId === session?.user?.id &&

@@ -106,12 +106,12 @@ function Home() {
            <div className="flex flex-wrap gap-3 text-center justify-center lg:justify-start text-sm lg:text-base">
             <div className="flex gap-1">
               <LuCircleCheckBig className="text-darkgreen text-lg my-auto"/>
-              <p className="text-lfont">پروژه های انجام شده : </p>
+              <p className="text-neutral-500 dark:text-neutral-400">پروژه های انجام شده : </p>
               <span>+ ۱۰۰۰</span>
             </div>
             <div className="flex gap-1">
               <LuBaggageClaim className="text-blue text-lg my-auto"/>
-              <p className="text-lfont">محصولات و خدمات : </p>
+              <p className="text-neutral-500 dark:text-neutral-400">محصولات و خدمات : </p>
               <span>+ ۳۰</span>
             </div>
       </div>
@@ -188,7 +188,7 @@ function Home() {
           <div className="px-8 py-5 lg:row-span-2 space-y-3 hover:bg-lcard dark:hover:bg-dcard duration-200 rounded-xl max-lg:text-center">
             <LuBadgeDollarSign className="text-4xl max-lg:mx-auto"/>
             <p className="text-2xl">قیمت</p>
-            <p className="text-lfont">
+            <p className="text-neutral-500 dark:text-neutral-400">
               خريد محصولات و دريافت خدمات با رقابتی ترين قيمت بازار
             </p>
           </div>
@@ -196,7 +196,7 @@ function Home() {
           <div className="px-8 py-5 lg:row-span-2 space-y-3 hover:bg-lcard dark:hover:bg-dcard duration-200 rounded-xl max-lg:text-center">
             <LuHammer className="text-4xl max-lg:mx-auto"/>
             <p className="mt-2 text-2xl">عملکرد</p>
-            <p className="text-lfont">
+            <p className="text-neutral-500 dark:text-neutral-400">
             قدرت محصولات با کیفیت مارا که برای عملکرد زیبا در طول زمان طراحی شده اند ؛ تجربه کنید .
             </p>
           </div>
@@ -204,7 +204,7 @@ function Home() {
           <div className="px-8 py-5 lg:row-span-2 space-y-3 hover:bg-lcard dark:hover:bg-dcard duration-200 rounded-xl max-lg:text-center">
             <LuShieldCheck className="text-4xl max-lg:mx-auto"/>
             <p className="mt-2 text-2xl">استاندارد</p>
-            <p className="text-lfont">
+            <p className="text-neutral-500 dark:text-neutral-400">
               استاندارد را در خرید محصولات و خدمات ما تجربه کنید
             </p>
           </div>
@@ -212,7 +212,7 @@ function Home() {
           <div className="px-8 py-5 lg:row-span-2 space-y-3 hover:bg-lcard dark:hover:bg-dcard duration-200 rounded-xl max-lg:text-center">
             <LuTimer className="text-4xl max-lg:mx-auto"/>
             <p className="mt-2 text-2xl">زمان</p>
-            <p className="text-lfont">
+            <p className="text-neutral-500 dark:text-neutral-400">
               تمامی خدمات ما در کمترین زمان ممکن به مشتری ها ارائه میشوند
             </p>
           </div>
@@ -234,13 +234,13 @@ function Home() {
         </div>
 
         {status === "error" && 
-          <p className="text-center text-lfont underline">
+          <p className="text-center text-neutral-500 dark:text-neutral-300 underline">
             مشکلی در دریافت اطلاعات پیش آمده لطفا صفحه را یکبار رفرش کنید
           </p>
         }
 
         {status === "success" && !data?.posts?.length && 
-          <p className="text-center text-lfont underline">
+          <p className="text-center text-neutral-500 dark:text-neutral-300 underline">
             هنوز پستی در اینجا قرار داده نشده
           </p>
         }
@@ -286,13 +286,13 @@ function Home() {
         </div>
 
         {status === "error" && 
-          <p className="text-center text-lfont underline">
+          <p className="text-center text-neutral-500 dark:text-neutral-300 underline">
             مشکلی در دریافت اطلاعات پیش آمده لطفا صفحه را یکبار رفرش کنید
           </p>
         }
 
         {status === "success" && !data?.products?.length && 
-          <p className="text-center text-lfont underline">
+          <p className="text-center text-neutral-500 dark:text-neutral-300 underline">
             هنوز محصولی در اینجا قرار داده نشده
           </p>
         }

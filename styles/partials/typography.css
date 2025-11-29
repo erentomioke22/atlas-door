@@ -4,7 +4,7 @@
   }
 
   & > p {
-    @apply my-6 first:mt-0 last:mb-0 text-[#6e6d7a] dark:text-[#a6adbb];
+    @apply my-6 first:mt-0 last:mb-0 text-neutral-500 dark:text-neutral-300;
   }
 
   h1 {

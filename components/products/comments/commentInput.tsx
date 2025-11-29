@@ -170,6 +170,7 @@ const CommentInput: React.FC<CommentInputProps> = ({
             className="rounded-full  text-lg py-1 px-3 "
             disabled={content ? editMutation.isPending : addMutation.isPending}
             type="submit"
+            title="submit button"
           >
             {content ? (
               editMutation.isPending ? (

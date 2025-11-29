@@ -14,13 +14,11 @@ const Darkmode: React.FC<DarkmodeProps> = ({ name }) => {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
-  // useEffect only runs on the client, so we can avoid SSR mismatches
   useEffect(() => {
     setMounted(true);
   }, []);
 
   if (!mounted) {
-    // Return a placeholder with the same dimensions during SSR
     return (
       <Button
         className={
@@ -30,6 +28,7 @@ const Darkmode: React.FC<DarkmodeProps> = ({ name }) => {
         }
         variant={name ? "darkMode" : "home"}
         type="button"
+        title="darkmode button"
       >
         {name && <span>سيستم</span>}
         <div className="text-xl my-auto sm:text-lg w-5 h-5" />{" "}
@@ -58,6 +57,7 @@ const Darkmode: React.FC<DarkmodeProps> = ({ name }) => {
         );
       }}
       type="button"
+      title="darkmode button"
     >
       {name && (
         <span>

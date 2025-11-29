@@ -106,7 +106,7 @@
     }
 
     > div {
-      @apply flex flex-col py-4 text-lfont  w-full text-sm;
+      @apply flex flex-col py-4 text-neutral-500 dark:text-neutral-300 w-full text-sm;
 
       /* > [data-type='detailsContent'] > :last-child {
         @apply mb-2;

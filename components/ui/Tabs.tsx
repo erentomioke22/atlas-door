@@ -56,7 +56,7 @@ export default function Tabs({ tabs, defaultIndex = 0, variant = 'underline', cl
       tabList: 'flex gap-2 p-1 bg-lcard dark:bg-dcard rounded-xl justify-center mx-auto w-full',
       tab: (isActive: boolean) =>
         `px-4 py-2 font-medium text-sm rounded-xl transition-all duration-300 ease-in-out outline-none ring-none focus:outline-none w-full text-center ${
-          isActive ? 'bg-lbtn dark:bg-dbtn shadow-sm' : 'text-lfont'
+          isActive ? 'bg-lbtn dark:bg-dbtn shadow-sm' : 'text-neutral-500 dark:text-neutral-300'
         }`,
       activeIndicator: '',
     },

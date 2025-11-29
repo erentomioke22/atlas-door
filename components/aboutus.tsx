@@ -13,7 +13,7 @@ const AboutUs: React.FC = () => {
           <h2 className="font-medium md:w-2/3 mx-auto">
             &quot;با بیش از دو دهه فعالیت در حوزه‌های مختلف از جمله کرکره برقی، شیشه سکوریت، درب اتوماتیک و جام بالکن‌ها، به دنبال ایجاد رضایت حداکثری مشتریان و ارائه خدمات با کیفیت و ماندگار هستیم.&quot;
           </h2>
-          <h3 className='text-lfont text-sm'>آدرس : تهران اتوبان آزادگان آهن مکان فاز ۳ مرکزی پلاک ۶۸۲</h3>
+          <h3 className='text-neutral-500 dark:text-neutral-400 text-sm'>آدرس : تهران اتوبان آزادگان آهن مکان فاز ۳ مرکزی پلاک ۶۸۲</h3>
 
           <div className='flex flex-wrap justify-center gap-5 md:gap-7 mt-3 text-2xl md:text-4xl'>
             <a href="https://eitaa.com/Atlasdoor96" target="_blank" rel="noopener noreferrer" title='eitaa'>

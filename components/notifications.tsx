@@ -96,11 +96,11 @@ function Notifications() {
           )}
 
           {status === "success" && !notifications.length && !hasNextPage && (
-            <p className="text-center text-sm text-lfont"> پيام جديدی نداريد .</p>
+            <p className="text-center text-sm text-neutral-500 dark:text-neutral-300"> پيام جديدی نداريد .</p>
           )}
 
           {status === "error" && (
-            <p className="text-center text-sm text-lfont"> مشكلی در برقراری ارتباط وجود دارد</p>
+            <p className="text-center text-sm text-neutral-500 dark:text-neutral-300"> مشكلی در برقراری ارتباط وجود دارد</p>
           )}
 
           {notifications.map((notification) => (

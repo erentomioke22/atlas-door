@@ -8,7 +8,7 @@ import { FaWhatsapp } from "react-icons/fa6";
 const Footer: React.FC = () => {
   return (
 
-<footer className="container max-w-7xl mx-auto  text-lfont pt-16 ">
+<footer className="container max-w-7xl mx-auto  text-neutral-500 dark:text-neutral-300 pt-16 ">
   <div className='flex max-md:flex-col md:justify-between  px-5 max-md:space-y-5 md:space-x-5 my-10 '>
     <div className='flex-col space-y-3'>
     <Link href="/" className="font-blanka font-bold hover:text-black dark:hover:text-white duration-500 text-xl">

@@ -172,6 +172,7 @@ const PostList: React.FC = () => {
             variant={category === "popular" ? "menuActive" : "menu"}
             className={"px-2 py-1"}
             onClick={() => updateUrlWithCategory("popular")}
+            title="popular button"
           >
             محبوب ترین ها
           </Button>
@@ -179,6 +180,7 @@ const PostList: React.FC = () => {
             variant={category === "new-post" ? "menuActive" : "menu"}
             className={"px-2 py-1"}
             onClick={() => updateUrlWithCategory("new-post")}
+            title="new button"
           >
             جدید ترین ها
           </Button>
@@ -213,13 +215,13 @@ const PostList: React.FC = () => {
       </div>
 
       {status === "error" && (
-        <p className="text-center text-lfont underline">
+        <p className="text-center text-neutral-500 dark:text-neutral-300 underline">
           مشکلی در دریافت اطلاعات پیش آمده لطفا صفحه را یکبار رفرش کنید
         </p>
       )}
 
       {status === "success" && !posts?.length && (
-        <p className="text-center text-lfont underline">
+        <p className="text-center text-neutral-500 dark:text-neutral-300 underline">
           هنوز پستی در اینجا قرار داده نشده
         </p>
       )}

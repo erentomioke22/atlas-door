@@ -436,6 +436,7 @@ const CreateProduct = ({ session }: { session: Session | null }) => {
                     variant="close"
                     className="text-lg px-2 py-1"
                     type="button"
+                    title="close button"
                   >
                     <IoClose />
                   </Button>
@@ -468,7 +469,7 @@ const CreateProduct = ({ session }: { session: Session | null }) => {
       `}
                           >
                             <ImageCom
-                              className="w-full h-44rounded-xl"
+                              className="w-full h-full rounded-xl"
                               src={`${url}`}
                               alt="post thumnail"
                             />
@@ -616,6 +617,7 @@ const CreateProduct = ({ session }: { session: Session | null }) => {
                   variant="close"
                   onClick={() => setCancel(true)}
                   type="button"
+                  title="cancel button"
                 >
                   Cancel
                 </Button>
@@ -628,6 +630,7 @@ const CreateProduct = ({ session }: { session: Session | null }) => {
                 variant={"delete"}
                 onClick={() => router.back()}
                 type="button"
+                title="delete store data"
               >
                 Cancle and delete All data
               </Button>
@@ -636,6 +639,7 @@ const CreateProduct = ({ session }: { session: Session | null }) => {
                 variant="close"
                 onClick={() => setCancel(false)}
                 type="button"
+                title="continue"
               >
                 Continue
               </Button>

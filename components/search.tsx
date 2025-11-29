@@ -104,19 +104,19 @@ const Search: React.FC<SearchProps> = ({ session }) => {
         </form>
 
         {status === "success" && !data?.posts?.length && !data?.products?.length && (
-          <p className="text-center text-sm text-lfont">
+          <p className="text-center text-sm text-neutral-500 dark:text-neutral-300">
             هیچ پستی با این نام هنوز وجود ندارد
           </p>
         )}
 
         {searchValue?.length <= 0 && !data?.posts?.length && !data?.products?.length && (
-          <p className="text-center text-sm text-lfont">
+          <p className="text-center text-sm text-neutral-500 dark:text-neutral-300">
             اسم مطلب یا محصولی که دنبالش هستید رو بنویسید
           </p>
         )}
 
         {status === "error" && (
-          <p className="text-center ttext-sm text-lfont">
+          <p className="text-center ttext-sm text-neutral-500 dark:text-neutral-300">
             مشکلی در برقراری ارتباط پیش آمده
           </p>
         )}
@@ -137,7 +137,7 @@ const Search: React.FC<SearchProps> = ({ session }) => {
                         <ImageCom src={post?.images[0]} className="rounded-lg bg-lbtn dark:bg-dbtn  h-10 w-10" alt={'thumnail'} />
 
                       <div className="flex-1 space-y-1">
-                        <p className="text-lfont text-sm capitalize">{post?.user.displayName || post?.user.name} . <span className="text-[10px] text-red">مقاله</span></p>
+                        <p className="text-neutral-500 dark:text-neutral-300 text-sm capitalize">{post?.user.displayName || post?.user.name} . <span className="text-[10px] text-red">مقاله</span></p>
                         <p className="text-sm line-clamp-1 hover:underline underline-offset-2 decoration-2 duration-100">{post?.title}</p>
                       </div>
                     </div>
@@ -152,7 +152,7 @@ const Search: React.FC<SearchProps> = ({ session }) => {
                         <ImageCom src={product?.images[0]} className="rounded-lg bg-lbtn dark:bg-dbtn  h-10 w-10" alt={'thumnail'} />
 
                       <div className="flex-1 space-y-1">
-                        <p className="text-lfont text-sm capitalize">{product?.seller.displayName || product?.seller.name} . <span className="text-[10px] text-red">محصول</span></p>
+                        <p className="text-neutral-500 dark:text-neutral-300 text-sm capitalize">{product?.seller.displayName || product?.seller.name} . <span className="text-[10px] text-red">محصول</span></p>
                         <p className="text-sm line-clamp-1 hover:underline underline-offset-2 decoration-2 duration-100">{product?.name}</p>
                       </div>
                     </div>

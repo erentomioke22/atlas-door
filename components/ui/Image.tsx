@@ -49,7 +49,7 @@ const ImageCom: React.FC<ImageComProps> = ({ src, alt, className,...props }) => 
           }`}
         >
           {error && (
-            <FaCircleExclamation className="text-sm text-center text-lfont "/>
+            <FaCircleExclamation className="text-sm text-center text-neutral-500 dark:text-neutral-300 "/>
           )}
         </div>
       )}

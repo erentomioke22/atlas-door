@@ -121,7 +121,7 @@ const PostPage: React.FC<PostPageProps> = ({ initialPost,session }) => {
                     )}
                   <div className='flex-1 truncate'>
                     <p className='truncate capitalize'>{post?.user.displayName || post?.user.name}</p>
-                    <p className=' truncate text-lfont'>
+                    <p className=' truncate text-neutral-500 dark:text-neutral-300'>
                       {moment(new Date(post?.createdAt), "YYYYMMDD").fromNow()} -
                       <span className="">
                         {Math.ceil(post.content.length / 2044) >= 18 ? Math.ceil(post.content.length / 2044) - 5 : Math.ceil(post.content.length / 2044)} دقيقه
@@ -171,10 +171,10 @@ const PostPage: React.FC<PostPageProps> = ({ initialPost,session }) => {
 
             <div className="   space-y-10 ">
               <div>
-                <h1 className="text-lg sm:text-xl text-lfont">
+                <h1 className="text-lg sm:text-xl text-neutral-500 dark:text-neutral-300">
                   <span className="text-2xl sm:text-4xl text-black dark:text-white uppercase">مقاله های</span>    محبوب و مرتبط
                 </h1>
-                <p className=" text-md text-lfont">با دیدن مطالب ما میتوانید با خدمات و محصولات ما آشنا شوید و نحوه کارکرد و نوع استفاده از اونهارو یاد بگیرید</p>
+                <p className=" text-md text-neutral-500 dark:text-neutral-300">با دیدن مطالب ما میتوانید با خدمات و محصولات ما آشنا شوید و نحوه کارکرد و نوع استفاده از اونهارو یاد بگیرید</p>
               </div>
 
               <Conneccted postTitle={post?.title} postId={post?.id} />

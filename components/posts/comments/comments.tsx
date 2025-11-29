@@ -103,7 +103,7 @@ const Comments: React.FC<CommentsProps> = ({ post , session}) => {
         <button
           aria-label="close button"
           title="close button"
-          className={" text-lg bg-lcard dark:bg-dcard px-2 py-1  rounded-full border-2 text-lfont"}
+          className={" text-lg bg-lcard dark:bg-dcard px-2 py-1  rounded-full border-2 text-neutral-500 dark:text-neutral-300"}
           onClick={() => setClose(!close)}
           type="button"
         >
@@ -112,7 +112,7 @@ const Comments: React.FC<CommentsProps> = ({ post , session}) => {
       </div>
 
       {status === "error" || (data as any)?.error || error
-        ? <p className="text-center  text-sm text-lfont">مشكلي در برقراری ارتباط وجود دارد</p>
+        ? <p className="text-center  text-sm text-neutral-500 dark:text-neutral-300">مشكلي در برقراری ارتباط وجود دارد</p>
         : <div>
             <div className="my-10 space-y-5 ">
               {status === "pending" ? (
@@ -120,7 +120,7 @@ const Comments: React.FC<CommentsProps> = ({ post , session}) => {
               ) : (
                 <InfiniteScrollContainer className={''} onBottomReached={() => hasNextPage && !isFetching && fetchNextPage()}>
                   {status === "success" && !comments.length  && !hasNextPage &&
-                    <p className="text-center  text-sm text-lfont">هنوز بازخوردی اينجا قرار نگرفته</p>
+                    <p className="text-center  text-sm text-neutral-500 dark:text-neutral-300">هنوز بازخوردی اينجا قرار نگرفته</p>
                   }
                   <div className=" divide-y-2 divide-lcard dark:divide-dcard">
                     {comments.map(({content,user,createdAt,userId,id,replies,_count,parent}) => {
@@ -165,7 +165,7 @@ const Comments: React.FC<CommentsProps> = ({ post , session}) => {
                         {message
                           ? <div className="flex text-[12px] gap-1 ">
                               <div className="text-redorange my-auto text-nowrap"><p>  ويرايش  پيام : </p></div>
-                              <div className=" wrap-break-word w-full  normal-case leading-loose text-lfont line-clamp-1 my-auto" dangerouslySetInnerHTML={{ __html:message }}/>
+                              <div className=" wrap-break-word w-full  normal-case leading-loose text-neutral-500 dark:text-neutral-300 line-clamp-1 my-auto" dangerouslySetInnerHTML={{ __html:message }}/>
                             </div>
                           : <div className="py-1 px-2  w-full flex items-start gap-1 text-start  ">
                               {replyInfo?.user?.image === null
@@ -182,7 +182,7 @@ const Comments: React.FC<CommentsProps> = ({ post , session}) => {
                                 <div className="flex gap-1 text-xs">
                                   <div className="text-redorange my-auto"><p className=" ">  پاسخ به پيام : </p></div>
                                   <div
-                                    className="wrap-break-word normal-case leading-loose  text-lfont line-clamp-1 my-auto"
+                                    className="wrap-break-word normal-case leading-loose  text-neutral-500 dark:text-neutral-300 line-clamp-1 my-auto"
                                     dangerouslySetInnerHTML={{ __html:replyInfo?.content ?? "" }}
                                   />
                                 </div>

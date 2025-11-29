@@ -77,9 +77,9 @@ export default function Notification({ notification }: Props) {
           <div>
             <div className="text-sm gap-1 ">
               <span>{notification.issuer.displayName || notification.issuer.name}</span>
-              <div className="text-lfont text-[12px]">{message}</div>
+              <div className="text-neutral-500 dark:text-neutral-300 text-[12px]">{message}</div>
             </div>
-            <div className=" text-[10px] text-lfont">
+            <div className=" text-[10px] text-neutral-500 dark:text-neutral-300">
               <p>{moment(new Date(notification.createdAt), "YYYYMMDD").fromNow()}</p>
             </div>
           </div>

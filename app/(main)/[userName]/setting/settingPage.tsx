@@ -267,14 +267,14 @@ export default function SettingPage({ session }: { session: Session | null }) {
               <div className="text-start">
                 <p>آدرس ايميل</p>
               </div>
-              <div className="text-lfont truncate">{session?.user?.email}</div>
+              <div className="text-neutral-500 dark:text-neutral-400 truncate">{session?.user?.email}</div>
             </div>
 
             <div className="flex justify-between w-full gap-1 duration-300 px-3">
               <div className="text-start">
                 <p>نام كاربري</p>
               </div>
-              <div className="text-lfont truncate">{session?.user?.name}</div>
+              <div className="text-neutral-500 dark:text-neutral-400 truncate">{session?.user?.name}</div>
             </div>
 
             {btnLists.map((btnList: ButtonList) => {
@@ -285,7 +285,7 @@ export default function SettingPage({ session }: { session: Session | null }) {
                       <>
                         <div className="text-start">
                           <p>{btnList?.name}</p>
-                          <p className="text-lfont text-[10px]">
+                          <p className="text-neutral-500 dark:text-neutral-400 text-[10px]">
                             {btnList?.info}
                           </p>
                         </div>
@@ -312,8 +312,9 @@ export default function SettingPage({ session }: { session: Session | null }) {
                         onClick={() => {
                           setOnClose(!onClose);
                         }}
-                        className="  text-lg bg-lcard dark:bg-dcard px-2 py-1  rounded-full border-2 text-lfont"
+                        className="  text-lg bg-lcard dark:bg-dcard px-2 py-1  rounded-full border-2 text-neutral-500 dark:text-neutral-400"
                         type="button"
+                        title="close button"
                       >
                         <IoClose />
                       </Button>
@@ -391,7 +392,7 @@ export default function SettingPage({ session }: { session: Session | null }) {
                   >
                     <div className="text-start">
                       <p className="text-redorange">خروج از تمامي حساب ها</p>
-                      <p className="text-lfont text-[10px]">
+                      <p className="text-neutral-500 dark:text-neutral-400 text-[10px]">
                         خروج از دسترسي ها در دستگاه هاي ديگر
                       </p>
                     </div>
@@ -413,7 +414,7 @@ export default function SettingPage({ session }: { session: Session | null }) {
                   >
                     <div className="text-start">
                       <p className="text-red">حذف حساب</p>
-                      <p className="text-lfont text-[10px]">
+                      <p className="text-neutral-500 dark:text-neutral-400 text-[10px]">
                         با انتخاب اين گزينه تمام اطلاعات مربوط به شما حذف خواهد
                         شد
                       </p>

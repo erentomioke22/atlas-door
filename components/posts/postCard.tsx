@@ -70,7 +70,7 @@ const PostCard: React.FC<PostCardProps> = ({post,draft}) => {
             }
           <div className='flex flex-col truncate'>
             <p className='truncate capitalize'>{post.user.displayName || post.user.name}</p>
-            <p className='text-lfont truncate' >{formattedDate}</p>
+            <p className='text-neutral-500 dark:text-neutral-400 truncate' >{formattedDate}</p>
           </div>
         </div>
         <div className='my-auto'>
@@ -100,16 +100,16 @@ const PostCard: React.FC<PostCardProps> = ({post,draft}) => {
           }
           <div className="space-y-1 text-wrap">
             <h1 className='text-wrap line-clamp-3  hover:underline duration-150 decoration-2'>{post.title}</h1>
-            <h3 className="text-lfont text-[10px] line-clamp-2 ">{post?.desc ?? ""}</h3>
+            <h3 className="text-neutral-500 dark:text-neutral-400 text-[10px] line-clamp-2 ">{post?.desc ?? ""}</h3>
           </div>
         </div>
         <div className='flex justify-between mt-2' >
           <div>
-            <p className="text-sm text-lfont flex">  {formatNumber(post._count.comments)} <TbMessageCircleFilled className="my-auto mr-1"/></p>
+            <p className="text-sm text-neutral-500 dark:text-neutral-400 flex">  {formatNumber(post._count.comments)} <TbMessageCircleFilled className="my-auto mr-1"/></p>
           </div>
           <div className='flex  flex-wrap gap-1 justify-end text-[12px]'>
-            {post.tags.slice(0,post.tags.length >= 3 ? 3 : post.tags.length).map((tag,index)=>{return <p className='text-lfont' key={index}><span className='text-black dark:text-white'>#</span>{tag?.name}</p>  })}
-            <span className='text-lfont'>{post.tags.length >= 3 && ". . ."}</span>
+            {post.tags.slice(0,post.tags.length >= 3 ? 3 : post.tags.length).map((tag,index)=>{return <p className='text-neutral-500 dark:text-neutral-400' key={index}><span className='text-black dark:text-white'>#</span>{tag?.name}</p>  })}
+            <span className='text-neutral-500 dark:text-neutral-400'>{post.tags.length >= 3 && ". . ."}</span>
           </div>
         </div> 
       </Link>

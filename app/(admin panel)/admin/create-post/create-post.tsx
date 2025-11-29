@@ -388,6 +388,7 @@ const CreatePost = ({ session }: { session: Session | null }) => {
                     variant="close"
                     className="text-lg px-2 py-1"
                     type="button"
+                    title="close"
                   >
                     <IoClose />
                   </Button>
@@ -417,7 +418,7 @@ const CreatePost = ({ session }: { session: Session | null }) => {
                               } rounded-xl w-full h-44 relative cursor-pointer`}
                             >
                               <ImageCom
-                                className={`w-full h-44  rounded-xl`}
+                                className={` w-full h-full  rounded-xl`}
                                 src={`${url}`}
                                 alt={"post thumnail"}
                               />
@@ -556,6 +557,7 @@ const CreatePost = ({ session }: { session: Session | null }) => {
                     className="rounded-lg w-full text-sm py-2"
                     disabled={mutation.isPending || postIsUploading}
                     type="submit"
+                    title="submit button"
                   >
                     {mutation.isPending || postIsUploading ? (
                       <LoadingIcon color={"bg-white dark:bg-black"} />
@@ -571,6 +573,7 @@ const CreatePost = ({ session }: { session: Session | null }) => {
                   variant="close"
                   onClick={() => setCancel(true)}
                   type="button"
+                  title="cancel button"
                 >
                   Cancel
                 </Button>
@@ -583,6 +586,7 @@ const CreatePost = ({ session }: { session: Session | null }) => {
                 variant={"delete"}
                 onClick={() => router.back()}
                 type="button"
+                title="delete store data button"
               >
                 Cancle and delete All data
               </Button>
@@ -591,6 +595,7 @@ const CreatePost = ({ session }: { session: Session | null }) => {
                 variant="close"
                 onClick={() => setCancel(false)}
                 type="button"
+                title="continue"
               >
                 Continue
               </Button>

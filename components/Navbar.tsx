@@ -99,14 +99,15 @@ const Navbar = ({session}:{session:Session | null}) => {
                  <Offcanvas       
                   title={<HiMenuAlt4/>}   
                   onClose={close}
-                  btnStyle={"visible lg:hidden  bg-lcard dark:bg-dcard dark:text-white text-lg p-2  rounded-lg text-black"}
+                  btnStyle={"visible lg:hidden  bg-lcard dark:bg-dcard  text-lg p-2  rounded-lg "}
                   position={"top-0 right-0"} size={"h-screen max-w-full w-96 border-l-2 border-l-lcard dark:border-l-dcard "} openTransition={"translate-x-0"} closeTransition={"translate-x-full"}  navbarSetIsOpen={setIsOpen} >
                 
 
                 <Button
                    onClick={() => {setClose(!close) ; setMenu('')}}
-                        className="  text-lg bg-lcard dark:bg-dcard px-2 py-1  rounded-full border-2 text-lfont"
+                        className="  text-lg bg-lcard dark:bg-dcard px-2 py-1  rounded-full border-2 text-neutral-500 dark:text-neutral-300"
                         type="button"
+                        title="close button"
                       >
                         <IoClose />
                       </Button>
@@ -225,7 +226,7 @@ const Navbar = ({session}:{session:Session | null}) => {
                       <Link 
                       key={item.id}
                       href={item.href as any}
-                      className={`  duration-300 ${decodeURIComponent(path) === item.href ? 'text-black dark:text-white':'text-lfont hover:text-black dark:hover:text-white'}`}
+                      className={`  duration-300 ${decodeURIComponent(path) === item.href ? 'text-black dark:text-white':'text-neutral-500 dark:text-neutral-300 hover:text-black dark:hover:text-white'}`}
                       >
                         {item.name}
                       </Link>                    
@@ -256,7 +257,7 @@ const Navbar = ({session}:{session:Session | null}) => {
             <div className="my-auto">
               <Link
                 href="/"
-                className="font-blanka font-bold text-sm pt-2 xl:text-base text-lfont hover:dark:text-white hover:text-black duration-300 "
+                className="font-blanka font-bold text-sm pt-2 xl:text-base text-neutral-500 dark:text-neutral-300 hover:dark:text-white hover:text-black duration-300 "
               >
                 ATLAS DOOR
               </Link>

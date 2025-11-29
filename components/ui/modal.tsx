@@ -61,7 +61,7 @@ const Modal: React.FC<ModalProps> = ({
                 </div>
 
                 <div>
-                  <Button type="button" onClick={() => setOpen(!open)}>
+                  <Button type="button" title="close button" onClick={() => setOpen(!open)}>
                     <IoClose />
                   </Button>
                 </div>

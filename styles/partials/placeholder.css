@@ -1,21 +1,18 @@
 .ProseMirror {
-  /* Placeholder Styles */
   .is-empty::before {
-    @apply text-lfont   float-left h-0 pointer-events-none w-full;
+    @apply text-lfont float-left h-0 pointer-events-none w-full;
   }
 
   &.ProseMirror-focused {
-    /* Slashmenu Placeholder */
     > p.has-focus.is-empty::before {
-      content: 'Click on +  to browse options';
+      content: 'Click on + to browse options';
     }
 
     > [data-type='columns'] > [data-type='column'] > p.is-empty.has-focus::before {
-      content: 'Click on +  to browse options';
+      content: 'Click on + to browse options';
     }
   }
 
-  /* Default Placeholder */
   & > .is-editor-empty::before {
     content: 'برای نوشتن اینجا کلیک کنید ...';
   }
@@ -24,20 +21,15 @@
   blockquote .is-empty:not(.is-editor-empty):first-child:last-child::before {
     content: 'Enter a quote';
   }
-  figcaption .is-empty:not(.is-editor-empty):first-child:last-child::before {
-    content: 'Enter a quote';
-  }
 
-  blockquote + figcaption.is-empty:not(.is-editor-empty)::before {
+  /* Remove the duplicate figcaption placeholder for quotes */
+  /* blockquote + figcaption.is-empty:not(.is-editor-empty)::before {
     content: 'Author';
-  }
+  } */
 
   figcaption.is-empty:not(.is-editor-empty)::before {
     content: 'type caption for image (optional)';
   }
-
-
-
 
   [data-placeholder][data-suggestion]::before,
   [data-placeholder][data-suggestion] *::before {

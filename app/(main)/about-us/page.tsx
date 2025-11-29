@@ -98,11 +98,11 @@ export default function AboutUs() {
               </p>
               <div className="grid grid-cols-2 gap-4 mb-6 max-w-xl">
                 <div className="bg-lcard dark:bg-dcard p-4 rounded-xl ">
-                  <div className="text-lfont text-xl font-bold">۵۰۰۰+</div>
+                  <div className="text-neutral-500 dark:text-neutral-300 text-xl font-bold">۵۰۰۰+</div>
                   <div className="">مشتری راضی</div>
                 </div>
                 <div className="bg-lcard dark:bg-dcard p-4 rounded-xl ">
-                  <div className="text-lfont text-xl font-bold">۱۰۰+</div>
+                  <div className="text-neutral-500 dark:text-neutral-300 text-xl font-bold">۱۰۰+</div>
                   <div className="">محصول متنوع</div>
                 </div>
               </div>
