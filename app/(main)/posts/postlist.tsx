@@ -130,7 +130,7 @@ const PostList: React.FC = () => {
   }, [currentPage, count]);
 
   const tags: Tag[] = [
-    { id: "1", name: "همه ی وبلاگ ها", link: "همه ی وبلاگ ها" },
+    { id: "1", name: "همه ی وبلاگ ها", link: "" },
     { id: "2", name: "شیشه سکوریت", link: "شیشه سکوریت" },
     { id: "3", name: "لمینت", link: "لمینت" },
     { id: "4", name: "درب اتوماتیک", link: "درب اتوماتیک" },
@@ -201,7 +201,7 @@ const PostList: React.FC = () => {
                     updateUrlWithTag(tagItem.link);
                   }}
                   className={`duration-300 px-2 py-2 w-full text-right rounded-lg capitalize ${
-                    tag === tagItem.name
+                    tag === tagItem.link
                       ? "bg-lcard dark:bg-dcard"
                       : "hover:bg-lcard dark:hover:bg-dcard"
                   }`}

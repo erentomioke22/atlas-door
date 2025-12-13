@@ -84,7 +84,8 @@ const Drawer: React.FC<DrawerProps> = ({
 
       <div
         ref={drawerRef}
-        className={`fixed bottom-0 left-0 right-0 bg-white dark:bg-black rounded-t-xl shadow-xl ${size} transition-transform duration-300 overflow-hidden z-70 px-2 `}
+        className={`fixed bottom-0 left-0 right-0 bg-white dark:bg-black rounded-t-xl shadow-xl transform ${size} transition-transform duration-500 
+  ${isOpen ? `translate-y-0` : `translate-y-full`} overflow-hidden z-70 px-2 offcanvas`}
         style={{
           ...style,
           transform: getTransform(),
@@ -111,9 +112,9 @@ const Drawer: React.FC<DrawerProps> = ({
       </div>
 
       <div
-        className={`fixed inset-0 bg-black/70 transition-opacity duration-300 z-60 ${
-          isOpen ? 'opacity-100 backdrop-blur-sm' : 'opacity-0 pointer-events-none backdrop-blur-0'
-        }`}
+        className={`fixed inset-0  transition-opcaity duration-500 ease-in-out  z-60   ${
+          isOpen ? 'opacity-100 backdrop-blur-sm overflow-hidden overscroll-none' : 'opacity-0 invisible backdrop-blur-0 pointer-events-none'
+        } `}
         onClick={() => setIsOpen(false)}
       />
     </div>
