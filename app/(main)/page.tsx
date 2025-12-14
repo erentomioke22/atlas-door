@@ -163,12 +163,12 @@ function Home() {
                   />
                   <div className="absolute inset-x-0 bottom-0 rounded-b-xl mx-auto py-3 w-full bg-linear-to-t from-black/75 from-50% to-transparent flex justify-between px-3 items-center">
                     <h2 className="text-2xl text-white">{project.name}</h2>
-                    <button
+                    <span
                        aria-label="right icon" 
                       title="right icon" 
                       className="bg-white p-1 text-sm rounded-full text-black my-auto">
                       <FaCaretRight/>
-                    </button>
+                    </span>
                   </div>
                 </div>
               </Link>

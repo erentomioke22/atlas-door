@@ -31,7 +31,7 @@ const DropDrawer: React.FC<DropDrawerProps> = ({ children, title, btnStyle, clas
           header={undefined}
           headerStyle={undefined}
           btnStyle={btnStyle}
-          size={'h-2/4 w-full border-t-2 border-lcard dark:border-dcard rounded-t-3xl'}
+          size={'h-3/5 w-full border-t-2 border-lcard dark:border-dcard rounded-t-3xl'}
           disabled={disabled}
           style={undefined}
         >
