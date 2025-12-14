@@ -1,50 +1,69 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState , useMemo} from "react";
 import axios from "axios";
-import Comments from "@/components/products/comments/comments";
 import PageLoading from "@/components/ui/loading/pageLoading";
 import { toast } from "sonner";
 import { useQuery } from "@tanstack/react-query";
 import { IoShareOutline } from "react-icons/io5";
-import { usePathname } from "next/navigation";
 import ImageCom from "@/components/ui/Image";
 import { FaArrowLeftLong,FaPhone } from "react-icons/fa6";
 import Link from "next/link";
 import { FaEraser } from "react-icons/fa6";
 import EmblaCarousel from "@/components/ui/carousel/carousel";
-import { formatPriceFa, formatNumberFa } from "@/lib/utils";
-import AddToCartButton from "@/components/products/AddToCartButtonRoot";
-import Conneccted from "@/components/products/Connected";
+import { formatPriceFa, formatNumberFa , getProductPriceRange } from "@/lib/utils";
 import { ProductLite } from "@/components/products/productCard";
 import type { Session } from "@/lib/auth";
+import Button from "@/components/ui/button";
+import { usePathname, useRouter } from "next/navigation";
+import dynamic from "next/dynamic";
 
-
+const Comments = dynamic(() => import("@/components/products/comments/comments"));
+const Connected = dynamic(() => import("@/components/products/Connected"));
+const AddToCartButton = dynamic(() => import("@/components/products/AddToCartButtonRoot"));
 
 interface ProductPageProps {
   initialProduct: ProductLite;
   session:Session | null
 }
 
-const ProductPage: React.FC<ProductPageProps> = ({ initialProduct, session }) => {
-  const [currentColor, setCurrentColor] = useState<string>('');
-  const [currentDiscount, setCurrentDiscount] = useState<number | null>(null);
-  const [price, setPrice] = useState<string | null>(null);
-  const [currentPriceDiscount, setCurrentPriceDiscount] = useState<
-    string | null
-  >(null);
-  const [currentStocks, setCurrentStocks] = useState<number | null>(null);
-  const [minPrice, setMinPrice] = useState<string | null>(null);
-  const [maxPrice, setMaxPrice] = useState<string | null>(null);
-  const [currentColorName, setCurrentColorName] = useState<string>("");
 
-  const pathName = usePathname();
-  const currentUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${pathName}`;
+interface ColorState {
+  id: string;
+  name: string;
+  discount: number | null;
+  price: number;
+  discountedPrice: number;
+  stocks: number;
+  hexCode: string;
+}
+
+
+const ProductPage: React.FC<ProductPageProps> = ({ initialProduct, session }) => {
  
+  // const [currentColor, setCurrentColor] = useState<string>('');
+  // const [currentDiscount, setCurrentDiscount] = useState<number | null>(null);
+  // const [price, setPrice] = useState<string | null>(null);
+  // const [currentPriceDiscount, setCurrentPriceDiscount] = useState<
+  //   string | null
+  // >(null);
+  // const [currentStocks, setCurrentStocks] = useState<number | null>(null);
+  // const [minPrice, setMinPrice] = useState<string | null>(null);
+  // const [maxPrice, setMaxPrice] = useState<string | null>(null);
+  // const [currentColorName, setCurrentColorName] = useState<string>("");
+
+  const [selectedColor, setSelectedColor] = useState<ColorState | null>(null);
+  const [priceRange, setPriceRange] = useState<{ min: string; max: string } | null>(null);
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const currentUrl = useMemo(() => 
+    `${process.env.NEXT_PUBLIC_BASE_URL}${pathname}`,
+    [pathname]
+  );
   const {
     data: product,
     isLoading,
-    status,
     error,
   } = useQuery<ProductLite>({
     queryKey: ["product", initialProduct.name],
@@ -57,59 +76,115 @@ const ProductPage: React.FC<ProductPageProps> = ({ initialProduct, session }) =>
     initialData: initialProduct,
     staleTime: 5 * 60 * 1000,
     refetchOnMount: false,
+    refetchOnWindowFocus: false,
   });
 
-  useEffect(() => {
-    if (product?.colors?.length > 0 && !currentColor) {
-      setCurrentColor(product.colors[0].id);
-      setCurrentColorName(product.colors[0].name);
-      setCurrentDiscount(product.colors[0].discount);
-      setPrice(formatPriceFa(product.colors[0].price));
-      setCurrentStocks(product.colors[0].stocks);
-      setCurrentPriceDiscount(
-        formatPriceFa(
-          product.colors[0].price -
-            (product.colors[0].price * (product.colors[0].discount || 0)) / 100
-        )
+
+
+    useEffect(() => {
+    if (product?.colors?.length > 0 && !selectedColor) {
+      const availableColors = product.colors.filter(
+        color => color.status === "EXISTENT" && color.stocks >= 1
       );
+      
+      if (availableColors.length > 0) {
+        const firstColor = availableColors[0];
+        const colorState: ColorState = {
+          id: firstColor.id,
+          name: firstColor.name,
+          discount: firstColor.discount,
+          price: firstColor.price,
+          discountedPrice: firstColor.discount 
+            ? firstColor.price - (firstColor.price * firstColor.discount) / 100
+            : firstColor.price,
+          stocks: firstColor.stocks,
+          hexCode: firstColor.hexCode,
+        };
+        setSelectedColor(colorState);
+      }
 
-      const prices = product.colors.map((color) => color.price);
-      setMinPrice(formatPriceFa(Math.min(...prices)));
-      setMaxPrice(formatPriceFa(Math.max(...prices)));
+      const range = getProductPriceRange(product.colors);
+      setPriceRange({
+        min: formatPriceFa(range.min),
+        max: formatPriceFa(range.max),
+      });
     }
-  }, [product, currentColor]);
+  }, [product, selectedColor]);
 
-  const copyToClipboard = (): void => {
-    navigator.clipboard.writeText(currentUrl);
-    toast.success("لینک اشتراک گذاری ک‍پی شد");
+  const handleShare = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: product.name,
+          text: product.desc,
+          url: currentUrl,
+        });
+      } catch (err) {
+        await navigator.clipboard.writeText(currentUrl);
+        toast.success("لینک کپی شد");
+      }
+    } else {
+      await navigator.clipboard.writeText(currentUrl);
+      toast.success("لینک کپی شد");
+    }
   };
 
-  if (status === "success" && !product) {
-    return (
-      <p className="text-center text-destructive h-52 flex flex-col justify-center items-center">
-        هيچ محصولي يافت نشد
-      </p>
-    );
-  }
+  const handleColorSelect = (color: typeof product.colors[0]) => {
+    setSelectedColor({
+      id: color.id,
+      name: color.name,
+      discount: color.discount,
+      price: color.price,
+      discountedPrice: color.discount 
+        ? color.price - (color.price * color.discount) / 100
+        : color.price,
+      stocks: color.stocks,
+      hexCode: color.hexCode,
+    });
+  };
 
-  if (status === "error" ||  error) {
+
+
+
+
+  if (error) {
     return (
-      <p className="text-center text-destructive h-52 flex flex-col justify-center items-center">
+      <div className="flex min-h-svh items-center  max-w-4xl lg:max-w-6xl mx-auto px-4 lg:px-6 py-8 my-auto  flex-col justify-center  text-center space-y-5">
+      <p className="text-destructive">
         مشکلی در برقراری ارتباط وجود دارد
       </p>
+       <Button variant="empty" className="bg-transparent text-lime-600 border-2 border-lime-600 rounded-full py-2 px-3 hover:text-lime-700 text-sm" onClick={() => router.refresh()}>
+              تلاش مجدد
+       </Button>
+      </div>
     );
   }
 
+  if (isLoading || !selectedColor) {
+    return(
+      <div className="container max-w-4xl lg:max-w-6xl mx-auto px-4 lg:px-6 py-8 ">
+         <PageLoading/>
+      </div>
+      )
+  }
+
+  const availableColors = product.colors?.filter(
+    color => color.status === "EXISTENT" && color.stocks >= 1
+  ) || [];
+
+
+
   return (
-    <div className="px-5 container sm:max-w-xl lg:max-w-4xl xl:max-w-7xl mx-auto  ">
-      {isLoading ? (
-        <PageLoading />
-      ) : (
-        <div className="flex flex-col gap-5">
-              <Link href="/" className="flex text-sm ">
-                بازگشت
-                <FaArrowLeftLong className="my-auto " />
-              </Link>
+    <div className="px-5 container sm:max-w-xl lg:max-w-4xl xl:max-w-7xl mx-auto  mt-16">
+        <Button
+          variant="back"
+          onClick={()=>router.back()}
+          className="mb-6 text-sm flex"
+        >
+          بازگشت
+          <FaArrowLeftLong className="ml-2 my-auto " />
+        </Button>
+
           <div className="flex gap-2 sm:gap-3   my-auto">
           <a 
                  href="tel:09901196140" 
@@ -125,7 +200,7 @@ const ProductPage: React.FC<ProductPageProps> = ({ initialProduct, session }) =>
                 aria-label="share product"
                 title="share product"
                 className="bg-lcard dark:bg-dcard rounded-full p-2 text-sm sm:text-lg"
-                onClick={copyToClipboard}
+                onClick={handleShare}
               >
                 <IoShareOutline />
               </button>
@@ -141,9 +216,7 @@ const ProductPage: React.FC<ProductPageProps> = ({ initialProduct, session }) =>
               </Link>
             )}
 
-            <div>
               <Comments product={product} session={session}/>
-            </div>
           </div>
 
 
@@ -151,91 +224,83 @@ const ProductPage: React.FC<ProductPageProps> = ({ initialProduct, session }) =>
             <div className="space-y-10 md:space-y-12">
           <div className=" space-y-5 md:mt-7">
             <div className="space-y-3">
-              {minPrice !== maxPrice && (
-                <p className=" text-neutral-500 dark:text-neutral-300 text-[10px] md:text-sm">
-                  قیمت این محصول از {minPrice} تا {maxPrice} تومان میباشد.
-                </p>
-              )}
+            {priceRange && priceRange.min !== priceRange.max && (
+                <span className="text-neutral-500 dark:text-neutral-300 text-[10px] md:text-sm">
+                  قیمت از {priceRange.min} تا {priceRange.max} تومان
+                </span>
+            )}
               <h1 className="text-xl md:text-4xl w-full wrap-break-word text-black dark:text-white leading-8 md:leading-[60px]">
                 {product.name}
               </h1>
               {/* <p className="text-lfont ">{product.desc}</p> */}
             </div>
           </div>
-              <div className="flex justify-between gap-2">
-                <div className="flex gap-3 flex-wrap">
-                  {product?.colors
-                    ?.filter(
-                      (color) =>
-                        color?.status === "EXISTENT" && color?.stocks >= 1
-                    )
-                    .map((color) => {
-                      return (
-                        <div key={color.name}>
-                          <input
-                            className="hidden peer"
-                            aria-label={`set color ${color.name}`}
-                            type="radio"
-                            value={color.id}
-                            onClick={() => {
-                              setCurrentColor(color.id);
-                              setCurrentDiscount(color.discount);
-                              setPrice(formatPriceFa(color.price));
-                              setCurrentColorName(color.name);
-                              setCurrentStocks(color.stocks);
-                              setCurrentPriceDiscount(
-                                formatPriceFa(
-                                  color.price -
-                                    (color.price * (color?.discount || 0)) / 100
-                                )
-                              );
-                            }}
-                            checked={currentColor === color.id}
-                            id={color.name}
-                            name="color"
-                            readOnly
-                          />
-                           <label
-                             className="
-                               flex flex-col ring-2 ring-lbtn dark:ring-dbtn cursor-pointer 
-                               rounded-md sm:rounded-lg duration-300
-                                 peer-checked:outline-2 peer-checked:outline-offset-2 
-                               peer-checked:outline-black peer-checked:ring-0 
-                               dark:peer-checked:outline-white peer-checked:scale-110 transition-transform
-                             " htmlFor={color.name}
-                           >
-                            <div
-                              className="w-5 h-5 sm:w-7  sm:h-7  my-auto rounded-md sm:rounded-lg"
-                              style={{ backgroundColor: color.hexCode }}
-                            ></div>
-                          </label>
-                        </div>
-                      );
-                    })}
-                </div>
 
-                <div className="text-sm sm:text-lg my-auto">
-                  <p> رنگ - {currentColorName}</p>
-                </div>
+{availableColors.length > 0 && (
+            <div className="space-y-4">
+                <h3 className="font-medium">انتخاب رنگ</h3>
+              <div className="flex items-center justify-between">
+              <div className="flex flex-wrap gap-3">
+                {availableColors.map((color) => (
+                  <button
+                    key={color.id}
+                    onClick={() => handleColorSelect(color)}
+                    aria-label={`انتخاب رنگ ${color.name}`}
+                    className={`
+                      relative w-9 h-9 rounded-xl transition-all border-2 duration-300
+                      ${selectedColor.id === color.id 
+                        ? ' ring-2 ring-black dark:ring-white ' 
+                        : ' border-lcard dark:border-dcard hover:border-lbtn dark:hover:border-dbtn'
+                      }
+                    `}
+                    style={{ backgroundColor: color.hexCode }}
+                    title={color.name}
+                  >
+                    {/* {selectedColor.id === color.id && (
+                      <div className="absolute inset-0 border-2 border-white rounded-lg" />
+                    )} */}
+                  </button>
+                ))}
               </div>
+              <span className="text-sm text-muted-foreground">
+                  {selectedColor.name}
+                </span>
+              </div>
+              
+            </div>
+          )}
+
 
               <div className="flex flex-wrap justify-between gap-2">
                 <p className="my-auto">قيمت</p>
                 <div className="flex flex-col flex-wrap gap-2 text-xl">
-                  <p className="my-auto "> {currentPriceDiscount} تومان</p>
-                  {currentDiscount !== null && currentDiscount > 0 && (
+                  <p className="my-auto ">  {formatPriceFa(selectedColor.discountedPrice)} تومان</p>
+                  {selectedColor.discount !== null && selectedColor.discount > 0 && (
                     <div className="flex gap-1 text-end ">
                       <p className="line-through  decoration-2 my-auto  text-neutral-500 dark:text-neutral-300">
                         {" "}
-                        {price}
+                        {formatPriceFa(selectedColor.price)}
                       </p>
                       <span className=" text-redorange text-sm ">
-                        {formatNumberFa(currentDiscount)}% تخفیف
+                        {selectedColor.discount}% تخفیف
                       </span>
                     </div>
                   )}
                 </div>
               </div>
+
+              {/* <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-muted-foreground">
+                موجودی: {selectedColor.stocks > 0 ? selectedColor.stocks : 'ناموجود'}
+              </span>
+              {selectedColor.stocks <= 5 && selectedColor.stocks > 0 && (
+                <span  className="text-xs">
+                  آخرین موجودی
+                </span>
+              )}
+            </div>
+          </div> */}
 
               <div className="flex flex-wrap justify-between my-auto gap-2">
                 <div className="flex flex-col gap-2">
@@ -257,16 +322,14 @@ const ProductPage: React.FC<ProductPageProps> = ({ initialProduct, session }) =>
                   <AddToCartButton
                     session={session}
                     product={product}
-                    colorId={currentColor}
-                    stocks={
-                      product?.colors?.find(
-                        (color) => color.id === currentColor
-                      )?.stocks || 0
-                    }
+                    colorId={selectedColor.id}
+                    stocks={selectedColor.stocks}
+                    disabled={selectedColor.stocks === 0}
                   />
                 </div>
               </div>
             </div>
+
               <EmblaCarousel
                 options={{ loop: false, direction: "rtl", }}
                 dot={true}
@@ -289,12 +352,12 @@ const ProductPage: React.FC<ProductPageProps> = ({ initialProduct, session }) =>
               </EmblaCarousel>
           </div>
 
-          <div
-            className="content wrap-break-word w-full  normal-case leading-relaxed md:text-lg max-md:text-sm  "
+          <article
+            className="content wrap-break-word w-full  normal-case leading-relaxed md:text-lg max-md:text-sm  my-12"
             dangerouslySetInnerHTML={{ __html: product.content }}
           />
 
-          <div className="space-y-10 ">
+          <section className="space-y-10 ">
             <div>
               <h1 className="text-lg sm:text-xl text-neutral-500 dark:text-neutral-300">
                 <span className="text-2xl sm:text-4xl text-black dark:text-white uppercase">
@@ -304,10 +367,8 @@ const ProductPage: React.FC<ProductPageProps> = ({ initialProduct, session }) =>
               </h1>
             </div>
 
-            <Conneccted productTitle={product?.name} productId={product?.id} />
-          </div>
-        </div>
-      )}
+            <Connected productTitle={product?.name} productId={product?.id} />
+          </section>
     </div>
   );
 };

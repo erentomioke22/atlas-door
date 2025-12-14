@@ -6,8 +6,7 @@ import Head from 'next/head';
 import { notFound } from 'next/navigation';
 import { ProductLite } from '@/components/products/productCard';
 import { getServerSession } from "@/lib/get-session";
-
-// Type definitions
+import Script from 'next/script';
 interface ProductParams {
   name: string;
 }
@@ -16,20 +15,19 @@ interface PageProps {
   params: Promise<ProductParams>;
 }
 
-
-
-const getProduct = cache(async (name: string, loggedInUserId?: string | null): Promise<ProductLite | null> => {
+const getProduct = cache(async (slug: string, userId?: string | null) => {
   try {
-    const decodedTitle = decodeURIComponent(name);
-    return await prisma.product.findFirst({
-      where: { slug: decodedTitle },
-      include: getProductDataInclude(loggedInUserId),
+    return await prisma.product.findUnique({
+      where: { slug: decodeURIComponent(slug) },
+      include: getProductDataInclude(userId),
     });
   } catch (error) {
     console.error('Error fetching product:', error);
     return null;
   }
 });
+
+export const revalidate = 3600;
 
 
 export async function generateStaticParams(): Promise<Array<{ name: string }>> {
@@ -38,6 +36,8 @@ export async function generateStaticParams(): Promise<Array<{ name: string }>> {
       select: {
         slug: true,
       },
+      take: 100,
+      orderBy: { createdAt: 'desc' }
     });
 
     return products.map((product) => ({
@@ -48,6 +48,8 @@ export async function generateStaticParams(): Promise<Array<{ name: string }>> {
     return [];
   }
 }
+
+
 
 export async function generateMetadata({ params }: PageProps) {
   try {
@@ -60,41 +62,62 @@ export async function generateMetadata({ params }: PageProps) {
       robots: { index: false, follow: false }
     };
 
-    const ogImages = (product?.images ?? []).map((image) => ({
-      url: image ,
-      width: 800,
-      height: 600,
-      alt: product?.name,
-    }));
 
-    return {
-      metadataBase: new URL(`${process.env.NEXT_PUBLIC_BASE_URL}/products/${product.slug}`),
-      title: `${product?.name} - ${product?.desc?.slice(0, 50)}... | Atlas Door`,
-      description: product?.desc,
-      alternates: {
-        canonical: `${process.env.NEXT_PUBLIC_BASE_URL}/products/${product.slug}`
-      },
-      openGraph: {
-        title: product?.name,
-        description: product?.desc,
-        type: 'article',
-        publishedTime: product.createdAt.toISOString(),
-        modifiedTime: product.updatedAt.toISOString(),
-        url: `${process.env.NEXT_PUBLIC_BASE_URL}/products/${product.slug}`,
-        siteName: 'Atlas Door',
-        images: [...ogImages],
-      },
-      twitter: {
-        card: 'summary_large_image',
-        title: product.name,
-        description: product.desc,
-        images: ogImages[0]?.url,
-      },
-      robots: {
+
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL!;
+  const productUrl = `${baseUrl}/products/${product.slug}`;
+  
+  const images = product.images?.map(img => ({
+    url: img,
+    width: 1200,
+    height: 630,
+    alt: product.name,
+  })) || [];
+
+  // Find minimum price
+  const minPrice = product.colors?.length > 0 
+    ? Math.min(...product.colors.map(c => c.price))
+    : 0;
+
+  return {
+    metadataBase: new URL(`${productUrl}`),
+    title: `${product.name} | Atlas Door`,
+    description: product.desc?.slice(0, 160) || '',
+    alternates: {
+      canonical: productUrl
+    },
+    openGraph: {
+      title: product.name,
+      description: product.desc || '',
+      type: 'article',
+      url: productUrl,
+      publishedTime: product.createdAt.toISOString(),
+      modifiedTime: product.updatedAt.toISOString(),
+      siteName: 'Atlas Door',
+      images,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: product.name,
+      description: product.desc?.slice(0, 200) || '',
+      images: images.length > 0 ? [images[0].url] : [],
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
         index: true,
         follow: true,
+        'max-video-preview': -1,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
       }
-    };
+    },
+    other: {
+      'product:price:amount': minPrice.toString(),
+      'product:price:currency': 'IRR',
+    }
+  };
   } catch (error) {
     console.error('Error fetching product metadata:', error);
     return {};
@@ -103,70 +126,83 @@ export async function generateMetadata({ params }: PageProps) {
 
 const page = async ({ params }:PageProps) => {
   const { name } = await params;
-  const product = await getProduct(name);
-  const  session  = await getServerSession();
+  const session = await getServerSession();
+  const product = await getProduct(name, session?.user?.id);
 
   if (!product) return notFound();
 
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    "name": product.name,
-    "description": product.desc,
-    "brand": {
-      "@type": "Brand",
-      "name": "Atlas Door"
+
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL!;
+  const productUrl = `${baseUrl}/products/${product.slug}`;
+
+  // Calculate min price
+  const minPrice = product.colors?.length > 0 
+    ? Math.min(...product.colors.map(c => c.price))
+    : 0;
+
+  const productStructuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: product.name,
+    description: product.desc || '',
+    brand: {
+      '@type': 'Brand',
+      name: 'Atlas Door'
     },
-    "sku": product.id,
-    "offers": {
-      "@type": "Offer",
-      "url": `${process.env.NEXT_PUBLIC_BASE_URL}/products/${product.slug}`,
-      "priceCurrency": "IRR",
-      "price": product.colors[0]?.price || 0,
-      "availability": "https://schema.org/InStock",
-      "seller": {
-        "@type": "Organization",
-        "name": "Atlas Door"
+    sku: product.id,
+    image: product.images,
+    offers: {
+      '@type': 'Offer',
+      url: productUrl,
+      priceCurrency: 'IRR',
+      price: minPrice,
+      priceValidUntil: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+      availability: product.colors?.some(c => c.stocks > 0) 
+        ? 'https://schema.org/InStock'
+        : 'https://schema.org/OutOfStock',
+      seller: {
+        '@type': 'Organization',
+        name: 'Atlas Door'
       }
-    },
-    "image": product.images.map(img => ({
-      "@type": "ImageObject",
-      "url": `${img}`,
-      "width": 800,
-      "height": 600
-    })),
+    }
   };
 
-  const breadcrumbJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": [
+  const breadcrumbStructuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
       {
-        "@type": "ListItem",
-        "position": 1,
-        "name": "محصولات",
-        "item": `${process.env.NEXT_PUBLIC_BASE_URL}/products`
+        '@type': 'ListItem',
+        position: 1,
+        name: 'محصولات',
+        item: `${baseUrl}/products`
       },
       {
-        "@type": "ListItem",
-        "position": 2,
-        "name": product.name,
-        "item": `${process.env.NEXT_PUBLIC_BASE_URL}/products/${product.slug}`
+        '@type': 'ListItem',
+        position: 2,
+        name: product.name,
+        item: productUrl
       }
     ]
   };
 
   return (
     <>
-      <Head>
-        <script type="application/ld+json">
-          {JSON.stringify(jsonLd)}
-        </script>
-        <script type="application/ld+json">
-          {JSON.stringify(breadcrumbJsonLd)}
-        </script>
-      </Head>
-      <article className='mt-16'>
+      <Script
+        id="product-structured-data"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(productStructuredData)
+        }}
+      />
+      <Script
+        id="breadcrumb-structured-data"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbStructuredData)
+        }}
+      />
+      <article >
        <ProductPage initialProduct={product} session={session}/>
       </article>
     </>

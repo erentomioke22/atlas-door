@@ -12,7 +12,8 @@ type Variant =
   | 'close'
   | 'delete'
   | 'empty'
-  | 'primary' // kept as default token used in file
+  | 'primary'
+  | 'back'
 
 type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: Variant
@@ -39,6 +40,8 @@ const Button: React.FC<ButtonProps> = ({ children, variant = 'primary', classNam
     delete: 'bg-transparent text-redorange border-2 border-current rounded-full',
     empty: '',
     primary: '',
+    back: 'text-neutral-500 dark:text-neutral-300 hover:text-black dark:hover:text-white',
+
   }
 
   return (

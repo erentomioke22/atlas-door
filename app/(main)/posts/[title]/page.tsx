@@ -2,7 +2,7 @@ import PostPage from './postPage';
 import { cache } from 'react';
 import { prisma } from '@/utils/database';
 import { getPostDataInclude } from '@/lib/types';
-import Head from 'next/head';
+import Script from 'next/script';
 import { notFound } from 'next/navigation';
 import { PostLite } from '@/components/posts/postCard';
 import { getServerSession } from "@/lib/get-session";
@@ -19,18 +19,21 @@ interface PageProps {
 
 
 
-const getPost = cache(async (title: string, loggedInUserId?: string | null): Promise<PostLite | null> => {
+const getPost = cache(async (title: string, userId?: string | null): Promise<PostLite | null> => {
   try {
     const decodedTitle = decodeURIComponent(title);
-    return await prisma.post.findFirst({
+    return await prisma.post.findUnique({
       where: { slug: decodedTitle, status: 'PUBLISHED' },
-      include: getPostDataInclude(loggedInUserId),
+      include: getPostDataInclude(userId),
     });
   } catch (error) {
     console.error('Error fetching post:', error);
     return null;
   }
 });
+
+
+export const revalidate = 3600;
 
 export async function generateStaticParams(): Promise<Array<{ title: string }>> {
   try {
@@ -39,6 +42,7 @@ export async function generateStaticParams(): Promise<Array<{ title: string }>> 
       select: {
         slug: true,
       },
+      take: 100
     });
 
     return posts.map((post) => ({
@@ -61,44 +65,56 @@ export async function generateMetadata({ params }: PageProps) {
       robots: { index: false, follow: false }
     };
 
-    const contentImages = (post?.images ?? []).map((image) => ({
-      url:  image ,
-      width: 800,
-      height: 600,
-      alt: post?.title,
-    }));
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL!;
+    const postUrl = `${baseUrl}/posts/${post.slug}`;
+    
+    const images = post.images?.map(img => ({
+      url: img,
+      width: 1200,
+      height: 630,
+      alt: post.title,
+    })) || [];
+  
     return {
-      metadataBase: new URL(`${process.env.NEXT_PUBLIC_BASE_URL}/posts/${post?.slug}`),
-      title: `${post?.title} - ${post?.desc?.slice(0, 50)}... | Atlas Door`,
-      description: `${post?.desc}`,
-      keywords: post?.tags.map(tag => tag.name).join(', '),
+      metadataBase: new URL(`${postUrl}`),
+      title: `${post.title} | Atlas Door`,
+      description: post.desc?.slice(0, 160) || '',
+      keywords: post.tags?.map(t => t.name).join(', ') || '',
       alternates: {
-        canonical: `${process.env.NEXT_PUBLIC_BASE_URL}/posts/${post?.slug}`
+        canonical: postUrl
       },
       openGraph: {
-        title: post?.title,
-        description: post?.desc,
+        title: post.title,
+        description: post.desc || '',
         type: 'article',
-        publishedTime: post?.createdAt.toISOString(),
-        modifiedTime: post?.updatedAt.toISOString(),
-        authors: [post?.user.displayName || post?.user.name],
-        tags: post?.tags.map(tag => tag.name),
-        url: `${process.env.NEXT_PUBLIC_BASE_URL}/posts/${post?.slug}`,
+        publishedTime: post.createdAt.toISOString(),
+        modifiedTime: post.updatedAt.toISOString(),
+        authors: [post.user.displayName || post.user.name || 'نویسنده ناشناس'],
+        tags: post.tags?.map(t => t.name) || [],
+        url: postUrl,
         locale: 'fa_IR',
         siteName: 'Atlas Door',
-        images: [...contentImages],
+        images,
       },
       twitter: {
-        card: 'summary_large_image',
-        title: post?.title,
-        description: post?.desc,
-        images: contentImages[0].url,
+        card: images.length > 0 ? 'summary_large_image' : 'summary',
+        title: post.title,
+        description: post.desc?.slice(0, 200) || '',
+        images: images.length > 0 ? [images[0].url] : [],
       },
       robots: {
         index: true,
         follow: true,
-      }
+        googleBot: {
+          index: true,
+          follow: true,
+          'max-video-preview': -1,
+          'max-image-preview': 'large',
+          'max-snippet': -1,
+        }
+      },
     };
+
   } catch (error) {
     console.error('Error fetching post metadata:', error);
     return {};
@@ -107,76 +123,78 @@ export async function generateMetadata({ params }: PageProps) {
 
 const Page = async ({ params }:PageProps) => {
   const { title } = await params;
-  const post = await getPost(title);
-  const  session  = await getServerSession();
+  const session = await getServerSession();
+  const post = await getPost(title,session?.user?.id);
   
   if (!post) return notFound();
 
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    "headline": post?.title,
-    "description": post?.desc,
-    "datePublished": post?.createdAt.toISOString(),
-    "dateModified": post?.updatedAt.toISOString(),
-    "author": {
-      "@type": "Person",
-      "name": post?.user.displayName || post?.user.name,
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL!;
+  const postUrl = `${baseUrl}/posts/${post.slug}`;
+
+
+  const articleStructuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: post.title,
+    description: post.desc || '',
+    datePublished: post.createdAt.toISOString(),
+    dateModified: post.updatedAt.toISOString(),
+    author: {
+      '@type': 'Person',
+      name: post.user.displayName || post.user.name,
     },
-    "publisher": {
-      "@type": "Organization",
-      "name": "Atlas Door",
-      "logo": {
-        "@type": "ImageObject",
-        "url": `${process.env.NEXT_PUBLIC_BASE_URL}/images/logo/atlasDoor.png`,
-        "width": 600,
-        "height": 60
+    publisher: {
+      '@type': 'Organization',
+      name: 'Atlas Door',
+      logo: {
+        '@type': 'ImageObject',
+        url: `${baseUrl}/images/logo/atlasDoor.png`,
       }
     },
-    "image": post?.images.map(img => ({
-      "@type": "ImageObject",
-      "url": `${img}`,
-      "width": 1200,
-      "height": 630
-    })),
-    "mainEntityOfPage": {
-      "@type": "WebPage",
-      "@id": `${process.env.NEXT_PUBLIC_BASE_URL}/posts/${post?.slug}`
-    },
-    "keywords": post?.tags.map(tag => tag.name).join(', '),
-    "articleBody": post?.content
+    image: post.images?.map(img => img),
+    mainEntityOfPage: postUrl,
+    keywords: post.tags?.map(tag => tag.name).join(', '),
+    articleBody: post.content,
   };
 
-  const breadcrumbJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": [
+  const breadcrumbStructuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
       {
-        "@type": "ListItem",
-        "position": 1,
-        "name": "مقالات",
-        "item": `${process.env.NEXT_PUBLIC_BASE_URL}/posts`
+        '@type': 'ListItem',
+        position: 1,
+        name: 'مقالات',
+        item: `${baseUrl}/posts`
       },
       {
-        "@type": "ListItem",
-        "position": 2,
-        "name": post.title,
-        "item": `${process.env.NEXT_PUBLIC_BASE_URL}/posts/${post.slug}`
+        '@type': 'ListItem',
+        position: 2,
+        name: post.title,
+        item: postUrl
       }
     ]
   };
 
+
+
   return (
     <>
-      <Head>
-        <script type="application/ld+json">
-          {JSON.stringify(jsonLd)}
-        </script>
-        <script type="application/ld+json">
-          {JSON.stringify(breadcrumbJsonLd)}
-        </script>
-      </Head>
-      <article className='mt-16'>
+      <Script
+        id="article-structured-data"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(articleStructuredData)
+        }}
+      />
+      <Script
+        id="breadcrumb-structured-data"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbStructuredData)
+        }}
+      />
+      <article>
         <PostPage initialPost={post} session={session}/>
       </article>
     </>
@@ -184,6 +202,3 @@ const Page = async ({ params }:PageProps) => {
 };
 
 export default Page;
-
-
-

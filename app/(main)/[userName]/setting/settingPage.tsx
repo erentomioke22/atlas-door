@@ -240,14 +240,14 @@ export default function SettingPage({ session }: { session: Session | null }) {
     <div className="px-5  container max-w-3xl lg:max-w-4xl space-y-10 mt-20 mx-auto ">
       <div className="flex justify-between text-lg ">
         <h1 className="text-2xl">تنظيمات</h1>
-        <button
-          className={"text-sm px-3  py-1 flex"}
-          onClick={() => router.push("/")}
-          type="button"
+        <Button
+          variant="back"
+          onClick={() => router.back()}
+          className="mb-6 text-sm flex"
         >
           بازگشت
-          <FaArrowLeftLong className="my-auto " />
-        </button>
+          <FaArrowLeftLong className="ml-2 my-auto " />
+        </Button>
       </div>
 
       <div className="space-y-10  rounded-2xl text-sm pt-10">

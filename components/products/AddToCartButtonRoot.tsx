@@ -12,6 +12,7 @@ interface AddToCartButtonProps {
   className?: string;
   stocks?: number;
   card?: boolean;
+  disabled?: boolean;
 }
 
 export default function AddToCartButton({
@@ -20,7 +21,8 @@ export default function AddToCartButton({
   session,
   className = "",
   stocks = 1,
-  card = false
+  card = false,
+  disabled
 }: AddToCartButtonProps) {
   const {
     addToCart,

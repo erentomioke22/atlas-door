@@ -156,14 +156,14 @@ const PostList: React.FC = () => {
     <div className="px-7 container max-w-7xl  mx-auto space-y-20">
       <div className="flex justify-between mt-16">
         <h1 className="text-2xl">مقاله ها</h1>
-        <button
-          className={"text-sm px-3  py-1  flex"}
-          onClick={() => router.push("/")}
-          type="button"
+        <Button
+          variant="back"
+          onClick={() => router.back()}
+          className="mb-6 text-sm flex"
         >
           بازگشت
-          <FaArrowLeftLong className="my-auto " />
-        </button>
+          <FaArrowLeftLong className="ml-2 my-auto " />
+        </Button>
       </div>
 
       <div className="sm:flex gap-2 sm:justify-center">

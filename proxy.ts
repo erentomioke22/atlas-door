@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "./lib/get-session";
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname, searchParams } = request.nextUrl;
   const ADMIN_PATHS = ['/admin', 'adminOrders'];
   
@@ -58,7 +58,6 @@ function handleProtectedRoutes(request: NextRequest, session: any, routeUserName
 }
 
 export const config = {
-  runtime: "nodejs",
   matcher: [
     "/admin/:path*",
     "/:userName/setting",
@@ -66,5 +65,5 @@ export const config = {
     "/:userName/delivered", 
     "/:userName/bag",
     "/:userName/adminOrders"
-  ],
+  ]
 };

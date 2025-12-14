@@ -80,7 +80,7 @@ export default function AboutUs() {
           <header className="text-center mb-12">
             <div className="flex justify-between  mt-16">
               <h1 className="text-2xl">درباره ما</h1>
-              <Link href="/" className="flex text-sm my-auto">
+              <Link href="/" className="flex text-sm my-auto text-neutral-500 dark:text-neutral-300 hover:text-black dark:hover:text-white">
                 بازگشت
                 <FaArrowLeftLong className="my-auto " />
               </Link>

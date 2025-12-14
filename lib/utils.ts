@@ -63,3 +63,29 @@ export const formatDateFa = (date: Date | string | number): string => {
   const d = date instanceof Date ? date : new Date(date);
   return d.toLocaleDateString("fa-IR", { year: "numeric", month: "long", day: "numeric" });
 };
+
+export function getReadingTime(content: string): number {
+  const wordsPerMinute = 200;
+  const words = content.trim().split(/\s+/).length;
+  return Math.ceil(words / wordsPerMinute);
+}
+
+export function formatDate(date: Date): string {
+  return new Intl.DateTimeFormat('fa-IR', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  }).format(date);
+}
+
+export function getProductPriceRange(colors: any[]): { min: number; max: number } {
+  if (!colors || colors.length === 0) {
+    return { min: 0, max: 0 };
+  }
+  
+  const prices = colors.map(color => color.price);
+  return {
+    min: Math.min(...prices),
+    max: Math.max(...prices),
+  };
+}
