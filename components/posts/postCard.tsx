@@ -48,11 +48,24 @@ interface PostCardProps {
 }
 
 const PostCard: React.FC<PostCardProps> = ({post,draft}) => {
-  const [link,setLink]=useState<string>(draft ? `/edit-post/${post.slug}` :`${process.env.NEXT_PUBLIC_BASE_URL}/posts/${post.slug}`)
+  const [link,setLink]=useState<string>(draft ? `/edit-post/${post.slug}` :`/posts/${post.slug}`)
 
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText(link);
-    toast.success("لینک اشترک گذاری کپی شد")
+  const handleShare = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: post.title,
+          text: post.desc || '', 
+          url: link,
+        });
+      } catch (err) {
+        await navigator.clipboard.writeText(link);
+        toast.success("لینک کپی شد");
+      }
+    } else {
+      await navigator.clipboard.writeText(link);
+      toast.success("لینک کپی شد");
+    }
   };
 
   const createdAt = moment(post.createdAt, 'YYYY-MM-DDTHH:mm:ss.SSSZ').locale('fa') 
@@ -74,19 +87,20 @@ const PostCard: React.FC<PostCardProps> = ({post,draft}) => {
           </div>
         </div>
         <div className='my-auto'>
-          {/* {session?.user?.role === 'admin' ? 
+          {/* <div className='flex flex-wrap gap-2'>
+          {session?.user?.role === 'admin' && 
             <Link href={`/admin/edit-post/${post.slug}`}
               className='text-[10px]  text-lfont' >
               Edit Post
             </Link>
-            : */}
+           } */}      
             <button
               aria-label="share post"
               title="share post"
-            className='text-sm my-auto' onClick={copyToClipboard}>
+            className='text-sm my-auto' onClick={handleShare}>
               <IoShareOutline className='text-[16px]'/> 
             </button> 
-          {/*  } */}
+          {/* </div> */}
         </div>
       </div>
       <Link href={link as any} className='flex flex-col justify-between h-full'>

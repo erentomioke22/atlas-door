@@ -19,11 +19,10 @@ interface PageProps {
 
 
 
-const getPost = cache(async (title: string, userId?: string | null): Promise<PostLite | null> => {
+const getPost = cache(async (slug: string, userId?: string | null): Promise<PostLite | null> => {
   try {
-    const decodedTitle = decodeURIComponent(title);
     return await prisma.post.findUnique({
-      where: { slug: decodedTitle, status: 'PUBLISHED' },
+      where: { slug: decodeURIComponent(slug), status: 'PUBLISHED' },
       include: getPostDataInclude(userId),
     });
   } catch (error) {
