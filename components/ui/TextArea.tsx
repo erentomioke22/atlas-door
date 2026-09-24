@@ -6,10 +6,13 @@ type TextAreaProps = React.TextareaHTMLAttributes<HTMLTextAreaElement> & {
   error?: string
   watch?: string
   className?: string
+  maxLength?:number
+  rows?:number
+  spellCheck?: string
 }
 
 export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
-  ({ placeholder, title, value, error, name, className, onChange, onBlur, label, watch, ...rest }, ref) => (
+  ({ placeholder, title, value , spellCheck , maxLength,rows, error, name, className, onChange, onBlur, label, watch, ...rest }, ref) => (
     <>
       <div className="relative">
         {label && <label className="">{title}</label>}
@@ -21,6 +24,9 @@ export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
           onChange={onChange}
           onBlur={onBlur}
           value={value}
+          maxLength={maxLength}
+          rows={rows}
+          spellCheck={spellCheck}
           {...rest}
         />
         <div className="flex justify-between">

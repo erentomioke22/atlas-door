@@ -100,7 +100,7 @@ const RootLayout = ({ children }: RootLayoutProps) => {
   };
 
   return (
-    <html lang="fa" dir="rtl" className={`${inter.variable} ${rubik.variable} ${blanka.variable}`} suppressHydrationWarning>
+    <html  className={`${inter.variable} ${rubik.variable} ${blanka.variable}`} suppressHydrationWarning>
       <head>
         <script
           type="application/ld+json"
@@ -115,7 +115,7 @@ const RootLayout = ({ children }: RootLayoutProps) => {
           enableSystem
           disableTransitionOnChange
         >
-          <NextTopLoader showSpinner={false} color="#d2d4d7" />
+          {/* <NextTopLoader showSpinner={false} color="#d2d4d7" /> */}
           <ReactQueryProvider>
               {children}
               <Toaster richColors position="bottom-right" />

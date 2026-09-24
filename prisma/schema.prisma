@@ -1,3 +1,307 @@
+// generator client {
+//   provider = "prisma-client-js"
+// }
+
+// datasource db {
+//   provider  = "postgresql"
+//   url       = env("DATABASE_URL")
+//   directUrl = env("DIRECT_URL")
+// }
+
+// model User {
+//   id                    String         @id @default(cuid())
+//   name                  String         @unique
+//   email                 String         @unique
+//   image                 String?
+//   phone                 String?
+//   address               String?
+//   password              String?
+//   role                  String?        @default("user")
+//   displayName           String?
+//   status                String         @default("active")
+//   createdAt             DateTime       @default(now())
+//   emailVerified         Boolean       @default(false)
+//   updatedAt             DateTime       
+//   cart                  CartItem[]
+//   orders                Order[]
+//   glassOrders           GlassOrder[]
+//   products              Product[]
+//   accounts              Account[]
+//   comments              Comment[]
+//   issuedNotifications   Notification[] @relation("Issuer")
+//   receivedNotifications Notification[] @relation("Recipient")
+//   posts                 Post[]
+//   sessions              Session[]
+
+//   @@map("users")
+// }
+
+// model Session {
+//   id        String    @id @default(cuid())
+//   expiresAt DateTime  
+//   token     String    @unique
+//   createdAt DateTime
+//   updatedAt DateTime
+//   ipAddress String?
+//   userAgent String?
+//   userId    String
+//   user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+
+//   @@map("session")
+// }
+
+// model Account {
+//   id                    String    @id @default(cuid())
+//   accountId             String
+//   providerId            String
+//   userId                String
+//   accessToken           String?
+//   refreshToken          String?
+//   idToken               String?
+//   accessTokenExpiresAt  DateTime? 
+//   refreshTokenExpiresAt DateTime? 
+//   scope                 String?
+//   password              String?
+//   createdAt             DateTime
+//   updatedAt             DateTime
+//   user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+
+//   @@map("account")
+// }
+
+// model Verification {
+//   id         String    @id @default(cuid())
+//   identifier String
+//   value      String
+//   expiresAt  DateTime  
+//   createdAt  DateTime? 
+//   updatedAt  DateTime? 
+
+//   @@index([value])
+//   @@map("verification")
+// }
+
+// model Tag {
+//   id        String   @id @default(cuid())
+//   name      String
+//   info      String?
+//   createdAt DateTime @default(now())
+//   posts     Post[]   @relation("PostToTag")
+
+//   @@map("tags")
+// }
+
+// model Post {
+//   id                  String         @id @default(cuid())
+//   title               String
+//   desc                String
+//   slug                String         @unique
+//   content             String
+//   images              String[]
+//   status              String         @default("DRAFT")
+//   discussions         Boolean        @default(false)
+//   isHot               Boolean        @default(false)
+//   userId              String
+//   createdAt           DateTime       @default(now())
+//   expiresAt           DateTime?
+//   updatedAt           DateTime       @updatedAt
+//   comments            Comment[]
+//   linkedNotifications Notification[]
+//   user                User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+//   tags                Tag[]          @relation("PostToTag")
+
+//   @@map("posts")
+// }
+
+// model Product {
+//   id                  String         @id @default(cuid())
+//   name                String
+//   desc                String
+//   slug                String         @unique 
+//   content             String
+//   feature             String?
+//   images              String[]
+//   sellerId            String
+//   createdAt           DateTime       @default(now())
+//   expiresAt           DateTime?
+//   updatedAt           DateTime       @updatedAt
+//   cartItems           CartItem[]
+//   colors              Color[]
+//   orderItems          OrderItem[]
+//   seller              User           @relation(fields: [sellerId], references: [id])
+//   comments            Comment[]
+//   linkedNotifications Notification[]
+// }
+
+// model Color {
+//   id         String      @id @default(cuid())
+//   name       String
+//   hexCode    String
+//   discount   Float?      @default(0)
+//   stocks     Int         @default(0)
+//   status     String      @default("NON-EXISTENT")
+//   price      Float
+//   productId  String
+//   updatedAt  DateTime?   @updatedAt
+//   createdAt  DateTime    @default(now())
+//   cartItems  CartItem[]
+//   product    Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
+//   orderItems OrderItem[]
+// }
+
+// model CartItem {
+//   id        String   @id @default(cuid())
+//   quantity  Int      @default(1)
+//   productId String
+//   colorId   String?
+//   userId    String
+//   createdAt DateTime @default(now())
+//   color     Color?   @relation(fields: [colorId], references: [id], onDelete: Cascade)
+//   product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+//   user      User     @relation(fields: [userId], references: [id])
+
+//   @@unique([userId, productId, colorId])
+// }
+
+// model Order {
+//   id          String      @id @default(cuid())
+//   userId      String
+//   recipient   String
+//   phone       String?
+//   address     String?
+//   total       Float
+//   status      OrderStatus @default(PENDING)
+//   paymentId   String?
+//   paymentDate DateTime?
+//   createdAt   DateTime    @default(now())
+//   updatedAt   DateTime    @updatedAt
+//   orderCode   String      @unique
+//   user        User        @relation(fields: [userId], references: [id])
+//   items       OrderItem[]
+// }
+
+// model OrderItem {
+//   id        String  @id @default(cuid())
+//   quantity  Int
+//   price     Float
+//   productId String
+//   colorId   String
+//   orderId   String
+//   color     Color   @relation(fields: [colorId], references: [id], onDelete: Cascade)
+//   order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+//   product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+// }
+
+
+// model GlassOrder {
+//   id                String   @id @default(cuid())
+//   orderNumber       String   @unique
+//   customerName      String
+//   customerPhone     String?
+//   status            OrderStatus @default(PENDING)
+  
+//   glassType         String   
+//   thickness         Float    
+//   quantity          Int      
+//   dimensions        String   
+//   description       String? 
+  
+//   estimatedDelivery DateTime?
+//   actualDelivery    DateTime?
+//   createdAt         DateTime @default(now())
+//   updatedAt         DateTime @updatedAt
+  
+  
+//   factoryOrderId    String?
+  
+//   paymentStatus     OrderStatus @default(PENDING)
+//   totalPrice        Float?
+//   costPrice         Float?
+//   salePrice         Float?
+//   profit            Float?
+
+//   userId      String
+//   user        User     @relation(fields: [userId], references: [id])
+// }
+
+// model Comment {
+//   id        String    @id @default(cuid())
+//   content   String
+//   userId    String?
+//   postId    String?
+//   productId String?
+//   parentId  String?
+//   createdAt DateTime  @default(now())
+//   parent    Comment?  @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
+//   replies   Comment[] @relation("CommentReplies")
+//   post      Post?     @relation(fields: [postId], references: [id], onDelete: Cascade)
+//   product   Product?  @relation(fields: [productId], references: [id], onDelete: Cascade)
+//   user      User?     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+//   @@map("comments")
+// }
+
+// model Notification {
+//   id          String            @id @default(cuid())
+//   recipientId String
+//   postId      String?
+//   productId   String?
+//   type        NotificationType?
+//   read        Boolean           @default(false)
+//   createdAt   DateTime          @default(now())
+//   issuerId    String
+//   issuer      User              @relation("Issuer", fields: [issuerId], references: [id], onDelete: Cascade)
+//   post        Post?             @relation(fields: [postId], references: [id], onDelete: Cascade)
+//   product     Product?          @relation(fields: [productId], references: [id], onDelete: Cascade)
+//   recipient   User              @relation("Recipient", fields: [recipientId], references: [id], onDelete: Cascade)
+
+//   @@map("notifications")
+// }
+
+// model Report {
+//   id        String     @id @default(cuid())
+//   reason    String
+//   message   String
+//   url       String
+//   type      ReportType
+//   createdAt DateTime   @default(now())
+
+//   @@map("reports")
+// }
+
+
+// enum NotificationType {
+//   COMMENT
+//   POST
+//   REPLY
+//   PAID
+//   DELIVERED
+// }
+
+// enum ReportType {
+//   USER
+//   REPLY
+//   COMMENT
+//   POST
+// }
+
+// enum OrderStatus {
+//   PENDING
+//   PAID
+//   PROCESSING     // در حال پردازش
+//   SENT_TO_FACTORY // ارسال به کارخانه
+//   IN_PRODUCTION  // در حال تولید
+//   READY          // آماده تحویل
+//   SHIPPED
+//   DELIVERED
+//   CANCELLED
+// }
+
+
+
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -8,8 +312,9 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
+
 model User {
-  id                    String         @id @default(cuid())
+  id                    String         @id 
   name                  String         @unique
   email                 String         @unique
   image                 String?
@@ -19,150 +324,81 @@ model User {
   role                  String?        @default("user")
   displayName           String?
   status                String         @default("active")
-  createdAt             DateTime       @default(now())
-  emailVerified         Boolean       @default(false)
-  updatedAt             DateTime       
-  cart                  CartItem[]
+  emailVerified         Boolean        @default(false)
+  createdAt             DateTime       @db.Timestamptz(3)
+	updatedAt             DateTime       @db.Timestamptz(3)
+  // cart                  CartItem[]
   orders                Order[]
-  products              Product[]
+  glassOrders           GlassOrder[]
   accounts              Account[]
   comments              Comment[]
   issuedNotifications   Notification[] @relation("Issuer")
   receivedNotifications Notification[] @relation("Recipient")
-  posts                 Post[]
   sessions              Session[]
 
   @@map("users")
 }
 
+
 model Session {
-  id        String    @id @default(cuid())
-  expiresAt DateTime  
-  token     String    @unique
-  createdAt DateTime
-  updatedAt DateTime
-  ipAddress String?
-  userAgent String?
-  userId    String
-  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-
-  @@map("session")
+	id String @id
+	user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+	userId String
+	token String @unique
+	expiresAt DateTime @db.Timestamptz(3)
+	ipAddress String?
+	userAgent String?
+	createdAt DateTime @db.Timestamptz(3)
+	updatedAt DateTime @db.Timestamptz(3)
+	@@index([userId], map: "session_userId_idx")
+	@@map("session")
 }
 
 model Account {
-  id                    String    @id @default(cuid())
-  accountId             String
-  providerId            String
-  userId                String
-  accessToken           String?
-  refreshToken          String?
-  idToken               String?
-  accessTokenExpiresAt  DateTime? 
-  refreshTokenExpiresAt DateTime? 
-  scope                 String?
-  password              String?
-  createdAt             DateTime
-  updatedAt             DateTime
-  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-
-  @@map("account")
+	id String @id
+	user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+	userId String
+	accountId String
+	providerId String
+	accessToken String?
+	refreshToken String?
+	accessTokenExpiresAt DateTime? @db.Timestamptz(3)
+	refreshTokenExpiresAt DateTime? @db.Timestamptz(3)
+	scope String?
+	idToken String?
+	password String?
+	createdAt DateTime @db.Timestamptz(3)
+	updatedAt DateTime @db.Timestamptz(3)
+	@@index([userId], map: "account_userId_idx")
+	@@map("account")
 }
-
 model Verification {
-  id         String    @id @default(cuid())
-  identifier String
-  value      String
-  expiresAt  DateTime  
-  createdAt  DateTime? 
-  updatedAt  DateTime? 
-
-  @@index([value])
-  @@map("verification")
+	id String @id
+	identifier String
+	value String
+	expiresAt DateTime @db.Timestamptz(3)
+	createdAt DateTime @db.Timestamptz(3)
+	updatedAt DateTime @db.Timestamptz(3)
+	@@index([identifier], map: "verification_identifier_idx")
+	@@map("verification")
 }
 
-model Tag {
-  id        String   @id @default(cuid())
-  name      String
-  info      String?
-  createdAt DateTime @default(now())
-  posts     Post[]   @relation("PostToTag")
+// model CartItem {
+//   id        String   @id @default(cuid())
+//   quantity  Int      @default(1)
+//   productId String   // ID محصول در Sanity
+//   colorId   String?  // ID رنگ در Sanity (فرمت: name-hexCode)
+//   userId    String
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+  
+//   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@map("tags")
-}
+//   @@unique([userId, productId, colorId])
+//   @@map("cart_items")
+// }
 
-model Post {
-  id                  String         @id @default(cuid())
-  title               String
-  desc                String
-  slug                String         @unique
-  content             String
-  images              String[]
-  status              String         @default("DRAFT")
-  discussions         Boolean        @default(false)
-  isHot               Boolean        @default(false)
-  userId              String
-  createdAt           DateTime       @default(now())
-  expiresAt           DateTime?
-  updatedAt           DateTime       @updatedAt
-  comments            Comment[]
-  linkedNotifications Notification[]
-  user                User           @relation(fields: [userId], references: [id], onDelete: Cascade)
-  tags                Tag[]          @relation("PostToTag")
 
-  @@map("posts")
-}
-
-model Product {
-  id                  String         @id @default(cuid())
-  name                String
-  desc                String
-  slug                String         @unique 
-  content             String
-  feature             String?
-  images              String[]
-  sellerId            String
-  createdAt           DateTime       @default(now())
-  expiresAt           DateTime?
-  updatedAt           DateTime       @updatedAt
-  cartItems           CartItem[]
-  colors              Color[]
-  orderItems          OrderItem[]
-  seller              User           @relation(fields: [sellerId], references: [id])
-  comments            Comment[]
-  linkedNotifications Notification[]
-}
-
-model Color {
-  id         String      @id @default(cuid())
-  name       String
-  hexCode    String
-  discount   Float?      @default(0)
-  stocks     Int         @default(0)
-  status     String      @default("NON-EXISTENT")
-  price      Float
-  productId  String
-  updatedAt  DateTime?   @updatedAt
-  createdAt  DateTime    @default(now())
-  cartItems  CartItem[]
-  product    Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
-  orderItems OrderItem[]
-}
-
-model CartItem {
-  id        String   @id @default(cuid())
-  quantity  Int      @default(1)
-  productId String
-  colorId   String?
-  userId    String
-  createdAt DateTime @default(now())
-  color     Color?   @relation(fields: [colorId], references: [id], onDelete: Cascade)
-  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
-  user      User     @relation(fields: [userId], references: [id])
-
-  @@unique([userId, productId, colorId])
-}
 
 model Order {
   id          String      @id @default(cuid())
@@ -179,66 +415,107 @@ model Order {
   orderCode   String      @unique
   user        User        @relation(fields: [userId], references: [id])
   items       OrderItem[]
+
+  notes       String?     // یادداشت مشتری
+  adminNote   String?     // یادداشت ادمین
+  
+  @@index([userId, status])
+  @@index([status, createdAt])
+  @@map("orders")
 }
 
+
 model OrderItem {
-  id        String  @id @default(cuid())
-  quantity  Int
-  price     Float
-  productId String
-  colorId   String
-  orderId   String
-  color     Color   @relation(fields: [colorId], references: [id], onDelete: Cascade)
-  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  id          String  @id @default(cuid())
+  quantity    Int
+  price       Float   
+  originalPrice Float? 
+  discount    Float?  
+  
+  productId   String  
+  colorId     String  
+  orderId     String
+  order       Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  productName String?
+  productSlug String?
+  productImage String?
+  colorName   String?
+  colorHex    String?
+
+  @@map("order_items")
 }
+
+
+model GlassOrder {
+  id                String   @id @default(cuid())
+  orderNumber       String   @unique
+  customerName      String
+  customerPhone     String?
+  status            OrderStatus @default(PENDING)
+  
+  glassType         String   
+  thickness         Float    
+  quantity          Int      
+  dimensions        String   
+  description       String? 
+  
+  estimatedDelivery DateTime?
+  actualDelivery    DateTime?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  
+  factoryOrderId    String?
+  
+  paymentStatus     OrderStatus @default(PENDING)
+  totalPrice        Float?
+  costPrice         Float?
+  salePrice         Float?
+  profit            Float?
+
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+
+  @@map("glass_orders")
+}
+
 
 model Comment {
   id        String    @id @default(cuid())
   content   String
   userId    String?
-  postId    String?
-  productId String?
   parentId  String?
   createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  
   parent    Comment?  @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
   replies   Comment[] @relation("CommentReplies")
-  post      Post?     @relation(fields: [postId], references: [id], onDelete: Cascade)
-  product   Product?  @relation(fields: [productId], references: [id], onDelete: Cascade)
   user      User?     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  targetType String?  // 'post' یا 'product'
+  targetId   String?  // ID در Sanity
 
   @@map("comments")
 }
 
+
 model Notification {
   id          String            @id @default(cuid())
   recipientId String
-  postId      String?
-  productId   String?
   type        NotificationType?
   read        Boolean           @default(false)
   createdAt   DateTime          @default(now())
   issuerId    String
+  
+  // فیلدهای جدید برای ارتباط با Sanity
+  targetType  String?           // 'post' یا 'product' یا 'order'
+  targetId    String?           // ID در Sanity یا Order ID
+  
   issuer      User              @relation("Issuer", fields: [issuerId], references: [id], onDelete: Cascade)
-  post        Post?             @relation(fields: [postId], references: [id], onDelete: Cascade)
-  product     Product?          @relation(fields: [productId], references: [id], onDelete: Cascade)
   recipient   User              @relation("Recipient", fields: [recipientId], references: [id], onDelete: Cascade)
 
   @@map("notifications")
 }
-
-model Report {
-  id        String     @id @default(cuid())
-  reason    String
-  message   String
-  url       String
-  type      ReportType
-  createdAt DateTime   @default(now())
-
-  @@map("reports")
-}
-
-
 
 
 
@@ -248,6 +525,8 @@ enum NotificationType {
   REPLY
   PAID
   DELIVERED
+  ORDER
+  PRODUCT
 }
 
 enum ReportType {
@@ -255,12 +534,21 @@ enum ReportType {
   REPLY
   COMMENT
   POST
+  PRODUCT
 }
 
 enum OrderStatus {
   PENDING
   PAID
+  PROCESSING
+  SENT_TO_FACTORY
+  IN_PRODUCTION
+  READY
   SHIPPED
   DELIVERED
   CANCELLED
 }
+
+
+
+

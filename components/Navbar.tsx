@@ -27,7 +27,9 @@ const Navbar = ({session}:{session:Session | null}) => {
   const [isOnline, setIsOnline] = useState<boolean>(true);
   const [close, setClose] = useState(false);
   const[isOpen,setIsOpen]=useState(false)
-  const { totalItems, hasHydrated, isOnline: cartIsOnline, pendingSyncCount } = useCart();
+  const { totalItems, hasHydrated, isOnline: cartIsOnline, 
+    // pendingSyncCount
+   } = useCart();
   useEffect(() => {
     setIsOnline(window.navigator.onLine);
     const handleOnlineStatus = () => {
@@ -51,26 +53,26 @@ const Navbar = ({session}:{session:Session | null}) => {
   }, [isOnline]);
 
   const items = [
-    { id: "1", 
-      name: "درب اتوماتیک",
-      href:'/posts/درب-اتوماتیک-چیست؟-انواع،-مزایا-و-نکات-خرید-قیمت-روز',
-    },
-    { id: "2", 
-      name: "شیشه سکوریت",
-      href:'/posts/شیشه-سکوریت-چیست؟-مزایا،-کاربردها-و-تفاوت-با-شیشه-معمولی',
-    },
-    { id: "3", 
-      name: "شیشه لمینت",
-      href:'/posts/شیشه-لمینت-انواع،-مزایا،-معایب-و-کاربردها-در-ساختمان-و-خودرو-راهنمای-جامع',
-    },
-    { id: "4", 
-      name: "جام بالکن",
-      href:'/posts/شیشه-های-بالکنی-و-شیشه-های-ایمنی-برای-پرتگاه-ها-راهنمای-جامع',
-    },
-    { id: "5", 
-      name: "پارتیشن",
-      href:'/posts/پارتیشن-شیشهای-راهنمای-کامل-نصب،-مزایا،-معایب-و-انواع-قیمت-و-طراحی',
-    },
+    // { id: "1", 
+    //   name: "درب اتوماتیک",
+    //   href:'/posts/درب-اتوماتیک-چیست؟-انواع،-مزایا-و-نکات-خرید-قیمت-روز',
+    // },
+    // { id: "2", 
+    //   name: "شیشه سکوریت",
+    //   href:'/posts/شیشه-سکوریت-چیست؟-مزایا،-کاربردها-و-تفاوت-با-شیشه-معمولی',
+    // },
+    // { id: "3", 
+    //   name: "شیشه لمینت",
+    //   href:'/posts/شیشه-لمینت-انواع،-مزایا،-معایب-و-کاربردها-در-ساختمان-و-خودرو-راهنمای-جامع',
+    // },
+    // { id: "4", 
+    //   name: "جام بالکن",
+    //   href:'/posts/شیشه-های-بالکنی-و-شیشه-های-ایمنی-برای-پرتگاه-ها-راهنمای-جامع',
+    // },
+    // { id: "5", 
+    //   name: "پارتیشن",
+    //   href:'/posts/پارتیشن-شیشهای-راهنمای-کامل-نصب،-مزایا،-معایب-و-انواع-قیمت-و-طراحی',
+    // },
     { id: "6", 
       name: "مقاله ها",
       href:'/posts',
@@ -135,18 +137,6 @@ const Navbar = ({session}:{session:Session | null}) => {
                       </Link>
                   );
                 })}
-                    {/* <Link  href={'/posts/لیست-قیمت-شیشه-سکوریت-۱۴۰۴-۲۰۲۵'}>
-                    <div className="text-2xl font-bold   py-2 px-3 hover:bg-lcard dark:hover:bg-dcard duration-500 rounded-lg w-full">
-                        <p>قیمت شیشه سکوریت</p>
-                        <p className="text-lfont text-sm">لیست قیمت انواع شیشه سکوریت</p>
-                    </div>
-                    </Link>
-                    <Link  href={'/posts/لیست-قیمت-شیشه-لمینت-۱۴۰۴-۲۰۲۵'}>
-                    <div className="text-2xl font-bold   py-2 px-3 hover:bg-lcard dark:hover:bg-dcard duration-500 rounded-lg w-full">
-                        <p>قیمت شیشه لمینت</p>
-                        <p className="text-lfont text-sm">لیست قیمت انواع شیشه لمینت</p>
-                    </div>
-                    </Link> */}
               </div>
 
                 </div>
@@ -181,14 +171,16 @@ const Navbar = ({session}:{session:Session | null}) => {
                   <IoBag className={hasHydrated && totalItems > 0 ? "text-redorange animate-wiggle" : ""} />
  
             {hasHydrated && totalItems > 0 && (
-              <div className="px-1 bg-redorange min-w-4 min-h-4 rounded-full text-center text-white text-[10px] leading-[16px] absolute -top-2 end-5 text-nowrap">
+              <div className="px-1 bg-redorange min-w-4 min-h-4 rounded-full text-center text-white text-[10px] leading-4 absolute -top-2 inset-e-5 text-nowrap">
                   {totalItems}
               </div>
             )}
 
               
-            {!cartIsOnline && pendingSyncCount > 0 && (
-              <div className="px-1 bg-redorange min-w-4 min-h-4 rounded-full text-center text-white text-[10px] leading-[16px] absolute -top-2 end-5 text-nowrap">
+            {!cartIsOnline && 
+            // pendingSyncCount > 0 &&
+             (
+              <div className="px-1 bg-redorange min-w-4 min-h-4 rounded-full text-center text-white text-[10px] leading-4 absolute -top-2 inset-e-5 text-nowrap">
               !
               </div>
               )}
@@ -232,26 +224,6 @@ const Navbar = ({session}:{session:Session | null}) => {
                       </Link>                    
                      )
                    )}
-                       {/* <Dropdown
-                           className="-right-10 px-2  rounded-xl w-52"
-                           title={"لیست قیمت"}
-                           btnStyle={"text-lfont hover:text-black dark:hover:text-white duration-300"}
-                         >
-                           <div className="flex flex-col space-y-1 ">
-                              <Link  href={'/posts/لیست-قیمت-شیشه-سکوریت-۱۴۰۴-۲۰۲۵'}>
-                              <div className="p-2 hover:bg-lcard dark:hover:bg-dcard duration-200 rounded-xl">
-                                  <p className="text-lg">شیشه سکوریت</p>
-                                  <p className="text-lfont text-xs">لیست قیمت انواع شیشه سکوریت</p>
-                              </div>
-                              </Link>
-                              <Link  href={'/posts/لیست-قیمت-شیشه-لمینت-۱۴۰۴-۲۰۲۵'}>
-                              <div className="p-2 hover:bg-lcard dark:hover:bg-dcard duration-200 rounded-xl">
-                                  <p className="text-lg">شیشه لمینت</p>
-                                  <p className="text-lfont text-xs">لیست قیمت انواع شیشه لمینت</p>
-                              </div>
-                              </Link>
-                           </div>
-                        </Dropdown> */}
             </div>
     
             <div className="my-auto">

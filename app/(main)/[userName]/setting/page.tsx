@@ -1,12 +1,12 @@
 import Head from "next/head";
 import { Metadata } from "next";
 import { ReactNode } from "react";
-import SettingPage from "./settingPage";
+import SettingPage from "../../../../components/pages/settingPage";
 import { getServerSession } from "@/lib/get-session";
 
 export const metadata: Metadata = {
   metadataBase: new URL(
-    process.env.NEXT_PUBLIC_BASE_URL || "https://www.atlasdoor.ir"
+    process.env.NEXT_PUBLIC_BASE_URL || "https://www.atlasdoor.ir",
   ),
   title: {
     default: "تنظیمات حساب کاربری | اطلس در",
@@ -68,7 +68,6 @@ interface JsonLdData {
     target: string;
   };
 }
-
 
 export default async function Page() {
   const jsonLd: JsonLdData = {

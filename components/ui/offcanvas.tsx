@@ -13,6 +13,8 @@ type OffcanvasProps = {
   onClose?: unknown
   navbarSetIsOpen?: (isOpen: boolean) => void
   disabled?: boolean
+  closeOnEscape?: boolean;
+  closeOnBackdrop?: boolean;
 }
 
 const Offcanvas: React.FC<OffcanvasProps> = ({
@@ -26,6 +28,8 @@ const Offcanvas: React.FC<OffcanvasProps> = ({
   onClose,
   navbarSetIsOpen,
   disabled,
+  closeOnEscape = true,
+  closeOnBackdrop = true,
 }) => {
   const [isOpen, setIsOpen] = useState(false)
 
@@ -36,6 +40,18 @@ const Offcanvas: React.FC<OffcanvasProps> = ({
       document.body.style.overflow = 'auto'
     }
   }, [isOpen, navbarSetIsOpen])
+
+  // ✅ بستن با Escape
+  useEffect(() => {
+    if (!isOpen || !closeOnEscape) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setIsOpen(false);
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, closeOnEscape]);
 
   useEffect(() => {
     setIsOpen(false)

@@ -9,6 +9,10 @@ const nextConfig: NextConfig = {
         hostname: '**',
       },
       {
+        protocol: "https",
+        hostname: "cdn.sanity.io",
+      },
+      {
         protocol: 'https',
         hostname: 'encrypted-tbn0.gstatic.com',
         port: '',

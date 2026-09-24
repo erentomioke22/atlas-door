@@ -5,7 +5,7 @@ import { prisma } from "@/utils/database";
 import { passwordSchema } from "./validation";
 import { generateVerificationTemplate,generatePasswordResetTemplate} from "./email-template";
 import { sendEmailAction } from "./send-email-action";
-
+import { nextCookies } from "better-auth/next-js";
 
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
@@ -105,7 +105,7 @@ export const auth = betterAuth({
       name: {
         type: "string",
         required: false,
-        unique: true, // This will be set from displayName in the hook
+        unique: true, 
       },
     },
   },
@@ -140,136 +140,8 @@ export const auth = betterAuth({
       return ctx;
     }),
   },
-  // hooks: {
-  //   before: createAuthMiddleware(async (ctx) => {
-  //     if (
-  //       ctx.path === "/sign-up/email" ||
-  //       ctx.path === "/reset-password" ||
-  //       ctx.path === "/change-password"
-  //     ) {
-  //       const password = ctx.body.password || ctx.body.newPassword;
-  //       const { error } = passwordSchema.safeParse(password);
-  //       if (error) {
-  //         throw new APIError("BAD_REQUEST", {
-  //           message: "Password not strong enough",
-  //         });
-  //       }
-  //     }
-  //   }),
-  //   // signUp: {
-  //   //   async before(ctx:any) {
-  //   //     // تولید نام کاربری منحصربه‌فرد
-  //   //     // let sanitizedUsername = (ctx.body.name || "user").replace(/\s+/g, "_").toLowerCase();
-  //   //     // const randomString = Math.random().toString(36).substring(2, 12);
-  //   //     // sanitizedUsername += `_${randomString}`;
-        
-  //   //     // بررسی وجود نام کاربری
-  //   //     const existingUser = await prisma.user.findFirst({
-  //   //       where: { name: ctx.body.name }
-  //   //     });
-        
-  //   //     if (existingUser) {
-  //   //       throw new APIError("BAD_REQUEST", {
-  //   //         message: "این نام کاربری قبلا ثبت نام کرده است"
-  //   //       });
-  //   //     }
-        
-  //   //     // تنظیم فیلدهای اضافی
-  //   //     ctx.body = {
-  //   //       ...ctx.body,
-  //   //       name: ctx.body.name,
-  //   //       displayName: ctx.body.name,
-  //   //       role: "user",
-  //   //       status: "active"
-  //   //     };
-        
-  //   //     return ctx;
-  //   //   },
-      
-  //   //   async after(ctx:any) {
-  //   //     console.log("User signed up:", ctx.user.email);
-  //   //     return ctx;
-  //   //   }
-  //   // },
-    
-  //   // هوک برای ورود با سوشال پرووایدرها
-   
-   
-   
-
-  //   signUp: {
-  //     async before(ctx: any) {
-  //       try {
-  //         const existingUser = await prisma.user.findFirst({
-  //           where: { name: ctx.body.name }
-  //         });
-  
-  //         if (existingUser) {
-  //           throw new APIError("BAD_REQUEST", {
-  //             message: "این نام کاربری قبلا ثبت نام کرده است"
-  //           });
-  //         }
-  
-  //         ctx.body = {
-  //           ...ctx.body,
-  //           name: ctx.body.name,
-  //           displayName: ctx.body.name,
-  //           role: "user",
-  //           status: "active"
-  //         };
-  
-  //         return ctx;
-  //       } catch (err: any) {
-  //         if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === "P2002") {
-  //           throw new APIError("BAD_REQUEST", {
-  //             message: "این نام کاربری یا ایمیل قبلا ثبت شده است"
-  //           });
-  //         }
-  //         throw err;
-  //       }
-  //     }
-  //   },
-    
-    
-
-   
-  //   socialLogin: {
-  //     async before(ctx:any) {
-  //       if (ctx.provider !== "credentials") {
-  //         // تولید نام کاربری منحصربه‌فرد برای کاربران سوشال
-  //         let sanitizedUsername = (ctx.user.name || "user").replace(/\s+/g, "_").toLowerCase();
-  //         const randomString = Math.random().toString(36).substring(2, 12);
-  //         sanitizedUsername += `_${randomString}`;
-          
-  //         ctx.user.name = sanitizedUsername;
-  //         ctx.user.displayName = ctx.user.name || sanitizedUsername;
-  //         ctx.user.role = "user";
-  //         ctx.user.status = "active";
-  //       }
-  //       return ctx;
-  //     }
-  //   },
-    
-  //   // session: {
-  //   //   async after(ctx:any) {
-  //   //     if (ctx.session?.user) {
-  //   //       ctx.session.user = {
-  //   //         ...ctx.session.user,
-  //   //         role: ctx.user.role,
-  //   //         displayName: ctx.user.displayName,
-  //   //         phone: ctx.user.phone,
-  //   //         address: ctx.user.address,
-  //   //         emailVerified: ctx.user.emailVerified,
-  //   //         status: ctx.user.status,
-  //   //         createdAt: ctx.user.createdAt,
-  //   //         updatedAt: ctx.user.updatedAt,
-  //   //       };
-  //   //     }
-  //   //     return ctx;
-  //   //   }
-  //   // }
-  // },
   trustHost: true,
+  plugins: [nextCookies()],
 });
 
 export type Session = typeof auth.$Infer.Session;

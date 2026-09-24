@@ -1,0 +1,304 @@
+"use client";
+
+import  { useState } from "react";
+import PostCard from "@/components/posts/postCard";
+import Link from "next/link";
+import EmblaCarousel from "@/components/ui/carousel/carousel";
+import { FaCaretRight } from "react-icons/fa6";
+import AboutUs from "@/components/aboutus";
+import { toast } from "sonner";
+import ImageCom from "@/components/ui/Image";
+import ProductCard from "@/components/products/productCard";
+import { LuShieldCheck, LuHammer, LuTimer, LuBadgeDollarSign , LuBaggageClaim ,LuCircleCheckBig  } from "react-icons/lu";
+import { ProductLite,PostLite } from '@/lib/types';
+
+interface Project {
+  name: string;
+  url: string;
+  image: string;
+}
+
+
+
+interface HomeData {
+    posts?: PostLite[];
+    products?: ProductLite[];
+  }
+  
+  interface HomePageProps {
+    initialData: HomeData;
+  }
+  
+
+  const projects: Project[] = [
+    {
+      name: 'درب اتوماتیک',
+      url:'/posts/درب-اتوماتیک-چیست؟-انواع،-مزایا-و-نکات-خرید-قیمت-روز',
+      image: '/images/automatic-door/slide/thumnail.jpg'
+    },
+    {
+      name: 'شیشه سکوریت',
+      url:'/posts/شیشه-سکوریت-چیست؟-مزایا،-کاربردها-و-تفاوت-با-شیشه-معمولی',
+      image: '/images/tempered-glass/1732009538381.jpg'
+    },
+    {
+      name: 'شیشه لمینت',
+      url:'/posts/شیشه-لمینت-انواع،-مزایا،-معایب-و-کاربردها-در-ساختمان-و-خودرو-راهنمای-جامع',
+      image: '/images/laminet-glass/thumnail.jpg'
+    },
+    {
+      name: 'پارتیشن شیشه ای',
+      url:'/posts/پارتیشن-شیشهای-راهنمای-کامل-نصب،-مزایا،-معایب-و-انواع-قیمت-و-طراحی',
+      image: '/images/partition/1732009538326.jpg'
+    },
+    {
+      name: 'جام بالکن',
+      url:'/posts/جام-بالکن-آکاردئونی-قیمت،-مزایا-و-نصب-با-شیشه-سکوریت',
+      image: '/images/balcony/1732009538274.jpg'
+    },
+    {
+      name: 'حمام شیشه ای',
+      url:'/posts/حمام-شیشه-ای-مزایا،-معایب-و-راهنمای-خرید-حمام-شيشه-ای-فروش-و-نصب-حمام-شیشه-ای',
+      image: '/images/bathroom/Marble Tile Shower Area.jpeg'
+    },
+    {
+      name: 'نرده ی شیشه ای',
+      url:'/posts/نرده-شیشه-ای-قیمت،-نصب-و-مزایای-جان-پناه-شیشه-سکوریت',
+      image: '/images/balcony/media_20241118_121418_6280590525011645464.jpg'
+    },
+  ];
+
+  function HomePage({ initialData }: HomePageProps) {
+    const [data] = useState<HomeData>(initialData);
+
+  const handlePhoneClick = () => {
+    toast.success('شماره کپی شد');
+    navigator.clipboard.writeText('09901196140');
+  };
+
+
+  
+  return (
+    <div>
+
+      <div className=" grid grid-cols-1 lg:grid-cols-2 gap-5">
+        <div className="text-center lg:text-start mx-auto space-y-5 ">
+      <div className="w-full  flex justify-center ">
+        <div className="absolute w-full max-w-lg mt-20">
+          <div className="absolute top-0 left-20             w-32 h-32 md:w-65 md:h-65            bg-purple      rounded-full mix-blend-multiple dark:mix-blend-lighten-light dark:opacity-90 filter blur-2xl opacity-95 animate-blob "></div>
+          <div className="absolute top-0 left-65             w-32 h-32 md:w-65 md:h-65            bg-yellow      rounded-full mix-blend-multiple dark:mix-blend-lighten-light dark:opacity-90 filter blur-2xl opacity-95 animate-blob animation-delay-4000"></div>
+          <div className="absolute top-0 left-40  -bottom-20 w-32 h-32 md:w-65 md:h-65            bg-redorange   rounded-full mix-blend-multiple dark:mix-blend-lighten-light dark:opacity-90 filter blur-2xl opacity-95 animate-blob animation-delay-6000"></div>
+        </div>
+      </div>
+      <div className="relative flex-col flex gap-5">
+          <h4 className="leading-normal text-balance text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight">
+            تمرکز ما بر <span className="bg-linear-to-tr text-clip from-blue to-darkgreen text-transparent bg-clip-text">کیفیت و عملکرد</span> هربار تجربه ای زیبا را تضمین میکند
+          </h4>
+          <h1 className="text-pretty text-base md:text-lg leading-loose">
+            نمايندگی شيشه سكوريت و خام - فروش و ارائه خدمات انواع درب های اتوماتيک - نصب و تعمير انواع شيشه های سكوريت ، نرده های شيشه ای ، پارتيشن های اداری ، حمام شیشه ای و جام بالكن ها 
+          </h1>
+           <div className="flex flex-wrap gap-3 text-center justify-center lg:justify-start text-sm lg:text-base">
+            <div className="flex gap-1">
+              <LuCircleCheckBig className="text-darkgreen text-lg my-auto"/>
+              <p className="text-neutral-500 dark:text-neutral-400">پروژه های انجام شده : </p>
+              <span>+ ۱۰۰۰</span>
+            </div>
+            <div className="flex gap-1">
+              <LuBaggageClaim className="text-blue text-lg my-auto"/>
+              <p className="text-neutral-500 dark:text-neutral-400">محصولات و خدمات : </p>
+              <span>+ ۳۰</span>
+            </div>
+      </div>
+          <div className="flex justify-center lg:justify-start gap-3">
+            <a 
+              href="tel:09901196140" 
+              onClick={handlePhoneClick}
+              className="bg-black px-10 text-center py-2 text-white dark:bg-white dark:text-black rounded-full"
+            >
+              تماس
+            </a>
+            <Link href="/posts" className="bg-lcard dark:bg-dcard rounded-lg py-2 px-5">
+              مقاله ها
+            </Link>
+          </div>
+      </div>
+  
+        </div >
+            <ImageCom 
+                    className='rounded-xl w-full h-64 sm:h-96 lg:h-full'
+                    alt={"thumnail Image"} 
+                    src={'/images/balcony/media_20241118_121418_7608682146116698746.jpg'} 
+                  />
+      </div>
+
+      <div className="space-y-10">
+        <div className="text-center">
+          <h4 className="leading-normal text-balance text-4xl md:text-[60px] font-semibold tracking-tight">
+            <span className="bg-linear-to-tr text-clip from-blue to-darkgreen text-transparent bg-clip-text">خدمات و محصولات</span> ما برای خدمت به شما مشتریان عزیز
+          </h4>
+        </div>
+
+        <EmblaCarousel 
+          options={{ loop: true, dragFree: true, direction: 'rtl' }}                 
+          dot={false}
+          autoScroll={false}
+        >
+          {projects.map((project) => (
+            <div 
+              className="transform translate-x-0 translate-y-0 translate-z-0 flex-none basis-[75%] md:basis-[45%] lg:basis-[30%] min-w-0 pl-4" 
+              key={project.url}
+            >
+              <Link href={project.url as any}>
+                <div className="relative">
+                  <ImageCom 
+                    className='h-50 md:h-62.5 rounded-xl w-full'
+                    alt={"thumnail Image"} 
+                    src={project.image} 
+                  />
+                  <div className="absolute inset-x-0 bottom-0 rounded-b-xl mx-auto py-3 w-full bg-linear-to-t from-black/75 from-50% to-transparent flex justify-between px-3 items-center">
+                    <h2 className="text-2xl text-white">{project.name}</h2>
+                    <span
+                       aria-label="right icon" 
+                      title="right icon" 
+                      className="bg-white p-1 text-sm rounded-full text-black my-auto">
+                      <FaCaretRight/>
+                    </span>
+                  </div>
+                </div>
+              </Link>
+            </div>
+          ))}
+        </EmblaCarousel>
+      </div>
+
+      <div className="space-y-10 relative px-5">
+        <div className="text-center">
+          <h4 className="text-4xl md:text-[60px] leading-normal text-balance font-semibold tracking-tight">
+            هر چیزی که برای انجام <span className="bg-linear-to-tr text-clip from-blue to-darkgreen text-transparent bg-clip-text">پروژه</span> هایتان نیاز دارید
+          </h4>
+        </div>
+
+        <div className="grid gap-4 lg:grid-cols-3 lg:grid-rows-2">
+          <div className="px-8 py-5 lg:row-span-2 space-y-3 hover:bg-lcard dark:hover:bg-dcard duration-200 rounded-xl max-lg:text-center">
+            <LuBadgeDollarSign className="text-4xl max-lg:mx-auto"/>
+            <p className="text-2xl">قیمت</p>
+            <p className="text-neutral-500 dark:text-neutral-400">
+              خريد محصولات و دريافت خدمات با رقابتی ترين قيمت بازار
+            </p>
+          </div>
+          
+          <div className="px-8 py-5 lg:row-span-2 space-y-3 hover:bg-lcard dark:hover:bg-dcard duration-200 rounded-xl max-lg:text-center">
+            <LuHammer className="text-4xl max-lg:mx-auto"/>
+            <p className="mt-2 text-2xl">عملکرد</p>
+            <p className="text-neutral-500 dark:text-neutral-400">
+            قدرت محصولات با کیفیت مارا که برای عملکرد زیبا در طول زمان طراحی شده اند ؛ تجربه کنید .
+            </p>
+          </div>
+
+          <div className="px-8 py-5 lg:row-span-2 space-y-3 hover:bg-lcard dark:hover:bg-dcard duration-200 rounded-xl max-lg:text-center">
+            <LuShieldCheck className="text-4xl max-lg:mx-auto"/>
+            <p className="mt-2 text-2xl">استاندارد</p>
+            <p className="text-neutral-500 dark:text-neutral-400">
+              استاندارد را در خرید محصولات و خدمات ما تجربه کنید
+            </p>
+          </div>
+
+          <div className="px-8 py-5 lg:row-span-2 space-y-3 hover:bg-lcard dark:hover:bg-dcard duration-200 rounded-xl max-lg:text-center">
+            <LuTimer className="text-4xl max-lg:mx-auto"/>
+            <p className="mt-2 text-2xl">زمان</p>
+            <p className="text-neutral-500 dark:text-neutral-400">
+              تمامی خدمات ما در کمترین زمان ممکن به مشتری ها ارائه میشوند
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <AboutUs/>
+
+      <div className="space-y-10">
+        <div>
+          <div className="flex justify-between">
+            <p className="text-2xl">مقاله ها</p>
+            <div>
+              <Link className="bg-black py-2 px-3 rounded-full dark:bg-white text-white dark:text-black text-center" href={'/posts'}>
+                تمام مقاله ها 
+              </Link>
+            </div>
+          </div>
+        </div>
+
+
+
+        {!data?.posts?.length && 
+          <p className="text-center text-neutral-500 dark:text-neutral-300 underline">
+            هنوز پستی در اینجا قرار داده نشده
+          </p>
+        }
+
+        <EmblaCarousel 
+          options={{ loop: false, dragFree: true, direction: 'rtl' }}                 
+          dot={false}
+          autoScroll={false}
+        >
+          {/* {status === "pending" && 
+            Array(10)
+              .fill({})
+              .map((_, index) => (
+                <div 
+                  className="transform translate-x-0 translate-y-0 translate-z-0 flex-none basis-[75%] md:basis-[45%] lg:basis-[30%] min-w-0 pl-4" 
+                  key={index}
+                >
+                  <LoadingCard />
+                </div>
+              ))
+          } */}
+          {data.posts?.map((post) => (
+            <div 
+              className="transform translate-x-0 translate-y-0 translate-z-0 flex-none basis-[75%] sm:basis-auto min-w-0 pl-4 sm:pr-2 my-2" 
+              key={post._id}
+            >
+              <PostCard post={post} />
+            </div>
+          ))}
+        </EmblaCarousel>
+      </div>
+
+      <div className="space-y-10">
+        <div>
+          <div className="flex justify-between">
+            <p className="text-2xl">محصولات</p>
+            <div>
+              <Link className="bg-black py-2 px-3 rounded-full dark:bg-white text-white dark:text-black text-center" href={'/products'}>
+                تمام محصولات  
+              </Link>
+            </div>
+          </div>
+        </div>
+
+
+        {!data?.products?.length && 
+          <p className="text-center text-neutral-500 dark:text-neutral-300 underline">
+            هنوز محصولی در اینجا قرار داده نشده
+          </p>
+        }
+
+        <EmblaCarousel 
+          options={{ loop: false, dragFree: true, direction: 'rtl' }}                 
+          dot={false}
+          autoScroll={false}
+        >
+          {data?.products?.map((product) => (
+            <div 
+              className="transform translate-x-0 translate-y-0 translate-z-0 flex-none basis-[75%] sm:basis-auto min-w-0 pl-4 sm:pr-2 my-2" 
+              key={product._id}
+            >
+              <ProductCard product={product} />
+            </div>
+          ))}
+        </EmblaCarousel>
+      </div>
+    </div>
+  );
+}
+
+export default HomePage;

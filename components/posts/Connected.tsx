@@ -1,73 +1,37 @@
-"use client";
+// components/posts/RelatedPosts.tsx
+'use client';
 
-import PostCard, { PostLite } from "../posts/postCard";
-import LoadingCard from "../ui/loading/loadingCard";
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
-import EmblaCarousel from "../ui/carousel/carousel";
+import PostCard from '@/components/posts/postCard';
+import EmblaCarousel from '@/components/ui/carousel/carousel';
+import { PostLite } from '@/lib/types';
 
-interface ConnectedProps {
-  postTitle: string;
-  postId: string;
+interface RelatedPostsProps {
+  posts: PostLite[];
 }
 
-
-function Conneccted({ postTitle, postId }: ConnectedProps) {
-  const {
-    data: posts,
-    status,
-    error
-  } = useQuery<PostLite[], Error>({
-    queryKey: ["connected-Post", postTitle],
-    queryFn: async () => {
-      const response = await axios.get(
-        `/api/posts/connected?postTitle=${postTitle}&postId=${postId}`
-      );
-      return response.data.posts;
-    },
-  });
-
-  if (status === "success" && posts.length === 0) {
+export default function RelatedPosts({ posts }: RelatedPostsProps) {
+  if (posts.length === 0) {
     return (
-      <p className="text-center text-destructive h-52 flex flex-col justify-center items-center">
-        هیچ مقاله ای یافت نشد
-      </p>
-    );
-  }
-
-  if (status === "error" || error) {
-    return (
-      <p className="text-center text-destructive h-52 flex flex-col justify-center items-center">
-        مشکلی در برقراری ارتباط وجود دارد
+      <p className="text-center text-neutral-500 dark:text-neutral-400 h-52 flex flex-col justify-center items-center">
+        هیچ مقاله مرتبطی یافت نشد
       </p>
     );
   }
 
   return (
-      <EmblaCarousel options={{ loop: false, dragFree: true, direction: 'rtl' }} dot={false} autoScroll={false}>
-        {status === "pending" &&
-          Array(10)
-            .fill({})
-            .map((_, index) => {
-              return (
-                <div
-                  className="transform translate-x-0 translate-y-0 translate-z-0  flex-none basis-[75%] md:basis-[45%] lg:basis-[30%] min-w-0 pl-4"
-                  key={index}
-                >
-                  <LoadingCard />
-                </div>
-              );
-            })}
-        {posts?.map((post) => (
-          <div
-            className="transform translate-x-0 translate-y-0 translate-z-0  flex-none basis-[75%] sm:basis-auto  min-w-0 pl-4 sm:pr-2 my-2"
-            key={post.id}
-          >
-            <PostCard post={post} />
-          </div>
-        ))}
-      </EmblaCarousel>
+    <EmblaCarousel
+      options={{ loop: false, dragFree: true, direction: 'rtl' }}
+      dot={false}
+      autoScroll={false}
+    >
+      {posts.map((post) => (
+        <div
+          className="transform translate-x-0 translate-y-0 translate-z-0 flex-none basis-[75%] sm:basis-auto min-w-0 pl-4 sm:pr-2 my-2"
+          key={post._id}
+        >
+          <PostCard post={post} />
+        </div>
+      ))}
+    </EmblaCarousel>
   );
 }
-
-export default Conneccted;
