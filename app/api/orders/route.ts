@@ -23,13 +23,27 @@ export async function GET(
     const end = Number(searchParams.get('end') || 20);
     const search = searchParams.get('search') || '';
 
-    // ====== ساخت where ======
+    const statusParam = searchParams.get('status');
     const where: any = {
       userId: session.user.id,
     };
 
-    if (status && status !== 'ALL') {
-      where.status = status;
+    if (statusParam && statusParam !== 'ALL') {
+      const validStatuses: OrderStatus[] = [
+        'PENDING',
+        'PAID',
+        'PROCESSING',
+        'SENT_TO_FACTORY',
+        'IN_PRODUCTION',
+        'READY',
+        'SHIPPED',
+        'DELIVERED',
+        'CANCELLED',
+      ];
+
+      if (validStatuses.includes(statusParam as OrderStatus)) {
+        where.status = statusParam as OrderStatus;
+      }
     }
 
     if (search) {
@@ -54,7 +68,6 @@ export async function GET(
       prisma.order.count({ where }),
     ]);
 
-    // ====== تبدیل به فرمت موردنیاز ======
     const formattedOrders = orders.map((order) => ({
       id: order.id,
       orderCode: order.orderCode,

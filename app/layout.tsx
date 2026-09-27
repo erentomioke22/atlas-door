@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import ReactQueryProvider from "@/context/ReactQueryProvider";
-import "../styles/globals.css";
+import '../styles/globals.css';
 import { Toaster } from "sonner";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { GoogleTagManager } from "@next/third-parties/google";
-import NextTopLoader from "nextjs-toploader";
+// import NextTopLoader from "nextjs-toploader";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { ThemeProvider } from "next-themes";
 import { Inter, Rubik } from 'next/font/google'
