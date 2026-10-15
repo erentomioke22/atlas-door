@@ -1,6 +1,4 @@
-// import { NextRequest, NextResponse } from "next/server";
-// import { getServerSession } from "./lib/get-session";
-// import { auth } from "./lib/auth";
+
 
 // export async function proxy(request: NextRequest) {
 //   const { pathname, searchParams } = request.nextUrl;
@@ -62,16 +60,6 @@
 //   return NextResponse.next();
 // }
 
-// export const config = {
-//   matcher: [
-//     "/admin/:path*",
-//     "/:userName/setting",
-//     "/:userName/orders", 
-//     "/:userName/delivered", 
-//     "/:userName/bag",
-//     "/:userName/adminOrders"
-//   ]
-// };
 
 
 import { NextRequest, NextResponse } from "next/server";
@@ -95,8 +83,6 @@ export async function proxy(request: NextRequest) {
       loginUrl.searchParams.set('callbackUrl', request.url);
       return NextResponse.redirect(loginUrl);
     }
-    // نقش (role) رو نمی‌شه از کوکی چک کرد بدون دیتابیس
-    // پس چک role='admin' باید توی خود صفحه/route انجام بشه
     return NextResponse.next();
   }
 

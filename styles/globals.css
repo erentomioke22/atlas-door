@@ -1,7 +1,3 @@
-@import './tiptap.css' layer(base);
-@import './editor.css' layer(base);
-@import "tailwindcss/theme.css" layer(theme);
-@import "tailwindcss/utilities" layer(utilities);
 @import "tailwindcss";
 
 
@@ -485,4 +481,105 @@ input[type=number] {
 
 .profile-link{
   @apply flex justify-between py-2 w-full  px-3 text-lg sm:text-sm  rounded-lg  hover:bg-lcard dark:hover:bg-dcard sm:hover:text-black sm:dark:hover:text-white sm:text-neutral-500 dark:sm:text-neutral-300 duration-500
+}
+
+.content {
+  p {
+    @apply leading-7 my-3 first:mt-0 last:mb-0 text-sm md:text-base;
+  }
+
+  & > p {
+    @apply my-6 first:mt-0 last:mb-0 text-neutral-500 dark:text-neutral-300;
+  }
+
+  h1 {
+    @apply text-xl md:text-4xl;
+  }
+
+  h2 {
+    @apply text-lg md:text-2xl;
+  }
+
+  h3 {
+    @apply text-sm md:text-xl;
+  }
+
+  h4 {
+    @apply text-xs md:text-lg;
+  }
+
+  h5 {
+    @apply text-base;
+  }
+
+  h6 {
+    @apply text-sm;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-bold first:mt-0 last:mb-0 text-black dark:text-white;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply mt-12;
+  }
+
+  h4,
+  h5,
+  h6 {
+    @apply mt-8;
+  }
+
+  strong {
+    @apply font-black text-black dark:text-white
+  }
+
+  s {
+    @apply decoration-red text-red decoration-2 
+  }
+
+  u {
+    @apply decoration-purple underline-offset-4 decoration-2
+  }
+
+  a.link {
+    @apply text-black dark:text-white font-extrabold underline underline-offset-2 decoration-2 cursor-pointer;
+  }
+
+  mark {
+    @apply bg-darkgreen rounded-sm box-decoration-clone text-white p-1  ;
+  }
+
+  & img {
+    @apply mx-auto max-w-full rounded-lg md:rounded-xl my-1 ;
+  }
+
+  /* [data-type='horizontalRule'] {
+    @apply my-8 py-4 transition-all duration-100 ease-in-out cursor-pointer;
+
+    &.ProseMirror-selectednode {
+      @apply bg-black/5 dark:bg-white/10;
+
+      hr {
+        @apply border-t-black/30 dark:border-t-white/30;
+      }
+    }
+
+    &:hover:not(&.ProseMirror-selectednode) {
+      @apply bg-black/5;
+      @apply dark:bg-white/10;
+    }
+
+    hr {
+      @apply border-0 border-t border-black/20 bg-black/80;
+      @apply dark:border-white/20 dark:bg-white/80;
+    }
+  } */
 }

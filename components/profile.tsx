@@ -61,19 +61,19 @@ const Profile: React.FC<ProfileProps> = ({ session }) => {
 
       <div className="flex flex-col text-start text-[12px] space-y-2 mt-2 px-3">
         {session?.user?.role === "admin" && (
-            <Link 
-              href={"/studio"}   
-              onClick={() => { setClose(!close); }}
-              className={"profile-link"} >
-              <span>استودیو</span>
-            </Link>
-
             // <Link 
-            //   href={"/admin/create-product"}   
+            //   href={"/studio"}   
             //   onClick={() => { setClose(!close); }}
-            //   className={" profile-link"} >
-            //   <span>ساخت محصول</span>
+            //   className={"profile-link"} >
+            //   <span>استودیو</span>
             // </Link>
+
+            <Link 
+              href={"/admin"}   
+              onClick={() => { setClose(!close); }}
+              className={" profile-link"} >
+              <span>ادمین</span>
+            </Link>
 
             // <Link 
             //   href={"/admin/glass-orders"}   
