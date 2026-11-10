@@ -40,20 +40,22 @@ export default buildConfig({
       connectionString: process.env.DATABASE_URL,
     },
   }),
-  email: nodemailerAdapter({
-    defaultFromAddress: process.env.EMAIL_USER || 'atlastechnology1010@gmail.com',
-    defaultFromName: 'Atlas Door',
-    transportOptions: {
-      host: 'smtp.gmail.com',
-      service: 'gmail',
-      port: 465,
-      secure: true,
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
+  email: process.env.EMAIL_USER && process.env.EMAIL_PASS
+  ? nodemailerAdapter({
+      defaultFromAddress: process.env.EMAIL_USER,
+      defaultFromName: 'Atlas Door',
+      transportOptions: {
+        host: 'smtp.gmail.com',
+        service: 'gmail',
+        port: 465,
+        secure: true,
+        auth: {
+          user: process.env.EMAIL_USER,
+          pass: process.env.EMAIL_PASS,
+        },
       },
-    },
-  }),
+    })
+  : undefined,
   plugins: [
     betterAuthPlugin(payloadAuthOptions),
     uploadthingStorage({
