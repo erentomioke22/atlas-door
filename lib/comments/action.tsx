@@ -5,7 +5,9 @@ import { getPayload } from 'payload'
 import config from '@payload-config'
 import { getServerSession } from '@/lib/get-session'
 
-const payload = await getPayload({ config })
+async function getPayloadClient() {
+  return await getPayload({ config })
+}
 
 export type CommentTargetType = 'post' | 'product'
 export type SortCategory = 'latest' | 'oldest'
@@ -88,6 +90,7 @@ export async function getComments({
   limit?: number
 }) {
   try{
+    const payload = await getPayloadClient()
     const sort = category === 'latest' ? '-createdAt' : 'createdAt'
   
     const where: any = {
@@ -139,6 +142,7 @@ export async function submitComment({
   parentId?: string | number | null
 }) {
   try {
+    const payload = await getPayloadClient()
     const session = await getServerSession()
 
     if (!session?.user?.id) {
@@ -223,6 +227,7 @@ export async function editComment({
   content: string
 }) {
   try {
+    const payload = await getPayloadClient()
     const session = await getServerSession()
 
     if (!session?.user?.id) {
@@ -273,9 +278,14 @@ export async function editComment({
 
 
 
-async function deleteCommentTree(id: string): Promise<void> {
-  const children = await payload.find({
-    collection: 'comments',
+
+
+
+async function deleteCommentTree(
+  payload: Awaited<ReturnType<typeof getPayloadClient>>,
+  id: string,
+): Promise<void> {
+  const children = await payload.find({ collection: 'comments',
     overrideAccess: true,
     depth: 0,
     limit: 1000,
@@ -284,22 +294,18 @@ async function deleteCommentTree(id: string): Promise<void> {
       parent: {
         equals: id,
       },
-    },
-  })
-
+    } })
   for (const child of children.docs) {
-    await deleteCommentTree(String(child.id))
+    await deleteCommentTree(payload, String(child.id))
   }
-
-  await payload.delete({
-    collection: 'comments',
+  await payload.delete({     collection: 'comments',
     id,
-    overrideAccess: true,
-  })
+    overrideAccess: true, })
 }
 
 export async function deleteComment(id: string) {
   try {
+    const payload = await getPayloadClient()
     const session = await getServerSession()
 
     if (!session?.user?.id) {
@@ -324,7 +330,7 @@ export async function deleteComment(id: string) {
       throw new Error('شما اجازه حذف این کامنت را ندارید.')
     }
 
-    await deleteCommentTree(id)
+    await deleteCommentTree(payload , id)
 
     return { id }
 
