@@ -8,7 +8,7 @@ import PostsListClient from '@/components/pages/postListPage'
 import PostsSkeleton from '@/components/ui/loading/postsSkeleton'
 
 const BASE_URL = (
-  process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'
+  process.env.NEXT_PUBLIC_BASE_URL || "https://www.atlasdoor.ir"
 ).replace(/\/$/, '')
 
 // تعداد مقالات در هر صفحه

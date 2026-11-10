@@ -31,7 +31,9 @@ const blanka = localFont({
 
 
 export const metadata: Metadata = {
-  metadataBase: new URL(`${process.env.NEXT_PUBLIC_BASE_URL}`),
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_BASE_URL || 'https://atlasdoors.ir' 
+  ),
   title: {
     default: "اطلس در | نمايندگی شيشه سكوريت و خام | فروش و ارائه خدمات انواع شيشه های سكوريت ، انواع درب های اتوماتيک  ، نرده های شيشه ای ، پارتيشن های اداری ، حمام شيشه ای و جام بالكن ها ",
     template: "%s - 0990-119-6140 | اطلس در | 55589837-021",
