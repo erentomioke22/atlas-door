@@ -77,7 +77,7 @@ const ImageCom: React.FC<ImageComProps> = ({
         />
 
         {(loading || error) && (
-          <div className="absolute inset-0 flex items-center justify-center bg-lbtn dark:bg-dbtn animate-pulse">
+          <div className="absolute rounded-xl inset-0 flex items-center justify-center bg-lbtn dark:bg-dbtn animate-pulse">
             {error && (
               <FaCircleExclamation className="text-sm text-center text-neutral-500 dark:text-neutral-300" />
             )}
@@ -106,7 +106,7 @@ const ImageCom: React.FC<ImageComProps> = ({
 
       {(loading || error) && (
         <div
-          className={`absolute inset-0 flex items-center justify-center bg-lbtn dark:bg-dbtn ${
+          className={`absolute rounded-xl inset-0 flex items-center justify-center bg-lbtn dark:bg-dbtn ${
             loading ? 'animate-pulse' : ''
           }`}
         >

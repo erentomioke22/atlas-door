@@ -16,15 +16,6 @@ export const Media: CollectionConfig = {
       name: 'caption',
       type: 'text',
     },
-    {
-      name: 'legacyUrl',
-      type: 'text',
-      index: true,
-      admin: {
-        hidden: true,
-        description: 'آدرس تصویر در سیستم قدیمی برای جلوگیری از آپلود تکراری',
-      },
-    },
   ],
 }
 

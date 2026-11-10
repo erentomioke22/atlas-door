@@ -388,10 +388,6 @@ export interface Media {
   id: number;
   alt?: string | null;
   caption?: string | null;
-  /**
-   * آدرس تصویر در سیستم قدیمی برای جلوگیری از آپلود تکراری
-   */
-  legacyUrl?: string | null;
   _key?: string | null;
   prefix?: string | null;
   _objectKey?: string | null;
@@ -1091,7 +1087,6 @@ export interface AdminInvitationsSelect<T extends boolean = true> {
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
   caption?: T;
-  legacyUrl?: T;
   _key?: T;
   prefix?: T;
   _objectKey?: T;
