@@ -14,7 +14,7 @@ import Banner from "./ui/Banner";
 import Profile from "./profile";
 import Notifications from "./notifications";
 import Sign from "./authenticate/sign";
-import { useCart } from "@/hook/useCart";
+// import { useCart } from "@/hook/useCart";
 import { IoPersonSharp } from "react-icons/io5";
 import type { ServerSession } from '@/lib/get-session';
 import { Button } from "./ui/button";
@@ -27,12 +27,15 @@ const Navbar = ({ session }: { session: ServerSession  }) => {
   const [isOnline, setIsOnline] = useState<boolean>(true);
   const [close, setClose] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  const {
-    totalItems,
-    hasHydrated,
-    isOnline: cartIsOnline,
-    // pendingSyncCount
-  } = useCart();
+  // const {
+  //   totalItems,
+  //   hasHydrated,
+  //   isOnline: cartIsOnline,
+  //   // pendingSyncCount
+  // } = useCart();
+ 
+ 
+ 
   useEffect(() => {
     setIsOnline(window.navigator.onLine);
     const handleOnlineStatus = () => {
