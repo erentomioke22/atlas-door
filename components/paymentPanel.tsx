@@ -16,12 +16,12 @@ import { orderGatewayValidation } from "@/lib/validation";
 import { FaCreditCard } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
 import { useCart } from "@/hook/useCart";
-import Button from "./ui/button";
-import type { Session } from "@/lib/auth";
+import {Button} from "./ui/button";
+import type { ServerSession } from '@/lib/get-session';
 
 interface PaymentPanelProps {
   status?: "pending" | "idle" | "success" | "error" | string;
-  session: Session | null;
+  session: ServerSession | null;
 }
 
 interface OrderFormValues {

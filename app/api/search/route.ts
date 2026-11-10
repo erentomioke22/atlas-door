@@ -114,6 +114,7 @@ export async function GET(req: NextRequest) {
         ? {
             id: String(p.author.id),
             name: p.author.name ?? p.author.displayName ?? 'ناشناس',
+            displayName: p.author.displayName ?? p.author.name ?? 'ناشناس', 
             image: mediaUrl(p.author.image),
           }
         : undefined,
