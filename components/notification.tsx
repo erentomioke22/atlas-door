@@ -127,7 +127,7 @@ export default function Notification({ notification }: Props) {
         </Link>
       )}
 
-      {notification?.product && (
+      {/* {notification?.product && (
         <Link href={`/products/${notification.product.slug}` as Route}>
           <div className="text-sm bg-lcard opacity-70 hover:opacity-100 dark:bg-dcard p-2 rounded-xl mt-3 transition-opacity">
             <div className="flex gap-2">
@@ -164,7 +164,7 @@ export default function Notification({ notification }: Props) {
             </div>
           </div>
         </Link>
-      )}
+      )} */}
     </div>
   );
 }

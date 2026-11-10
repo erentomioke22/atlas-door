@@ -8,7 +8,7 @@ import { FaCaretRight } from "react-icons/fa6";
 import AboutUs from "@/components/aboutus";
 import { toast } from "sonner";
 import ImageCom from "@/components/ui/Image";
-import ProductCard from "@/components/products/productCard";
+// import ProductCard from "@/components/products/productCard";
 import { LuShieldCheck, LuHammer, LuTimer, LuBadgeDollarSign , LuBaggageClaim ,LuCircleCheckBig  } from "react-icons/lu";
 import { ProductLite,PostLite } from '@/lib/types';
 

@@ -349,7 +349,7 @@ export interface PostAuthor {
 }
 
 export interface PostLite {
-  id: string;
+  id: string ;
   title: string;
   slug: string;
   desc?: string;

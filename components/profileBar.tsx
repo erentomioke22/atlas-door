@@ -26,7 +26,7 @@ const ProfileBar = () => {
         </Button>
       </div>
       <div className="flex gap-3  text-[10px] md:text-sm   text-nowrap overflow-x-auto py-3 px-5 ">
-        <Link
+        {/* <Link
           className={`duration-300  ${lastPath === "bag" ? "bg-black dark:bg-white text-white dark:border-white dark:text-black rounded-full border-2 border-black px-2 py-1  " : "bg-transparent border-2 border-black dark:border-white dark:text-white rounded-full  px-2 py-1"}`}
           href={`/${pathName[1]}/bag`}
         >
@@ -38,7 +38,7 @@ const ProfileBar = () => {
           href={`/${pathName[1]}/orders`}
         >
           <span>سفارشات</span>
-        </Link>
+        </Link> */}
 
         <Link
           className={`duration-300  ${lastPath === "setting" ? "bg-black dark:bg-white text-white dark:border-white dark:text-black rounded-full border-2 border-black px-2 py-1  " : "bg-transparent border-2 border-black dark:border-white dark:text-white rounded-full  px-2 py-1"}`}
