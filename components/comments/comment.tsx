@@ -9,7 +9,8 @@ import { useDeleteCommentMutation } from '@/lib/comments/hook/mutations';
 import { LuReply } from 'react-icons/lu';
 import ImageCom from '@/components/ui/Image';
 import { FaArrowLeftLong } from 'react-icons/fa6';
-import type { Session } from '@/lib/auth';
+import type { ServerSession } from '@/lib/get-session';
+
 import type {
   CommentTarget,
   SortCategory,
@@ -21,7 +22,7 @@ interface CommentProps {
   comment: any;
   target: CommentTarget;
   category: SortCategory;
-  session: Session | null;
+  session: ServerSession;
   currentCommentId: string | null;
   setCurrentCommentId: (id: string | null) => void;
   setMessage: (v: string | null) => void;

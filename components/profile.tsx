@@ -3,12 +3,13 @@ import Link from "next/link";
 import ImageCom from "./ui/Image";
 import DropDrawer from "./ui/dropdrawer";
 import Darkmode from "./ui/darkmode";
-import type { Session } from "@/lib/auth";
+import type { ServerSession } from '@/lib/get-session';
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { Route } from "next";
 interface ProfileProps {
-  session: Session;
+  session: ServerSession;
 }
 
 const Profile: React.FC<ProfileProps> = ({ session }) => {
@@ -25,16 +26,22 @@ const Profile: React.FC<ProfileProps> = ({ session }) => {
       router.refresh();
     }
   }
+
   return (
     <DropDrawer
       title={
-          session?.user?.image === null
-            ? <div className="h-9 w-9 rounded-xl bg-linear-to-tr from-redorange to-yellow"></div>
-            : <ImageCom
-                className="rounded-xl h-9 w-9 "
-                src={session.user?.image ?? ""}
-                alt={`${session.user?.name ?? "user"} avatar`}
-              />
+        !session?.user?.image ? (
+          <div className="h-9 w-9 rounded-xl bg-linear-to-tr from-redorange to-yellow" />
+        ) : (
+          <div className="relative h-9 w-9 overflow-hidden">
+            <ImageCom
+              src={session.user.image}
+              alt={`${session.user.name ?? "user"} avatar`}
+              layout="natural"   // ← مهم
+              className="rounded-xl h-9 w-9"
+            />
+          </div>
+        )
       }
       close={close}
       className={"right-0 w-65"}
@@ -44,14 +51,18 @@ const Profile: React.FC<ProfileProps> = ({ session }) => {
        <p className="text-[12px] text-redorange max-w-72  sm:max-w-52 px-3 md:mx-auto">ایمیل تایید به آدرس ایمیل شما ارسال شده لطفا ایمیلتان را تایید کنید</p>
       }
       <div className=" flex  max-sm:mt-5  p-3   mx-3  rounded-2xl  gap-2 truncate duration-300">
-          {session?.user?.image === null
-            ? <div className="h-10 w-10 rounded-xl bg-linear-to-tr from-redorange to-yellow"></div>
-            : <ImageCom
-                className="rounded-xl h-10 w-10 "
-                src={session.user?.image ?? ""}
-                alt={`${session.user?.name ?? "user"} avatar`}
-              />
-          }
+      {!session?.user?.image ? (
+  <div className="h-12 w-12 rounded-xl bg-linear-to-tr from-redorange to-yellow" />
+) : (
+  <div className="relative h-12 w-12 overflow-hidden">
+  <ImageCom
+    className="rounded-xl h-12 w-12"
+    src={session.user.image}
+    alt={`${session.user.name ?? "user"} avatar`}
+    layout="natural"   // ← مهم
+  />
+  </div>
+)}
         <div className=" truncate ">
           <p className="text-sm  text-black dark:text-white truncate capitalize">{session?.user?.displayName || session?.user?.name}</p>
           <p className="text-sm text-end text-neutral-500 dark:text-neutral-300 truncate ">{session?.user?.email}</p>
@@ -69,7 +80,7 @@ const Profile: React.FC<ProfileProps> = ({ session }) => {
             // </Link>
 
             <Link 
-              href={"/admin"}   
+              href={"/admin" as Route}   
               onClick={() => { setClose(!close); }}
               className={" profile-link"} >
               <span>ادمین</span>

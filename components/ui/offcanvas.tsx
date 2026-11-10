@@ -60,7 +60,7 @@ const Offcanvas: React.FC<OffcanvasProps> = ({
   return (
     <div>
       <div className="w-full">
-        <button type="button" className={btnStyle} onClick={() => setIsOpen(!isOpen)} disabled={disabled} title='offcanvas button'>
+        <button type="button" className={`hover:brightness-95 dark:hover:brightness-120  duration-200 ${btnStyle}`} onClick={() => setIsOpen(!isOpen)} disabled={disabled} title='offcanvas button'>
           {title}
         </button>
       </div>

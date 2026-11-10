@@ -1,9 +1,15 @@
-'use server'
+import 'server-only'
 
-import { headers } from "next/headers";
-import { cache } from "react";
-import { auth } from "./auth";
+import { headers } from 'next/headers'
+import { cache } from 'react'
+import { getPayload } from '@/lib/payload'
 
 export const getServerSession = cache(async () => {
-  return await auth.api.getSession({ headers: await headers() });
-});
+  const payload = await getPayload()
+
+  return payload.betterAuth.api.getSession({
+    headers: await headers(),
+  })
+})
+
+export type ServerSession = Awaited<ReturnType<typeof getServerSession>>;

@@ -7,12 +7,22 @@ import { IoShareOutline } from 'react-icons/io5';
 import { toast } from 'sonner';
 import moment from 'moment-jalaali';
 import { PostLite } from '@/lib/types';
+import ImageCom from '../ui/Image';
 
 moment.loadPersian({ usePersianDigits: true });
 
 interface PostCardProps {
   post: PostLite;
 }
+
+function getImageUrl(image: any): string | null {
+  if (!image) return null;
+  if (typeof image === 'string') return image;
+  if (typeof image === 'object' && image.url) return image.url;
+  return null;
+}
+
+
 
 export default function PostCard({ post }: PostCardProps) {
   const handleShare = async () => {
@@ -33,18 +43,23 @@ export default function PostCard({ post }: PostCardProps) {
     }
   };
 
-  const formattedDate = post.publishedAt
-    ? moment(post.publishedAt).locale('fa').fromNow()
+  const formattedDate = post.createdAt
+    ? moment(post.createdAt).locale('fa').fromNow()
     : 'تاریخ نامعتبر';
+
+  const authorImage = getImageUrl(post.author?.image);
+  const mainImage = getImageUrl(post.mainImage);
+
+  
 
   return (
     <article className="bg-lcard dark:bg-dcard dark:hover:ring-dbtn sm:w-64 hover:ring-2 hover:ring-lbtn duration-500 max-sm:w-full rounded-3xl py-2 space-y-1 px-3 select-none">
       <div className="flex justify-between">
         <div className="flex gap-1 sm:gap-2 p-1 text-[10px]">
-          {post.author?.image ? (
+          {authorImage ? (
             <Image
-              src={post.author.image}
-              alt={post.author.name}
+              src={authorImage}
+              alt={post.author?.displayName || ''}
               width={32}
               height={32}
               className="w-8 h-8 rounded-lg"
@@ -53,7 +68,7 @@ export default function PostCard({ post }: PostCardProps) {
             <div className="h-9 w-9 rounded-lg bg-linear-to-tr from-redorange to-yellow" />
           )}
           <div className="flex flex-col truncate">
-            <p className="truncate capitalize">{post.author?.name || 'ناشناس'}</p>
+            <p className="truncate capitalize">{post.author?.displayName || 'ناشناس'}</p>
             <p className="text-neutral-500 dark:text-neutral-400 truncate">
               {formattedDate}
             </p>
@@ -68,16 +83,17 @@ export default function PostCard({ post }: PostCardProps) {
         </button>
       </div>
 
-      <Link href={`/posts/${post.slug}`} className="flex flex-col justify-between h-full">
+      <Link
+        href={`/posts/${post.slug}`}
+        className="flex flex-col justify-between h-full"
+      >
         <div>
-          {post.mainImage && (
-            <div className="relative w-full h-36 md:h-40 rounded-3xl overflow-hidden">
-              <Image
-                src={post.mainImage}
+          {mainImage && (
+            <div className="relative  overflow-hidden">
+              <ImageCom
+                src={mainImage}
                 alt={post.imageAlt || post.title}
-                fill
-                className="object-cover"
-                sizes="(max-width: 640px) 100vw, 256px"
+                className="object-cover w-full h-36 md:h-40 rounded-3xl"
               />
             </div>
           )}
@@ -92,7 +108,7 @@ export default function PostCard({ post }: PostCardProps) {
         </div>
         <div className="flex flex-wrap gap-1 justify-end text-[12px] mt-2">
           {post.tags?.slice(0, 3).map((tag) => (
-            <span key={tag._id} className="text-neutral-500 dark:text-neutral-400">
+            <span key={tag.id} className="text-neutral-500 dark:text-neutral-400">
               <span className="text-black dark:text-white">#</span>
               {tag.name}
             </span>

@@ -5,73 +5,21 @@ import { FaMessage, FaHandshakeSimple, FaTruckFast } from 'react-icons/fa6';
 import moment from 'moment-jalaali';
 import ImageCom from './ui/Image';
 import { JSX } from 'react';
+import type {
+  NotificationItem,
+  NotificationType,
+} from '@/lib/types'; // ← ایمپورت از types
+import { Route } from 'next';
 
 moment.loadPersian({ usePersianDigits: true });
-
-// ✅ انواع Notification
-export type NotificationType =
-  | 'COMMENT'
-  | 'REPLY'
-  | 'POST'
-  | 'PAID'
-  | 'DELIVERED'
-  | 'ORDER'
-  | 'PRODUCT';
-
-  interface NotificationIssuer {
-    id: string;
-    name?: string | null;
-    displayName?: string | null;
-    image?: string | null;
-  }
-
-interface NotificationPost {
-  slug: string;
-  title: string;
-  images: string[];
-}
-
-interface NotificationProduct {
-  slug: string;
-  name: string;
-  images: string[];
-}
-
-interface NotificationOrder {
-  id: string;
-  orderCode: string;
-  total: number;
-  status: string;
-}
-
-export interface NotificationItem {
-  id: string;
-  type: NotificationType;
-  read: boolean;
-  createdAt: string | Date;
-  targetType?: string | null;
-  targetId?: string | null;
-  issuer: NotificationIssuer | null;
-  recipient?: NotificationIssuer | null;
-  post?: NotificationPost | null;
-  product?: NotificationProduct | null;
-  order?: NotificationOrder | null;
-}
 
 interface Props {
   notification: NotificationItem;
 }
 
 export default function Notification({ notification }: Props) {
-  // ✅ نقشه کامل NotificationType ها
   const notificationTypeMap: Partial<
-    Record<
-      NotificationType,
-      {
-        message: JSX.Element;
-        icon: JSX.Element;
-      }
-    >
+    Record<NotificationType, { message: JSX.Element; icon: JSX.Element }>
   > = {
     COMMENT: {
       message: <span>به وبلاگ شما واکنش نشان داد</span>,
@@ -103,12 +51,11 @@ export default function Notification({ notification }: Props) {
     },
   };
 
-  // ✅ Fallback برای type های ناشناس
   const typeData = notificationTypeMap[notification.type] ?? {
     message: <span>یک اعلان جدید دارید</span>,
     icon: <FaMessage className="text-[12px]" />,
   };
- console.log(notification)
+
   const { message, icon } = typeData;
 
   const formattedDate = moment(new Date(notification.createdAt))
@@ -119,7 +66,6 @@ export default function Notification({ notification }: Props) {
     <div className="py-5 px-3">
       <div className="flex justify-between gap-3">
         <div className="flex gap-2">
-          {/* ====== آواتار ====== */}
           <div className="relative flex h-9 w-9 rounded-lg flex-none">
             <div className="relative h-full w-full">
               {!notification?.issuer?.image ? (
@@ -141,7 +87,6 @@ export default function Notification({ notification }: Props) {
             </div>
           </div>
 
-          {/* ====== متن اعلان ====== */}
           <div>
             <div className="text-sm gap-1 flex items-center flex-wrap">
               <span className="font-medium">
@@ -183,7 +128,7 @@ export default function Notification({ notification }: Props) {
       )}
 
       {notification?.product && (
-        <Link href={`/products/${notification.product.slug}`}>
+        <Link href={`/products/${notification.product.slug}` as Route}>
           <div className="text-sm bg-lcard opacity-70 hover:opacity-100 dark:bg-dcard p-2 rounded-xl mt-3 transition-opacity">
             <div className="flex gap-2">
               {notification.product.images?.[0] && (

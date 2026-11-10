@@ -234,7 +234,7 @@ export default function AddToCartButton({
       <button
         onClick={inCart ? handleRemoveFromCart : handleAddToCart}
         disabled={disabled || stocks <= 0}
-        className={`text-sm rounded-full px-3 py-2 ${
+        className={`text-sm rounded-2xl px-3 py-2 ${
           !inCart
             ? 'bg-black text-white dark:bg-white dark:text-black border-2'
             : 'bg-transparent border-2 border-black dark:border-white'
@@ -250,7 +250,7 @@ export default function AddToCartButton({
       <button
         onClick={handleAddToCart}
         disabled={disabled || stocks <= 0}
-        className={`text-sm rounded-full px-3 py-2 bg-black text-white dark:bg-white dark:text-black border-2 border-current ${className} ${
+        className={`text-lg rounded-2xl px-3 py-2 bg-black text-white dark:bg-white dark:text-black border-2 border-current ${className} ${
           disabled || stocks <= 0 ? 'opacity-50 cursor-not-allowed' : ''
         }`}
       >

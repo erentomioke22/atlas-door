@@ -1,22 +1,28 @@
-import { betterAuth } from "better-auth";
-import { prismaAdapter } from "better-auth/adapters/prisma";
-import { APIError, createAuthMiddleware } from "better-auth/api";
-import { prisma } from "@/utils/database";
-import { passwordSchema } from "./validation";
 import { generateVerificationTemplate,generatePasswordResetTemplate} from "./email-template";
-import { sendEmailAction } from "./send-email-action";
+// import { sendEmailAction } from "./send-email-action";
 import { nextCookies } from "better-auth/next-js";
+import type { BetterAuthOptions, PayloadAuthOptions } from 'payload-auth/better-auth'
+import { admin, twoFactor } from 'better-auth/plugins'
+import { getPayload } from '@/lib/payload'
 
-export const auth = betterAuth({
-  database: prismaAdapter(prisma, {
-    provider: "postgresql",
-  }),
+
+
+
+export const betterAuthOptions = {
+  appName: 'atlas-door',
+  baseURL: process.env.BETTER_AUTH_URL,
   trustedOrigins: [
     "https://atlasdoors.ir",
     "https://www.atlasdoors.ir",
     "http://localhost:3000",
     "http://127.0.0.1:3000"
   ],
+  session: {
+    cookieCache: {
+      enabled: true,
+      maxAge: 5 * 60,
+    },
+  },
   socialProviders: {
     google: {
       clientId: process.env.GOOGLE_CLIENT_ID!,
@@ -39,115 +45,120 @@ export const auth = betterAuth({
     enabled: true,
     requireEmailVerification: false, 
     async sendResetPassword({ user, url }) {
-      await sendEmailAction({
+      const payload = await getPayload();
+      await payload.sendEmail({
         to: user.email,
         subject: "بازنشانی رمز عبور",
-        meta: generatePasswordResetTemplate(url,"برای باز نشانی رمز خود روی لینک کلیک کنید")
+        html: generatePasswordResetTemplate(url, "برای بازنشانی رمز خود روی لینک کلیک کنید")
       });
     },
   },
   emailVerification: {
     sendOnSignUp: true,
     expiresIn: 60 * 60,
-    // autoSignInAfterVerification: true,
-    sendVerificationEmail: async ({ user, url }) => {
-      // const link = new URL(url);
-      // link.searchParams.set("callbackURL", "/auth/verify");
-      // meta: generateVerificationTemplate(String(link),"لطفا ایمیل خود را تایید کنید")
-      await sendEmailAction({
+    async sendVerificationEmail({ user, url }) {
+      const payload = await getPayload();
+      await payload.sendEmail({
         to: user.email,
         subject: "تایید آدرس ایمیل",
-        meta: generateVerificationTemplate(url,"لطفا ایمیل خود را تایید کنید")
-
+        html: generateVerificationTemplate(url, "لطفا ایمیل خود را تایید کنید")
       });
     },
   },
+  // emailAndPassword: {
+  //   enabled: true,
+  //   requireEmailVerification: false, 
+  //   async sendResetPassword({ user, url }) {
+  //     await sendEmailAction({
+  //       to: user.email,
+  //       subject: "بازنشانی رمز عبور",
+  //       meta: generatePasswordResetTemplate(url,"برای باز نشانی رمز خود روی لینک کلیک کنید")
+  //     });
+  //   },
+  // },
+  // emailVerification: {
+  //   sendOnSignUp: true,
+  //   expiresIn: 60 * 60,
+  //   // autoSignInAfterVerification: true,
+  //   sendVerificationEmail: async ({ user, url }) => {
+  //     // const link = new URL(url);
+  //     // link.searchParams.set("callbackURL", "/auth/verify");
+  //     // meta: generateVerificationTemplate(String(link),"لطفا ایمیل خود را تایید کنید")
+  //     await sendEmailAction({
+  //       to: user.email,
+  //       subject: "تایید آدرس ایمیل",
+  //       meta: generateVerificationTemplate(url,"لطفا ایمیل خود را تایید کنید")
+
+  //     });
+  //   },
+  // },
   user: {
-    // changeEmail: {
-    //   enabled: true,
-    //   async sendChangeEmailVerification({ user, newEmail, url }) {
-    //     await sendEmail({
-    //       to: user.email,
-    //       subject: "Approve email change",
-    //       text: `Your email has been changed to ${newEmail}. Click the link to approve the change: ${url}`,
-    //     });
-    //   },
-    // },
     additionalFields: {
       role: {
         type: "string",
         required: false,
         defaultValue: "user",
+        input: false,
       },
+  
       phone: {
         type: "string",
         required: false,
       },
+  
       address: {
         type: "string",
         required: false,
       },
+  
       status: {
         type: "string",
         required: false,
         defaultValue: "active",
+        input: false,
       },
-      emailVerified: {
-        type: "boolean",
-        required: false,
-        defaultValue: false,
-      },
+  
       displayName: {
         type: "string",
         required: false,
-        // input: true, // This will be in the sign-up form
-      },
-      name: {
-        type: "string",
-        required: false,
-        unique: true, 
       },
     },
   },
-  hooks: {
-    before: createAuthMiddleware(async (ctx) => {
-      if (
-        ctx.path === "/sign-up/email" ||
-        ctx.path === "/reset-password" ||
-        ctx.path === "/change-password"
-      ) {
-        const password = ctx.body.password || ctx.body.newPassword;
-        const { error } = passwordSchema.safeParse(password);
-        if (error) {
-          throw new APIError("BAD_REQUEST", {
-            message: "Password not strong enough",
-          });
-        }
-      }
-  
-      if (ctx.path === "/sign-up/email" && ctx.body.name) {
-        const existingUser = await prisma.user.findFirst({
-          where: { name: ctx.body.name }
-        });
-  
-        if (existingUser) {
-          throw new APIError("BAD_REQUEST", {
-            message: "این نام کاربری قبلا ثبت نام کرده است"
-          });
-        }
-      }
-  
-      return ctx;
+  plugins: [admin(), twoFactor(), nextCookies()],
+} satisfies BetterAuthOptions
+
+
+
+
+export const payloadAuthOptions = {
+  users: {
+    slug: 'users',
+    roles: ['user', 'admin'],
+    adminRoles: ['admin'],
+    defaultRole: 'user',
+    allowedFields: ['name', 'phone', 'address', 'displayName'],
+    
+    collectionOverrides: ({ collection }) => ({
+      ...collection,
+      fields: collection.fields.map((field) =>
+        'name' in field && field.name === 'image'
+          ? { ...field, saveToJWT: true }
+          : field
+      ),
     }),
+
+     // extendsCollections: {
+    //   users: {
+    //     fields: [
+    //       { name: 'phone', type: 'text' },
+    //       { name: 'address', type: 'textarea' },
+    //       { name: 'displayName', type: 'text' },
+    //     ],
+    //   },
+    // },
   },
-  trustHost: true,
-  plugins: [nextCookies()],
-});
-
-export type Session = typeof auth.$Infer.Session;
-export type User = typeof auth.$Infer.Session.user;
-
-
-
+  betterAuthOptions,
+} satisfies PayloadAuthOptions
+export type PayloadAuthConfig = typeof payloadAuthOptions
 
 

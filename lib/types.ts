@@ -1,58 +1,3 @@
-import type { Prisma } from "@prisma/client";
-import type { PortableTextBlock } from '@portabletext/types';
-import type { OrderStatus } from '@prisma/client';
-
-
-
-export type CommentTargetType = 'post' | 'product';
-export type SortCategory = 'latest' | 'oldest' | 'toppest';
-export type SearchTab = 'all' | 'posts' | 'products' | 'categories' | 'tags';
-
-export interface SanityPost {
-  _id: string;
-  title: string;
-  slug: string;
-  desc: string;
-  mainImage: string;
-  publishedAt: string;
-  isHot: boolean;
-  tags: { name: string }[];
-  author: { name: string; image: string };
-}
-
-
-export interface SanityProduct {
-  _id: string;
-  name: string;
-  slug: string;
-  desc: string;
-  content: PortableTextBlock[];
-  images: string[];
-  mainImage: string;
-  category: {
-    _id: string;
-    title: string;
-    slug: string;
-  };
-  material?: string;
-  colors: Array<{
-    _key: string;
-    color: string;
-    hexCode: string;
-    price: number;
-    discount: number;
-    stock: number;
-  }>;
-  seller?: {
-    _id: string;
-    name: string;
-    image: string;
-  };
-  dimensions?: string;
-  assemblyRequired?: boolean;
-  publishedAt: string;
-  _updatedAt: string;
-}
 export interface UserLite {
   id: string;
   name?: string | null;
@@ -62,86 +7,13 @@ export interface UserLite {
   role?: string | null;
 }
 
-export interface TagLite {
-  _id: string;
-  name: string;
-  slug: string;
-  count: number;
-}
 
-export interface PostLite {
-  _id: string;
-  title: string;
-  slug: string;
-  desc?: string;
-  mainImage?: string;
-  imageAlt?: string;
-  publishedAt?: string;
-  author?: PostAuthor;
-  tags?: Array<{
-    _id: string;
-    name: string;
-    slug?: string;
-  }>;
-  discussions?: boolean;   
-}
-
-export interface ProductColorLite {
-  id: string;
-  hexCode: string;
-  price: number;
-  discount: number | null;
-  name: string;
-  stocks: number;
-  status: string;
-}
-
-
-export interface ProductLite {
-  _id: string;
-  name: string;
-  slug: string;
-  desc: string;
-  content: PortableTextBlock[] | string;
-  images: string[];
-  mainImage: string;
-  category?: {
-    _id: string;
-    title: string;
-    slug: string;
-  };
-  sellerId?: string;
-  seller?: {
-    _id: string;
-    name: string;
-    image: string | null;
-  };
-  colors: ProductColorLite[];
-  material?: string;
-  dimensions?: string;
-  assemblyRequired?: boolean;
-  createdAt: string | Date;
-  updatedAt: string | Date;
-}
 
 export interface ProductsListResponse {
   products: ProductLite[];
   totalCount: number;
   categories: CategoryLite[];
 }
-
-export interface CategoryLite {
-  _id: string;
-  title: string;
-  slug: string;
-  image?: string;
-  count: number;
-}
-export interface ProductFull extends ProductLite {
-  content: PortableTextBlock[] | string;
-  relatedProducts: ProductLite[];
-}
-
 
 
 export interface PostsListResponse {
@@ -151,46 +23,7 @@ export interface PostsListResponse {
 }
 
 
-export interface PostAuthor {
-  _id?: string;
-  name: string;
-  image?: string | null;
-}
 
-// ====== تایپ پست کامل (برای صفحه جزئیات) ======
-export interface PostFull extends PostLite {
-  content: PortableTextBlock[];
-  relatedPosts: PostLite[];
-  readingTime?: number;
-}
-
-export function getUserDataSelect(loggedInUserId?: string | null): Prisma.UserSelect {
-  return {
-    id: true,
-    name: true,
-    email: true,
-    image: true,
-    phone: true,
-    address: true,
-    displayName: true,
-    createdAt: true,
-    // _count: {
-    //   select: {
-    //     posts: true,
-    //   },
-    // },
-  };
-}
-
-export function getPostDataInclude(loggedInUserId?: string | null): any {
-  return {};
-}
-
-export function getProductDataInclude(loggedInUserId?: string | null): any {
-  return {};
-}
-
-// lib/types.ts
 
 // ====== تایپ‌های کامنت ======
 export type CommentUser = {
@@ -236,80 +69,6 @@ export type CommentTarget = {
   discussions?: boolean;
 };
 
-
-export function getCommentDataInclude(loggedInUserId?: string | null): any {
-  return {
-    user: {
-      select: {
-        id: true,
-        name: true,
-        displayName: true,
-        image: true,
-      },
-    },
-    replies: {
-      include: {
-        user: {
-          select: {
-            id: true,
-            name: true,
-            displayName: true,
-            image: true,
-          },
-        },
-        parent: {
-          include: {
-            user: {
-              select: {
-                id: true,
-                name: true,
-                displayName: true,
-                image: true,
-              },
-            },
-          },
-        },
-        _count: {
-          select: { replies: true },
-        },
-      },
-      orderBy: { createdAt: 'asc' },
-    },
-    parent: {
-      include: {
-        user: {
-          select: {
-            id: true,
-            name: true,
-            displayName: true,
-            image: true,
-          },
-        },
-      },
-    },
-    _count: {
-      select: { replies: true }, 
-    },
-  };
-}
-export const notificationsInclude = {
-  issuer: {
-    select: {
-      id: true,
-      name: true,
-      displayName: true,
-      image: true,
-    },
-  },
-  recipient: {
-    select: {
-      id: true,
-      name: true,
-      displayName: true,
-      image: true,
-    },
-  },
-} satisfies Prisma.NotificationInclude;
 
 
 
@@ -484,14 +243,13 @@ export const ORDER_STATUS_MAP: Record<
 export type ListType = 'posts' | 'products';
 
 export interface FilterItem {
-  _id: string;
-  name: string;      // tag.name یا category.title
+  id: string;
+  name: string;
   slug: string;
   count: number;
 }
 
-export interface InfiniteListProps<T> {
-  // داده‌های اولیه
+export interface InfiniteListProps<T extends { id: string }> {
   initialItems: T[];
   initialFilters: FilterItem[];
   selectedFilter: string;
@@ -499,19 +257,17 @@ export interface InfiniteListProps<T> {
   hasMore: boolean;
   initialLimit: number;
   loadMoreLimit: number;
-
-  // تنظیمات
   listType: ListType;
-  filterKey: 'tag' | 'category'; // پارامتر URL
+  filterKey: 'tag' | 'category';
   emptyIcon: string;
   emptyTitle: string;
   emptyMessage: string;
-  searchPlaceholder?: string;
-
-  // رندر
+  emptyActionLabel: string;
+  itemPrefix?: string;
+  showAllLabel?: string;
+  moreLabel?: (count: number) => string;
+  countLabel: (count: number) => string;
   renderItem: (item: T) => React.ReactNode;
-
-  // لود بیشتر
   onLoadMore: (params: {
     filter: string;
     start: number;
@@ -521,6 +277,151 @@ export interface InfiniteListProps<T> {
 
 
 
+export interface SearchResults {
+  posts: PostLite[];
+  products: ProductLite[];
+  categories: CategoryLite[];
+  tags: TagLite[];
+}
+
+export interface SearchCounts {
+  posts: number;
+  products: number;
+  categories: number;
+  tags: number;
+}
+
+export interface SearchResponse {
+  results: SearchResults;
+  counts: SearchCounts;
+  query: string;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+export interface CategoryLite {
+  id: string;
+  title: string;
+  slug: string;
+  image?: string;
+  count: number;
+}
+
+export interface TagLite {
+  id: string;
+  name: string;
+  slug: string;
+  count: number;
+}
+
+
+
+// lib/types.ts
+export type CommentTargetType = 'post' | 'product';
+export type SortCategory = 'latest' | 'oldest' | 'toppest';
+export type SearchTab = 'all' | 'posts' | 'products' | 'categories' | 'tags';
+export type OrderStatus =
+  | 'PENDING'
+  | 'PAID'
+  | 'PROCESSING'
+  | 'SENT_TO_FACTORY'
+  | 'IN_PRODUCTION'
+  | 'READY'
+  | 'SHIPPED'
+  | 'DELIVERED'
+  | 'CANCELLED';
+
+// ====== Post (Payload) ======
+export interface PostAuthor {
+  id?: string;
+  name: string;
+  displayName: string;
+  image?: string | null | { url: string };
+}
+
+export interface PostLite {
+  id: string;
+  title: string;
+  slug: string;
+  desc?: string;
+  mainImage?: string | { url: string; alt?: string };
+  imageAlt?: string;
+  publishedAt?: string;
+  createdAt?: string;
+  updatedAt?: string;
+  author?: PostAuthor;
+  tags?: Array<{ id: string; name: string; slug?: string }>;
+  discussions?: boolean;
+}
+
+export interface PostFull extends PostLite {
+  content: any;
+  relatedPosts: PostLite[];
+  readingTime?: number;
+}
+
+// ====== Product (Payload) ======
+export interface ProductColorLite {
+  id?: string;
+  color?: string;
+  hexCode?: string;
+  price: number;
+  discount: number | null;
+  name?: string;
+  stocks?: number;
+  stock?: number;
+  status?: string;
+}
+
+export interface ProductLite {
+  id: string;
+  name: string;
+  slug: string;
+  desc: string;
+  content: any;
+  images: Array<string | { url: string; alt?: string }>;
+  mainImage: string | { url: string; alt?: string };
+  category?: { id: string; title: string; slug: string };
+  sellerId?: string;
+  seller?: { id: string; name: string; image: string | null };
+  colors: ProductColorLite[];
+  material?: string;
+  dimensions?: string;
+  assemblyRequired?: boolean;
+  createdAt: string | Date;
+  updatedAt: string | Date;
+}
+
+export interface ProductFull extends ProductLite {
+  relatedProducts: ProductLite[];
+}
+
+// ====== Category & Tag (Payload) ======
+export interface CategoryLite {
+  id: string;
+  title: string;
+  slug: string;
+  image?: string;
+  count: number;
+}
+
+export interface TagLite {
+  id: string;
+  name: string;
+  slug: string;
+  count: number;
+}
+
+// ====== Search ======
 export interface SearchResults {
   posts: PostLite[];
   products: ProductLite[];
@@ -553,3 +454,63 @@ export const SEARCH_TABS: Array<{
   { key: 'categories', label: 'دسته‌بندی', icon: '📁', countKey: 'categories' },
   { key: 'tags', label: 'برچسب‌ها', icon: '🏷️', countKey: 'tags' },
 ];
+
+// بقیه‌ی تایپ‌ها (Comment, Order, ...) بدون تغییر می‌مانند// lib/types.ts — اضافه کنید
+
+// ====== Notification ======
+export type NotificationType =
+| 'COMMENT'
+| 'REPLY'
+| 'POST'
+| 'PAID'
+| 'DELIVERED'
+| 'ORDER'
+| 'PRODUCT';
+
+export type NotificationTargetType = 'post' | 'product' | 'order';
+
+export interface NotificationIssuer {
+id: string;
+name?: string | null;
+displayName?: string | null;
+image?: string | null;
+}
+
+export interface NotificationPostLite {
+slug: string;
+title: string;
+images: string[];
+}
+
+export interface NotificationProductLite {
+slug: string;
+name: string;
+images: string[];
+}
+
+export interface NotificationOrderLite {
+id: string;
+orderCode: string;
+total: number;
+status: string;
+}
+
+export interface NotificationItem {
+id: string;
+type: NotificationType;
+read: boolean;
+createdAt: string | Date;
+targetType?: NotificationTargetType | string | null;
+targetId?: string | null;
+issuer: NotificationIssuer | null;
+recipient?: NotificationIssuer | null;
+post?: NotificationPostLite | null;
+product?: NotificationProductLite | null;
+order?: NotificationOrderLite | null;
+}
+
+export interface NotificationsPage {
+notifications: NotificationItem[];
+nextCursor: string | null;
+unreadCount: number;
+}

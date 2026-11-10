@@ -1,11 +1,7 @@
 {
   "compilerOptions": {
     "target": "ES2017",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -17,16 +13,15 @@
     "isolatedModules": true,
     "jsx": "react-jsx",
     "incremental": true,
+    "forceConsistentCasingInFileNames": true,
     "plugins": [
       {
         "name": "next"
       }
     ],
-    "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "./*"
-      ]
+      "@payload-config": ["./payload.config.ts"],
+      "@/*": ["./*"]
     }
   },
   "include": [
@@ -35,9 +30,9 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "postcss.config.mjs",
-    ".next/dev/types/**/*.ts"
-, "proxy.ts"  ],
-  "exclude": [
-    "node_modules"
-  ]
+    ".next/dev/types/**/*.ts",
+    "proxy.ts",
+    "sanity/schemaTypes/product.ts"
+  ],
+  "exclude": ["node_modules"]
 }

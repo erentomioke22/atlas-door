@@ -1,20 +1,23 @@
-// components/list/listFilter.tsx
-'use client';
 
-import React, { useState } from 'react';
-import { IoClose } from 'react-icons/io5';
-import type { FilterItem } from '@/lib/types';
+'use client'
+
+import React, { useState } from 'react'
+import { IoClose } from 'react-icons/io5'
+
+import type { FilterItem } from '@/lib/types'
 
 interface ListFilterProps {
-  items: FilterItem[];
-  currentItem: string;
-  onSelect: (slug: string) => void;
-  onClear: () => void;
-  isPending?: boolean;
-  // ✅ برای نمایش درست اسم
-  itemPrefix?: string;      // "#" برای تگ، "" برای دسته
-  showAllLabel?: string;    // "همه" یا "همه محصولات"
-  moreLabel?: (count: number) => string; // "+8 تگ دیگر"
+  items: FilterItem[]
+  currentItem: string
+
+  onSelect: (slug: string) => void
+  onClear: () => void
+
+  isPending?: boolean
+
+  itemPrefix?: string
+  showAllLabel?: string
+  moreLabel?: (count: number) => string
 }
 
 export default function ListFilter({
@@ -27,15 +30,23 @@ export default function ListFilter({
   showAllLabel = 'همه',
   moreLabel = (count) => `+${count} مورد دیگر`,
 }: ListFilterProps) {
-  const [showAll, setShowAll] = useState(false);
-  const visibleItems = showAll ? items : items.slice(0, 8);
+  const [showAll, setShowAll] = useState(false)
 
-  if (items.length === 0) return null;
+  const visibleItems = showAll
+    ? items
+    : items.slice(0, 8)
+
+  if (items.length === 0) {
+    return null
+  }
 
   return (
     <div className="space-y-3">
+
       <div className="flex flex-wrap gap-2">
-        {/* دکمه همه */}
+
+        {/* همه */}
+
         <button
           onClick={onClear}
           disabled={isPending}
@@ -52,10 +63,11 @@ export default function ListFilter({
           {showAllLabel}
         </button>
 
-        {/* آیتم‌ها */}
+        {/* تگ‌ها */}
+
         {visibleItems.map((item) => (
           <button
-            key={item._id}
+            key={item.id}
             onClick={() => onSelect(item.slug)}
             disabled={isPending}
             className={`
@@ -63,51 +75,61 @@ export default function ListFilter({
               flex items-center gap-1.5
               ${
                 currentItem === item.slug
-                  ? 'bg-blue-600 text-white hover:bg-blue-700'
+                  ? 'bg-black dark:bg-white text-white dark:text-black'
                   : 'bg-lcard dark:bg-dcard hover:bg-black/10 dark:hover:bg-white/10'
               }
               ${isPending ? 'opacity-50 cursor-not-allowed' : ''}
             `}
           >
             {itemPrefix}
+
             {item.name}
+
             <span
               className={`
                 text-xs px-1.5 py-0.5 rounded-full
                 ${
                   currentItem === item.slug
-                    ? 'bg-blue-500 text-white'
+                    ? 'bg-white dark:bg-black text-black dark:text-white'
                     : 'bg-neutral-200 dark:bg-neutral-700 text-neutral-600 dark:text-neutral-400'
                 }
               `}
             >
               {item.count}
             </span>
+
           </button>
         ))}
 
         {/* نمایش بیشتر */}
+
         {items.length > 8 && (
           <button
-            onClick={() => setShowAll(!showAll)}
-            className="px-4 py-2 rounded-full text-sm font-medium bg-lcard dark:bg-dcard hover:bg-black/10 dark:hover:bg-white/10 transition-colors"
+            onClick={() => setShowAll((prev) => !prev)}
+            className="px-4 py-2 rounded-full text-sm font-medium bg-transparent border-2 border-lbtn dark:border-dbtn hover:border-black/10 dark:hover:border-white/10 transition-colors"
           >
-            {showAll ? 'نمایش کمتر' : moreLabel(items.length - 8)}
+            {showAll
+              ? 'نمایش کمتر'
+              : moreLabel(items.length - 8)}
           </button>
         )}
 
-        {/* آیتم فعال */}
+        {/* تگ فعال */}
+
         {currentItem && (
           <button
             onClick={onClear}
-            className="px-4 py-2 rounded-full text-sm font-medium bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 hover:bg-red-200 dark:hover:bg-red-900/50 transition-colors flex items-center gap-1"
+            className="px-4 py-2 rounded-full text-sm font-medium bg-transparent  text-redorange  flex items-center gap-1 border-2 border-redorange hover:text-red hover:border-red duration-200"
           >
             <IoClose className="text-lg" />
+
             {itemPrefix}
             {currentItem}
           </button>
         )}
+
       </div>
+
     </div>
-  );
+  )
 }

@@ -8,7 +8,7 @@ import Offcanvas from "../ui/offcanvas";
 import { IoClose } from "react-icons/io5";
 import Login from "./login";
 import Signup from "./signup";
-import Button from "../ui/button";
+import { Button } from "../ui/button";
 import { authClient } from "@/lib/auth-client";
 import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
@@ -31,7 +31,7 @@ const Sign: React.FC<SignProps> = ({ title, commentStyle, session }) => {
   const redirect = searchParams.get("redirect");
 
   async function handleSocialSignIn(
-    provider: "google" | "github" | "linkedin" | "twitter"
+    provider: "google" | "github" | "linkedin" | "twitter",
   ) {
     setError(null);
     setLoading(true);
@@ -64,9 +64,6 @@ const Sign: React.FC<SignProps> = ({ title, commentStyle, session }) => {
         <h1 className="text-xl ">ثبت نام - ورود</h1>
 
         <Button
-          className={
-            " text-lg bg-lcard dark:bg-dcard px-2 py-1  rounded-full border-2 text-lfont "
-          }
           onClick={() => setClose(!close)}
           type="button"
           variant="close"

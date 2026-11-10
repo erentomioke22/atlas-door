@@ -1,25 +1,21 @@
 // components/comments/commentInput.tsx
-'use client';
+"use client";
 
-import React, { useEffect } from 'react';
-import { useForm, Controller } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { commentValidation } from '@/lib/validation';
+import React, { useEffect } from "react";
+import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { commentValidation } from "@/lib/validation";
 import {
   useSubmitCommentMutation,
   useEditCommentMutation,
-} from '@/lib/comments/hook/mutations';
-import LoadingIcon from '@/components/ui/loading/LoadingIcon';
-import CommentTextArea from './commentTextArea';
-import Button from '@/components/ui/button';
-import { FaCaretLeft, FaCheck } from 'react-icons/fa6';
-import { toast } from 'sonner';
-import type { Session } from '@/lib/auth';
-import type {
-  CommentTarget,
-  SortCategory,
-  CommentUser,
-} from '@/lib/types';
+} from "@/lib/comments/hook/mutations";
+import LoadingIcon from "@/components/ui/loading/LoadingIcon";
+import CommentTextArea from "./commentTextArea";
+import { Button } from "../ui/button";
+import { FaCaretLeft, FaCheck } from "react-icons/fa6";
+import { toast } from "sonner";
+import type { ServerSession } from '@/lib/get-session';
+import type { CommentTarget, SortCategory, CommentUser } from "@/lib/types";
 
 interface CommentInputProps {
   target: CommentTarget;
@@ -32,7 +28,7 @@ interface CommentInputProps {
   setMessage: (v: string | null) => void;
   setReplyInfo: (info: { user: CommentUser; content: string } | null) => void;
   replyInfo?: { user: CommentUser; content: string } | null;
-  session: Session | null;
+  session: ServerSession;
 }
 
 type FormValues = {
@@ -46,7 +42,7 @@ const CommentInput: React.FC<CommentInputProps> = ({
   category,
   content,
   commentId,
-  placeHolder = 'نظر خود را بنویسید...',
+  placeHolder = "نظر خود را بنویسید...",
   setCommentId,
   setMessage,
   setReplyInfo,
@@ -64,16 +60,16 @@ const CommentInput: React.FC<CommentInputProps> = ({
     setValue,
   } = useForm<FormValues>({
     resolver: zodResolver(commentValidation) as any,
-    defaultValues: { content: '', userId: session?.user?.id },
+    defaultValues: { content: "", userId: session?.user?.id },
   });
 
   useEffect(() => {
-    if (content !== null) setValue('content', content);
+    if (content !== null) setValue("content", content);
   }, [content, setValue]);
 
   const onSubmit = async (values: FormValues) => {
     if (!session?.user?.id) {
-      toast.error('لطفا وارد حساب کاربری خود شوید');
+      toast.error("لطفا وارد حساب کاربری خود شوید");
       return;
     }
 
@@ -91,7 +87,7 @@ const CommentInput: React.FC<CommentInputProps> = ({
             setMessage(null);
             setReplyInfo(null);
           },
-        }
+        },
       );
     } else {
       addMutation.mutate(
@@ -111,7 +107,7 @@ const CommentInput: React.FC<CommentInputProps> = ({
             setMessage(null);
             setReplyInfo(null);
           },
-        }
+        },
       );
     }
   };
@@ -140,12 +136,12 @@ const CommentInput: React.FC<CommentInputProps> = ({
         />
       </div>
 
-      <div className="col-span-1">
+      <div className="mb-auto">
         <Button
-          variant="menuActive"
-          className="rounded-full text-lg py-2 px-3 w-full"
+          variant="submit"
           disabled={isPending}
           type="submit"
+          className="p-3"
         >
           {isPending ? (
             <LoadingIcon color="bg-white dark:bg-black" />

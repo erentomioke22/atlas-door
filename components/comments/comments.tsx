@@ -12,12 +12,13 @@ import { IoClose } from 'react-icons/io5';
 import { TbMessageCircleFilled } from 'react-icons/tb';
 import Comment from './comment';
 import ImageCom from '@/components/ui/Image';
-import type { Session } from '@/lib/auth';
 import type { CommentTarget, SortCategory, CommentUser } from '@/lib/types';
+import type { ServerSession } from '@/lib/get-session';
+import { Button } from '../ui/button';
 
 interface CommentsProps {
   target: CommentTarget;
-  session: Session | null;
+  session: ServerSession;
 }
 
 const Comments: React.FC<CommentsProps> = ({ target, session }) => {
@@ -46,6 +47,7 @@ const Comments: React.FC<CommentsProps> = ({ target, session }) => {
       staleTime: 60 * 1000,
     });
 
+    
   const comments =
     data?.pages.flatMap((page: any) => page.comments) || [];
 
@@ -59,7 +61,6 @@ const Comments: React.FC<CommentsProps> = ({ target, session }) => {
     }
   };
 
-  // ✅ اگه discussions غیرفعاله، اصلاً نمایش نده
   if (target.discussions === false) {
     return null;
   }
@@ -77,14 +78,14 @@ const Comments: React.FC<CommentsProps> = ({ target, session }) => {
       {/* ====== هدر ====== */}
       <div className="flex justify-between">
         <h1 className="text-xl">بازخوردها</h1>
-        <button
+        <Button
           aria-label="close"
           onClick={() => setClose(!close)}
           type="button"
-          className="text-lg bg-lcard dark:bg-dcard px-2 py-1 rounded-full border-2 text-neutral-500 dark:text-neutral-300"
+          variant="close"
         >
           <IoClose />
-        </button>
+        </Button>
       </div>
 
       {/* ====== لیست کامنت‌ها ====== */}

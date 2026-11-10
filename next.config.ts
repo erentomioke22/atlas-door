@@ -1,6 +1,7 @@
-import type { NextConfig } from 'next'
- 
-const nextConfig: NextConfig = {
+// import type { NextConfig } from 'next'
+import { withPayload } from '@payloadcms/next/withPayload'
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   images: {
     domains: ['example.com'],
     remotePatterns: [
@@ -8,34 +9,11 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: '**',
       },
-      {
-        protocol: "https",
-        hostname: "cdn.sanity.io",
-      },
-      {
-        protocol: 'https',
-        hostname: 'encrypted-tbn0.gstatic.com',
-        port: '',
-        pathname: '/images/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'media.atlasdoors.ir',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https', 
-        hostname: 'uploadthing.com',
-        pathname: '/**',
-      },
-      { protocol: 'http', hostname: 'localhost', port: '3000', pathname: '/media/**', },
-      { protocol: 'https', hostname: 'api2.zoomg.ir', port: '', pathname: '/media/**', },
-      { protocol: 'https', hostname: 'cdn.atlasdoor.ir', port: '', pathname: '/**', }, 
-      { protocol: 'https', hostname: 'utfs.io', port: '', pathname: '/**', }, 
-      { protocol: 'https', hostname: 'tailwindui.com', port: '', pathname: '/**', }, 
+      // { protocol: 'http', hostname: 'localhost', port: '3000', pathname: '/**', },
+      // { protocol: 'https', hostname: 'utfs.io', port: '', pathname: '/**', }, 
     ],
   },
   typedRoutes: true,
 }
  
-export default nextConfig;
+export default withPayload(nextConfig) 

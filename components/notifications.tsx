@@ -1,4 +1,3 @@
-// components/notifications.tsx
 'use client';
 
 import React, { useEffect } from 'react';
@@ -9,17 +8,12 @@ import {
   useMutation,
   useQueryClient,
 } from '@tanstack/react-query';
-import Notification, { NotificationItem } from './notification';
+import Notification from './notification';
 import axios from 'axios';
 import { toast } from 'sonner';
 import LoadingNotifications from './ui/loading/loadingNotifications';
 import DropDrawer from './ui/dropdrawer';
-
-interface NotificationsPage {
-  notifications: NotificationItem[];
-  nextCursor: string | null;
-  unreadCount: number;
-}
+import type { NotificationsPage } from '@/lib/types'; // ← اینجا
 
 function Notifications() {
   const queryClient = useQueryClient();
@@ -35,16 +29,18 @@ function Notifications() {
   } = useInfiniteQuery<NotificationsPage>({
     queryKey,
     queryFn: async ({ pageParam }) => {
-      const response = await axios.get<NotificationsPage>('/api/notifications', {
-        params: pageParam ? { cursor: pageParam } : {},
-      });
+      const response = await axios.get<NotificationsPage>(
+        '/api/notifications',
+        {
+          params: pageParam ? { cursor: pageParam } : {},
+        },
+      );
       return response.data;
     },
     initialPageParam: null as string | null,
     getNextPageParam: (lastPage) => lastPage.nextCursor,
   });
 
-  // ✅ Mark as read
   const markAsReadMutation = useMutation({
     mutationFn: () => axios.patch('/api/notifications/mark-as-read'),
     onSuccess: () => {
@@ -57,7 +53,6 @@ function Notifications() {
     },
   });
 
-  // ✅ Delete all
   const deleteMutation = useMutation({
     mutationFn: () => axios.delete('/api/notifications'),
     onSuccess: async () => {
@@ -74,7 +69,6 @@ function Notifications() {
     },
   });
 
-  // ✅ وقتی drawer باز شد، همه رو read کن
   useEffect(() => {
     if (status === 'success' && (data?.pages[0]?.unreadCount ?? 0) > 0) {
       markAsReadMutation.mutate();
@@ -83,7 +77,6 @@ function Notifications() {
 
   const notifications =
     data?.pages.flatMap((page) => page.notifications) || [];
-
   const unreadCount = data?.pages[0]?.unreadCount ?? 0;
 
   return (
@@ -96,7 +89,6 @@ function Notifications() {
       btnStyle="bg-lcard dark:bg-dcard dark:text-white text-lg p-2 rounded-lg text-black relative"
       className="-right-12 px-3 w-88 max-h-96 overflow-y-scroll"
     >
-      {/* ✅ Badge */}
       {unreadCount > 0 && (
         <span className="absolute -top-1 -right-1 bg-redorange text-white text-[10px] rounded-full min-w-5 h-5 flex items-center justify-center px-1">
           {unreadCount > 99 ? '99+' : unreadCount}
@@ -117,9 +109,7 @@ function Notifications() {
       </div>
 
       <InfiniteScrollContainer
-        onBottomReached={() =>
-          hasNextPage && !isFetching && fetchNextPage()
-        }
+        onBottomReached={() => hasNextPage && !isFetching && fetchNextPage()}
       >
         <div className="divide-y-2 divide-lcard dark:divide-dcard">
           {status === 'pending' && (

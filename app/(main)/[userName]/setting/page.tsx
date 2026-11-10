@@ -1,32 +1,21 @@
-import Head from "next/head";
-import { Metadata } from "next";
-import { ReactNode } from "react";
+// app/(main)/[userName]/settings/page.tsx
+import type { Metadata } from "next";
 import SettingPage from "../../../../components/pages/settingPage";
 import { getServerSession } from "@/lib/get-session";
 
+const BASE_URL =
+  process.env.NEXT_PUBLIC_BASE_URL || "https://www.atlasdoor.ir";
+
 export const metadata: Metadata = {
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_BASE_URL || "https://www.atlasdoor.ir",
-  ),
+  metadataBase: new URL(BASE_URL),
   title: {
     default: "تنظیمات حساب کاربری | اطلس در",
     template: "%s | تنظیمات - اطلس در",
   },
   description:
     "مدیریت تنظیمات حساب کاربری و پروفایل در اطلس در - نمایندگی تخصصی شیشه سکوریت، درب های اتوماتیک و کرکره برقی",
-  keywords: [
-    "تنظیمات حساب کاربری",
-    "پروفایل اطلس در",
-    "مدیریت حساب",
-    "شیشه سکوریت",
-    "درب اتوماتیک",
-    "کرکره برقی",
-    "پارتیشن شیشه ای",
-    "جام بالکن",
-    "نصب درب اتوماتیک",
-  ],
   alternates: {
-    canonical: `${process.env.NEXT_PUBLIC_BASE_URL}/settings`,
+    canonical: "/settings", // نسبی — metadataBase آن را کامل می‌کند
   },
   twitter: {
     card: "summary",
@@ -38,7 +27,7 @@ export const metadata: Metadata = {
     title: "تنظیمات حساب کاربری | اطلس در",
     description:
       "مدیریت تنظیمات حساب کاربری و پروفایل در اطلس در - نمایندگی تخصصی شیشه سکوریت، درب های اتوماتیک و کرکره برقی",
-    url: `${process.env.NEXT_PUBLIC_BASE_URL}/settings`,
+    url: "/settings",
     siteName: "Atlas Door",
     locale: "fa_IR",
     type: "website",
@@ -55,7 +44,6 @@ export const metadata: Metadata = {
   },
 };
 
-// Define the JSON-LD structure type
 interface JsonLdData {
   "@context": string;
   "@type": string;
@@ -70,28 +58,32 @@ interface JsonLdData {
 }
 
 export default async function Page() {
+  const session = await getServerSession();
+
   const jsonLd: JsonLdData = {
     "@context": "https://schema.org",
     "@type": "WebPage",
     name: "تنظیمات حساب کاربری",
     description: "صفحه مدیریت تنظیمات حساب کاربری در وبسایت اطلس در",
-    url: `${process.env.NEXT_PUBLIC_BASE_URL}/settings`,
+    url: `${BASE_URL}/settings`,
     potentialAction: {
       "@type": "Action",
       name: "مدیریت حساب",
-      target: `${process.env.NEXT_PUBLIC_BASE_URL}/settings`,
+      target: `${BASE_URL}/settings`,
     },
   };
-  const session = await getServerSession();
 
   return (
-    <div>
-      <Head>
-        <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
-      </Head>
+    <>
+      {/* JSON-LD را مستقیم در JSX رندر کنید — نه با next/head */}
+      <script
+        type="application/ld+json"
+        // eslint-disable-next-line react/no-danger
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <div>
         <SettingPage session={session} />
       </div>
-    </div>
+    </>
   );
 }

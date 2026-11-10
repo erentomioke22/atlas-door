@@ -148,7 +148,7 @@ className={`resize-none w-full appearance-none  rounded-xl px-3 py-3 block  text
 />
 
         {/* ====== نوار پایین: Emoji + Counter ====== */}
-        <div className="absolute bottom-2 left-2 right-2 flex justify-between items-center">
+        <div className=" flex justify-between items-center">
           {/* ✅ دکمه Emoji */}
           <div className="relative">
             <button

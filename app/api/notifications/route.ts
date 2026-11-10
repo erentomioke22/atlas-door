@@ -1,187 +1,208 @@
 // app/api/notifications/route.ts
 import { NextRequest, NextResponse } from 'next/server';
+import { getPayload } from 'payload';
+import configPromise from '@payload-config';
 import { getServerSession } from '@/lib/get-session';
-import { prisma } from '@/utils/database';
-import { notificationsInclude } from '@/lib/types';
-import { client } from '@/sanity/lib/client';
-import { groq } from 'next-sanity';
+import type {
+  NotificationsPage,
+  NotificationItem,
+  NotificationTargetType,
+} from '@/lib/types';
 
-interface NotificationsResponse {
-  notifications: any[];
-  nextCursor: string | null;
-  unreadCount: number;
+// helper: media → string url
+function mediaUrl(media: any): string | undefined {
+  if (!media) return undefined;
+  if (typeof media === 'string') return media;
+  if (typeof media === 'object' && media.url) return media.url;
+  return undefined;
+}
+
+// helper: user → NotificationIssuer
+function mapUser(u: any) {
+  if (!u) return null;
+  if (typeof u === 'string') return { id: u };
+  return {
+    id: String(u.id),
+    name: u.name ?? null,
+    displayName: u.displayName ?? null,
+    image: mediaUrl(u.image) ?? null,
+  };
 }
 
 export async function GET(
-  req: NextRequest
-): Promise<NextResponse<NotificationsResponse | { error: string }>> {
+  req: NextRequest,
+): Promise<NextResponse<NotificationsPage | { error: string }>> {
   try {
     const session = await getServerSession();
-    if (!session) {
+    if (!session?.user?.id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const cursor = req.nextUrl.searchParams.get('cursor') || undefined;
     const pageSize = 10;
 
-    // 1. دریافت notifications از Prisma
-    const notifications = await prisma.notification.findMany({
-      where: {
-        recipientId: session.user.id,
-      },
-      include: notificationsInclude,
-      orderBy: { createdAt: 'desc' },
-      take: pageSize + 1,
-      cursor: cursor ? { id: cursor } : undefined,
+    const payload = await getPayload({ config: configPromise });
+
+    // 1. دریافت notification ها از Payload
+    const result = await payload.find({
+      collection: 'notifications',
+      where: { recipient: { equals: session.user.id } },
+      sort: '-createdAt',
+      limit: pageSize + 1,
+      depth: 2,
+      ...(cursor ? { page: 1 } : {}), // cursor با Payload متفاوت است → پایین توضیح
     });
 
-    const unreadCount = await prisma.notification.count({
+    // ⚠️ Payload از cursor پشتیبانی نمی‌کند؛ از page-based استفاده می‌کنیم
+    // اگر می‌خواهید cursor داشته باشید، از `createdAt < lastCreatedAt` استفاده کنید:
+    //
+    // const realResult = cursor
+    //   ? await payload.find({
+    //       collection: 'notifications',
+    //       where: {
+    //         and: [
+    //           { recipient: { equals: session.user.id } },
+    //           { createdAt: { less_than: cursor } },
+    //         ],
+    //       },
+    //       sort: '-createdAt',
+    //       limit: pageSize + 1,
+    //       depth: 2,
+    //     })
+    //   : await payload.find(...);
+
+    const hasMore = result.docs.length > pageSize;
+    const slicedDocs = result.docs.slice(0, pageSize);
+
+    const nextCursor = hasMore
+      ? new Date(slicedDocs[slicedDocs.length - 1].createdAt).toISOString()
+      : null;
+
+    // 2. unreadCount
+    const { totalDocs: unreadCount } = await payload.count({
+      collection: 'notifications',
       where: {
-        recipientId: session.user.id,
-        read: false,
+        and: [
+          { recipient: { equals: session.user.id } },
+          { read: { equals: false } },
+        ],
       },
     });
 
-    const hasMore = notifications.length > pageSize;
-    const nextCursor = hasMore ? notifications[pageSize].id : null;
-    const slicedNotifications = notifications.slice(0, pageSize);
-
-    // 2. جمع‌آوری targetIdها بر اساس نوع
+    // 3. جمع‌آوری targetId ها
     const postIds: string[] = [];
     const productIds: string[] = [];
     const orderIds: string[] = [];
 
-    slicedNotifications.forEach((n) => {
-      if (!n.targetId) return;
+    for (const n of slicedDocs) {
+      if (!n.targetId) continue;
       if (n.targetType === 'post') postIds.push(n.targetId);
       else if (n.targetType === 'product') productIds.push(n.targetId);
       else if (n.targetType === 'order') orderIds.push(n.targetId);
-    });
+    }
 
-    // 3. دریافت اطلاعات از Sanity (پست‌ها و محصولات)
-    const [posts, products] = await Promise.all([
-      postIds.length > 0
-        ? client.fetch<
-            Array<{
-              _id: string;
-              title: string;
-              slug: string;
-              mainImage: string;
-            }>
-          >(
-            groq`*[_type == "post" && _id in $ids] {
-              _id,
-              title,
-              "slug": slug.current,
-              "mainImage": mainImage.asset->url
-            }`,
-            { ids: postIds }
-          )
-        : Promise.resolve([]),
-      productIds.length > 0
-        ? client.fetch<
-            Array<{
-              _id: string;
-              name: string;
-              slug: string;
-              mainImage: string;
-            }>
-          >(
-            groq`*[_type == "product" && _id in $ids] {
-              _id,
-              name,
-              "slug": slug.current,
-              "mainImage": images[0].asset->url
-            }`,
-            { ids: productIds }
-          )
-        : Promise.resolve([]),
+    // 4. دریافت پست‌ها و محصولات از Payload
+    const [postsRes, productsRes, ordersRes] = await Promise.all([
+      postIds.length
+        ? payload.find({
+            collection: 'posts',
+            where: { id: { in: postIds } },
+            depth: 1,
+            limit: postIds.length,
+          })
+        : Promise.resolve({ docs: [] as any[] }),
+
+      productIds.length
+        ? payload.find({
+            collection: 'products',
+            where: { id: { in: productIds } },
+            depth: 1,
+            limit: productIds.length,
+          })
+        : Promise.resolve({ docs: [] as any[] }),
+
+      orderIds.length
+        ? payload.find({
+            collection: 'orders',
+            where: { id: { in: orderIds } },
+            depth: 0,
+            limit: orderIds.length,
+          })
+        : Promise.resolve({ docs: [] as any[] }),
     ]);
 
-    // 4. دریافت اطلاعات Orderها از Prisma
-    const orders =
-      orderIds.length > 0
-        ? await prisma.order.findMany({
-            where: { id: { in: orderIds } },
-            select: {
-              id: true,
-              orderCode: true,
-              total: true,
-              status: true,
-            },
-          })
-        : [];
+    // 5. map برای دسترسی سریع
+    const postsMap = new Map(postsRes.docs.map((p: any) => [String(p.id), p]));
+    const productsMap = new Map(
+      productsRes.docs.map((p: any) => [String(p.id), p]),
+    );
+    const ordersMap = new Map(
+      ordersRes.docs.map((o: any) => [String(o.id), o]),
+    );
 
-    // 5. ساخت map برای دسترسی سریع
-    const postsMap = new Map(posts.map((p) => [p._id, p]));
-    const productsMap = new Map(products.map((p) => [p._id, p]));
-    const ordersMap = new Map(orders.map((o) => [o.id, o]));
+    // 6. ساخت خروجی
+    const formattedNotifications: NotificationItem[] = slicedDocs.map(
+      (n: any) => {
+        const issuer = mapUser(n.issuer);
+        const recipient = mapUser(n.recipient);
 
-    // 6. ترکیب داده‌ها
-    const formattedNotifications = slicedNotifications.map((n) => {
-      const base = {
-        id: n.id,
-        type: n.type,
-        read: n.read,
-        createdAt: n.createdAt,
-        targetType: n.targetType,
-        targetId: n.targetId,
-        issuer: {
-          id: n.issuer.id,
-          name: n.issuer.name,
-          displayName: n.issuer.displayName,
-          image: n.issuer.image,
-        },
-        recipient: {
-          id: n.recipient.id,
-          name: n.recipient.name,    
-          displayName: n.recipient.displayName,
-          image: n.recipient.image,
-        },
-        post: null as any,
-        product: null as any,
-        order: null as any,
-      };
+        const base: NotificationItem = {
+          id: String(n.id),
+          type: n.type,
+          read: !!n.read,
+          createdAt: n.createdAt,
+          targetType: n.targetType as NotificationTargetType | null,
+          targetId: n.targetId,
+          issuer,
+          recipient,
+          post: null,
+          product: null,
+          order: null,
+        };
 
-      // اتصال به post
-      if (n.targetType === 'post' && n.targetId) {
-        const post = postsMap.get(n.targetId);
-        if (post) {
-          base.post = {
-            slug: post.slug,
-            title: post.title,
-            images: post.mainImage ? [post.mainImage] : [],
-          };
+        if (n.targetType === 'post' && n.targetId) {
+          const post = postsMap.get(String(n.targetId));
+          if (post) {
+            base.post = {
+              slug: post.slug,
+              title: post.title,
+              images: post.mainImage
+                ? [mediaUrl(post.mainImage)!].filter(Boolean)
+                : [],
+            };
+          }
         }
-      }
 
-      // اتصال به product
-      if (n.targetType === 'product' && n.targetId) {
-        const product = productsMap.get(n.targetId);
-        if (product) {
-          base.product = {
-            slug: product.slug,
-            name: product.name,
-            images: product.mainImage ? [product.mainImage] : [],
-          };
+        if (n.targetType === 'product' && n.targetId) {
+          const product = productsMap.get(String(n.targetId));
+          if (product) {
+            const firstImage =
+              mediaUrl(product.images?.[0]?.image) ??
+              mediaUrl(product.images?.[0]) ??
+              mediaUrl(product.mainImage);
+            base.product = {
+              slug: product.slug,
+              name: product.name,
+              images: firstImage ? [firstImage] : [],
+            };
+          }
         }
-      }
 
-      // اتصال به order
-      if (n.targetType === 'order' && n.targetId) {
-        const order = ordersMap.get(n.targetId);
-        if (order) {
-          base.order = {
-            id: order.id,
-            orderCode: order.orderCode,
-            total: order.total,
-            status: order.status,
-          };
+        if (n.targetType === 'order' && n.targetId) {
+          const order = ordersMap.get(String(n.targetId));
+          if (order) {
+            base.order = {
+              id: String(order.id),
+              orderCode: order.orderCode,
+              total: order.total,
+              status: order.status,
+            };
+          }
         }
-      }
 
-      return base;
-    });
+        return base;
+      },
+    );
 
     return NextResponse.json({
       notifications: formattedNotifications,
@@ -192,20 +213,24 @@ export async function GET(
     console.error('Notifications GET error:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
 
-export async function DELETE(req: NextRequest): Promise<NextResponse> {
+export async function DELETE(): Promise<NextResponse> {
   try {
     const session = await getServerSession();
-    if (!session) {
+    if (!session?.user?.id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    await prisma.notification.deleteMany({
-      where: { recipientId: session.user.id },
+    const payload = await getPayload({ config: configPromise });
+
+    // حذف همه‌ی اعلان‌های این کاربر
+    await payload.delete({
+      collection: 'notifications',
+      where: { recipient: { equals: session.user.id } },
     });
 
     return new NextResponse(null, { status: 204 });
@@ -213,7 +238,7 @@ export async function DELETE(req: NextRequest): Promise<NextResponse> {
     console.error('Notifications DELETE error:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

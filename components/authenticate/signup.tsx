@@ -15,7 +15,7 @@ import { z } from "zod";
 type ShowState = "login" | "register" | "password";
 
 interface SignupProps {
-  setShow: React.Dispatch<React.SetStateAction<ShowState>>;
+  setShow: React.Dispatch<React.SetStateAction<ShowState>>; 
 }
 
 

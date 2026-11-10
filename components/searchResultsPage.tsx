@@ -58,10 +58,10 @@ export default function SearchResultsPage({ query, posts, products }: Props) {
       {/* نتایج */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
         {(tab === 'all' || tab === 'products') &&
-          products.map((p) => <ProductCard key={p._id} product={p} />)}
+          products.map((p) => <ProductCard key={p.id} product={p} />)}
 
         {(tab === 'all' || tab === 'posts') &&
-          posts.map((p) => <PostCard key={p._id} post={p} />)}
+          posts.map((p) => <PostCard key={p.id} post={p} />)}
       </div>
 
       {totalCount === 0 && (

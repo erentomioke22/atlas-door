@@ -79,17 +79,17 @@ interface HomeData {
 
   
   return (
-    <div>
+    <div >
 
       <div className=" grid grid-cols-1 lg:grid-cols-2 gap-5">
         <div className="text-center lg:text-start mx-auto space-y-5 ">
-      <div className="w-full  flex justify-center ">
+      {/* <div className="w-full  flex justify-center ">
         <div className="absolute w-full max-w-lg mt-20">
           <div className="absolute top-0 left-20             w-32 h-32 md:w-65 md:h-65            bg-purple      rounded-full mix-blend-multiple dark:mix-blend-lighten-light dark:opacity-90 filter blur-2xl opacity-95 animate-blob "></div>
           <div className="absolute top-0 left-65             w-32 h-32 md:w-65 md:h-65            bg-yellow      rounded-full mix-blend-multiple dark:mix-blend-lighten-light dark:opacity-90 filter blur-2xl opacity-95 animate-blob animation-delay-4000"></div>
           <div className="absolute top-0 left-40  -bottom-20 w-32 h-32 md:w-65 md:h-65            bg-redorange   rounded-full mix-blend-multiple dark:mix-blend-lighten-light dark:opacity-90 filter blur-2xl opacity-95 animate-blob animation-delay-6000"></div>
         </div>
-      </div>
+      </div> */}
       <div className="relative flex-col flex gap-5">
           <h4 className="leading-normal text-balance text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight">
             تمرکز ما بر <span className="bg-linear-to-tr text-clip from-blue to-darkgreen text-transparent bg-clip-text">کیفیت و عملکرد</span> هربار تجربه ای زیبا را تضمین میکند
@@ -128,6 +128,7 @@ interface HomeData {
                     className='rounded-xl w-full h-64 sm:h-96 lg:h-full'
                     alt={"thumnail Image"} 
                     src={'/images/balcony/media_20241118_121418_7608682146116698746.jpg'} 
+                    priority
                   />
       </div>
 
@@ -255,7 +256,7 @@ interface HomeData {
           {data.posts?.map((post) => (
             <div 
               className="transform translate-x-0 translate-y-0 translate-z-0 flex-none basis-[75%] sm:basis-auto min-w-0 pl-4 sm:pr-2 my-2" 
-              key={post._id}
+              key={post.id}
             >
               <PostCard post={post} />
             </div>
@@ -263,7 +264,7 @@ interface HomeData {
         </EmblaCarousel>
       </div>
 
-      <div className="space-y-10">
+      {/* <div className="space-y-10">
         <div>
           <div className="flex justify-between">
             <p className="text-2xl">محصولات</p>
@@ -290,13 +291,13 @@ interface HomeData {
           {data?.products?.map((product) => (
             <div 
               className="transform translate-x-0 translate-y-0 translate-z-0 flex-none basis-[75%] sm:basis-auto min-w-0 pl-4 sm:pr-2 my-2" 
-              key={product._id}
+              key={product.id}
             >
               <ProductCard product={product} />
             </div>
           ))}
         </EmblaCarousel>
-      </div>
+      </div> */}
     </div>
   );
 }

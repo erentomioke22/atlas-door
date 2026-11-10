@@ -27,7 +27,7 @@ export default function RelatedPosts({ posts }: RelatedPostsProps) {
       {posts.map((post) => (
         <div
           className="transform translate-x-0 translate-y-0 translate-z-0 flex-none basis-[75%] sm:basis-auto min-w-0 pl-4 sm:pr-2 my-2"
-          key={post._id}
+          key={post.id}
         >
           <PostCard post={post} />
         </div>

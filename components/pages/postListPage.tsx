@@ -1,37 +1,116 @@
-// app/(main)/posts/postsListClient.tsx
-'use client';
+// // components/pages/postListPage.tsx
 
-import InfiniteList from '@/components/list/infiniteList';
-import PostCard from '@/components/posts/postCard';
-import { loadMorePosts } from '@/lib/list/actions';
-import type { PostLite, TagLite } from '@/lib/types';
+// 'use client'
+
+// import InfiniteList from '@/components/list/infiniteList'
+// import PostCard from '@/components/posts/postCard'
+
+// import { loadMorePosts } from '@/lib/list/actions'
+
+// import type {
+//   PostLite,
+//   TagLite,
+// } from '@/lib/types'
+
+// interface Props {
+//   initialPosts: PostLite[]
+//   initialTags: TagLite[]
+
+//   selectedTag: string
+//   totalCount: number
+
+//   initialLimit: number
+//   loadMoreLimit: number
+// }
+
+// export default function PostsListClient({
+//   initialPosts,
+//   initialTags,
+//   selectedTag,
+//   totalCount,
+//   initialLimit,
+//   loadMoreLimit,
+// }: Props) {
+//   return (
+//     <InfiniteList<PostLite>
+//       initialItems={initialPosts}
+
+//       initialFilters={initialTags.map((tag) => ({
+//         id: tag.id,
+//         name: tag.name,
+//         slug: tag.slug,
+//         count: tag.count,
+//       }))}
+
+//       selectedFilter={selectedTag}
+//       totalCount={totalCount}
+
+//       initialLimit={initialLimit}
+//       loadMoreLimit={loadMoreLimit}
+
+//       listType="posts"
+//       filterKey="tag"
+
+//       emptyIcon="📝"
+//       emptyTitle="هیچ مقاله‌ای پیدا نشد"
+//       emptyMessage="با برچسب دیگری جستجو کنید"
+//       emptyActionLabel="مشاهده همه مقالات"
+
+//       itemPrefix="#"
+//       showAllLabel="همه"
+
+//       moreLabel={(count) => `+${count} تگ دیگر`}
+
+//       countLabel={(count) => `${count} مقاله یافت شد`}
+
+//       renderItem={(post) => (
+//         <PostCard post={post} />
+//       )}
+
+//       onLoadMore={loadMorePosts}
+//     />
+//   )
+// }
+
+
+// components/pages/postListPage.tsx
+'use client'
+
+import InfiniteList from '@/components/list/infiniteList'
+import PostCard from '@/components/posts/postCard'
+import { loadMorePosts } from '@/lib/list/actions'
+import type { PostLite, TagLite } from '@/lib/types'
 
 interface Props {
-  initialPosts: PostLite[];
-  initialTags: TagLite[];
-  selectedTag: string;
-  totalCount: number;
-  hasMore: boolean;
-  initialLimit: number;
-  loadMoreLimit: number;
+  initialPosts: PostLite[]
+  initialTags: TagLite[]
+  selectedTag: string
+  totalCount: number
+  initialLimit: number
+  loadMoreLimit: number
 }
 
-export default function PostsListClient(props: Props) {
+export default function PostsListClient({
+  initialPosts,
+  initialTags,
+  selectedTag,
+  totalCount,
+  initialLimit,
+  loadMoreLimit,
+}: Props) {
   return (
     <InfiniteList<PostLite>
-      initialItems={props.initialPosts}
-      initialFilters={props.initialTags.map((t) => ({
-        _id: t._id,
-        name: t.name,
-        slug: t.slug,
-        count: t.count,
+      initialItems={initialPosts}
+      initialFilters={initialTags.map((tag) => ({
+        id: tag.id,
+        name: tag.name,
+        slug: tag.slug,
+        count: tag.count,
       }))}
-      selectedFilter={props.selectedTag}
-      totalCount={props.totalCount}
-      hasMore={props.hasMore}
-      initialLimit={props.initialLimit}
-      loadMoreLimit={props.loadMoreLimit}
-      // ✅ تنظیمات
+      initialTotalCount={totalCount}
+      selectedFilter={selectedTag}
+      initialLimit={initialLimit}
+      loadMoreLimit={loadMoreLimit}
       listType="posts"
       filterKey="tag"
       emptyIcon="📝"
@@ -42,10 +121,8 @@ export default function PostsListClient(props: Props) {
       showAllLabel="همه"
       moreLabel={(count) => `+${count} تگ دیگر`}
       countLabel={(count) => `${count} مقاله یافت شد`}
-      // ✅ رندر
-      renderItem={(post) => <PostCard key={post._id} post={post} />}
-      // ✅ لود بیشتر
+      renderItem={(post) => <PostCard post={post} />}
       onLoadMore={loadMorePosts}
     />
-  );
+  )
 }

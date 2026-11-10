@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { useTheme } from "next-themes";
 import { IoSunny, IoMoon } from "react-icons/io5";
 import { FaRobot } from "react-icons/fa6";
-import Button from "./button";
+import { Button } from "./button";
 
 type DarkmodeProps = {
   name?: boolean;
@@ -21,11 +21,6 @@ const Darkmode: React.FC<DarkmodeProps> = ({ name }) => {
   if (!mounted) {
     return (
       <Button
-        className={
-          name
-            ? "flex justify-between py-2 px-3 text-lg sm:text-sm"
-            : "text-lg p-[5px] sm:p-[6px] rounded-lg"
-        }
         variant={name ? "darkMode" : "home"}
         type="button"
         title="darkmode button"
@@ -39,11 +34,6 @@ const Darkmode: React.FC<DarkmodeProps> = ({ name }) => {
 
   return (
     <Button
-      className={
-        name
-          ? "flex justify-between py-2 px-3 text-lg sm:text-sm"
-          : "text-lg p-[5px] sm:p-[6px] rounded-lg"
-      }
       variant={name ? "darkMode" : "home"}
       onClick={() => {
         setTheme(

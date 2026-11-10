@@ -1,9 +1,25 @@
-import { inferAdditionalFields } from "better-auth/client/plugins";
 import { createAuthClient } from "better-auth/react";
-import { auth } from "./auth";
+import {
+  adminClient,
+  inferAdditionalFields,
+  twoFactorClient,
+} from "better-auth/client/plugins";
+// import { betterAuthOptions } from "./auth";
+import { clientAdditionalFields } from "./auth-shared";
 
 export const authClient = createAuthClient({
-  plugins: [inferAdditionalFields<typeof auth>()],
+  baseURL: process.env.BETTER_AUTH_URL,
+
+  plugins: [
+    adminClient(),
+    twoFactorClient(),
+
+    inferAdditionalFields({
+      user: clientAdditionalFields,
+    }),
+  ],
+
+  // $InferAuth: betterAuthOptions,
 });
 
-export const { useSession } = createAuthClient() 
+export const { signIn, signUp, signOut, useSession } = authClient;

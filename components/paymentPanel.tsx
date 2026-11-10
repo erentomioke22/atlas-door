@@ -1,33 +1,33 @@
 // components/paymentPanel.tsx
-'use client';
+"use client";
 
-import React, { useState, useEffect } from 'react';
-import Offcanvas from './ui/offcanvas';
-import { useMutation } from '@tanstack/react-query';
-import axios from 'axios';
-import { toast } from 'sonner';
-import TextArea from './ui/TextArea';
-import LoadingIcon from './ui/loading/LoadingIcon';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { IoClose } from 'react-icons/io5';
-import Input from './ui/input';
-import { orderGatewayValidation } from '@/lib/validation';
-import { FaCreditCard } from 'react-icons/fa';
-import { FaLocationDot } from 'react-icons/fa6';
-import { useCart } from '@/hook/useCart';
-import Button from './ui/button';
-import type { Session } from '@/lib/auth';
+import React, { useState, useEffect } from "react";
+import Offcanvas from "./ui/offcanvas";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
+import { toast } from "sonner";
+import TextArea from "./ui/TextArea";
+import LoadingIcon from "./ui/loading/LoadingIcon";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { IoClose } from "react-icons/io5";
+import Input from "./ui/input";
+import { orderGatewayValidation } from "@/lib/validation";
+import { FaCreditCard } from "react-icons/fa";
+import { FaLocationDot } from "react-icons/fa6";
+import { useCart } from "@/hook/useCart";
+import Button from "./ui/button";
+import type { Session } from "@/lib/auth";
 
 interface PaymentPanelProps {
-  status?: 'pending' | 'idle' | 'success' | 'error' | string;
+  status?: "pending" | "idle" | "success" | "error" | string;
   session: Session | null;
 }
 
 interface OrderFormValues {
   user: string;
   address: string;
-  rule: 'direct' | 'gateway';
+  rule: "direct" | "gateway";
   phone: string;
   notes?: string;
 }
@@ -52,7 +52,7 @@ const PaymentPanel: React.FC<PaymentPanelProps> = ({ status, session }) => {
         phone: values.phone,
         address: values.address,
         rule: values.rule,
-        notes: values.notes || '',
+        notes: values.notes || "",
         items: items.map((item) => ({
           productId: item.productId,
           colorId: item.colorId,
@@ -61,8 +61,8 @@ const PaymentPanel: React.FC<PaymentPanelProps> = ({ status, session }) => {
       };
 
       const response = await axios.post<PaymentResponse>(
-        '/api/payment',
-        payload
+        "/api/payment",
+        payload,
       );
       return response.data;
     },
@@ -71,27 +71,27 @@ const PaymentPanel: React.FC<PaymentPanelProps> = ({ status, session }) => {
         clearCart();
 
         if (data.paymentUrl) {
-          toast.success('در حال انتقال به درگاه پرداخت...');
+          toast.success("در حال انتقال به درگاه پرداخت...");
           window.location.href = data.paymentUrl;
         } else {
           toast.success(
-            'سفارش شما با موفقیت ثبت شد. همکاران ما به‌زودی با شما تماس می‌گیرند',
-            { duration: 6000 }
+            "سفارش شما با موفقیت ثبت شد. همکاران ما به‌زودی با شما تماس می‌گیرند",
+            { duration: 6000 },
           );
           setClose(false);
           // ✅ ریدایرکت به صفحه سفارشات
           setTimeout(() => {
-            window.location.href = '/orders';
+            window.location.href = "/orders";
           }, 2000);
         }
       } else {
-        toast.error(data.error || 'مشکلی در فرآیند پرداخت بوجود آمده است');
+        toast.error(data.error || "مشکلی در فرآیند پرداخت بوجود آمده است");
       }
     },
     onError: (err: any) => {
       toast.error(
         err?.response?.data?.error ||
-          'عملیات پرداخت ناموفق بود. دوباره تلاش کنید'
+          "عملیات پرداخت ناموفق بود. دوباره تلاش کنید",
       );
     },
   });
@@ -102,21 +102,27 @@ const PaymentPanel: React.FC<PaymentPanelProps> = ({ status, session }) => {
     formState: { errors },
     setValue,
   } = useForm<OrderFormValues>({
-    defaultValues: { user: '', address: '', rule: 'direct', phone: '', notes: '' },
+    defaultValues: {
+      user: "",
+      address: "",
+      rule: "direct",
+      phone: "",
+      notes: "",
+    },
     resolver: zodResolver(orderGatewayValidation),
   });
 
   useEffect(() => {
     if (session) {
-      setValue('user', session?.user?.name ?? '');
-      setValue('address', session?.user?.address ?? '');
-      setValue('phone', session?.user?.phone ?? '');
+      setValue("user", session?.user?.name ?? "");
+      setValue("address", session?.user?.address ?? "");
+      setValue("phone", session?.user?.phone ?? "");
     }
   }, [session, setValue]);
 
   const onSubmit = (values: OrderFormValues) => {
     if (items.length === 0) {
-      toast.error('سبد خرید شما خالی است');
+      toast.error("سبد خرید شما خالی است");
       return;
     }
     paymentMutation.mutate(values);
@@ -126,7 +132,7 @@ const PaymentPanel: React.FC<PaymentPanelProps> = ({ status, session }) => {
     <Offcanvas
       title="تکمیل سفارش"
       btnStyle="bg-black text-white dark:bg-white dark:text-black rounded-xl p-2 text-sm sm:text-lg mx-auto w-full flex justify-center"
-      disabled={status === 'pending' || items.length === 0}
+      disabled={status === "pending" || items.length === 0}
       position="top-0 right-0"
       size="h-screen max-w-full w-96 border-l-2 border-l-lcard dark:border-l-dcard overflow-y-auto"
       openTransition="translate-x-0"
@@ -138,7 +144,6 @@ const PaymentPanel: React.FC<PaymentPanelProps> = ({ status, session }) => {
           <h1 className="text-xl">تکمیل سفارش</h1>
           <Button
             onClick={() => setClose(!close)}
-            className="text-lg bg-lcard dark:bg-dcard px-2 py-1 rounded-full border-2 text-lfont"
             type="button"
             variant="close"
             title="close button"
@@ -156,7 +161,7 @@ const PaymentPanel: React.FC<PaymentPanelProps> = ({ status, session }) => {
             label={false}
             className="bg-lcard dark:bg-dcard rounded-lg p-2 text-lg outline-none focus:ring-2 focus:ring-black dark:focus:ring-white"
             error={errors?.user?.message}
-            {...register('user')}
+            {...register("user")}
           />
 
           <Input
@@ -165,7 +170,7 @@ const PaymentPanel: React.FC<PaymentPanelProps> = ({ status, session }) => {
             label={false}
             className="bg-lcard dark:bg-dcard rounded-lg p-2 text-lg outline-none focus:ring-2 focus:ring-black dark:focus:ring-white"
             error={errors?.phone?.message}
-            {...register('phone')}
+            {...register("phone")}
           />
 
           <TextArea
@@ -173,14 +178,14 @@ const PaymentPanel: React.FC<PaymentPanelProps> = ({ status, session }) => {
             label={false}
             className="resize-none bg-lcard dark:bg-dcard rounded-lg p-2 text-lg outline-none focus:ring-2 focus:ring-black dark:focus:ring-white"
             error={errors?.address?.message}
-            {...register('address')}
+            {...register("address")}
           />
 
           <TextArea
             placeholder="یادداشت (اختیاری)"
             label={false}
             className="resize-none bg-lcard dark:bg-dcard rounded-lg p-2 text-sm outline-none focus:ring-2 focus:ring-black dark:focus:ring-white"
-            {...register('notes')}
+            {...register("notes")}
           />
 
           <p className="text-sm font-medium">نحوه پرداخت</p>
@@ -190,7 +195,7 @@ const PaymentPanel: React.FC<PaymentPanelProps> = ({ status, session }) => {
                 className="hidden peer"
                 type="radio"
                 value="gateway"
-                {...register('rule')}
+                {...register("rule")}
                 id="gateway"
                 disabled
               />
@@ -209,7 +214,7 @@ const PaymentPanel: React.FC<PaymentPanelProps> = ({ status, session }) => {
                 className="hidden peer"
                 type="radio"
                 value="direct"
-                {...register('rule')}
+                {...register("rule")}
                 id="direct"
               />
               <label
@@ -232,7 +237,7 @@ const PaymentPanel: React.FC<PaymentPanelProps> = ({ status, session }) => {
               {paymentMutation.isPending ? (
                 <LoadingIcon color="bg-white dark:bg-black" />
               ) : (
-                'ثبت سفارش'
+                "ثبت سفارش"
               )}
             </button>
           </div>
