@@ -1,7 +1,7 @@
 import { getHomePageData } from '@/lib/payload/queries';
 import HomePage from '@/components/pages/homePage';
 
-export const revalidate = 120; 
+export const dynamic = 'force-dynamic';
 
 
 
